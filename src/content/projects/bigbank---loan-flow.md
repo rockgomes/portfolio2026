@@ -12,6 +12,14 @@ focus: ["Checkout"]
 tagsToCheck: true
 private: false
 webflowId: "69386753ffaae2c82a6bc289"
+cardOrder: 9
+cardNumber: "09"
+cardCompany: "Bigbank"
+cardYear: "2019"
+cardTitle: "Loan flow"
+cardLine: "Redesigned loan application flows for a better experience and a modern look."
+cardToCheck: false
+demoUrl: ""
 ---
 
 ## Challenge

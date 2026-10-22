@@ -1,0 +1,47 @@
+---
+// Figma: Footer (96:6970)
+import CopyEmail from './CopyEmail.astro';
+import Cursor from './Cursor.astro';
+---
+<footer class="ftr">
+  <div class="wrap">
+    <div class="main">
+      <div class="cta">
+        <p class="headline">Have a complex tool that needs a designer who ships?</p>
+        <p class="sub t-mono-small">Email is the fastest way. I reply within a day.</p>
+        <div class="email">
+          <a href="mailto:rock@rockgomes.com" class="addr">rock@rockgomes.com</a>
+          <span class="btn-wrap"><CopyEmail variant="short" /><Cursor name="You" color="you" style="left: 66px; top: 23px;" /></span>
+        </div>
+      </div>
+      <div class="links">
+        <p class="lab t-mono-label">links</p>
+        <a href="https://www.linkedin.com/in/rockgomes" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/rockgomes" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+    <div class="colophon t-mono-label">
+      <p>rev 2026.10 · B2<span class="gap"></span>type: IBM Plex Sans 600/400 · IBM Plex Mono<span class="gap"></span>surface: one white sheet, hairlines only</p>
+      <p>motion: lines draw and numbers count once, off when you ask for reduced motion<span class="gap"></span>built by hand, by Rock</p>
+    </div>
+  </div>
+</footer>
+<style>
+  .ftr .wrap { display: flex; flex-direction: column; gap: 48px; padding-bottom: 48px; }
+  .main { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; align-items: flex-start; border-top: 1px solid var(--color-text-secondary); padding-top: 56px; }
+  .cta { width: min(520px, 100%); display: flex; flex-direction: column; gap: 24px; }
+  .headline { margin: 0; font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); color: var(--color-text-primary); }
+  .sub { margin: 0; color: var(--color-text-muted); }
+  .email { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .addr { font: var(--type-body-default); color: var(--color-text-primary); text-decoration: none; }
+  .btn-wrap { position: relative; display: inline-flex; }
+  .links { display: flex; flex-direction: column; gap: 10px; }
+  .links .lab { margin: 0; color: var(--color-annotation-measure); }
+  .links a { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
+  .links a:hover { color: var(--color-text-primary); }
+  .colophon { border-top: 1px solid var(--color-border-subtle); padding-top: 16px; display: flex; flex-direction: column; gap: 6px; color: var(--color-text-muted); }
+  .colophon p { margin: 0; }
+  .gap { display: inline-block; width: 3em; }
+  @media (max-width: 720px) { .gap { display: block; width: 0; height: 0; } }
+</style>

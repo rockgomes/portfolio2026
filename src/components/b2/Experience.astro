@@ -1,0 +1,42 @@
+---
+// Figma: Experience (96:6929), Timeline item 21:111
+import SectionHeader from './SectionHeader.astro';
+const items = [
+  { years: '2025 - now', delta: 'Δ = 1 yr+', company: 'Dealfront', role: 'Senior Product Designer', text: 'Platform projects, user management and AI features. Worked with three PMs at once, which is its own kind of design problem.' },
+  { years: '2023 - 2025', delta: 'Δ = 2 yrs', company: 'Inbank', role: 'Senior Product Designer', text: 'Redesigned the hire-purchase checkout in four countries, rebuilt the customer service back-office, and built the design system from scratch right after a rebrand.' },
+  { years: '2020 - 2022', delta: 'Δ = 2 yrs', company: 'Pipedrive', role: 'Senior Product Designer', text: 'Integrations and developer experience team. Lots of user research, lots of tools for people who build tools.' },
+  { years: '2016 - 2020', delta: 'Δ = 4 yrs', company: 'Bigbank', role: 'Product Designer', text: 'Loan application flow, the financial back-office, and a design system with a coded component library. We visited every country the bank worked in to watch people use the old tools.' },
+];
+---
+<section class="exp" id="experience" aria-labelledby="exp-title">
+  <div class="wrap inner">
+    <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle="2016 → 2026 · no accordions here, it all fits" dimension="timeline.span = 10 yrs · roles = 4" />
+    <ol class="timeline">
+      {items.map((it) => (
+        <li class="item">
+          <span class="marker" aria-hidden="true"><i></i></span>
+          <div class="years t-mono-small"><span>{it.years}</span><span class="d t-mono-label">{it.delta}</span></div>
+          <div class="body">
+            <h3 class="co t-heading-item">{it.company}</h3>
+            <p class="role t-body-small">{it.role}</p>
+            <p class="text">{it.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
+  .timeline { list-style: none; margin: 0; padding: 0 0 0 4px; border-left: 1px solid var(--color-annotation-redline); }
+  .item { display: flex; align-items: flex-start; padding-block: 28px; border-bottom: 1px solid var(--color-border-subtle); }
+  .marker { position: relative; width: 32px; height: 16px; flex: none; }
+  .marker i { position: absolute; left: -4px; top: 5px; width: 7px; height: 7px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-redline); }
+  .years { width: 184px; flex: none; display: flex; flex-direction: column; gap: 4px; color: var(--color-text-secondary); white-space: nowrap; }
+  .d { color: var(--color-annotation-redline); }
+  .body { width: min(540px, 100%); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .co { margin: 0; color: var(--color-text-primary); }
+  .role { margin: 0; color: var(--color-text-secondary); }
+  .text { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  @media (max-width: 720px) { .item { flex-wrap: wrap; row-gap: 10px; } .years { width: auto; flex-direction: row; gap: 12px; } .body { flex: 1 1 100%; padding-left: 32px; } .inner { padding-top: 80px; } }
+</style>

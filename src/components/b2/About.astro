@@ -1,0 +1,61 @@
+---
+// Figma: About (96:6936). Portrait with annotation tags, draggable selection overlay.
+import { Image } from 'astro:assets';
+import SectionHeader from './SectionHeader.astro';
+import SelectionBox from './SelectionBox.astro';
+import Cursor from './Cursor.astro';
+import portrait from '../../assets/home/portrait.png';
+const tags = [
+  { t: 'scene: mountain lake, morning haze', top: 75 },
+  { t: 'subject: Rock', top: 261 },
+  { t: 'prop: one rock (fitting)', top: 367 },
+  { t: 'mode: monochrome', top: 479 },
+];
+---
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="wrap inner">
+    <SectionHeader num="05" title="About" titleId="about-title" subtitle="subject annotated for completeness" dimension="portrait.w = 1944 · portrait.h = 2400" />
+    <div class="body">
+      <div class="portrait" data-draggable>
+        <Image src={portrait} alt="Rock standing on a rock by a mountain lake, in black and white" widths={[440, 880]} sizes="440px" class="img" />
+        {tags.map((g) => <span class="tag t-mono-label" style={`top:${(g.top / 544 * 100).toFixed(2)}%`}>{g.t}</span>)}
+        <i class="leader" aria-hidden="true"></i>
+        <SelectionBox label="440 × 544" />
+        <Cursor name="Rock" color="rock" style="left: 434px; top: 538px;" />
+      </div>
+      <div class="text">
+        <p><strong>I am Rock. Senior product designer in Tallinn, Estonia.</strong> I have spent ten years on the kind of software people use all day at work: loan back-offices, support tools, CRM lists with 29,000 rows, checkouts that have to work in four countries.</p>
+        <p>I like the hard, boring parts. Permissions. Edge cases. Tables that have to stay readable at 200 columns. The part where a design system has to survive a rebrand.</p>
+        <p>I also build. Not slides of a thing, the thing. I use AI tools heavily to get from a Figma file to a clickable version fast, then I read the code, fix the tokens and the CSS, and hand the team something they can test. The two Dealfront demos on this page are that.</p>
+        <p>Before this: Dealfront, Inbank, Pipedrive, Bigbank, and a back-office design system for a UK pharmacy group. Outside of work: photography, the gym, and small games.</p>
+        <dl class="facts t-mono-body">
+          <div><dt>based</dt><dd>Tallinn, Estonia (EET, UTC+2)</dd></div>
+          <div><dt>works</dt><dd>contract or full-time, remote first</dd></div>
+          <div><dt>tools</dt><dd>Figma, tokens, CSS, GSAP, Next.js, AI assistants</dd></div>
+          <div><dt>speaks</dt><dd>English, Portuguese</dd></div>
+        </dl>
+        <p class="links t-mono-body"><a href="https://www.linkedin.com/in/rockgomes" target="_blank" rel="noopener">linkedin.com/in/rockgomes</a><a href="https://github.com/rockgomes" target="_blank" rel="noopener">github.com/rockgomes</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .inner { display: flex; flex-direction: column; gap: 48px; padding-block: 120px; }
+  .body { display: flex; gap: 80px; align-items: flex-start; }
+  .portrait { position: relative; width: 440px; max-width: 100%; aspect-ratio: 440 / 544; border: 1px solid var(--color-border-strong); flex: none; touch-action: none; }
+  .portrait :global(.img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tag { position: absolute; left: 39px; padding: 3px 7px; border-radius: 2px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-measure-soft); color: var(--color-annotation-measure); white-space: nowrap; }
+  .leader { position: absolute; left: 33.86%; top: 50%; width: 36px; height: 1px; background: var(--color-annotation-measure); }
+  .text { width: min(500px, 100%); display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .text > p { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  .text strong { font-weight: 600; color: var(--color-text-primary); }
+  .facts { margin: 0; padding-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .facts div { display: flex; gap: 12px; }
+  .facts dt { width: 56px; flex: none; color: var(--color-annotation-measure); }
+  .facts dd { margin: 0; color: var(--color-text-secondary); }
+  .links { padding-top: 8px; display: flex; flex-wrap: wrap; gap: 16px; }
+  .links a { color: var(--color-annotation-measure); text-decoration: none; }
+  .links a:hover { text-decoration: underline; }
+  @media (max-width: 1040px) { .body { flex-direction: column; gap: 48px; } }
+  @media (max-width: 640px) { .inner { padding-block: 80px; } .tag { left: 16px; } .leader { display: none; } }
+</style>

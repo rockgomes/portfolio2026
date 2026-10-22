@@ -1,0 +1,181 @@
+---
+// Figma: Section / Design systems (48:1690)
+import SectionHeader from './SectionHeader.astro';
+const systems = [
+  { label: 'Inbank DS', name: 'Inbank', when: '2023 - 2025', facts: ['Built from scratch right after the rebrand', 'One system for checkout in four countries and the back-office', 'WCAG built in ahead of an audit'], tags: ['Tokens', 'Components', 'Accessibility'] },
+  { label: 'Bigbank DS', name: 'Bigbank', when: '2016 - 2020', facts: ['Built together with one other designer', 'A coded component library, so the system is what ships', 'One system for every branch and market'], tags: ['Components', 'Code', 'Research'] },
+  { label: 'Well DS', name: 'Well', when: 'Contract', facts: ['Rebuilt the back-office design system', 'Colour tokens updated to meet AAA contrast', 'Worked side by side with the dev team'], tags: ['Tokens', 'AAA contrast', 'Handoff'] },
+];
+const chains = [
+  { sw: 'measure', prim: 'blue.600', sem: 'color.action.primary', use: 'button.bg' },
+  { sw: 'primary', prim: 'grey.050', sem: 'color.text.primary', use: 'h1, row title' },
+  { sw: 'redline', prim: 'red.400', sem: 'color.redline', use: 'dimension, pin' },
+];
+---
+<section class="ds" id="design-systems" aria-labelledby="ds-title">
+  <div class="wrap inner">
+    <div class="head">
+      <p class="fig t-mono-label"><span aria-hidden="true">❖</span> Section / Design systems</p>
+      <SectionHeader num="03" title="Design systems" titleId="ds-title" subtitle="two built from zero, one rebuilt · this page runs on a fourth" />
+    </div>
+
+    <div class="intro">
+      <div class="lede">
+        <p><strong>I have built design systems from scratch at Inbank and Bigbank, and rebuilt one at Well.</strong> Each one had to survive real products, real deadlines and a real dev team.</p>
+        <p>The work that matters is not the UI kit. It is the logic underneath: how tokens are layered, how components are split, which properties exist, and what happens when the brand or the theme changes.</p>
+      </div>
+      <div class="systems">
+        {systems.map((s) => (
+          <div class="sys">
+            <p class="fig t-mono-label"><span aria-hidden="true">◇</span> {s.label}</p>
+            <div class="card">
+              <div class="top"><h3 class="t-heading-item">{s.name}</h3><span class="t-mono-small when">{s.when}</span></div>
+              <ul class="facts">{s.facts.map((f) => <li><span class="dash t-mono-small" aria-hidden="true">—</span><span class="t-body-small">{f}</span></li>)}</ul>
+              <div class="tags">{s.tags.map((t) => <span class="ptag t-mono-label">{t}</span>)}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="specimens">
+      <p class="how t-mono-label">how I build them</p>
+      <div class="spec-grid">
+        <article class="spec">
+          <h3 class="spec-h"><span class="n t-mono-label">01</span><span class="t-heading-item">Variants, not copies</span></h3>
+          <div class="area">
+            <p class="fig t-mono-label"><span aria-hidden="true">❖</span> Button</p>
+            <div class="set" aria-hidden="true">
+              <div class="vr"><span class="b pri">Default</span><span class="b pri hov">Hover</span><span class="b pri dis">Disabled</span></div>
+              <div class="vr"><span class="b sec">Default</span><span class="b sec hov">Hover</span><span class="b sec dis">Disabled</span></div>
+              <div class="vr"><span class="b gho">Default</span><span class="b gho hov">Hover</span><span class="b gho dis">Disabled</span></div>
+            </div>
+          </div>
+          <p class="cap t-body-small">One component set with Variant, State and Size. Teams pick a combination, nobody copies and tweaks a button.</p>
+        </article>
+
+        <article class="spec">
+          <h3 class="spec-h"><span class="n t-mono-label">02</span><span class="t-heading-item">Properties that make sense</span></h3>
+          <div class="area">
+            <div class="ip" aria-hidden="true">
+              <div class="inst">
+                <p class="fig t-mono-label"><span>◇</span> Button</p>
+                <span class="btn-demo"><span class="t-mono-small">+</span><span>Save as view</span></span>
+              </div>
+              <div class="props t-mono-label">
+                <p class="ph">◇ Button</p>
+                <p class="pr"><span class="k"><i class="mut">◆</i>Variant</span><span class="v">Primary ▾</span></p>
+                <p class="pr"><span class="k"><i class="mut">◆</i>State</span><span class="v">Default ▾</span></p>
+                <p class="pr"><span class="k"><i class="mut">◆</i>Size</span><span class="v">Medium ▾</span></p>
+                <p class="pr"><span class="k"><i class="pur">T</i>Label</span><span class="v">Save as view</span></p>
+                <p class="pr"><span class="k"><i class="pur">◐</i>Show icon</span><img src="/home/toggle.svg" width="24" height="14" alt="" /></p>
+                <p class="pr"><span class="k"><i class="pur">◇</i>Icon</span><span class="v">◇ plus ▾</span></p>
+              </div>
+            </div>
+          </div>
+          <p class="cap t-body-small">Text, boolean and instance-swap properties do the work. Variants stay for real visual changes, so the set does not explode.</p>
+        </article>
+
+        <article class="spec">
+          <h3 class="spec-h"><span class="n t-mono-label">03</span><span class="t-heading-item">Three layers of tokens</span></h3>
+          <div class="area">
+            <div class="chains t-mono-small" aria-hidden="true">
+              {chains.map((c) => (
+                <p class="chain"><i class={`sw sw-${c.sw}`}></i><span class="prim">{c.prim}</span><span class="arr">→</span><span class="sem">{c.sem}</span><span class="arr">→</span><span class="use">{c.use}</span></p>
+              ))}
+            </div>
+          </div>
+          <p class="cap t-body-small">Primitives hold values, semantic tokens give them a job, components only use the semantic layer. A rebrand is a token change.</p>
+        </article>
+
+        <article class="spec">
+          <h3 class="spec-h"><span class="n t-mono-label">04</span><span class="t-heading-item">Modes, not duplicates</span></h3>
+          <div class="area">
+            <div class="modes" aria-hidden="true">
+              <div class="mode" data-theme-sample="dark"><p class="ml t-mono-label">mode: dark</p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
+              <div class="mode" data-theme-sample="light"><p class="ml t-mono-label">mode: light</p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
+            </div>
+          </div>
+          <p class="cap t-body-small">One set of components with a Dark and a Light mode. This page switches between them without a single copied frame.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
+  .head { display: flex; flex-direction: column; gap: 10px; }
+  .fig { margin: 0; display: flex; gap: 5px; align-items: center; color: var(--color-figma-component); white-space: nowrap; }
+  .intro { display: flex; gap: 80px; align-items: stretch; }
+  .lede { width: 380px; flex: none; display: flex; flex-direction: column; gap: 14px; }
+  .lede p { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  .lede strong { font-weight: 600; color: var(--color-text-primary); }
+  .systems { flex: 1 0 0; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .sys { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .card { flex: 1 0 auto; display: flex; flex-direction: column; gap: 14px; padding: 20px; background: var(--color-surface-raised); border: 1px solid var(--color-figma-component); }
+  .top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .top h3 { margin: 0; color: var(--color-text-primary); white-space: nowrap; }
+  .when { color: var(--color-text-muted); white-space: nowrap; }
+  .facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .facts li { display: flex; gap: 10px; }
+  .dash { color: var(--color-figma-component); flex: none; }
+  .facts .t-body-small { color: var(--color-text-secondary); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px; }
+  .ptag { padding: 3px 7px; border-radius: 2px; background: var(--color-figma-component-soft); color: var(--color-figma-component); white-space: nowrap; }
+  .specimens { display: flex; flex-direction: column; gap: 20px; }
+  .how { margin: 0; color: var(--color-annotation-measure); }
+  .spec-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .spec { display: flex; flex-direction: column; gap: 14px; padding: 20px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); min-width: 0; }
+  .spec-h { margin: 0; display: flex; gap: 10px; align-items: baseline; color: var(--color-text-primary); }
+  .spec-h .n { color: var(--color-annotation-redline); }
+  .area { height: 230px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: 28px 24px; background: var(--color-surface-stage); overflow: hidden; }
+  .cap { margin: 0; color: var(--color-text-secondary); }
+  .set { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px dashed var(--color-figma-component); border-radius: 4px; }
+  .vr { display: flex; gap: 12px; }
+  .b { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); padding: 6px 12px; border-radius: 2px; white-space: nowrap; }
+  .pri { background: var(--color-text-primary); color: var(--color-surface-page); }
+  .pri.hov { background: var(--color-text-secondary); }
+  .sec { background: var(--color-surface-page); color: var(--color-text-primary); border: 1px solid var(--color-border-strong); }
+  .sec.hov { background: var(--color-border-strong); }
+  .gho { color: var(--color-text-primary); }
+  .gho.hov { background: var(--color-border-subtle); }
+  .dis { opacity: 0.4; }
+  .ip { display: flex; gap: 24px; align-items: center; }
+  .inst { display: flex; flex-direction: column; gap: 6px; }
+  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--color-text-primary); color: var(--color-surface-page); border: 1px solid var(--color-figma-component); font: var(--type-ui-button); white-space: nowrap; }
+  .props { width: 230px; display: flex; flex-direction: column; gap: 7px; padding: 10px 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: 4px; }
+  .props p { margin: 0; }
+  .ph { color: var(--color-figma-component); }
+  .pr { display: flex; align-items: center; justify-content: space-between; gap: 8px; white-space: nowrap; }
+  .k { display: flex; gap: 6px; color: var(--color-text-secondary); }
+  .k i { font-style: normal; } .mut { color: var(--color-text-muted); } .pur { color: var(--color-figma-component); }
+  .v { color: var(--color-text-primary); }
+  .chains { display: flex; flex-direction: column; gap: 10px; }
+  .chain { margin: 0; display: flex; gap: 10px; align-items: center; white-space: nowrap; }
+  .sw { width: 10px; height: 10px; border: 1px solid var(--color-border-strong); flex: none; }
+  .sw-measure { background: var(--color-annotation-measure); } .sw-primary { background: var(--color-text-primary); } .sw-redline { background: var(--color-annotation-redline); }
+  .prim { width: 96px; color: var(--color-text-primary); } .sem { width: 170px; color: var(--color-annotation-measure); } .use { width: 110px; color: var(--color-text-secondary); }
+  .arr { color: var(--color-text-muted); }
+  .modes { display: flex; gap: 16px; }
+  .mode { display: flex; flex-direction: column; gap: 6px; }
+  .ml { margin: 0; color: var(--color-figma-component); }
+  .sample { width: 200px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; padding: 14px; border-radius: 4px; background: var(--s-page); border: 1px solid var(--s-border); }
+  .sample p { margin: 0; }
+  .st { font: 500 13px/1.4 var(--font-sans); color: var(--s-primary); }
+  .sd { color: var(--s-secondary); }
+  .stag { padding: 2px 6px; border-radius: 2px; background: var(--s-soft); color: var(--s-measure); }
+  /* The two samples always show their own mode, whatever the page theme is (Figma values). */
+  [data-theme-sample='dark'] { --s-page: #111316; --s-border: rgba(232,234,238,0.14); --s-primary: #e8eaee; --s-secondary: #b0b5bd; --s-measure: #4fd3ea; --s-soft: rgba(79,211,234,0.14); }
+  [data-theme-sample='dark'] .ml { color: #a879ff; }
+  [data-theme-sample='light'] { --s-page: #ffffff; --s-border: rgba(0,0,0,0.1); --s-primary: #1d1d1f; --s-secondary: #4e5157; --s-measure: #1b6fe3; --s-soft: rgba(27,111,227,0.14); }
+  [data-theme-sample='light'] .ml { color: #9747ff; }
+  @media (max-width: 1240px) { .intro { flex-direction: column; gap: 32px; } .lede { width: min(560px, 100%); } }
+  @media (max-width: 1040px) { .spec-grid { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 860px) { .systems { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 560px) {
+    .inner { padding-top: 80px; }
+    .area { height: auto; min-height: 230px; overflow-x: auto; justify-content: flex-start; align-items: flex-start; }
+    .ip, .modes { flex-direction: column; align-items: flex-start; }
+    .chain { flex-wrap: wrap; white-space: normal; } .prim, .sem, .use { width: auto; }
+  }
+</style>

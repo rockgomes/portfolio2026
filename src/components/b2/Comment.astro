@@ -1,0 +1,21 @@
+---
+// Figma: Comment (44:575)
+interface Props { who: string; initial: string; when: string; style?: string }
+const { who, initial, when, style } = Astro.props;
+---
+<div class="cm" style={style} data-overlay aria-hidden="true">
+  <span class="av t-mono-label">{initial}</span>
+  <div class="body">
+    <p class="meta"><span class="who">{who}</span><span class="when t-mono-label">{when}</span></p>
+    <p class="txt t-body-small"><slot /></p>
+  </div>
+</div>
+<style>
+  .cm { position: absolute; z-index: 6; display: flex; gap: 10px; align-items: flex-start; padding: 10px 14px 12px 10px; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }
+  .av { width: 26px; height: 26px; border-radius: 13px; display: grid; place-items: center; background: var(--color-cursor-client); color: var(--color-surface-page); flex: none; }
+  .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 0 0; }
+  .meta { margin: 0; display: flex; gap: 8px; align-items: baseline; white-space: nowrap; }
+  .who { font: var(--type-ui-button); color: var(--color-text-primary); }
+  .when { color: var(--color-text-muted); }
+  .txt { margin: 0; color: var(--color-text-secondary); }
+</style>

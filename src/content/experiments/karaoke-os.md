@@ -16,6 +16,13 @@ focus: ["Code"]
 tagsToCheck: true
 private: false
 webflowId: "6a946eecf979c245ce6165be"
+cardOrder: 12
+cardNumber: "e.02"
+cardCompany: "Side project"
+cardYear: "site"
+cardTitle: "Karaoke OS"
+cardLine: "The karaoke bar's QR code opened a PDF with thousands of songs. I built what it should have opened."
+cardToCheck: false
 ---
 
 The karaoke bar I go to has a QR code on the wall. Scan it and you get a PDF with thousands of songs. You scroll page after page on your phone, and then you give up and ask the DJ. Most people don't even know how to search on a PDF on mobile.

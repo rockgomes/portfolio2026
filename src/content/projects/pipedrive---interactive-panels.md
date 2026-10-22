@@ -12,6 +12,14 @@ focus: []
 tagsToCheck: true
 private: false
 webflowId: "693867547c76f9b1f482ae78"
+cardOrder: 8
+cardNumber: "08"
+cardCompany: "Pipedrive"
+cardYear: ""
+cardTitle: "Interactive Panels"
+cardLine: "Act on a third-party app or a piece of data right where it shows in Pipedrive."
+cardToCheck: true
+demoUrl: ""
 ---
 
 ## Overview

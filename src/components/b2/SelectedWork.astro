@@ -1,0 +1,280 @@
+---
+// Figma: Selected work (96:6873) = Section header + Filter panel (B, 96:6877) + Work card grid (52:2051).
+// Filter rules (from the prototype): nothing selected = everything. Type is single choice.
+// Same group = OR, different groups = AND. Counts show what you would get. Zero-result tags are disabled.
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import SectionHeader from './SectionHeader.astro';
+import SelectionBox from './SelectionBox.astro';
+import Cursor from './Cursor.astro';
+import Comment from './Comment.astro';
+import { isPrivate } from '../../lib/private';
+
+const projects = (await getCollection('projects')).filter((p) => !isPrivate(p.data)).map((p) => ({
+  id: p.id, href: `/project/${p.id}`, img: p.data.homeImage, alt: p.data.homeImageAlt, demo: p.data.demoUrl, d: p.data,
+}));
+const experiments = (await getCollection('experiments')).filter((e) => !isPrivate(e.data)).map((e) => ({
+  id: e.id, href: `/experiments/${e.id}`, img: e.data.cardImage, alt: '', demo: '', d: e.data,
+}));
+const items = [...projects, ...experiments].sort((a, b) => a.d.cardOrder - b.d.cardOrder);
+const cardTag = (d: (typeof items)[number]['d']) => [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Experiment' : '');
+const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.industry, focus: i.d.focus }));
+---
+<section class="work" id="work" aria-labelledby="work-title">
+  <div class="wrap inner">
+    <div class="sh-wrap" data-text-selection-host>
+      <SectionHeader num="02" title="Selected work" titleId="work-title" subtitle="client work and experiments in one list · filter with the tags on the left" />
+      <span class="tsel" data-text-selection data-overlay aria-hidden="true"><i class="hl"></i><i class="caret s"><b></b></i><i class="caret e"><b></b></i></span>
+    </div>
+
+    <div class="layout">
+      <aside class="side" aria-label="Filter projects">
+        <div class="panel" data-filter-panel>
+          <div class="tabs" role="tablist" aria-label="Filter mode">
+            <button type="button" role="tab" aria-selected="true" data-tab="groups">Filters</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="flat">Tags</button>
+            <span class="sp"></span>
+            <span class="cnt t-mono-label" aria-live="polite" data-filter-count>{items.length} / {items.length}</span>
+          </div>
+          <div class="search-wrap">
+            <label class="search">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="5" cy="5" r="3.6" stroke="currentColor" stroke-width="1.3"/><path d="M8 8l2.6 2.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <span class="sr-only">Find a tag</span>
+              <input type="search" placeholder="Find a tag" autocomplete="off" data-filter-search />
+            </label>
+          </div>
+          <div data-filter-groups></div>
+        </div>
+        <p class="sticky-note t-mono-label">stays fixed while the projects scroll</p>
+      </aside>
+
+      <div class="main">
+        <div class="active" data-filter-active hidden></div>
+        <ul class="grid" data-grid>
+          {items.map((it) => (
+            <li class="card" data-id={it.id}>
+              <div class="thumb-wrap" data-draggable={it.id === 'dealfront-dynamic-lists' ? '' : undefined}>
+                <a class="thumb" href={it.href} tabindex="-1" aria-hidden="true">
+                  {it.img ? <Image src={it.img} alt={it.alt} widths={[485, 970]} sizes="(min-width: 1200px) 485px, (min-width: 720px) 45vw, 100vw" /> : <span class="ph"></span>}
+                </a>
+                {it.id === 'dealfront-dynamic-lists' && <><SelectionBox label="485 × 394" live /><Cursor name="Dev" color="dev" style="left: calc(100% - 6px); top: calc(100% - 6px);" /></>}
+                {it.id === 'inbank---hire-purchase' && <><Cursor name="Client" color="client" style="left: 195px; top: 110px;" /><Comment who="Client" initial="C" when="2 min ago" style="left: 213px; top: 153px; width: 300px;">Support tickets went down after launch. Approved.</Comment></>}
+                {it.id === 'karaoke-os' && <Cursor name="PM" color="pm" style="left: 267px; top: 177px;" />}
+              </div>
+              <p class="meta"><span class="n t-mono-small">{it.d.cardNumber}</span><span class="co t-mono-label">{it.d.cardCompany}</span><span class="sp"></span>{it.d.cardYear && <span class="yr t-mono-small">{it.d.cardYear}</span>}</p>
+              <h3 class="title"><a href={it.href}>{it.d.cardTitle || it.d.name}</a></h3>
+              <p class="line">{it.d.cardLine}</p>
+              <p class="foot">
+                {cardTag(it.d) && <span class="tag t-mono-label">{cardTag(it.d)}</span>}
+                {it.demo && <a class="demo t-mono-label" href={it.demo} target="_blank" rel="noopener">+ Open live demo ↗</a>}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <div class="empty" data-filter-empty hidden>
+          <p class="empty-t">No projects match all of these.</p>
+          <p class="empty-s t-mono-label">Remove a filter to see more.</p>
+          <button type="button" class="clear-all" data-clear-all>Clear all filters</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" id="work-filter-data" set:html={JSON.stringify(filterData)} />
+
+<style>
+  .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
+  .sh-wrap { position: relative; }
+  .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 40px; align-items: start; }
+  .side { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 120px); overflow: auto; scrollbar-width: thin; }
+  .panel { background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 10px; box-shadow: var(--shadow-panel); padding-bottom: 8px; overflow: hidden; }
+  .tabs { display: flex; align-items: center; gap: 14px; padding: 12px 14px 10px; border-bottom: 1px solid var(--color-border-subtle); }
+  .tabs button { border: 0; background: transparent; padding: 0; cursor: pointer; font: 500 12px/17px var(--font-sans); color: var(--color-text-muted); }
+  .tabs button[aria-selected='true'] { font-weight: 600; color: var(--color-text-primary); }
+  .sp { flex: 1 1 0; }
+  .cnt { color: var(--color-text-muted); letter-spacing: 0; }
+  .search-wrap { padding: 10px 10px 4px; }
+  .search { display: flex; align-items: center; gap: 8px; padding: 6px 9px; border: 1px solid var(--color-border-strong); border-radius: 6px; color: var(--color-text-muted); }
+  .search:focus-within { border-color: var(--color-annotation-measure); }
+  .search input { border: 0; outline: 0; background: transparent; width: 100%; min-width: 0; font: 400 12px/17px var(--font-sans); color: var(--color-text-primary); }
+  .search input::placeholder { color: var(--color-text-muted); }
+  .panel :global(.sec) { display: flex; align-items: center; gap: 6px; padding: 10px 14px 4px; font: 600 11.5px/16px var(--font-sans); color: var(--color-text-primary); }
+  .panel :global(.sec .caret) { border: 0; background: transparent; padding: 0; width: 8px; height: 8px; display: grid; place-items: center; cursor: pointer; color: var(--color-text-muted); }
+  .panel :global(.sec .caret svg) { transition: transform 0.15s; }
+  .panel :global(.sec .caret[aria-expanded='false'] svg) { transform: rotate(-90deg); }
+  .panel :global(.sec .clr) { margin-left: auto; border: 0; background: transparent; padding: 0; cursor: pointer; font: 500 11.5px/16px var(--font-sans); color: var(--color-annotation-measure); }
+  .panel :global(.row) { width: 100%; display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 14px 0 26px; border: 0; background: transparent; cursor: pointer; text-align: left; }
+  .panel :global(.row:hover) { background: var(--color-surface-stage); }
+  .panel :global(.row .ic) { width: 13px; flex: none; font: 400 11px/15px var(--font-mono); color: var(--color-figma-component); text-align: center; }
+  .panel :global(.row .lab) { flex: 1 1 0; min-width: 0; font: 400 12px/17px var(--font-sans); color: var(--color-text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .panel :global(.row .num) { font: 400 11px/15px var(--font-mono); color: var(--color-text-muted); }
+  .panel :global(.row .ok) { width: 10px; flex: none; display: grid; place-items: center; opacity: 0; color: var(--color-annotation-measure); }
+  .panel :global(.row[aria-checked='true']) { background: var(--color-annotation-measure-soft); }
+  .panel :global(.row[aria-checked='true'] .lab) { font-weight: 500; color: var(--color-annotation-measure); }
+  .panel :global(.row[aria-checked='true'] .num) { color: var(--color-annotation-measure); }
+  .panel :global(.row[aria-checked='true'] .ok) { opacity: 1; }
+  .panel :global(.row:disabled) { cursor: default; opacity: 0.4; }
+  .panel :global(.row:disabled:hover) { background: transparent; }
+  .panel :global(.row mark) { background: var(--color-annotation-measure-soft); color: inherit; border-radius: 2px; }
+  .panel :global(.more) { border: 0; background: transparent; cursor: pointer; padding: 6px 14px 4px 46px; font: 400 12px/17px var(--font-sans); color: var(--color-text-muted); text-align: left; }
+  .panel :global(.more:hover) { color: var(--color-text-primary); }
+  .panel :global(.none) { padding: 6px 14px 4px 26px; font: 400 12px/17px var(--font-sans); color: var(--color-text-muted); }
+  .sticky-note { margin: 0; color: var(--color-annotation-measure); white-space: nowrap; }
+  .main { min-width: 0; }
+  .active { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 24px; }
+  .active :global(.pill) { display: inline-flex; align-items: center; gap: 6px; padding: 4px 6px 4px 9px; border: 1px solid var(--color-annotation-measure); background: var(--color-annotation-measure-soft); border-radius: 2px; cursor: pointer; font: var(--type-mono-label); color: var(--color-text-primary); }
+  .active :global(.pill i) { font-style: normal; color: var(--color-text-muted); }
+  .active :global(.clear-all-inline) { border: 0; background: transparent; cursor: pointer; padding: 4px 0; font: var(--type-mono-label); color: var(--color-annotation-measure); }
+  .grid { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 20px; }
+  .card { position: relative; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .card.leaving { position: absolute; pointer-events: none; transition: opacity 0.18s ease, transform 0.18s ease; opacity: 0; transform: scale(0.97); }
+  .thumb-wrap { position: relative; }
+  .thumb { display: block; aspect-ratio: 485 / 394; border: 1px solid var(--color-border-subtle); overflow: hidden; background: var(--color-surface-stage); }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .card:hover .thumb :global(img) { transform: scale(1.02); }
+  .ph { display: block; width: 100%; height: 100%; }
+  [data-draggable] { cursor: grab; touch-action: none; }
+  [data-draggable].dragging { cursor: grabbing; z-index: 8; }
+  .meta { margin: 0; display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+  .meta .n { color: var(--color-annotation-redline); }
+  .meta .co, .meta .yr { color: var(--color-text-muted); }
+  .title { margin: 0; font: 600 28px/1.05 var(--font-sans); letter-spacing: -0.02em; color: var(--color-text-primary); }
+  .title a { text-decoration: none; }
+  .title a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+  .title a:focus-visible { outline: none; }
+  .card:has(.title a:focus-visible) { outline: 2px solid var(--color-annotation-measure); outline-offset: 6px; }
+  .line { margin: 0; font: var(--type-body-row); color: var(--color-text-secondary); }
+  .foot { margin: 0; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .tag { padding: 3px 7px; border-radius: 2px; background: var(--color-annotation-measure-soft); border: 1px solid var(--color-annotation-measure-soft); color: var(--color-annotation-measure); white-space: nowrap; }
+  .demo { position: relative; z-index: 2; color: var(--color-annotation-measure); text-decoration: none; white-space: nowrap; }
+  .demo:hover { text-decoration: underline; }
+  .card :global([data-overlay]) { z-index: 3; }
+  .empty { border: 1px dashed var(--color-border-strong); padding: 36px 24px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .empty p { margin: 0; } .empty-t { font: var(--type-heading-item); }
+  .empty-s { color: var(--color-text-muted); }
+  .clear-all { border: 1px solid var(--color-border-strong); background: var(--color-surface-page); padding: 6px 10px; border-radius: 2px; cursor: pointer; font: var(--type-mono-label); color: var(--color-annotation-measure); }
+  .tsel { position: absolute; pointer-events: none; display: none; }
+  .tsel.on { display: block; }
+  .tsel .hl { position: absolute; inset: 0; background: var(--color-annotation-measure-soft); }
+  .tsel .caret { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--color-annotation-measure); }
+  .tsel .caret.s { left: -1px; } .tsel .caret.e { right: -1px; }
+  .tsel .caret b { position: absolute; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--color-annotation-measure); }
+  .tsel .caret.s b { top: -6px; } .tsel .caret.e b { bottom: -6px; }
+  @media (max-width: 1040px) { .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; } .sticky-note { display: none; } }
+  @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } .inner { padding-top: 80px; } .title { font-size: 24px; } }
+  @media (prefers-reduced-motion: reduce) { .card.leaving, .thumb :global(img) { transition: none; } }
+</style>
+
+<script>
+  type Item = { id: string; type: 'client' | 'experiment'; industry: string[]; focus: string[] };
+  const DATA: Item[] = JSON.parse(document.getElementById('work-filter-data')!.textContent || '[]');
+  const panel = document.querySelector<HTMLElement>('[data-filter-panel]')!;
+  const groupsEl = panel.querySelector<HTMLElement>('[data-filter-groups]')!;
+  const countEl = panel.querySelector<HTMLElement>('[data-filter-count]')!;
+  const searchEl = panel.querySelector<HTMLInputElement>('[data-filter-search]')!;
+  const grid = document.querySelector<HTMLElement>('[data-grid]')!;
+  const empty = document.querySelector<HTMLElement>('[data-filter-empty]')!;
+  const activeEl = document.querySelector<HTMLElement>('[data-filter-active]')!;
+  const FOCUS_LIMIT = 4;
+  const TYPES: [string, string][] = [['all', 'All'], ['client', 'Client work'], ['experiment', 'Experiments']];
+  const MASTER = '❖', VARIANT = '◇';
+  const CHECK = '<svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l2.6 2.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const CARET = '<svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><path d="M1.5 2.5L4 5.5L6.5 2.5Z" fill="currentColor"/></svg>';
+  const state = { type: 'all', industry: [] as string[], focus: [] as string[], q: '', tab: 'groups', more: false, open: { type: true, industry: true, focus: true } as Record<string, boolean> };
+  const slug = (s: string) => s.toLowerCase().replace(/\s+/g, '-');
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  // read URL (?type=experiment&industry=fintech,saas&focus=data)
+  const allTags = (k: 'industry' | 'focus') => [...new Set(DATA.flatMap((d) => d[k]))];
+  { const u = new URL(location.href); const t = u.searchParams.get('type'); if (t === 'client' || t === 'experiment') state.type = t;
+    for (const k of ['industry', 'focus'] as const) { const v = u.searchParams.get(k); if (v) { const want = v.split(','); state[k] = allTags(k).filter((tg) => want.includes(slug(tg))); } } }
+
+  const okType = (d: Item, t = state.type) => t === 'all' || d.type === t;
+  const okGroup = (d: Item, k: 'industry' | 'focus', sel = state[k]) => !sel.length || sel.some((s) => d[k].includes(s));
+  const visible = () => DATA.filter((d) => okType(d) && okGroup(d, 'industry') && okGroup(d, 'focus'));
+  const countFor = (k: string, v: string) => DATA.filter((d) => (k === 'type' ? okType(d, v) : okType(d)) && (k === 'industry' ? d.industry.includes(v) : okGroup(d, 'industry')) && (k === 'focus' ? d.focus.includes(v) : okGroup(d, 'focus'))).length;
+  const hl = (label: string) => { const q = state.q.toLowerCase(); const i = q ? label.toLowerCase().indexOf(q) : -1; return i < 0 ? esc(label) : esc(label.slice(0, i)) + '<mark>' + esc(label.slice(i, i + q.length)) + '</mark>' + esc(label.slice(i + q.length)); };
+  const row = (key: string, value: string, label: string, icon: string, on: boolean, n: number, multi: boolean) =>
+    `<button type="button" class="row" role="${multi ? 'checkbox' : 'radio'}" aria-checked="${on}" data-key="${key}" data-val="${esc(value)}"${n === 0 && !on ? ' disabled' : ''}><span class="ic" aria-hidden="true">${icon}</span><span class="lab">${hl(label)}</span><span class="num">${n}</span><span class="ok">${CHECK}</span></button>`;
+  const section = (key: string, label: string, clear: boolean, body: string) =>
+    `<div class="sec"><button type="button" class="caret" aria-expanded="${state.open[key]}" aria-label="${state.open[key] ? 'Collapse' : 'Expand'} ${label}" data-toggle="${key}">${CARET}</button><span>${label}</span>${clear ? `<button type="button" class="clr" data-clear="${key}">Clear</button>` : ''}</div>` + (state.open[key] ? `<div role="${key === 'type' ? 'radiogroup' : 'group'}" aria-label="${label}">${body}</div>` : '');
+  const tagRows = (k: 'industry' | 'focus') => allTags(k).map((t) => ({ t, n: countFor(k, t), on: state[k].includes(t) })).sort((a, b) => b.n - a.n || a.t.localeCompare(b.t));
+
+  function renderPanel() {
+    const q = state.q.toLowerCase(); let html = '';
+    if (state.tab === 'groups') {
+      if (!q) html += section('type', 'Type', false, TYPES.map(([v, l]) => row('type', v, l, MASTER, state.type === v, countFor('type', v), false)).join(''));
+      for (const [k, label] of [['industry', 'Industry'], ['focus', 'Focus']] as const) {
+        let list = tagRows(k).filter((o) => !q || o.t.toLowerCase().includes(q)); let hidden = 0;
+        if (k === 'focus' && !q && !state.more && list.length > FOCUS_LIMIT) { const head = list.slice(0, FOCUS_LIMIT); list.slice(FOCUS_LIMIT).forEach((o) => { if (o.on) head.push(o); }); hidden = list.length - head.length; list = head; }
+        let body = list.map((o) => row(k, o.t, o.t, VARIANT, o.on, o.n, true)).join('') || `<p class="none">No ${label.toLowerCase()} tags match</p>`;
+        if (hidden > 0) body += `<button type="button" class="more" data-more="1">${hidden} more</button>`;
+        else if (k === 'focus' && !q && state.more) body += `<button type="button" class="more" data-more="0">Show fewer</button>`;
+        html += section(k, label, state[k].length > 0, body);
+      }
+    } else {
+      const flat = (['industry', 'focus'] as const).flatMap((k) => tagRows(k).map((o) => ({ ...o, k }))).filter((o) => !q || o.t.toLowerCase().includes(q)).sort((a, b) => a.t.localeCompare(b.t));
+      html = `<div role="group" aria-label="All tags" style="padding-top:6px">${flat.map((o) => row(o.k, o.t, o.t, VARIANT, o.on, o.n, true)).join('') || '<p class="none">No tags match</p>'}</div>`;
+    }
+    const focusId = (document.activeElement as HTMLElement | null)?.closest('.row') ? `${(document.activeElement as HTMLElement).dataset.key}|${(document.activeElement as HTMLElement).dataset.val}` : '';
+    groupsEl.innerHTML = html;
+    if (focusId) { const [k, v] = focusId.split('|'); groupsEl.querySelector<HTMLElement>(`.row[data-key="${k}"][data-val="${CSS.escape(v)}"]`)?.focus(); }
+    panel.querySelectorAll<HTMLElement>('[data-tab]').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.tab === state.tab)));
+  }
+
+  function renderActive() {
+    const pills: string[] = [];
+    if (state.type !== 'all') pills.push(`<button type="button" class="pill" data-pill="type">Type <i>is</i> ${state.type === 'client' ? 'Client work' : 'Experiments'} ×</button>`);
+    for (const [k, label] of [['industry', 'Industry'], ['focus', 'Focus']] as const) if (state[k].length) pills.push(`<button type="button" class="pill" data-pill="${k}">${label} <i>is</i> ${state[k].map(esc).join(' <i>or</i> ')} ×</button>`);
+    activeEl.hidden = !pills.length;
+    activeEl.innerHTML = pills.join('') + (pills.length > 1 ? '<button type="button" class="clear-all-inline" data-clear-all>Clear all</button>' : '');
+  }
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nodes = new Map<string, HTMLElement>(); grid.querySelectorAll<HTMLElement>('.card').forEach((c) => nodes.set(c.dataset.id!, c));
+  const order = [...nodes.keys()];
+  function renderGrid() {
+    const vis = new Set(visible().map((d) => d.id));
+    const gb = grid.getBoundingClientRect(); const first = new Map<string, DOMRect>();
+    nodes.forEach((el, id) => { if (el.isConnected && !el.classList.contains('leaving')) first.set(id, el.getBoundingClientRect()); });
+    nodes.forEach((el, id) => {
+      if (vis.has(id) || !el.isConnected || el.classList.contains('leaving')) return;
+      const r = first.get(id);
+      if (reduce || !r) { el.remove(); return; }
+      Object.assign(el.style, { left: `${r.left - gb.left}px`, top: `${r.top - gb.top}px`, width: `${r.width}px` });
+      el.classList.add('leaving'); setTimeout(() => { el.remove(); el.classList.remove('leaving'); el.removeAttribute('style'); }, 200);
+    });
+    for (const id of order) { if (!vis.has(id)) continue; const el = nodes.get(id)!; if (el.classList.contains('leaving')) { el.classList.remove('leaving'); el.removeAttribute('style'); } grid.appendChild(el); }
+    if (!reduce) for (const id of order) {
+      if (!vis.has(id)) continue; const el = nodes.get(id)!; const r1 = el.getBoundingClientRect(); const r0 = first.get(id);
+      if (r0) { const dx = r0.left - r1.left, dy = r0.top - r1.top; if (dx || dy) el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.2,.7,.2,1)' }); }
+      else el.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'ease-out' });
+    }
+    empty.hidden = vis.size > 0; countEl.textContent = `${vis.size} / ${DATA.length}`;
+    document.dispatchEvent(new CustomEvent('work:filtered'));
+  }
+
+  function syncUrl() {
+    const u = new URL(location.href);
+    if (state.type !== 'all') u.searchParams.set('type', state.type); else u.searchParams.delete('type');
+    for (const k of ['industry', 'focus'] as const) { if (state[k].length) u.searchParams.set(k, state[k].map(slug).join(',')); else u.searchParams.delete(k); }
+    history.replaceState(null, '', u);
+  }
+  const render = (grid = true) => { renderPanel(); renderActive(); if (grid) { renderGrid(); syncUrl(); } };
+  const toggle = (k: 'industry' | 'focus', v: string) => { const s = state[k]; const i = s.indexOf(v); if (i > -1) s.splice(i, 1); else s.push(v); };
+  const clearAll = () => { state.type = 'all'; state.industry = []; state.focus = []; };
+
+  panel.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const r = t.closest<HTMLButtonElement>('.row'); if (r && !r.disabled) { const k = r.dataset.key!; if (k === 'type') state.type = r.dataset.val!; else toggle(k as 'industry' | 'focus', r.dataset.val!); return render(); }
+    const tab = t.closest<HTMLElement>('[data-tab]'); if (tab) { state.tab = tab.dataset.tab!; return render(false); }
+    const tg = t.closest<HTMLElement>('[data-toggle]'); if (tg) { state.open[tg.dataset.toggle!] = !state.open[tg.dataset.toggle!]; return render(false); }
+    const cl = t.closest<HTMLElement>('[data-clear]'); if (cl) { (state as any)[cl.dataset.clear!] = []; return render(); }
+    const m = t.closest<HTMLElement>('[data-more]'); if (m) { state.more = m.dataset.more === '1'; return render(false); }
+  });
+  searchEl.addEventListener('input', () => { state.q = searchEl.value.trim(); renderPanel(); });
+  const onPill = (e: Event) => { const t = e.target as HTMLElement; const p = t.closest<HTMLElement>('[data-pill]'); if (p) { if (p.dataset.pill === 'type') state.type = 'all'; else (state as any)[p.dataset.pill!] = []; return render(); } if (t.closest('[data-clear-all]')) { clearAll(); render(); } };
+  activeEl.addEventListener('click', onPill); empty.addEventListener('click', onPill);
+  render();
+</script>

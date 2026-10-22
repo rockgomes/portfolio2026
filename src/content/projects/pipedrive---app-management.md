@@ -12,6 +12,14 @@ focus: []
 tagsToCheck: true
 private: false
 webflowId: "6938675459ce51ddbf1fc812"
+cardOrder: 6
+cardNumber: "06"
+cardCompany: "Pipedrive"
+cardYear: ""
+cardTitle: "App Management"
+cardLine: "App creation and management for developers, inside the Pipedrive Marketplace Manager."
+cardToCheck: true
+demoUrl: ""
 ---
 
 ## Background

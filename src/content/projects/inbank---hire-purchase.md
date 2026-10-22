@@ -12,6 +12,14 @@ focus: ["Checkout"]
 tagsToCheck: true
 private: false
 webflowId: "693867534f6fe4504ed0fc53"
+cardOrder: 5
+cardNumber: "05"
+cardCompany: "Inbank"
+cardYear: "2023"
+cardTitle: "Hire Purchase checkout"
+cardLine: "Redesigned the checkout across 4 countries after a rebrand. Fewer support tickets, faster completion."
+cardToCheck: false
+demoUrl: ""
 ---
 
 ## Overview

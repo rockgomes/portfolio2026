@@ -1,0 +1,78 @@
+---
+// Figma: Hero (96:6786) = Statement (96:6787) + Specimen with the live table window (96:6797).
+import Note from './Note.astro';
+import Dimension from './Dimension.astro';
+import SelectionBox from './SelectionBox.astro';
+import Cursor from './Cursor.astro';
+import Comment from './Comment.astro';
+import HeroTable from './HeroTable.astro';
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap grid">
+    <div class="statement">
+      <p class="gutter t-mono-label" aria-hidden="true">space.gutter = 24px</p>
+      <h1 id="hero-title" class="h1">
+        <span class="h1-box">I design complex tools for work. <span class="accent">Then I build the working version.</span><SelectionBox label="498 × 252" live class="h1-sel" /></span>
+      </h1>
+      <p class="sub">Back-office systems, data-heavy SaaS, design systems. <strong>I design the screens, build the tokens and components behind them, and ship a version the team can click through before anyone writes a ticket.</strong></p>
+      <div class="notes">
+        <Note label="note 01">
+          <span data-view-text="design">The table on the right is real. Add a filter, sort a column, save a view. Nothing you do gets lost.</span>
+          <span data-view-text="engineer">The table on the right is real code. Inspect any part, then open the source on GitHub.</span>
+        </Note>
+        <Note label="note 02">Senior Product Designer, Tallinn, Estonia. Open to contract and full-time, any industry where the tool is complex.</Note>
+      </div>
+    </div>
+
+    <div class="specimen" data-specimen>
+      <Dimension label="specimen.w = 734px · live" live="specimen" />
+      <HeroTable />
+      <div class="caption t-mono-label"><span>fig. 00 · filter builder, example data</span><span data-table-meta>rows = 40 · fields = 6</span></div>
+
+      <Cursor name="Rock" color="rock" style="left: 186px; top: 144px;" />
+      <Cursor name="PM" color="pm" style="left: 691px; top: 146px;" />
+      <Cursor name="Dev" color="dev" style="left: 210px; top: 443px;" />
+      <Cursor name="Client" color="client" style="left: 484px; top: 501px;" />
+      <Comment who="Client" initial="C" when="just now" style="left: 502px; top: 544px; width: 290px;">Can we save this filter as a view?</Comment>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: 64px 97px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 498px) minmax(0, 734px); justify-content: space-between; gap: 48px; align-items: start; }
+  .statement { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  .gutter { margin: 0; color: var(--color-annotation-measure); }
+  .h1 { margin: 0; font: var(--type-display-hero); letter-spacing: var(--tracking-display-hero); color: var(--color-text-primary); }
+  .h1-box { position: relative; display: block; }
+  .h1-box :global(.h1-sel) { inset: -6px -8px; }
+  .accent { color: var(--color-text-accent); }
+  .sub { margin: 0; font: var(--type-body-lead); color: var(--color-text-secondary); }
+  .sub strong { font-weight: 500; color: var(--color-text-primary); }
+  .notes { display: flex; flex-direction: column; gap: 12px; }
+  .specimen { position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .caption { display: flex; justify-content: space-between; gap: 16px; padding-left: 24px; color: var(--color-text-muted); }
+  [data-view-text] { display: none; }
+  :global(html:not([data-view='engineer'])) [data-view-text='design'],
+  :global(html[data-view='engineer']) [data-view-text='engineer'] { display: inline; }
+  @media (max-width: 1199px) {
+    .grid { grid-template-columns: minmax(0, 1fr); }
+    .statement { max-width: 640px; }
+  }
+  @media (max-width: 640px) { .hero { padding-block: 40px 64px; } .caption { padding-left: 0; flex-direction: column; gap: 4px; } }
+</style>
+
+<script>
+  // Live measure labels: the selection around the headline and the specimen width show real pixel sizes.
+  const fmt = (n: number) => Math.round(n);
+  const ro = new ResizeObserver(() => {
+    const h1 = document.querySelector<HTMLElement>('.h1-box');
+    const lab = h1?.querySelector<HTMLElement>('[data-selection="live"] [data-size]');
+    if (h1 && lab) lab.textContent = `${fmt(h1.offsetWidth)} × ${fmt(h1.offsetHeight)}`;
+    const spec = document.querySelector<HTMLElement>('[data-specimen]');
+    const dl = document.querySelector<HTMLElement>('[data-dimension="specimen"] .label');
+    if (spec && dl) dl.textContent = `specimen.w = ${fmt(spec.offsetWidth)}px · live`;
+  });
+  const h = document.querySelector('.h1-box'); const s = document.querySelector('[data-specimen]');
+  if (h) ro.observe(h); if (s) ro.observe(s);
+</script>

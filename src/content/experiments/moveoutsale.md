@@ -16,6 +16,13 @@ focus: ["Code"]
 tagsToCheck: true
 private: false
 webflowId: "6a916f32a7daa4d848265485"
+cardOrder: 13
+cardNumber: "e.03"
+cardCompany: "Side project"
+cardYear: "site"
+cardTitle: "MoveOutSale"
+cardLine: "A marketplace for selling a flat's worth of furniture when you move. Next.js and Supabase."
+cardToCheck: false
 ---
 
 A marketplace built for one specific moment: someone is leaving a city and has three weeks to sell a flat's worth of furniture. Listings group into a single moving sale, so one person's whole clear-out reads as one thing instead of fourteen unrelated posts.

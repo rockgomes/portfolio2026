@@ -1,0 +1,17 @@
+---
+// Figma: Selection box (44:563). Absolutely fills its positioned parent. The size label can be live (data-size).
+interface Props { label?: string; live?: boolean; class?: string; style?: string }
+const { label = '', live = false, class: cls, style } = Astro.props;
+---
+<span class:list={['sel', cls]} style={style} data-overlay aria-hidden="true" data-selection={live ? 'live' : undefined}>
+  <i class="h tl"></i><i class="h tc"></i><i class="h tr"></i><i class="h ml"></i><i class="h mr"></i><i class="h bl"></i><i class="h bc"></i><i class="h br"></i>
+  {label && <span class="size t-mono-label" data-size>{label}</span>}
+</span>
+<style>
+  .sel { position: absolute; inset: 0; border: 1px solid var(--color-annotation-measure); pointer-events: none; z-index: 4; }
+  .h { position: absolute; width: 7px; height: 7px; background: var(--color-selection-handle); border: 1px solid var(--color-annotation-measure); }
+  .tl { left: -4px; top: -4px; } .tc { left: calc(50% - 3.5px); top: -4px; } .tr { right: -4px; top: -4px; }
+  .ml { left: -4px; top: calc(50% - 3.5px); } .mr { right: -4px; top: calc(50% - 3.5px); }
+  .bl { left: -4px; bottom: -4px; } .bc { left: calc(50% - 3.5px); bottom: -4px; } .br { right: -4px; bottom: -4px; }
+  .size { position: absolute; left: 50%; bottom: -27px; transform: translateX(-50%); padding: 2px 6px; border-radius: 2px; background: var(--color-annotation-measure); color: var(--color-surface-page); white-space: nowrap; }
+</style>

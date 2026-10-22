@@ -12,6 +12,14 @@ focus: []
 tagsToCheck: true
 private: false
 webflowId: "6ad9248ec06f1e03cd46f4b4"
+cardOrder: 3
+cardNumber: "03"
+cardCompany: "The Flex"
+cardYear: ""
+cardTitle: "Flex Academy"
+cardLine: "One landing page for two readers, with a switch between them. Built on tokens and shipped as a working prototype."
+cardToCheck: true
+demoUrl: ""
 ---
 
 <div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-live"></div><script src="/embeds/flex-academy-embeds.js"></script></div> <div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-facts"></div><script src="/embeds/flex-academy-embeds.js"></script></div>

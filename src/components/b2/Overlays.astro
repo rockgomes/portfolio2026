@@ -1,0 +1,41 @@
+---
+// Behaviour for the multiplayer overlays: text selection on a title word, live size labels, draggable boxes.
+---
+<script>
+  // 1. Text selection over the word "work" in the Selected work title (glyph-accurate, re-measured on resize).
+  function placeTextSelection() {
+    document.querySelectorAll<HTMLElement>('[data-text-selection-host]').forEach((host) => {
+      const sel = host.querySelector<HTMLElement>('[data-text-selection]'); const title = host.querySelector<HTMLElement>('[data-title]');
+      if (!sel || !title) return;
+      const walker = document.createTreeWalker(title, NodeFilter.SHOW_TEXT); let node: Text | null = null; let idx = -1;
+      while (walker.nextNode()) { const n = walker.currentNode as Text; const i = n.data.lastIndexOf('work'); if (i > -1) { node = n; idx = i; } }
+      if (!node) return;
+      const range = document.createRange(); range.setStart(node, idx); range.setEnd(node, idx + 4);
+      const r = range.getBoundingClientRect(); const h = host.getBoundingClientRect();
+      if (!r.width) { sel.classList.remove('on'); return; }
+      Object.assign(sel.style, { left: `${r.left - h.left - 2}px`, top: `${r.top - h.top}px`, width: `${r.width + 5}px`, height: `${r.height}px` });
+      sel.classList.add('on');
+    });
+  }
+  // 2. Live size labels on selection boxes marked data-selection="live" (except the hero one, handled in Hero).
+  function placeSizes() {
+    document.querySelectorAll<HTMLElement>('.thumb-wrap [data-selection="live"]').forEach((s) => {
+      const p = s.parentElement!; const lab = s.querySelector<HTMLElement>('[data-size]');
+      if (lab) lab.textContent = `${Math.round(p.offsetWidth)} × ${Math.round(p.offsetHeight)}`;
+    });
+  }
+  const all = () => { placeTextSelection(); placeSizes(); };
+  addEventListener('resize', all); document.addEventListener('work:filtered', () => setTimeout(all, 420));
+  (document as any).fonts?.ready.then(all); all();
+
+  // 3. Draggable: boxes with a selection can be dragged; they ease back on release.
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLElement>('[data-draggable]').forEach((el) => {
+    let sx = 0, sy = 0, dx = 0, dy = 0, down = false, moved = false;
+    el.addEventListener('pointerdown', (e) => { if (e.button !== 0 || innerWidth < 1200) return; down = true; moved = false; sx = e.clientX; sy = e.clientY; el.setPointerCapture(e.pointerId); el.style.transition = 'none'; });
+    el.addEventListener('pointermove', (e) => { if (!down) return; dx = e.clientX - sx; dy = e.clientY - sy; if (Math.abs(dx) + Math.abs(dy) > 4) { moved = true; el.classList.add('dragging'); } if (moved) el.style.transform = `translate(${dx}px, ${dy}px)`; });
+    const up = () => { if (!down) return; down = false; el.classList.remove('dragging'); el.style.transition = reduce ? 'none' : 'transform 0.45s cubic-bezier(.2,.8,.2,1.1)'; el.style.transform = ''; };
+    el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+    el.addEventListener('click', (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+  });
+</script>
