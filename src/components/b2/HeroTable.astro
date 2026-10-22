@@ -165,7 +165,7 @@ const cols = [
   function renderConds() {
     condsEl.innerHTML = state.conds.map((c, i) => `<div class="cond" data-i="${i}"><span class="part static">${LABEL[c.field]} ${CHEV}</span><button type="button" class="part" data-op title="Change operator">${esc(c.op)} ${CHEV}</button><button type="button" class="part val" data-val title="Change value">${esc(c.field === 'employees' ? Number(c.value).toLocaleString('en') : c.value)} ${CHEV}</button><button type="button" class="part rm" data-rm aria-label="Remove condition ${LABEL[c.field]} ${esc(c.op)} ${esc(c.value)}">${XIC}</button></div>`).join('');
     const free = ADDABLE.filter((a) => !state.conds.some((c) => c.field === a.field));
-    menu.innerHTML = free.length ? free.map((a, i) => `<button type="button" role="menuitem" data-add-i="${ADDABLE.indexOf(a)}">${LABEL[a.field]} ${a.op} ${a.field === 'employees' ? Number(a.value).toLocaleString('en') : a.value}</button>`).join('') : '<button type="button" role="menuitem" disabled>All fields are in use</button>';
+    menu.innerHTML = free.length ? free.map((a) => `<button type="button" role="menuitem" data-add-i="${ADDABLE.indexOf(a)}">${LABEL[a.field]} ${a.op} ${a.field === 'employees' ? Number(a.value).toLocaleString('en') : a.value}</button>`).join('') : '<button type="button" role="menuitem" disabled>All fields are in use</button>';
     addBtn.disabled = false;
   }
   function renderRows() {
