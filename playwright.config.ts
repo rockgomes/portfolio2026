@@ -9,7 +9,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
-  use: { baseURL: 'http://localhost:4321', reducedMotion: 'reduce', launchOptions: { executablePath } },
+  use: { baseURL: 'http://localhost:4321', contextOptions: { reducedMotion: 'reduce' }, launchOptions: { executablePath } },
   expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: 'disabled' } },
   // First run writes missing screenshots; CI commits them back to the PR as the approved baseline.
   updateSnapshots: 'missing',
