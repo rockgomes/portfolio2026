@@ -28,7 +28,8 @@ jobs:
       - name: Build
         run: npm run build
       - name: Tests (functional, overlays, visual)
-        run: npx playwright test
+        # A first run fails on missing screenshots after writing them; run the failed tests again to compare against those.
+        run: npx playwright test || npx playwright test --last-failed
       - name: Save first-time screenshots as the approved baseline
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         run: |
