@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Production deploys only from main; every pull request gets a deploy preview.
+[context.deploy-preview]
+  command = "npm run build"
