@@ -1,0 +1,385 @@
+{
+ "items": [
+  {
+   "coll": "projects",
+   "slug": "flex-academy",
+   "embeds": 9
+  },
+  {
+   "coll": "projects",
+   "slug": "dealfront-ai-company-profile",
+   "embeds": 1
+  },
+  {
+   "coll": "projects",
+   "slug": "dealfront-dynamic-lists",
+   "embeds": 1
+  },
+  {
+   "coll": "projects",
+   "slug": "pipedrive---interactive-panels",
+   "embeds": 0
+  },
+  {
+   "coll": "projects",
+   "slug": "pipedrive---floating-iframe",
+   "embeds": 1
+  },
+  {
+   "coll": "projects",
+   "slug": "pipedrive---app-management",
+   "embeds": 0
+  },
+  {
+   "coll": "projects",
+   "slug": "inbank---customer-service-backoffice",
+   "embeds": 0
+  },
+  {
+   "coll": "projects",
+   "slug": "bigbank---loan-flow",
+   "embeds": 0
+  },
+  {
+   "coll": "projects",
+   "slug": "bigbank---financial-backoffice",
+   "embeds": 0
+  },
+  {
+   "coll": "projects",
+   "slug": "inbank---hire-purchase",
+   "embeds": 1
+  },
+  {
+   "coll": "experiments",
+   "slug": "fieldset",
+   "embeds": 0
+  },
+  {
+   "coll": "experiments",
+   "slug": "karaoke-os",
+   "embeds": 0
+  },
+  {
+   "coll": "experiments",
+   "slug": "moveoutsale",
+   "embeds": 0
+  },
+  {
+   "coll": "experiments",
+   "slug": "portfolio-presentation-template",
+   "embeds": 0
+  }
+ ],
+ "images": 75,
+ "scripts": 1,
+ "warnings": [],
+ "downloaded": 76,
+ "planned": 76,
+ "downloads": [
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6ad9248dc06f1e03cd46f464_6ad9232a7e6875ba0ff37fe7_flex-academy-hero.jpeg",
+   "file": "src/assets/projects/flex-academy/flex-academy-hero.jpg"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/693097e93f0230df8c78c714/6ad9245414916644e9980c76_flex-academy-embeds.js",
+   "file": "public/embeds/flex-academy-embeds.js"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6ad9248dc06f1e03cd46f4ac_6ad9232c8768f22604b95b3a_flex-academy-references.jpeg",
+   "file": "src/assets/projects/flex-academy/flex-academy-references.jpg"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6ad9248dc06f1e03cd46f48b_6ad923297a1117ea3418f7c6_flex-academy-buttons.jpeg",
+   "file": "src/assets/projects/flex-academy/flex-academy-buttons.jpg"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6ad9248dc06f1e03cd46f48f_6ad9232c23c0d791a2a315a3_flex-academy-tokens.jpeg",
+   "file": "src/assets/projects/flex-academy/flex-academy-tokens.jpg"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8b7ee95e841506fe669de7_df-ai-hero-v5-2400x1738.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-hero-v5-2400x1738.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8e07e3cede4f535929bd56_6a8e0787132724acc40ff725_df-ai-v8-00-fullview-contacts.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v8-00-fullview-contacts.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8e15e4e650f2795869db82_6a8e1586e7729ca6523819c8_df-ai-v9-01-rejected-auto-flow.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v9-01-rejected-auto-flow.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8b71d2dba0998852d0060f_6a8b70ebd58abb8496ae80b5_df-ai-v2-01-activity-question-cards.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v2-01-activity-question-cards.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8b71d2dba0998852d00615_6a8b70ecfa4f2b4221cde3fe_df-ai-v2-02-contacts-intent-questions.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v2-02-contacts-intent-questions.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8b88c6f686bb3dc3892029_6a8b88706dbc2206b286ab9d_df-ai-v3-03-contacts-flagged-tooltip.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v3-03-contacts-flagged-tooltip.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8b88c6f686bb3dc3892025_6a8b88708e0268a1c25d632a_df-ai-v3-04-contacts-filter-toggle.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v3-04-contacts-filter-toggle.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8e0c00001d9d120f1931eb_6a8e0b95e81e37f7c1d1fa8d_df-ai-v8-05-insights-suggested-cards.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v8-05-insights-suggested-cards.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8c77816770c1dd6c96dc1b_6a8c755a1f191394cf2c5898_df-ai-v6-06-activity-toolbar-toggle.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v6-06-activity-toolbar-toggle.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8c77816770c1dd6c96dc20_6a8c755b1f191394cf2c58b4_df-ai-v6-07-activity-answer.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v6-07-activity-answer.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a90c7e6a99d8a31f7ad866f_deal2.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/deal2.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8c7a3ba9376010e9d7664e_6a8c79d301f3682fc3bb4a8b_df-ai-v7-09-contacts-answer.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v7-09-contacts-answer.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8c77816770c1dd6c96dc15_6a8c755a1f191394cf2c5882_df-ai-v6-04-pin-your-question.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v6-04-pin-your-question.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8c77816770c1dd6c96dc12_6a8c7592d905ceed969c6ee0_df-ai-v6-11-pinned-questions-grid.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v6-11-pinned-questions-grid.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8c77816770c1dd6c96dc0f_6a8c75931f191394cf2c6a27_df-ai-v6-12-edit-pinned-question.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v6-12-edit-pinned-question.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a8c47a0f7e4312f58baf127_6a8c47238bfdd83d7d7b0e92_df-ai-v5-10-activity-loading.png",
+   "file": "src/assets/projects/dealfront-ai-company-profile/df-ai-v5-10-activity-loading.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a67be43ba2cad7f1c11061a_homepage_illustration_v5.png",
+   "file": "src/assets/projects/dealfront-dynamic-lists/homepage-illustration-v5.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a67ded2539764c2914e8f1d_List.png",
+   "file": "src/assets/projects/dealfront-dynamic-lists/list.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a67b5eb7f1acc57d1b377d4_e3268e8a-c3f0-46b4-bd6a-4f999ec2a1ce.png",
+   "file": "src/assets/projects/dealfront-dynamic-lists/e3268e8a-c3f0-46b4-bd6a-4f999ec2a1ce.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a67bc787b7fb00f5e5bf15f_d47nxy.png",
+   "file": "src/assets/projects/dealfront-dynamic-lists/d47nxy.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a67bc787b7fb00f5e5bf162_m94kfx.png",
+   "file": "src/assets/projects/dealfront-dynamic-lists/m94kfx.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a67e2bbbf8c2af155527226_Screenshot%202026-07-28%20at%2001.58.16.png",
+   "file": "src/assets/projects/dealfront-dynamic-lists/screenshot-2026-07-28-at-01-58-16.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a67e04554fe3bd621937f4d_Listb.png",
+   "file": "src/assets/projects/dealfront-dynamic-lists/listb.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/693867547c76f9b1f482ae74_66f6c6254e6c245f6bbd8510_pipedrive%2520-%2520interactive_panels.avif",
+   "file": "src/assets/projects/pipedrive---interactive-panels/pipedrive-interactive-panels.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69403a43bacec4f6844e1d68_6726af6ed8bc9bb53864b045_671157c72e65736eb937cb6a_671157bbc3c0a14172564dff_Group%2525252017804.avif",
+   "file": "src/assets/projects/pipedrive---interactive-panels/group-2017804.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69403a43bacec4f6844e1d6b_6726af6fd8bc9bb53864b051_67115c1c68a60572f28ea417_67115be7fd0433eecb1ab7be_Screenshot%252525202022-11-20%25252520at%2525252023.44%252525201.avif",
+   "file": "src/assets/projects/pipedrive---interactive-panels/screenshot-202022-11-20-20at-2023-44-201.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69403a43bacec4f6844e1d6f_6726af6fd8bc9bb53864b056_6711644508ad02195647bd86_6711643065f559a0642f3781_Group%2525252016768.avif",
+   "file": "src/assets/projects/pipedrive---interactive-panels/group-2016768.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69403a44bacec4f6844e1d74_6711653214e8c68940044990_671164ed8881a0187a9b9969_app-actions-animation-1.gif",
+   "file": "public/media/projects/pipedrive---interactive-panels/app-actions-animation-1.gif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/693867544becfc843648ccef_66f6c75d22f313c6b78710c9_pipedrive%2520-%2520floating_iframe.avif",
+   "file": "src/assets/projects/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6938675359ce51ddbf1fc80e_66f6c56632d88e68922d6f6f_pipedrive%2520-%2520app_management.avif",
+   "file": "src/assets/projects/pipedrive---app-management/pipedrive-app-management.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69403855f5fcf907fe3978c4_67280503ca6a58bff4decf62_67280500a740db51da87dd8e_Group%25252017805.avif",
+   "file": "src/assets/projects/pipedrive---app-management/group-17805.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69403855f5fcf907fe3978d1_6728059dac6214ff013003d6_67280599a61930f1f107bb74_Group%25252017806.avif",
+   "file": "src/assets/projects/pipedrive---app-management/group-17806.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69403855f5fcf907fe3978cc_6728064fd258ac034bb62be3_672806465c9215694a87f6dd_Group%25252017807.avif",
+   "file": "src/assets/projects/pipedrive---app-management/group-17807.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6938675334b2efe789bdf9a1_66f6cfbc0b496c26bd75bff0_nbank%2520-%2520cs%2520backoffice.avif",
+   "file": "src/assets/projects/inbank---customer-service-backoffice/nbank-cs-backoffice.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6944be935a56d905bdc759b5_inbank-cs-original.png",
+   "file": "src/assets/projects/inbank---customer-service-backoffice/inbank-cs-original.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/693b7bd0885bb670e27b2683_6727ff130e43326a1fca3934_6726b47a7cab3af512912c4e_6726b47351b60d8f6222aa46_Screenshot%252525202024-11-03%25252520at%2525252001.22.31.avif",
+   "file": "src/assets/projects/inbank---customer-service-backoffice/screenshot-202024-11-03-20at-2001-22-31.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/693b7bd0885bb670e27b267d_6727ff130e43326a1fca3931_6726b534a74f2475a78b6110_6726b52e12589c89e2eddb94_Screenshot%252525202024-11-03%25252520at%2525252001.24.35.avif",
+   "file": "src/assets/projects/inbank---customer-service-backoffice/screenshot-202024-11-03-20at-2001-24-35.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/693b7bd0885bb670e27b267a_6727fde90e43326a1fc98b08_Group%252016763.avif",
+   "file": "src/assets/projects/inbank---customer-service-backoffice/group-16763.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/693b7bd0885bb670e27b2672_6727ff130e43326a1fca391b_6727fd06b8843f55e2885278_Desktop-white.avif",
+   "file": "src/assets/projects/inbank---customer-service-backoffice/desktop-white.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/693b7bd0885bb670e27b266f_6727fd3b005fc364cd5ef270_Desktop-white-2.avif",
+   "file": "src/assets/projects/inbank---customer-service-backoffice/desktop-white-2.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6944c149c1b63313cf79218f_inbank-cs-new-open.png",
+   "file": "src/assets/projects/inbank---customer-service-backoffice/inbank-cs-new-open.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69386753ffaae2c82a6bc284_66f57301ca9990272bd7e4a8_bigbank%2520-%2520loan.avif",
+   "file": "src/assets/projects/bigbank---loan-flow/bigbank-loan.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69404260ea3b2aa13dae9b7e_67116bf48894be06402c2e94_bb01.avif",
+   "file": "src/assets/projects/bigbank---loan-flow/bb01.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69404260ea3b2aa13dae9b87_67116bff7ce4bb1af730f954_bb02.avif",
+   "file": "src/assets/projects/bigbank---loan-flow/bb02.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69404260ea3b2aa13dae9b81_67116f4e38fd893b7a061a33_bigbank.avif",
+   "file": "src/assets/projects/bigbank---loan-flow/bigbank.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69404260ea3b2aa13dae9b8a_67116f5a1d5d19594d2e1c9e_bb03.avif",
+   "file": "src/assets/projects/bigbank---loan-flow/bb03.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69404260ea3b2aa13dae9b8e_67116f6b6f73b5ea0b20d1f2_bb04.avif",
+   "file": "src/assets/projects/bigbank---loan-flow/bb04.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69404260ea3b2aa13dae9b84_67116f1f9b4c3bb8632d794f_bb05.avif",
+   "file": "src/assets/projects/bigbank---loan-flow/bb05.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69386753676af78f8fa455e5_66f562dba2d010ad209922e7_Bigbank%2520-%2520FBO.avif",
+   "file": "src/assets/projects/bigbank---financial-backoffice/bigbank-fbo.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/694042d0c4d1e97991fb8179_66f9d71d9b4261bdf95b032e_FBO_cost_report%252002.avif",
+   "file": "src/assets/projects/bigbank---financial-backoffice/fbo-cost-report-02.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/694042d0c4d1e97991fb817c_66f9d7221eebf91c3727d293_FBO_Incoming_Invoice_1920px_03B.avif",
+   "file": "src/assets/projects/bigbank---financial-backoffice/fbo-incoming-invoice-1920px-03b.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/694042d0c4d1e97991fb8176_66f9d72927559965cd70cfde_FBO_Lookup_values_1920px_01.avif",
+   "file": "src/assets/projects/bigbank---financial-backoffice/fbo-lookup-values-1920px-01.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/694042d0c4d1e97991fb819e_66f9d74634f28b9083106bb5_FBO_Lookup_values_1920px_02.avif",
+   "file": "src/assets/projects/bigbank---financial-backoffice/fbo-lookup-values-1920px-02.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/694042d0c4d1e97991fb8186_66f9d74d9a06e073fa011e00_FBO_transactions_1920px_04.avif",
+   "file": "src/assets/projects/bigbank---financial-backoffice/fbo-transactions-1920px-04.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/694042d0c4d1e97991fb8181_66f9d75034250b5f2c1b51f1_FBO_transactions_1920px_04.avif",
+   "file": "src/assets/projects/bigbank---financial-backoffice/fbo-transactions-1920px-04-2.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6949fbc2ffe7bd0735833798_Inbank%20-%20epos.avif",
+   "file": "src/assets/projects/inbank---hire-purchase/inbank-epos.avif"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69487c728a8f49da7d7339e7_Screenshot%202025-12-21%20at%2020.01.54.png",
+   "file": "src/assets/projects/inbank---hire-purchase/screenshot-2025-12-21-at-20-01-54.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/693b32832e3c7d9e49f7aecc_6729306d400784898e08b82e_67168036a85a8ea9cbbc540d_6716802ea82caa92b92383f9_rock-ePOS-flow---ePOS-flow.jpeg",
+   "file": "src/assets/projects/inbank---hire-purchase/rock-epos-flow-epos-flow.jpg"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/69488de325f107360baaaac2_Frame%20483492.png",
+   "file": "src/assets/projects/inbank---hire-purchase/frame-483492.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6949561d951192037339dc62_Frame%20483404.png",
+   "file": "src/assets/projects/inbank---hire-purchase/frame-483404.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6949f2c26d89792d39e8cc08_Screenshot%202025-12-22%20at%2022.35.10.png",
+   "file": "src/assets/projects/inbank---hire-purchase/screenshot-2025-12-22-at-22-35-10.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6949f43c36b5a0f636c1871d_Screenshot%202025-12-22%20at%2022.45.12.png",
+   "file": "src/assets/projects/inbank---hire-purchase/screenshot-2025-12-22-at-22-45-12.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6949fa6d65e2682d49734ee3_Frame%20483493.png",
+   "file": "src/assets/projects/inbank---hire-purchase/frame-483493.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a960d397bc2b747c9a07177_fieldset_1.png",
+   "file": "src/assets/experiments/fieldset/fieldset-1.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a96a6bdf71f61ea2518a87f_Screenshot%202026-09-01%20at%2002.21.42.png",
+   "file": "src/assets/experiments/fieldset/screenshot-2026-09-01-at-02-21-42.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a957b6b0c69bf6abd09feb7_karaoke.png",
+   "file": "src/assets/experiments/karaoke-os/karaoke.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a946efa3de3a3331b831440_6a946e9f4bf30796f5a104e5_experiment-karaoke-os-venue-and-guest.png",
+   "file": "src/assets/experiments/karaoke-os/experiment-karaoke-os-venue-and-guest.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a957b7ba6a926ae69f9fe7b_moveoutsale.png",
+   "file": "src/assets/experiments/moveoutsale/moveoutsale.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a9199ce8fe2c9a119ce2c2e_6a9199b0d932c142fcc64ccf_experiment-moveoutsale-photos.png",
+   "file": "src/assets/experiments/moveoutsale/experiment-moveoutsale-photos.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a95797c7e5adab36f6ef51d_template.png",
+   "file": "src/assets/experiments/portfolio-presentation-template/template.png"
+  },
+  {
+   "url": "https://cdn.prod.website-files.com/6930cf912bdcdb1e0e087868/6a916f120e5bacb3e9ef5560_6a916ec5eb6c9ecfc9270182_experiment-portfolio-presentation-template.png",
+   "file": "src/assets/experiments/portfolio-presentation-template/experiment-portfolio-presentation-template.png"
+  }
+ ]
+}

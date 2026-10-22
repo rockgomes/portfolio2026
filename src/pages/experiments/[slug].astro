@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { isPrivate } from '../../lib/private';
+
+export async function getStaticPaths() {
+  const items = await getCollection('experiments');
+  return items.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+<Base title={`${d.name} - Rock Gomes`} description={d.summary} noindex={isPrivate(d)}>
+  <article class="article">
+    <div class="eyebrow">Experiment{d.category && ` · ${d.category}`}{d.readTime && ` · ${d.readTime}`}</div>
+    <h1>{d.name}</h1>
+    {d.summary && <p class="lead">{d.summary}</p>}
+    <div class="meta">
+      {d.tools && <span>{d.tools}</span>}
+      {d.liveDemoUrl && <a href={d.liveDemoUrl} target="_blank" rel="noopener">Live demo ↗</a>}
+      {d.sourceCodeUrl && <a href={d.sourceCodeUrl} target="_blank" rel="noopener">Source ↗</a>}
+    </div>
+    {d.heroImage && <Image class="hero-img" src={d.heroImage} alt="" widths={[768, 1536]} sizes="(min-width: 800px) 768px, 100vw" loading="eager" />}
+    <div class="prose"><Content /></div>
+  </article>
+</Base>

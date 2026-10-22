@@ -1,0 +1,40 @@
+/* Temporary plain layout. The B2 design replaces this later. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--color-surface-page); color: var(--color-text-primary); font: 16px/1.6 var(--font-sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.mono { font-family: var(--font-mono); }
+.site-header, .site-footer, main { max-width: 1200px; margin: 0 auto; padding-inline: max(16px, 4vw); }
+.site-header { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; border-bottom: 1px solid var(--color-border-subtle); }
+.site-header a { text-decoration: none; font-weight: 600; }
+.site-header nav a { font-weight: 400; color: var(--color-text-secondary); }
+.site-footer { padding-block: 48px; color: var(--color-text-muted); font-size: 12px; }
+main { padding-block: 48px 96px; }
+
+/* Index */
+.list-title { font-size: clamp(32px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1; margin: 0 0 32px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 40px 24px; margin-bottom: 80px; }
+.card { display: grid; gap: 10px; text-decoration: none; min-width: 0; }
+.card img, .card .ph { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: var(--color-surface-sunken); border: 1px solid var(--color-border-subtle); display: block; }
+.card h3 { margin: 0; font-size: 20px; letter-spacing: -0.01em; line-height: 1.2; }
+.card p { margin: 0; color: var(--color-text-secondary); font-size: 14px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; font-family: var(--font-mono); font-size: 11px; color: var(--color-text-muted); }
+.tags span { padding: 2px 6px; background: var(--color-surface-sunken); }
+
+/* Article */
+.article { max-width: 768px; margin: 0 auto; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-accent); }
+.article h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.03em; margin: 8px 0 16px; text-wrap: balance; }
+.lead { font-size: 19px; color: var(--color-text-secondary); margin: 0 0 32px; }
+.hero-img { width: 100%; height: auto; display: block; margin: 0 0 48px; border: 1px solid var(--color-border-subtle); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-muted); margin-bottom: 32px; }
+.prose h2 { font-size: 28px; letter-spacing: -0.02em; line-height: 1.2; margin: 56px 0 12px; }
+.prose h3 { font-size: 21px; line-height: 1.3; margin: 40px 0 8px; }
+.prose h4 { font-size: 17px; margin: 32px 0 8px; }
+.prose p, .prose li { color: var(--color-text-secondary); }
+.prose strong { color: var(--color-text-primary); }
+.prose img { width: 100%; height: auto; display: block; margin: 32px 0 0; border: 1px solid var(--color-border-subtle); }
+.prose figcaption { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-muted); margin: 10px 0 32px; }
+.prose figure { margin: 32px 0; }
+.prose iframe { max-width: 100%; }
+.prose ul, .prose ol { padding-left: 1.2em; }

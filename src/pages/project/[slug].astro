@@ -1,0 +1,23 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { isPrivate } from '../../lib/private';
+
+export async function getStaticPaths() {
+  const items = await getCollection('projects');
+  return items.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+---
+<Base title={`${d.name} - Rock Gomes`} description={d.heroDescription} noindex={isPrivate(d)}>
+  <article class="article">
+    <div class="eyebrow">Case study</div>
+    <h1>{d.heroTitle || d.name}</h1>
+    {d.heroDescription && <p class="lead">{d.heroDescription}</p>}
+    {d.homeImage && <Image class="hero-img" src={d.homeImage} alt={d.homeImageAlt} widths={[768, 1536]} sizes="(min-width: 800px) 768px, 100vw" loading="eager" />}
+    <div class="prose"><Content /></div>
+  </article>
+</Base>

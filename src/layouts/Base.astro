@@ -1,0 +1,29 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+
+interface Props { title: string; description?: string; noindex?: boolean }
+const { title, description = '', noindex = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="brand">Rock Gomes</a>
+      <nav><a href="/#work">Work</a></nav>
+    </header>
+    <main><slot /></main>
+    <footer class="site-footer mono">rockgomes.com</footer>
+  </body>
+</html>

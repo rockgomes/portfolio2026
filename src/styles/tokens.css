@@ -1,0 +1,17 @@
+/* B2 tokens, Light mode (Figma "B2 tokens" collection). Swap values here when the design settles. */
+:root {
+  --color-surface-page: #ffffff;
+  --color-surface-raised: #f6f6f7;
+  --color-surface-sunken: #f0f0f2;
+  --color-text-primary: #1d1d1f;
+  --color-text-secondary: #4e5157;
+  --color-text-muted: #8b8e94;
+  --color-text-accent: #ee5a36;
+  --color-border-strong: rgba(0, 0, 0, 0.1);
+  --color-border-subtle: rgba(0, 0, 0, 0.06);
+  --color-annotation-redline: #ee5a36;
+  --color-annotation-measure: #1b6fe3;
+
+  --font-sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
