@@ -1,17 +1,130 @@
-/* B2 tokens, Light mode (Figma "B2 tokens" collection). Swap values here when the design settles. */
+/* B2 tokens. Exported from the Figma "B2 tokens" collection on 2026-10-22.
+   Light = "Light - Crisp" mode, Dark = "Dark" mode, engineer view = "Light - Dev" mode.
+   Do not edit values here by hand: change them in Figma and re-export. */
 :root {
   --color-surface-page: #ffffff;
-  --color-surface-raised: #f6f6f7;
-  --color-surface-sunken: #f0f0f2;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #ffffff;
+  --color-surface-stage: #f5f5f5;
   --color-text-primary: #1d1d1f;
   --color-text-secondary: #4e5157;
   --color-text-muted: #8b8e94;
   --color-text-accent: #ee5a36;
-  --color-border-strong: rgba(0, 0, 0, 0.1);
-  --color-border-subtle: rgba(0, 0, 0, 0.06);
+  --color-border-strong: rgba(0, 0, 0, 0.16);
+  --color-border-subtle: rgba(0, 0, 0, 0.09);
+  --color-border-control: rgba(16, 24, 40, 0.24);
   --color-annotation-redline: #ee5a36;
+  --color-annotation-redline-soft: rgba(238, 90, 54, 0.1);
   --color-annotation-measure: #1b6fe3;
+  --color-annotation-measure-soft: rgba(27, 111, 227, 0.14);
+  --color-cursor-client: #1faf6b;
+  --color-cursor-pm: #6e5be8;
+  --color-selection-handle: #ffffff;
+  --color-figma-component: #9747ff;
+  --color-figma-component-soft: rgba(151, 71, 255, 0.12);
+  --color-status-positive: #13804f;
+  --color-status-positive-soft: rgba(31, 175, 107, 0.13);
+  --color-status-negative-text: #c2421f;
+  color-scheme: light;
+}
 
+:root[data-theme="dark"] {
+  --color-surface-page: #111316;
+  --color-surface-raised: #17191d;
+  --color-surface-sunken: #1e2126;
+  --color-surface-stage: #1e2126;
+  --color-text-primary: #e8eaee;
+  --color-text-secondary: #b0b5bd;
+  --color-text-muted: #7c828b;
+  --color-text-accent: #ff6a58;
+  --color-border-strong: rgba(232, 234, 238, 0.14);
+  --color-border-subtle: rgba(232, 234, 238, 0.08);
+  --color-border-control: rgba(232, 234, 238, 0.3);
+  --color-annotation-redline: #ff6a58;
+  --color-annotation-redline-soft: rgba(255, 106, 88, 0.16);
+  --color-annotation-measure: #4fd3ea;
+  --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
+  --color-cursor-client: #f2c14e;
+  --color-cursor-pm: #a98bfa;
+  --color-selection-handle: #e8eaee;
+  --color-figma-component: #a879ff;
+  --color-figma-component-soft: rgba(168, 121, 255, 0.12);
+  --color-status-positive: #3dd68c;
+  --color-status-positive-soft: rgba(61, 214, 140, 0.14);
+  --color-status-negative-text: #ff8a73;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-surface-page: #111316;
+    --color-surface-raised: #17191d;
+    --color-surface-sunken: #1e2126;
+    --color-surface-stage: #1e2126;
+    --color-text-primary: #e8eaee;
+    --color-text-secondary: #b0b5bd;
+    --color-text-muted: #7c828b;
+    --color-text-accent: #ff6a58;
+    --color-border-strong: rgba(232, 234, 238, 0.14);
+    --color-border-subtle: rgba(232, 234, 238, 0.08);
+    --color-border-control: rgba(232, 234, 238, 0.3);
+    --color-annotation-redline: #ff6a58;
+    --color-annotation-redline-soft: rgba(255, 106, 88, 0.16);
+    --color-annotation-measure: #4fd3ea;
+    --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
+    --color-cursor-client: #f2c14e;
+    --color-cursor-pm: #a98bfa;
+    --color-selection-handle: #e8eaee;
+    --color-figma-component: #a879ff;
+    --color-figma-component-soft: rgba(168, 121, 255, 0.12);
+    --color-status-positive: #3dd68c;
+    --color-status-positive-soft: rgba(61, 214, 140, 0.14);
+    --color-status-negative-text: #ff8a73;
+    color-scheme: dark;
+  }
+}
+
+/* Engineer view: Dev Mode green replaces the annotation blue (light theme only) */
+:root[data-view="engineer"]:not([data-theme="dark"]) {
+  --color-annotation-measure: #0e9f57;
+  --color-annotation-measure-soft: rgba(20, 174, 92, 0.13);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-view="engineer"]:not([data-theme="light"]) {
+    --color-annotation-measure: #4fd3ea;
+    --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
+  }
+}
+
+/* Type (Figma text styles) */
+:root {
   --font-sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --type-display-hero: 600 clamp(40px, 4.4vw, 62px) / 1.02 var(--font-sans);
+  --type-display-row: 600 clamp(44px, 5vw, 72px) / 0.98 var(--font-sans);
+  --type-heading-section: 600 clamp(32px, 3.2vw, 44px) / 1.05 var(--font-sans);
+  --type-heading-item: 600 24px / 1.2 var(--font-sans);
+  --type-stat-value: 500 30px / 1 var(--font-sans);
+  --type-body-lead: 400 18px / 1.5 var(--font-sans);
+  --type-body-default: 400 15px / 1.6 var(--font-sans);
+  --type-body-row: 400 14.5px / 1.5 var(--font-sans);
+  --type-body-small: 400 13px / 1.45 var(--font-sans);
+  --type-ui-nav: 400 14px / 1.4 var(--font-sans);
+  --type-ui-brand: 600 15px / 1.4 var(--font-sans);
+  --type-ui-table: 400 13px / 1.4 var(--font-sans);
+  --type-ui-button: 500 13px / 1.4 var(--font-sans);
+  --type-mono-label: 400 11px / 1.4 var(--font-mono);
+  --type-mono-small: 400 12px / 1.4 var(--font-mono);
+  --type-mono-body: 400 12.5px / 1.5 var(--font-mono);
+
+  --tracking-display-hero: -0.028em;
+  --tracking-display-row: -0.03em;
+  --tracking-heading-section: -0.02em;
+  --tracking-heading-item: -0.01em;
+  --tracking-mono-label: 0.02em;
+
+  /* Effects (Figma effect styles) */
+  --shadow-window: 0 1px 2px rgba(16, 24, 40, 0.05), 0 24px 48px -20px rgba(16, 24, 40, 0.2);
+  --shadow-panel: 0 2px 6px rgba(0, 0, 0, 0.04), 0 14px 30px -16px rgba(0, 0, 0, 0.16);
 }
