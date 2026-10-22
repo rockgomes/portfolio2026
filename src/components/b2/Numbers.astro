@@ -1,0 +1,52 @@
+---
+// Figma: Numbers (96:6863), Stat (large) 61:2812. Numeric values count up once when scrolled into view.
+const stats = [
+  { value: '10', unit: 'years', count: 10, text: 'Designing tools people use all day at work: loan back-offices, CRM integrations, sales data and support tools.' },
+  { value: '3', unit: 'design systems', count: 3, text: 'Two built from zero at Inbank and Bigbank, one rebuilt at Well. Tokens, components and docs that teams actually use.' },
+  { value: 'Global', unit: 'reach', text: 'Pipedrive is used worldwide. At Bigbank I designed for about 7 countries, and the Inbank checkout runs in 4.' },
+  { value: 'NN', unit: 'live demos', text: 'Prototypes and products I built and shipped in code, from case study recreations to side projects.' },
+];
+---
+<section class="numbers" aria-label="In numbers">
+  <div class="wrap inner">
+    <div class="label t-mono-label"><span class="l">in numbers</span><span class="r" aria-hidden="true">each number counts up once on scroll</span></div>
+    <div class="stats">
+      {stats.map((s) => (
+        <div class="stat">
+          <p class="value"><span class="big" data-count-to={s.count}>{s.value}</span><span class="unit t-mono-small">{s.unit}</span></p>
+          <p class="text">{s.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .numbers { border-bottom: 1px solid var(--color-border-subtle); }
+  .inner { display: flex; flex-direction: column; gap: 32px; padding-block: 72px 104px; }
+  .label { display: flex; justify-content: space-between; gap: 16px; }
+  .l { color: var(--color-annotation-measure); } .r { color: var(--color-text-muted); }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .stat { border-top: 1px solid var(--color-border-strong); padding-top: 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .value { margin: 0; display: flex; gap: 8px; align-items: baseline; white-space: nowrap; }
+  .big { font: var(--type-display-row); letter-spacing: var(--tracking-display-row); color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+  .unit { color: var(--color-text-secondary); }
+  .text { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  @media (max-width: 1040px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; } }
+  @media (max-width: 560px) { .stats { grid-template-columns: minmax(0, 1fr); } .r { display: none; } .inner { padding-block: 56px 72px; } }
+</style>
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = document.querySelectorAll<HTMLElement>('[data-count-to]');
+  if (!reduce && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const en of entries) {
+        if (!en.isIntersecting) continue; io.unobserve(en.target);
+        const el = en.target as HTMLElement; const to = Number(el.dataset.countTo); if (!to) continue;
+        const t0 = performance.now(); const dur = 900;
+        const step = (t: number) => { const p = Math.min(1, (t - t0) / dur); el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); };
+        el.textContent = '0'; requestAnimationFrame(step);
+      }
+    }, { threshold: 0.6 });
+    els.forEach((el) => { if (Number(el.dataset.countTo)) io.observe(el); });
+  }
+</script>

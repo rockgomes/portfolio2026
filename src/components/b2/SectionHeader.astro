@@ -1,0 +1,22 @@
+---
+// Figma: Section header (20:28). Number + display title + mono subtitle, optional dimension line.
+import Dimension from './Dimension.astro';
+interface Props { num: string; title: string; subtitle: string; dimension?: string; id?: string; titleId?: string }
+const { num, title, subtitle, dimension, id, titleId } = Astro.props;
+---
+<div class="sh" id={id}>
+  <div class="row">
+    <span class="num">{num}</span>
+    <h2 class="title" id={titleId} data-title><slot name="title">{title}</slot></h2>
+  </div>
+  <p class="sub t-mono-label">{subtitle}</p>
+  {dimension && <Dimension label={dimension} />}
+</div>
+<style>
+  .sh { display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .row { display: flex; gap: 14px; align-items: flex-start; }
+  .num { font: var(--type-mono-small); line-height: 44px; color: var(--color-annotation-redline); flex: none; }
+  .title { margin: 0; font: var(--type-display-row); letter-spacing: var(--tracking-display-row); color: var(--color-text-primary); text-wrap: balance; }
+  .sub { margin: 0; padding-left: 29px; color: var(--color-annotation-measure); }
+  @media (max-width: 640px) { .num { line-height: 32px; } .sub { padding-left: 0; } }
+</style>

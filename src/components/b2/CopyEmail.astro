@@ -1,0 +1,27 @@
+---
+// Figma: Button / Copy email (20:17). Variant "full" shows the address inside the button (header), "short" is the footer button.
+interface Props { variant?: 'full' | 'short' }
+const { variant = 'full' } = Astro.props;
+const email = 'rock@rockgomes.com';
+---
+<button type="button" class:list={['copy', variant]} data-copy={email} aria-label={`Copy email address ${email}`}>
+  {variant === 'full' && <span class="addr">{email}</span>}
+  <span class="act t-mono-label" data-copy-label>{variant === 'full' ? 'copy' : 'copy email'}</span>
+</button>
+<style>
+  .copy { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: 2px; cursor: pointer; font-family: var(--font-mono); white-space: nowrap; }
+  .addr { font-size: 12px; line-height: 1.4; color: var(--color-text-primary); }
+  .act { color: var(--color-annotation-measure); }
+  .copy:hover { border-color: var(--color-annotation-measure); }
+</style>
+<script>
+  for (const b of document.querySelectorAll<HTMLButtonElement>('[data-copy]')) {
+    if (b.dataset.bound) continue; b.dataset.bound = '1';
+    b.addEventListener('click', async () => {
+      const lab = b.querySelector<HTMLElement>('[data-copy-label]'); const prev = lab?.textContent ?? '';
+      let ok = false;
+      try { await navigator.clipboard.writeText(b.dataset.copy!); ok = true; } catch { ok = false; }
+      if (lab) { lab.textContent = ok ? 'copied' : b.dataset.copy!; setTimeout(() => { lab.textContent = prev; }, 1600); }
+    });
+  }
+</script>

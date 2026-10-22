@@ -11,6 +11,14 @@ const tagging = {
   // Private projects will ask for a password. Not enforced yet: see src/lib/private.ts.
   private: z.boolean().default(false),
   webflowId: z.string().optional(),
+  // Homepage card (copy from Figma B2). cardToCheck = copy written by Claude, Rock to confirm.
+  cardOrder: z.number().default(99),
+  cardNumber: z.string().default(''),
+  cardCompany: z.string().default(''),
+  cardYear: z.string().default(''),
+  cardTitle: z.string().default(''),
+  cardLine: z.string().default(''),
+  cardToCheck: z.boolean().default(false),
 };
 
 const projects = defineCollection({
@@ -24,6 +32,7 @@ const projects = defineCollection({
       homeImageAlt: z.string().default(''),
       tag1: z.string().default(''),
       tag2: z.string().default(''),
+      demoUrl: z.string().default(''),
       ...tagging,
     }),
 });

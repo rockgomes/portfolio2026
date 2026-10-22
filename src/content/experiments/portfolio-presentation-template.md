@@ -16,6 +16,13 @@ focus: ["Code", "Motion"]
 tagsToCheck: true
 private: false
 webflowId: "6a916f120e5bacb3e9ef55a3"
+cardOrder: 14
+cardNumber: "e.04"
+cardCompany: "Template"
+cardYear: "site"
+cardTitle: "Portfolio presentation template"
+cardLine: "Scroll-driven case-study page, chapter cards zoom into full-screen chapters with working prototypes."
+cardToCheck: false
 ---
 
 A portfolio PDF flattens interaction design into screenshots. If the work was about how something behaves, a still image is the wrong medium for it.

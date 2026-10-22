@@ -12,6 +12,14 @@ focus: ["Back-office", "Design systems"]
 tagsToCheck: true
 private: false
 webflowId: "6938675334b2efe789bdf9ab"
+cardOrder: 4
+cardNumber: "04"
+cardCompany: "Inbank"
+cardYear: "2024"
+cardTitle: "Customer Service Back-office"
+cardLine: "Rebuilt the internal support tool from scratch for new hire-purchase products."
+cardToCheck: false
+demoUrl: ""
 ---
 
 ## Overview

@@ -12,6 +12,14 @@ focus: ["Back-office", "Data"]
 tagsToCheck: true
 private: false
 webflowId: "69386753676af78f8fa45624"
+cardOrder: 10
+cardNumber: "10"
+cardCompany: "Bigbank"
+cardYear: "2018"
+cardTitle: "Financial Back-office"
+cardLine: "A tailored, more robust system for the bank's accountants."
+cardToCheck: false
+demoUrl: ""
 ---
 
 ## What is Bigbank?

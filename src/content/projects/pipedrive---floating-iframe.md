@@ -12,6 +12,14 @@ focus: []
 tagsToCheck: true
 private: false
 webflowId: "693867544becfc843648ccf3"
+cardOrder: 7
+cardNumber: "07"
+cardCompany: "Pipedrive"
+cardYear: ""
+cardTitle: "Floating Iframe"
+cardLine: "A deeper, more interactive way for integrations to connect with Pipedrive users."
+cardToCheck: true
+demoUrl: ""
 ---
 
 ## Background

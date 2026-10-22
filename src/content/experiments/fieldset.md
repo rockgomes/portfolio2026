@@ -16,6 +16,13 @@ focus: ["Data", "Code"]
 tagsToCheck: true
 private: false
 webflowId: "6a9568ba6b9b69542d937d96"
+cardOrder: 11
+cardNumber: "e.01"
+cardCompany: "Fieldset"
+cardYear: "live"
+cardTitle: "Filter builder"
+cardLine: "A filter builder over 50,000 rows. Never lose the user's work, never guess what they meant."
+cardToCheck: false
 ---
 
 Every B2B tool has a filter builder, and every demo shows the same happy path. Pick a field, pick an operator, type a value, get rows.

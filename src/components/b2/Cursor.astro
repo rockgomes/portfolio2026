@@ -1,0 +1,21 @@
+---
+// Figma: Cursor set (44:562). Arrow asset is used as a mask so each person keeps their token colour.
+interface Props { name: string; color: 'client' | 'pm' | 'rock' | 'dev' | 'you'; style?: string; class?: string }
+const { name, color, style, class: cls } = Astro.props;
+---
+<span class:list={['cursor', `c-${color}`, cls]} style={style} data-overlay aria-hidden="true">
+  <span class="arrow"></span><span class="tag t-mono-label">{name}</span>
+</span>
+<style>
+  .cursor { position: absolute; z-index: 5; pointer-events: none; width: 0; height: 0; }
+  .arrow { position: absolute; left: 0; top: 0; width: 14px; height: 18px; background: var(--c);
+    -webkit-mask: url('/home/cursor-arrow.svg') no-repeat 0 0 / 14px 18px; mask: url('/home/cursor-arrow.svg') no-repeat 0 0 / 14px 18px; }
+  /* Figma arrow has a fixed #111316 1.2px outline */
+  .arrow { filter: drop-shadow(0 0 0.6px #111316) drop-shadow(0 0 0.6px #111316); }
+  .tag { position: absolute; left: 12px; top: 16px; padding: 3px 6px; border-radius: 2px; background: var(--c); color: var(--color-surface-page); white-space: nowrap; }
+  .c-client { --c: var(--color-cursor-client); }
+  .c-pm { --c: var(--color-cursor-pm); }
+  .c-rock { --c: var(--color-annotation-redline); }
+  .c-dev { --c: var(--color-annotation-measure); }
+  .c-you { --c: var(--color-cursor-pm); }
+</style>

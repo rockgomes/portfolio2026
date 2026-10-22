@@ -12,6 +12,14 @@ focus: ["AI", "Data"]
 tagsToCheck: true
 private: false
 webflowId: "6a8b629995d92ada4efcd7ce"
+cardOrder: 1
+cardNumber: "01"
+cardCompany: "Dealfront"
+cardYear: "2025"
+cardTitle: "AI in the Company Profile"
+cardLine: "Added an AI layer that answers the questions salespeople were answering by hand. Both rounds shipped in two weeks."
+cardToCheck: false
+demoUrl: "https://dealfront-ai-company-profile.netlify.app"
 ---
 
 ## Overview

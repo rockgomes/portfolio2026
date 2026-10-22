@@ -1,15 +1,17 @@
 ---
 import '../styles/tokens.css';
 import '../styles/base.css';
+import SiteHeader from '../components/b2/SiteHeader.astro';
+import SiteFooter from '../components/b2/SiteFooter.astro';
 
-interface Props { title: string; description?: string; noindex?: boolean }
-const { title, description = '', noindex = false } = Astro.props;
+interface Props { title: string; description?: string; noindex?: boolean; showSwitch?: boolean }
+const { title, description = '', noindex = false, showSwitch = false } = Astro.props;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" id="top">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex" />}
@@ -17,13 +19,21 @@ const { title, description = '', noindex = false } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" />
+    {showSwitch && (
+      <script is:inline>
+        // Set the audience view before first paint so the page does not flash.
+        (function () {
+          var v = new URLSearchParams(location.search).get('view');
+          if (!v) { try { v = localStorage.getItem('rg-view'); } catch (e) {} }
+          if (v === 'recruiter' || v === 'engineer') document.documentElement.dataset.view = v;
+          else document.documentElement.dataset.view = 'design';
+        })();
+      </script>
+    )}
   </head>
   <body>
-    <header class="site-header">
-      <a href="/" class="brand">Rock Gomes</a>
-      <nav><a href="/#work">Work</a></nav>
-    </header>
-    <main><slot /></main>
-    <footer class="site-footer mono">rockgomes.com</footer>
+    <SiteHeader showSwitch={showSwitch} />
+    <main id="main"><slot /></main>
+    <SiteFooter />
   </body>
 </html>

@@ -12,6 +12,14 @@ focus: ["Data"]
 tagsToCheck: true
 private: false
 webflowId: "6a67b5ec7f1acc57d1b37819"
+cardOrder: 2
+cardNumber: "02"
+cardCompany: "Dealfront"
+cardYear: "2025"
+cardTitle: "Dynamic Lists"
+cardLine: "Saved, non-destructive filter and column views on top of one list. One list, many lenses."
+cardToCheck: false
+demoUrl: "https://dealfront-dynamic-lists-cd-7c276e015d.netlify.app"
 ---
 
 ## Overview

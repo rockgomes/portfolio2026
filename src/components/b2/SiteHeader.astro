@@ -1,0 +1,76 @@
+---
+// Figma: Header (96:6775) with the audience switch (96:7322).
+import CopyEmail from './CopyEmail.astro';
+interface Props { showSwitch?: boolean }
+const { showSwitch = true } = Astro.props;
+const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer', 'Engineer']];
+---
+<header class="hdr">
+  <div class="wrap inner">
+    <a class="brand" href="/"><span class="name">Rock Gomes</span><span class="role t-mono-small">senior product designer · Tallinn</span></a>
+    {showSwitch && (
+      <div class="switch" role="radiogroup" aria-label="Show this page for">
+        <span class="lab">I'm a</span>
+        <div class="seg">
+          {views.map(([v, label]) => (
+            <button type="button" role="radio" aria-checked={v === 'design' ? 'true' : 'false'} data-view-option={v}>{label}</button>
+          ))}
+        </div>
+      </div>
+    )}
+    <nav class="nav" aria-label="Main">
+      <a href="/#work">Work</a>
+      <a href="/?type=experiment#work">Experiments</a>
+      <a href="/#experience">Experience</a>
+      <a href="/#about">About</a>
+      <CopyEmail />
+    </nav>
+  </div>
+</header>
+<style>
+  .hdr { border-bottom: 1px solid var(--color-border-strong); }
+  .inner { display: flex; align-items: center; gap: 24px; padding-block: 18px; min-height: 67px; }
+  .brand { display: flex; gap: 8px; align-items: baseline; text-decoration: none; white-space: nowrap; min-width: 0; }
+  .name { font: var(--type-ui-brand); color: var(--color-text-primary); }
+  .role { color: var(--color-text-secondary); }
+  .switch { display: flex; align-items: center; gap: 10px; margin-inline: auto; }
+  .lab { font: 400 11.5px/1 var(--font-mono); color: var(--color-text-muted); white-space: nowrap; }
+  .seg { display: flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
+  .seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: 400 12.5px/16px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .seg button:hover { color: var(--color-text-primary); }
+  .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; }
+  .nav { display: flex; align-items: center; gap: 24px; white-space: nowrap; }
+  .nav a { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
+  .nav a:hover { color: var(--color-text-primary); }
+  @media (max-width: 1240px) { .role { display: none; } }
+  @media (max-width: 1040px) { .nav a { display: none; } }
+  @media (max-width: 720px) { .nav { display: none; } .inner { flex-wrap: wrap; row-gap: 12px; } .switch { margin-inline: 0; } }
+  @media (max-width: 420px) { .lab { display: none; } .seg button { padding: 4px 8px; } }
+</style>
+<script>
+  // View switch: sets <html data-view>, keeps it in the URL (?view=) and in localStorage.
+  const VIEWS = ['design', 'recruiter', 'engineer'];
+  const root = document.documentElement;
+  const apply = (v: string, push: boolean) => {
+    if (!VIEWS.includes(v)) v = 'design';
+    root.dataset.view = v;
+    document.querySelectorAll<HTMLButtonElement>('[data-view-option]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.viewOption === v)));
+    try { localStorage.setItem('rg-view', v); } catch {}
+    if (push) {
+      const u = new URL(location.href);
+      if (v === 'design') u.searchParams.delete('view'); else u.searchParams.set('view', v);
+      history.replaceState(null, '', u);
+    }
+    root.dispatchEvent(new CustomEvent('viewchange', { detail: v }));
+  };
+  const fromUrl = new URL(location.href).searchParams.get('view');
+  let stored: string | null = null; try { stored = localStorage.getItem('rg-view'); } catch {}
+  apply(fromUrl || stored || 'design', false);
+  const group = document.querySelector('.switch .seg');
+  group?.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-view-option]'); if (b) apply(b.dataset.viewOption!, true); });
+  group?.addEventListener('keydown', (e) => {
+    const k = (e as KeyboardEvent).key; if (k !== 'ArrowRight' && k !== 'ArrowLeft') return;
+    const i = VIEWS.indexOf(root.dataset.view || 'design'); const n = VIEWS[(i + (k === 'ArrowRight' ? 1 : VIEWS.length - 1)) % VIEWS.length];
+    apply(n, true); group.querySelector<HTMLButtonElement>(`[data-view-option="${n}"]`)?.focus(); e.preventDefault();
+  });
+</script>

@@ -1,0 +1,205 @@
+---
+// Figma: Table window (96:6797). Interactive: saved views, editable conditions, sorting, row selection.
+// State is saved in localStorage, so "nothing you do gets lost".
+import { companies } from '../../data/companies';
+const chevron = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+const cols = [
+  { key: 'company', label: 'Company', w: 130 },
+  { key: 'industry', label: 'Industry', w: 110 },
+  { key: 'country', label: 'Country', w: 122 },
+  { key: 'employees', label: 'Employees', w: 84, num: true },
+  { key: 'status', label: 'Status', w: 110 },
+  { key: 'last', label: 'Last activity', w: 138 },
+];
+---
+<div class="win" data-hero-table>
+  <div class="bar views" role="tablist" aria-label="Saved views">
+    <button type="button" class="tab" role="tab" data-preset="all" aria-selected="false">All companies</button>
+    <button type="button" class="tab" role="tab" data-preset="icp" aria-selected="true">ICP · Not churned</button>
+    <button type="button" class="tab" role="tab" data-preset="emea" aria-selected="false">EMEA</button>
+    <span class="sp"></span>
+    <button type="button" class="tab cols-btn" data-columns aria-expanded="false">Columns <Fragment set:html={chevron} /></button>
+  </div>
+  <div class="bar filters">
+    <span class="where">Where</span>
+    <div class="conds" data-conds></div>
+    <div class="add-wrap">
+      <button type="button" class="add" data-add aria-expanded="false" aria-haspopup="menu">+ Condition</button>
+      <div class="menu" role="menu" data-add-menu hidden></div>
+    </div>
+    <span class="sp"></span>
+    <p class="count" aria-live="polite"><b data-count>28</b> of {companies.length} match</p>
+  </div>
+  <div class="scroll" tabindex="0" aria-label="Companies table">
+    <table>
+      <colgroup><col style="width:40px" />{cols.map((c) => <col style={`width:${c.w}px`} />)}</colgroup>
+      <thead>
+        <tr>
+          <th class="cb"><button type="button" class="chk" role="checkbox" aria-checked="false" aria-label="Select all rows" data-check-all></button></th>
+          {cols.map((c) => (
+            <th class:list={[c.num && 'num']} aria-sort={c.key === 'company' ? 'ascending' : 'none'} data-col={c.key}>
+              <button type="button" class="sort" data-sort={c.key}>{c.label}<span class="arrow" aria-hidden="true"></span></button>
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody data-rows></tbody>
+    </table>
+  </div>
+</div>
+
+<script type="application/json" id="hero-table-data" set:html={JSON.stringify(companies)} />
+
+<style>
+  .win { background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 12px; box-shadow: var(--shadow-window); overflow: hidden; }
+  .bar { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--color-border-subtle); }
+  .filters { gap: 10px; flex-wrap: wrap; }
+  .sp { flex: 1 1 0; }
+  .tab { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .tab:hover { color: var(--color-text-primary); }
+  .tab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
+  .cols-btn { font-weight: 500; color: var(--color-text-primary); }
+  .cols-btn :global(svg) { color: var(--color-text-secondary); }
+  .where { font: 400 12px/17px var(--font-sans); color: var(--color-text-muted); }
+  .conds { display: flex; gap: 8px; flex-wrap: wrap; }
+  .conds :global(.cond) { display: flex; border: 1px solid var(--color-border-strong); border-radius: 7px; overflow: hidden; }
+  .conds :global(.part) { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border: 0; border-right: 1px solid var(--color-border-subtle); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .conds :global(.part:hover) { background: var(--color-surface-stage); }
+  .conds :global(.part.static) { cursor: default; }
+  .conds :global(.part.static:hover) { background: transparent; }
+  .conds :global(.part.val) { font-weight: 500; color: var(--color-text-primary); }
+  .conds :global(.part.rm) { border-right: 0; color: var(--color-text-muted); padding-inline: 9px; }
+  .add-wrap { position: relative; }
+  .add { border: 0; background: transparent; padding: 0; cursor: pointer; font: 500 12.5px/18px var(--font-sans); color: var(--color-annotation-measure); white-space: nowrap; }
+  .menu { position: absolute; top: calc(100% + 8px); left: 0; z-index: 10; min-width: 200px; display: flex; flex-direction: column; padding: 4px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; box-shadow: var(--shadow-panel); }
+  .menu :global(button) { text-align: left; border: 0; background: transparent; padding: 7px 10px; border-radius: 5px; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-primary); }
+  .menu :global(button:hover), .menu :global(button:focus-visible) { background: var(--color-annotation-measure-soft); }
+  .count { margin: 0; display: flex; align-items: baseline; gap: 4px; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-muted); white-space: nowrap; }
+  .count b { font: 600 15px/21px var(--font-sans); color: var(--color-text-primary); }
+  .scroll { max-height: 397px; overflow: auto; overscroll-behavior: contain; }
+  table { width: 100%; min-width: 734px; table-layout: fixed; border-collapse: collapse; }
+  thead th { position: sticky; top: 0; z-index: 1; background: var(--color-surface-page); height: 36px; padding: 0 10px; text-align: left; border-bottom: 1px solid var(--color-border-strong); }
+  th.cb, :global(td.cb) { padding-left: 14px; padding-right: 10px; }
+  .sort { border: 0; background: transparent; padding: 0; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; font: 500 12px/17px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .sort:hover { color: var(--color-text-primary); }
+  .arrow { color: var(--color-annotation-measure); }
+  th.num { text-align: right; }
+  :global([data-rows] tr) { height: 36px; }
+  :global([data-rows] td) { padding: 0 10px; border-bottom: 1px solid var(--color-border-subtle); font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  :global([data-rows] tr:nth-child(even) td) { background: color-mix(in srgb, var(--color-surface-raised) 60%, transparent); }
+  :global([data-rows] tr:last-child td) { border-bottom: 0; }
+  :global([data-rows] tr[aria-selected='true'] td) { background: var(--color-annotation-measure-soft); }
+  :global([data-rows] td.co) { font-weight: 500; color: var(--color-text-primary); }
+  :global([data-rows] td.num) { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  :global([data-rows] td.date) { font: 400 11.5px/16px var(--font-mono); color: var(--color-text-muted); }
+  :global([data-hero-table] .chk) { display: grid; place-items: center; width: 14px; height: 14px; padding: 0; border-radius: 4px; border: 1.3px solid var(--color-border-control); background: var(--color-surface-page); cursor: pointer; }
+  :global([data-hero-table] .chk[aria-checked='true']), :global([data-hero-table] .chk[aria-checked='mixed']) { background: var(--color-annotation-measure); border-color: var(--color-annotation-measure); }
+  :global([data-hero-table] .chk svg) { display: none; }
+  :global([data-hero-table] .chk[aria-checked='true'] svg.tick), :global([data-hero-table] .chk[aria-checked='mixed'] svg.dash) { display: block; }
+  :global(.pill) { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 7px; border-radius: 999px; font: 500 11.5px/16px var(--font-sans); }
+  :global(.pill i) { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  :global(.pill-lead) { background: var(--color-surface-sunken); color: var(--color-text-secondary); }
+  :global(.pill-lead i) { background: var(--color-text-muted); }
+  :global(.pill-trial) { background: var(--color-annotation-redline-soft); color: var(--color-status-negative-text); }
+  :global(.pill-trial i) { background: var(--color-annotation-redline); }
+  :global(.pill-customer) { background: var(--color-status-positive-soft); color: var(--color-status-positive); }
+  :global(.pill-churned) { background: transparent; color: var(--color-text-muted); box-shadow: inset 0 0 0 1px var(--color-border-strong); }
+  :global(.pill-churned i) { background: var(--color-text-muted); }
+</style>
+
+<script>
+  type Row = { company: string; industry: string; country: string; employees: number; status: string; last: string };
+  type Cond = { field: 'status' | 'industry' | 'country' | 'employees'; op: string; value: string };
+  const data: Row[] = JSON.parse(document.getElementById('hero-table-data')!.textContent || '[]');
+  const root = document.querySelector<HTMLElement>('[data-hero-table]')!;
+  const KEY = 'rg-hero-table';
+  const NON_EMEA = ['India', 'Brazil', 'Australia', 'United States'];
+  const PRESETS: Record<string, Cond[]> = {
+    all: [],
+    icp: [{ field: 'status', op: 'is not', value: 'Churned' }],
+    emea: [{ field: 'country', op: 'is', value: 'EMEA' }],
+  };
+  const VALUES: Record<string, string[]> = {
+    status: ['Churned', 'Lead', 'Trial', 'Customer'],
+    industry: ['Healthcare', 'Software', 'Finance', 'Media', 'Retail', 'Energy', 'Manufacturing', 'Logistics'],
+    country: ['EMEA', 'Estonia', 'Latvia', 'Finland', 'Germany'],
+    employees: ['100', '500', '1000', '5000'],
+  };
+  const OPS: Record<string, string[]> = { status: ['is not', 'is'], industry: ['is', 'is not'], country: ['is', 'is not'], employees: ['more than', 'less than'] };
+  const LABEL: Record<string, string> = { status: 'Status', industry: 'Industry', country: 'Country', employees: 'Employees' };
+  const ADDABLE: Cond[] = [
+    { field: 'industry', op: 'is', value: 'Healthcare' },
+    { field: 'employees', op: 'more than', value: '500' },
+    { field: 'country', op: 'is', value: 'Latvia' },
+    { field: 'status', op: 'is not', value: 'Churned' },
+  ];
+  const CHEV = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+  const XIC = '<svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true"><path d="M1 1l6 6M7 1L1 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+  const TICK = '<svg class="tick" width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l2.6 2.5L9 1" stroke="var(--color-selection-handle)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="dash" width="8" height="2" viewBox="0 0 8 2" aria-hidden="true"><path d="M1 1h6" stroke="var(--color-selection-handle)" stroke-width="1.7" stroke-linecap="round"/></svg>';
+
+  let state = { view: 'icp', conds: PRESETS.icp.map((c) => ({ ...c })), sort: { key: 'company', dir: 1 }, selected: [] as string[] };
+  try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && Array.isArray(s.conds)) state = { ...state, ...s }; } catch {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+  const match = (r: Row, c: Cond) => {
+    let hit: boolean;
+    if (c.field === 'employees') { const n = Number(c.value); return c.op === 'more than' ? r.employees > n : r.employees < n; }
+    if (c.field === 'country' && c.value === 'EMEA') hit = !NON_EMEA.includes(r.country);
+    else hit = (r as any)[c.field] === c.value;
+    return c.op === 'is not' ? !hit : hit;
+  };
+  const visible = () => data.filter((r) => state.conds.every((c) => match(r, c))).sort((a, b) => {
+    const k = state.sort.key as keyof Row; const va = a[k], vb = b[k];
+    return (typeof va === 'number' ? (va as number) - (vb as number) : String(va).localeCompare(String(vb))) * state.sort.dir;
+  });
+
+  const condsEl = root.querySelector<HTMLElement>('[data-conds]')!;
+  const rowsEl = root.querySelector<HTMLElement>('[data-rows]')!;
+  const countEl = root.querySelector<HTMLElement>('[data-count]')!;
+  const menu = root.querySelector<HTMLElement>('[data-add-menu]')!;
+  const addBtn = root.querySelector<HTMLButtonElement>('[data-add]')!;
+  const checkAll = root.querySelector<HTMLButtonElement>('[data-check-all]')!;
+  checkAll.innerHTML = TICK;
+
+  function renderConds() {
+    condsEl.innerHTML = state.conds.map((c, i) => `<div class="cond" data-i="${i}"><span class="part static">${LABEL[c.field]} ${CHEV}</span><button type="button" class="part" data-op title="Change operator">${esc(c.op)} ${CHEV}</button><button type="button" class="part val" data-val title="Change value">${esc(c.field === 'employees' ? Number(c.value).toLocaleString('en') : c.value)} ${CHEV}</button><button type="button" class="part rm" data-rm aria-label="Remove condition ${LABEL[c.field]} ${esc(c.op)} ${esc(c.value)}">${XIC}</button></div>`).join('');
+    const free = ADDABLE.filter((a) => !state.conds.some((c) => c.field === a.field));
+    menu.innerHTML = free.length ? free.map((a) => `<button type="button" role="menuitem" data-add-i="${ADDABLE.indexOf(a)}">${LABEL[a.field]} ${a.op} ${a.field === 'employees' ? Number(a.value).toLocaleString('en') : a.value}</button>`).join('') : '<button type="button" role="menuitem" disabled>All fields are in use</button>';
+    addBtn.disabled = false;
+  }
+  function renderRows() {
+    const v = visible(); countEl.textContent = String(v.length);
+    rowsEl.innerHTML = v.map((r) => `<tr aria-selected="${state.selected.includes(r.company)}" data-co="${esc(r.company)}"><td class="cb"><button type="button" class="chk" role="checkbox" aria-checked="${state.selected.includes(r.company)}" aria-label="Select ${esc(r.company)}">${TICK}</button></td><td class="co">${esc(r.company)}</td><td>${esc(r.industry)}</td><td>${esc(r.country)}</td><td class="num">${r.employees.toLocaleString('en')}</td><td><span class="pill pill-${r.status.toLowerCase()}"><i></i>${r.status}</span></td><td class="date">${r.last}</td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--color-text-muted)">No companies match. Remove a condition.</td></tr>`;
+    const visSel = v.filter((r) => state.selected.includes(r.company)).length;
+    checkAll.setAttribute('aria-checked', visSel === 0 ? 'false' : visSel === v.length ? 'true' : 'mixed');
+    root.querySelectorAll<HTMLElement>('th[data-col]').forEach((th) => {
+      const on = th.dataset.col === state.sort.key;
+      th.setAttribute('aria-sort', on ? (state.sort.dir === 1 ? 'ascending' : 'descending') : 'none');
+      th.querySelector<HTMLElement>('.arrow')!.textContent = on ? (state.sort.dir === 1 ? '↑' : '↓') : '';
+    });
+    root.querySelectorAll<HTMLElement>('[data-preset]').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.preset === state.view)));
+  }
+  const render = () => { renderConds(); renderRows(); save(); };
+
+  root.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const preset = t.closest<HTMLElement>('[data-preset]');
+    if (preset) { state.view = preset.dataset.preset!; state.conds = PRESETS[state.view].map((c) => ({ ...c })); return render(); }
+    const cond = t.closest<HTMLElement>('.cond'); const i = cond ? Number(cond.dataset.i) : -1;
+    if (t.closest('[data-rm]')) { state.conds.splice(i, 1); state.view = ''; return render(); }
+    if (t.closest('[data-op]')) { const c = state.conds[i]; const o = OPS[c.field]; c.op = o[(o.indexOf(c.op) + 1) % o.length]; state.view = ''; return render(); }
+    if (t.closest('[data-val]')) { const c = state.conds[i]; const vs = VALUES[c.field]; c.value = vs[(vs.indexOf(c.value) + 1) % vs.length]; state.view = ''; return render(); }
+    if (t.closest('[data-add]')) { const open = menu.hidden; menu.hidden = !open; addBtn.setAttribute('aria-expanded', String(open)); if (open) menu.querySelector<HTMLButtonElement>('button')?.focus(); return; }
+    const add = t.closest<HTMLElement>('[data-add-i]');
+    if (add) { state.conds.push({ ...ADDABLE[Number(add.dataset.addI)] }); state.view = ''; menu.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); return render(); }
+    const sort = t.closest<HTMLElement>('[data-sort]');
+    if (sort) { const k = sort.dataset.sort!; state.sort = { key: k, dir: state.sort.key === k ? -state.sort.dir : 1 }; return render(); }
+    if (t.closest('[data-check-all]')) { const v = visible().map((r) => r.company); const all = v.every((c) => state.selected.includes(c)); state.selected = all ? state.selected.filter((c) => !v.includes(c)) : [...new Set([...state.selected, ...v])]; return render(); }
+    const row = t.closest<HTMLElement>('tr[data-co]');
+    if (row && t.closest('.chk')) { const co = row.dataset.co!; state.selected = state.selected.includes(co) ? state.selected.filter((c) => c !== co) : [...state.selected, co]; return render(); }
+  });
+  document.addEventListener('click', (e) => { if (!menu.hidden && !(e.target as HTMLElement).closest('.add-wrap')) { menu.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); } });
+  menu.addEventListener('keydown', (e) => { if (e.key === 'Escape') { menu.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); addBtn.focus(); } });
+  render();
+</script>

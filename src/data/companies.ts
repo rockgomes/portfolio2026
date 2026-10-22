@@ -1,0 +1,48 @@
+// Example data for the hero table ("filter builder, example data"). Not real companies.
+// The first 10 rows match the Figma design (96:6797) when sorted by company A-Z with "Not churned" applied.
+export type Status = 'Lead' | 'Trial' | 'Customer' | 'Churned';
+export interface Company { company: string; industry: string; country: string; employees: number; status: Status; last: string }
+
+export const companies: Company[] = [
+  { company: 'Birch Media', industry: 'Finance', country: 'Denmark', employees: 2177, status: 'Lead', last: '2026-08-18' },
+  { company: 'Delta Grid', industry: 'Healthcare', country: 'Estonia', employees: 638, status: 'Trial', last: '2026-08-26' },
+  { company: 'Delta Marine', industry: 'Media', country: 'Latvia', employees: 523, status: 'Lead', last: '2026-06-16' },
+  { company: 'Fjord Works', industry: 'Healthcare', country: 'Latvia', employees: 534, status: 'Trial', last: '2026-09-28' },
+  { company: 'Granite Logistics', industry: 'Media', country: 'Latvia', employees: 10972, status: 'Lead', last: '2026-09-25' },
+  { company: 'Granite Studio', industry: 'Retail', country: 'Finland', employees: 770, status: 'Customer', last: '2026-06-08' },
+  { company: 'Harbor Grid', industry: 'Media', country: 'Finland', employees: 3511, status: 'Lead', last: '2026-05-01' },
+  { company: 'Harbor Logistics', industry: 'Manufacturing', country: 'Estonia', employees: 52, status: 'Trial', last: '2026-07-09' },
+  { company: 'Kesk Robotics', industry: 'Software', country: 'United Kingdom', employees: 196, status: 'Trial', last: '2026-09-03' },
+  { company: 'Lumen Capital', industry: 'Energy', country: 'Latvia', employees: 370, status: 'Customer', last: '2026-08-31' },
+  { company: 'Lumen Freight', industry: 'Logistics', country: 'Sweden', employees: 1240, status: 'Lead', last: '2026-07-22' },
+  { company: 'Meridian Health', industry: 'Healthcare', country: 'Germany', employees: 4820, status: 'Customer', last: '2026-09-11' },
+  { company: 'Nordic Ledger', industry: 'Finance', country: 'Norway', employees: 312, status: 'Trial', last: '2026-08-02' },
+  { company: 'North Pulse', industry: 'Software', country: 'Estonia', employees: 88, status: 'Lead', last: '2026-09-19' },
+  { company: 'Oak & Iron', industry: 'Manufacturing', country: 'Poland', employees: 2650, status: 'Customer', last: '2026-06-27' },
+  { company: 'Orbit Retail', industry: 'Retail', country: 'Netherlands', employees: 905, status: 'Lead', last: '2026-05-14' },
+  { company: 'Pine Analytics', industry: 'Software', country: 'Finland', employees: 141, status: 'Trial', last: '2026-09-07' },
+  { company: 'Quarry Energy', industry: 'Energy', country: 'Lithuania', employees: 1733, status: 'Lead', last: '2026-07-30' },
+  { company: 'Riverbank Media', industry: 'Media', country: 'Denmark', employees: 264, status: 'Customer', last: '2026-08-12' },
+  { company: 'Saltwater Labs', industry: 'Healthcare', country: 'United Kingdom', employees: 59, status: 'Trial', last: '2026-09-24' },
+  { company: 'Signal Foods', industry: 'Retail', country: 'Spain', employees: 3302, status: 'Lead', last: '2026-06-03' },
+  { company: 'Stone Harbor', industry: 'Logistics', country: 'Latvia', employees: 418, status: 'Customer', last: '2026-08-21' },
+  { company: 'Tallinn Robotics', industry: 'Software', country: 'Estonia', employees: 230, status: 'Trial', last: '2026-09-15' },
+  { company: 'Umber Path', industry: 'Finance', country: 'Ireland', employees: 70, status: 'Lead', last: '2026-07-18' },
+  { company: 'Vale Systems', industry: 'Software', country: 'Germany', employees: 6120, status: 'Customer', last: '2026-08-29' },
+  { company: 'Vantage Base', industry: 'Manufacturing', country: 'Czechia', employees: 582, status: 'Lead', last: '2026-05-26' },
+  { company: 'Wren Insurance', industry: 'Finance', country: 'Austria', employees: 1904, status: 'Trial', last: '2026-09-01' },
+  { company: 'Zenith Clinics', industry: 'Healthcare', country: 'Sweden', employees: 760, status: 'Customer', last: '2026-08-08' },
+  // 12 churned: hidden by the default "Not churned" view
+  { company: 'Amber Freight', industry: 'Logistics', country: 'Lithuania', employees: 450, status: 'Churned', last: '2026-02-11' },
+  { company: 'Ash Media', industry: 'Media', country: 'Latvia', employees: 34, status: 'Churned', last: '2026-01-20' },
+  { company: 'Basalt Ops', industry: 'Software', country: 'India', employees: 71, status: 'Churned', last: '2026-03-02' },
+  { company: 'Cobalt Systems', industry: 'Software', country: 'Brazil', employees: 6566, status: 'Churned', last: '2025-12-15' },
+  { company: 'Drift Grid', industry: 'Energy', country: 'Australia', employees: 22, status: 'Churned', last: '2026-02-27' },
+  { company: 'Ember Retail', industry: 'Retail', country: 'Estonia', employees: 128, status: 'Churned', last: '2026-03-18' },
+  { company: 'Flint Capital', industry: 'Finance', country: 'Finland', employees: 205, status: 'Churned', last: '2026-01-07' },
+  { company: 'Garnet Health', industry: 'Healthcare', country: 'Denmark', employees: 990, status: 'Churned', last: '2026-02-03' },
+  { company: 'Juniper Scale', industry: 'Software', country: 'Brazil', employees: 4, status: 'Churned', last: '2026-03-25' },
+  { company: 'Kiln Works', industry: 'Manufacturing', country: 'Poland', employees: 1310, status: 'Churned', last: '2026-01-29' },
+  { company: 'Moss Logistics', industry: 'Logistics', country: 'Germany', employees: 2780, status: 'Churned', last: '2025-11-30' },
+  { company: 'Tandem Base', industry: 'Manufacturing', country: 'United States', employees: 785, status: 'Churned', last: '2026-02-19' },
+];
