@@ -1,7 +1,7 @@
 # rockgomes.com (portfolio2026)
 
 Rock Gomes's portfolio. Astro 6, static, hosted on Netlify. Content moved from Webflow in October 2026.
-Design source: Figma file `MfrBjIutW2nsL0mimJgMnt` ("Portfolio References"), page "B2 Homepage".
+Design source: Figma file `MfrBjIutW2nsL0mimJgMnt` ("Portfolio References"). Refer to Figma frames by node id (listed under Design rules), not by page name. Do not call the design "B2".
 
 ## Who you are working with
 Rock is a senior product designer, not a developer. He reads code and makes small CSS/token fixes, but explain changes in plain everyday English: short sentences, no jargon, no em dashes (use "-"). Never state numbers or facts you do not know - use a clear placeholder (like `NN` or `20NN`) and say so. Ask before changing anything he did not ask for.
@@ -13,7 +13,7 @@ Rock is a senior product designer, not a developer. He reads code and makes smal
 - Production deploys only from `main`. The rockgomes.com domain still points at Webflow until Rock says to switch.
 
 ## Design rules
-- **Tokens come from Figma.** `src/styles/tokens.css` is exported from the Figma "B2 tokens" collection (modes: Light - Crisp = light, Dark, Light - Dev = engineer view). Do not hand-edit values; change Figma and re-export. Use `var(--color-...)`, `var(--type-...)`, `var(--shadow-...)` only, never raw hex in components.
+- **Tokens come from Figma.** `src/styles/tokens.css` is exported from the tokens variable collection in that Figma file (modes: Light - Crisp = light, Dark, Light - Dev = engineer view). Do not hand-edit values; change Figma and re-export. Use `var(--color-...)`, `var(--type-...)`, `var(--shadow-...)` only, never raw hex in components.
 - **Match Figma.** Build from `get_design_context` on the Figma node and compare a screenshot side by side before calling it done. The design lead view is frame `96:6774`; v3 full page is `90:6006`; recruiter view `94:6774`; engineer (dev mode) view `97:7542`.
 - **Overlays never float on the page.** Cursors, selection boxes, comments and the text selection are children of the element they point at (see `Cursor.astro`, `SelectionBox.astro`). After any layout change, run `npx playwright test overlays.spec.ts`. Overlays hide below 1200px.
 - **Reuse existing icons and components** from the Figma file before drawing new ones (for example the ❖ master and ◇ variant glyphs in IBM Plex Mono).
