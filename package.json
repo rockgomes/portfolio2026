@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "migrate": "node scripts/migrate.mjs"
+    "migrate": "node scripts/migrate.mjs",
+    "check": "astro check",
+    "test": "playwright test",
+    "test:update": "playwright test visual.spec.ts --update-snapshots"
   },
   "author": "",
   "license": "ISC",
@@ -18,5 +21,11 @@
   "private": true,
   "engines": {
     "node": ">=22.12.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@playwright/test": "^1.47.2",
+    "@types/node": "^22.20.5",
+    "typescript": "^6.0.3"
   }
 }
