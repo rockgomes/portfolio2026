@@ -8,7 +8,7 @@ import SectionHeader from './SectionHeader.astro';
 import SelectionBox from './SelectionBox.astro';
 import Cursor from './Cursor.astro';
 import Comment from './Comment.astro';
-import { isPrivate } from '../../lib/private';
+import { isPrivate } from '../lib/private';
 
 const projects = (await getCollection('projects')).filter((p) => !isPrivate(p.data)).map((p) => ({
   id: p.id, href: `/project/${p.id}`, img: p.data.homeImage, alt: p.data.homeImageAlt, demo: p.data.demoUrl, d: p.data,
@@ -170,7 +170,7 @@ import ResolvedThread from './ResolvedThread.astro';
 </style>
 
 <script>
-  import { GLYPHS } from '../../lib/glyphs';
+  import { GLYPHS } from '../lib/glyphs';
   type Item = { id: string; type: 'client' | 'experiment'; industry: string[]; focus: string[] };
   const DATA: Item[] = JSON.parse(document.getElementById('work-filter-data')!.textContent || '[]');
   const panel = document.querySelector<HTMLElement>('[data-filter-panel]')!;

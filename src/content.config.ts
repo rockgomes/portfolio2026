@@ -11,7 +11,7 @@ const tagging = {
   // Private projects will ask for a password. Not enforced yet: see src/lib/private.ts.
   private: z.boolean().default(false),
   webflowId: z.string().optional(),
-  // Homepage card (copy from Figma B2). cardToCheck = copy written by Claude, Rock to confirm.
+  // Homepage card (copy from Figma). cardToCheck = copy written by Claude, Rock to confirm.
   cardOrder: z.number().default(99),
   cardNumber: z.string().default(''),
   cardCompany: z.string().default(''),
