@@ -11,7 +11,7 @@ const items = [
 ---
 <section class="exp" id="experience" aria-labelledby="exp-title">
   <div class="wrap inner">
-    <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle="2016 → 2026" dimension="timeline.span = 10 yrs · roles = 4" />
+    <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle={`2016 → ${new Date().getFullYear()}`} dimension={`timeline.span = ${new Date().getFullYear() - 2016} yrs · roles = ${items.length}`} />
     <div class="tl">
     <ResolvedThread class="exp-thread" messages={[
       { who: 'PM', initial: 'P', color: 'pm', text: 'Should the older roles go into accordions?' },

@@ -10,7 +10,7 @@ import HeroTable from './HeroTable.astro';
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap grid">
     <div class="statement">
-      <p class="gutter t-mono-label" aria-hidden="true">space.gutter = 24px</p>
+      <p class="gutter t-mono-label" aria-hidden="true" data-gutter>space.gutter = 24px</p>
       <h1 id="hero-title" class="h1">
         <span class="h1-box">I design complex tools for work. <span class="accent">Then I build the working version.</span><SelectionBox label="498 × 252" live class="h1-sel" /></span>
       </h1>
@@ -63,16 +63,16 @@ import HeroTable from './HeroTable.astro';
 </style>
 
 <script>
-  // Live measure labels: the selection around the headline and the specimen width show real pixel sizes.
+  // Live measure labels (the headline selection size is handled in Overlays): the specimen width, and the gap
+  // under the "space.gutter" label, both read from the page as it renders.
   const fmt = (n: number) => Math.round(n);
+  const spec = document.querySelector<HTMLElement>('[data-specimen]');
+  const statement = document.querySelector<HTMLElement>('.statement');
   const ro = new ResizeObserver(() => {
-    const h1 = document.querySelector<HTMLElement>('.h1-box');
-    const lab = h1?.querySelector<HTMLElement>('[data-selection="live"] [data-size]');
-    if (h1 && lab) lab.textContent = `${fmt(h1.offsetWidth)} × ${fmt(h1.offsetHeight)}`;
-    const spec = document.querySelector<HTMLElement>('[data-specimen]');
     const dl = document.querySelector<HTMLElement>('[data-dimension="specimen"] .label');
     if (spec && dl) dl.textContent = `specimen.w = ${fmt(spec.offsetWidth)}px · live`;
+    const gl = document.querySelector<HTMLElement>('[data-gutter]');
+    if (statement && gl) gl.textContent = `space.gutter = ${fmt(parseFloat(getComputedStyle(statement).rowGap))}px`;
   });
-  const h = document.querySelector('.h1-box'); const s = document.querySelector('[data-specimen]');
-  if (h) ro.observe(h); if (s) ro.observe(s);
+  if (spec) ro.observe(spec); if (statement) ro.observe(statement);
 </script>

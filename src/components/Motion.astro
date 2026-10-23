@@ -1,0 +1,51 @@
+---
+// Homepage motion, PR 1 of the motion plan: redlines measure themselves, selections are drawn like a drag,
+// the numbers rules draw left to right. All of it plays once per element, and not at all with reduced motion.
+---
+<script>
+  import { gsap, playOnce } from '../lib/motion';
+
+  // Redlines: both halves grow out from the label, then the end ticks, then the label.
+  document.querySelectorAll<HTMLElement>('.dim').forEach((d) => {
+    const sides = d.querySelectorAll<HTMLElement>('.side');
+    const lines = [sides[0]?.querySelector('.line'), sides[1]?.querySelector('.line')].filter(Boolean) as HTMLElement[];
+    const ticks = d.querySelectorAll('.tick'); const label = d.querySelector('.label');
+    playOnce(d,
+      () => { gsap.set(lines[0], { scaleX: 0, transformOrigin: '100% 50%' }); gsap.set(lines[1], { scaleX: 0, transformOrigin: '0% 50%' }); gsap.set(ticks, { scaleY: 0 }); gsap.set(label, { autoAlpha: 0 }); },
+      () => gsap.timeline({ delay: 0.1 })
+        .to(lines, { scaleX: 1, duration: 0.7, ease: 'power3.inOut' })
+        .to(ticks, { scaleY: 1, duration: 0.25 }, '-=0.15')
+        .to(label, { autoAlpha: 1, duration: 0.3 }, '-=0.1'));
+  });
+
+  // Selection boxes: drawn from the top-left corner like a marquee drag, then the handles and the size label.
+  document.querySelectorAll<HTMLElement>('[data-selection]').forEach((s) => {
+    const handles = s.querySelectorAll('.h'); const size = s.querySelector('[data-size]');
+    const host = s.parentElement;
+    playOnce(host,
+      () => { gsap.set(s, { clipPath: 'inset(-12px 100% 100% -12px)' }); gsap.set(handles, { scale: 0 }); gsap.set(size, { autoAlpha: 0 }); },
+      () => gsap.timeline({ delay: 0.25 })
+        .to(s, { clipPath: 'inset(-12px -12px -40px -12px)', duration: 0.9, ease: 'power2.inOut', clearProps: 'clipPath' })
+        .to(handles, { scale: 1, duration: 0.25, stagger: 0.03, ease: 'back.out(2)' })
+        .to(size, { autoAlpha: 1, duration: 0.3 }, '<0.1'),
+      0.5);
+  });
+
+  // Text selection on a title word: the highlight grows left to right, then the end caret lands.
+  document.querySelectorAll<HTMLElement>('[data-text-selection]').forEach((t) => {
+    const hl = t.querySelector('.hl'); const end = t.querySelector('.caret.e');
+    playOnce(t.parentElement,
+      () => { gsap.set(hl, { scaleX: 0, transformOrigin: '0% 50%' }); gsap.set(end, { autoAlpha: 0 }); },
+      () => gsap.timeline({ delay: 0.3 })
+        .to(hl, { scaleX: 1, duration: 0.55, ease: 'power2.inOut' })
+        .to(end, { autoAlpha: 1, duration: 0.2 }),
+      0.6);
+  });
+
+  // Numbers: the rule above each stat draws left to right, one after another (the values count up in Numbers.astro).
+  const rules = document.querySelectorAll<HTMLElement>('[data-stat-rule]');
+  playOnce(rules[0]?.closest('section') ?? null,
+    () => gsap.set(rules, { scaleX: 0, transformOrigin: '0% 50%' }),
+    () => gsap.to(rules, { scaleX: 1, duration: 0.8, stagger: 0.12, ease: 'power3.inOut' }),
+    0.4);
+</script>
