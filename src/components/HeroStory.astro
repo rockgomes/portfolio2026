@@ -1,0 +1,178 @@
+---
+// Hero story (motion plan, moment 01): a short working session on the hero table, based on the Dynamic Lists project.
+// The PM brings the users' problem, Rock proposes and builds the fix (a saved view), the Dev asks how it works, Rock answers.
+// It starts after the headline animation and ends in the resting state: "ICP · Not churned" selected, the cursors
+// parked below the table (Hero.astro), and one resolved comment that opens to show the whole conversation.
+// Plays once per session on wide screens; never with reduced motion, and never over a visitor's own table state.
+// Copy is a first draft (Rock to confirm), taken from the Dynamic Lists case study.
+const messages = [
+  { who: 'PM', initial: 'P', color: 'pm', text: 'Users duplicate a list just to filter it in different ways. Then the copies stop matching.', keep: true },
+  { who: 'Rock', initial: 'R', color: 'rock', text: "Let's keep one list and save the filter as a view on top of it. Like this." },
+  { who: 'Dev', initial: 'D', color: 'dev', text: 'Does a view copy the companies, or only store the filter?' },
+  { who: 'Rock', initial: 'R', color: 'rock', text: 'Only the filter. The list stays the source of truth, so a view never drifts.' },
+];
+---
+<div class="thread" data-story-thread data-state="end" data-overlay role="group" aria-label="Comment thread">
+  {messages.map((m) => (
+    <div class:list={['msg', `c-${m.color}`, m.keep && 'keep']} data-msg>
+      <span class="av t-mono-label" aria-hidden="true">{m.initial}</span>
+      <div class="body">
+        <p class="meta"><span class="who">{m.who}</span></p>
+        <p class="txt t-body-small">{m.text}</p>
+      </div>
+    </div>
+  ))}
+  <button type="button" class="resolved t-mono-label" data-resolved aria-expanded="false">✓ Resolved<span class="replies" data-replies> · 3 replies</span></button>
+</div>
+
+<style>
+  /* Same card as Comment.astro (Figma 44:575). Anchored by its bottom edge, so the thread grows up over the table. */
+  .thread { position: absolute; left: 502px; top: 608px; width: 290px; transform: translateY(-100%); z-index: 11; display: flex; flex-direction: column; gap: 10px; padding: 10px 14px 12px 10px; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); }
+  .thread[data-state='end'] .msg:not(.keep) { display: none; }
+  .thread[data-state='story'] .replies { display: none; }
+  .msg { display: flex; gap: 10px; align-items: flex-start; overflow: hidden; }
+  .av { width: 26px; height: 26px; border-radius: 13px; display: grid; place-items: center; background: var(--c); color: var(--color-surface-page); flex: none; }
+  .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 0 0; }
+  .meta { margin: 0; display: flex; gap: 8px; align-items: baseline; white-space: nowrap; }
+  .who { font: var(--type-ui-button); color: var(--color-text-primary); }
+  .txt { margin: 0; color: var(--color-text-secondary); }
+  .resolved { align-self: flex-start; margin: 0 0 0 36px; padding: 2px 4px; border: 0; border-radius: 3px; background: none; cursor: pointer; font: inherit; color: var(--color-status-positive); text-align: left; }
+  .resolved:hover { background: var(--color-status-positive-soft); }
+  .resolved:disabled { cursor: default; background: none; }
+  .c-pm { --c: var(--color-cursor-pm); }
+  .c-dev { --c: var(--color-annotation-measure); }
+  .c-rock { --c: var(--color-annotation-redline); }
+</style>
+
+<script>
+  import { gsap, reduceMotion } from '../lib/motion';
+
+  const thread = document.querySelector<HTMLElement>('[data-story-thread]');
+  const msgs = thread ? [...thread.querySelectorAll<HTMLElement>('[data-msg]')] : [];
+  const toggle = thread?.querySelector<HTMLButtonElement>('[data-resolved]');
+  const replies = thread?.querySelector<HTMLElement>('[data-replies]');
+  const others = msgs.filter((m) => !m.classList.contains('keep'));
+
+  // Grow an element from zero height, so the thread gets taller as people post.
+  const grow = (el: HTMLElement) => gsap.fromTo(el, { height: 0, autoAlpha: 0 }, { height: 'auto', autoAlpha: 1, duration: 0.4, ease: 'power2.out', clearProps: 'height' });
+
+  // The resolved comment opens and folds the whole conversation. Works with or without motion.
+  function setOpen(open: boolean) {
+    if (!thread || !toggle || !replies) return;
+    thread.dataset.state = open ? 'open' : 'end';
+    toggle.setAttribute('aria-expanded', String(open));
+    replies.textContent = open ? ' · hide replies' : ' · 3 replies';
+    if (open && !reduceMotion()) others.forEach((m) => grow(m));
+  }
+  toggle?.addEventListener('click', () => { if (thread?.dataset.state !== 'story') setOpen(thread?.dataset.state !== 'open'); });
+
+  const SEEN = 'rg-hero-story-seen';
+  const spec = document.querySelector<HTMLElement>('[data-specimen]');
+  const table = document.querySelector<HTMLElement>('[data-hero-table]');
+  const api = (table as any)?.heroTable;
+  const replay = document.querySelector<HTMLButtonElement>('[data-story-replay]');
+  const rock = spec?.querySelector<HTMLElement>(':scope > .cursor.c-rock');
+  const pm = spec?.querySelector<HTMLElement>(':scope > .cursor.c-pm');
+  const dev = spec?.querySelector<HTMLElement>(':scope > .cursor.c-dev');
+  const wide = () => innerWidth >= 1200; // the cursors and comments only show at this width
+
+  if (spec && table && api && thread && toggle && pm && dev && rock && !reduceMotion()) run(spec, table, thread, toggle, pm, dev, rock);
+
+  function run(spec: HTMLElement, table: HTMLElement, thread: HTMLElement, toggle: HTMLButtonElement, pm: HTMLElement, dev: HTMLElement, rock: HTMLElement) {
+    let tl: gsap.core.Timeline | null = null;
+    let snapshot: unknown = null;
+
+    // A point on an element, in the specimen's coordinates, turned into the offset a cursor needs to reach it.
+    const to = (cur: HTMLElement, el: () => Element | null, fx = 0.5, fy = 0.6) => {
+      const at = () => { const s = spec.getBoundingClientRect(); const r = (el() ?? table).getBoundingClientRect(); return { x: r.left - s.left + r.width * fx - cur.offsetLeft, y: r.top - s.top + r.height * fy - cur.offsetTop }; };
+      return { x: () => at().x, y: () => at().y, duration: 0.9, ease: 'power2.inOut' };
+    };
+    const q = (sel: string) => () => table.querySelector(sel);
+    const post = (m: HTMLElement) => () => { m.hidden = false; grow(m); };
+    const press = (sel: string) => () => { const el = table.querySelector(sel); if (el) gsap.fromTo(el, { scale: 0.93 }, { scale: 1, duration: 0.25, ease: 'back.out(2)' }); };
+
+    function finish() {
+      if (!tl) return;
+      tl.kill(); tl = null;
+      removeEventListener('wheel', skip); removeEventListener('touchstart', skip); spec.removeEventListener('pointerdown', skip);
+      gsap.killTweensOf([pm, dev, rock, thread, ...msgs, toggle]);
+      gsap.set([pm, dev, rock], { clearProps: 'transform' });
+      gsap.set([thread, ...msgs, toggle], { clearProps: 'opacity,visibility,transform,height' });
+      [...msgs, toggle].forEach((el) => (el.hidden = false));
+      toggle.disabled = false; setOpen(false);
+      if (snapshot) api.load(snapshot); api.pause(false);
+    }
+    const skip = () => finish();
+
+    // Put the table and thread at the start of the story (also used right at load, so the end state never flashes first).
+    let prepared = false;
+    function prepare() {
+      snapshot = api.snapshot(); api.pause(true); api.start();
+      thread.dataset.state = 'story'; toggle.disabled = true;
+      [...msgs, toggle].forEach((el) => (el.hidden = true));
+      gsap.set(thread, { autoAlpha: 0 });
+      prepared = true;
+      addEventListener('wheel', skipEarly, { passive: true }); addEventListener('touchstart', skipEarly, { passive: true }); spec.addEventListener('pointerdown', skipEarly);
+    }
+    // Before the timeline starts, a scroll or click still has to restore the table.
+    function skipEarly() { cancelled = true; unprepare(); }
+    let cancelled = false;
+    function unprepare() {
+      removeEventListener('wheel', skipEarly); removeEventListener('touchstart', skipEarly); spec.removeEventListener('pointerdown', skipEarly);
+      if (!prepared) return; prepared = false;
+      gsap.set(thread, { clearProps: 'opacity,visibility' }); [...msgs, toggle].forEach((el) => (el.hidden = false));
+      toggle.disabled = false; setOpen(false);
+      if (snapshot) api.load(snapshot); api.pause(false);
+    }
+
+    function play() {
+      if (tl) finish();
+      if (!prepared) prepare();
+      removeEventListener('wheel', skipEarly); removeEventListener('touchstart', skipEarly); spec.removeEventListener('pointerdown', skipEarly);
+      prepared = false;
+      try { sessionStorage.setItem(SEEN, '1'); } catch {}
+      const count = table.querySelector<HTMLElement>('[data-count]')!;
+
+      // The cursors start where they are parked (below the table) and go back there at the end.
+      tl = gsap.timeline({ delay: 0.3, onComplete: () => finish() });
+      // 1. The PM brings the users' problem
+      tl.to(pm, to(pm, q('.pill-churned'), 1.1, 0.8))
+        .add(() => { msgs[0].hidden = false; }).to(thread, { autoAlpha: 1, duration: 0.3 })
+      // 2. Rock proposes the fix, then builds it: a condition, then Save as view
+        .to(rock, to(rock, q('[data-add]')), '+=1.4')
+        .add(post(msgs[1]), '<0.3')
+        .add(press('[data-add]'), '+=1.2').add(() => api.openMenu())
+        .to(rock, { ...to(rock, q('[data-add-i="3"]'), 0.4), duration: 0.6 }, '+=0.35')
+        .add(press('[data-add-i="3"]'))
+        .add(() => { api.addCond(3); gsap.to({ n: 40 }, { n: 28, duration: 0.6, ease: 'power2.out', onUpdate() { count.textContent = String(Math.round(this.targets()[0].n)); } }); }, '+=0.15')
+        .to(rock, to(rock, q('[data-save-view]')), '+=0.7')
+        .add(press('[data-save-view]'))
+        .add(() => { const tab = api.saveView('ICP · Not churned'); if (tab) gsap.from(tab, { autoAlpha: 0, scale: 0.85, duration: 0.4, ease: 'back.out(1.8)' }); }, '+=0.15')
+      // 3. The Dev asks how it works; Rock answers
+        .to(dev, to(dev, q('[data-preset]:not([data-preset="all"]):not([data-preset="emea"])'), 0.6, 0.9), '+=0.5')
+        .add(post(msgs[2]), '+=0.1')
+        .to(rock, { ...to(rock, q('[data-count]'), 0.2, 2.2), duration: 0.7 }, '+=1.4')
+        .add(post(msgs[3]), '+=0.1')
+        .add(post(toggle), '+=1.2')
+      // 4. Fold the thread, park the cursors
+        .to(others, { height: 0, autoAlpha: 0, duration: 0.4, ease: 'power2.inOut' }, '+=2')
+        .to([pm, dev, rock], { x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, '<');
+
+      // Scrolling, or clicking the table, skips to the end. Keys do not, so screenshots work.
+      addEventListener('wheel', skip, { passive: true }); addEventListener('touchstart', skip, { passive: true }); spec.addEventListener('pointerdown', skip);
+    }
+
+    // Start after the headline animation (Motion.astro), or after a short wait if that event never comes.
+    function startWhenReady() {
+      let started = false;
+      prepare();
+      const go = () => { if (!started && !cancelled) { started = true; play(); } };
+      document.addEventListener('hero:headline-done', go, { once: true });
+      setTimeout(go, 5000);
+    }
+
+    let seen = false; try { seen = sessionStorage.getItem(SEEN) === '1'; } catch {}
+    if (wide() && !seen && !api.hasUserState()) startWhenReady();
+    if (replay) { replay.hidden = !wide(); replay.addEventListener('click', (e) => { e.stopPropagation(); play(); }); }
+  }
+</script>

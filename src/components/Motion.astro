@@ -33,6 +33,8 @@
         tl.to(handles, { scale: 1, duration: 0.25, stagger: 0.03, ease: 'back.out(2)' })
           .to(size, { autoAlpha: 1, duration: 0.3 }, '<0.1');
         if (cursor) tl.to(cursor, { autoAlpha: 0, x: '+=14', y: '+=10', duration: 0.4, ease: 'power2.in' }, '+=0.35');
+        // The hero story waits for the headline to finish (HeroStory.astro)
+        if (cursor) tl.eventCallback('onComplete', () => document.dispatchEvent(new Event('hero:headline-done')));
         return tl;
       },
       0.5);
