@@ -14,13 +14,13 @@ const tags = [
 ---
 <section class="about" id="about" aria-labelledby="about-title">
   <div class="wrap inner">
-    <SectionHeader num="05" title="About" titleId="about-title" subtitle="subject annotated for completeness" dimension="portrait.w = 1944 · portrait.h = 2400" />
+    <SectionHeader num="05" title="About" titleId="about-title" subtitle="subject annotated for completeness" dimension={`portrait.w = ${portrait.width} · portrait.h = ${portrait.height}`} />
     <div class="body">
       <div class="portrait" data-draggable>
         <Image src={portrait} alt="Rock standing on a rock by a mountain lake, in black and white" widths={[440, 880]} sizes="440px" class="img" />
         {tags.map((g) => <span class="tag t-mono-label" style={`top:${(g.top / 544 * 100).toFixed(2)}%`}>{g.t}</span>)}
         <i class="leader" aria-hidden="true"></i>
-        <SelectionBox label="440 × 544" />
+        <SelectionBox label="440 × 544" live />
         <Cursor name="Rock" color="rock" style="left: 434px; top: 538px;" />
       </div>
       <div class="text">

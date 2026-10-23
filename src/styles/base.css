@@ -26,6 +26,11 @@ button { font: inherit; color: inherit; }
   padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
 }
 
+/* Draggable selections (Overlays.astro): only on wide screens, where the overlays show */
+@media (min-width: 1200px) { [data-draggable] { cursor: grab; touch-action: none; } }
+[data-draggable].dragging { cursor: grabbing; z-index: 8; }
+[data-draggable].moved { z-index: 7; }
+
 /* Figma layer glyphs (src/lib/glyphs.ts): 1em square, sits on the text like the character would */
 .glyph { display: inline-block; flex: none; vertical-align: -0.125em; }
 

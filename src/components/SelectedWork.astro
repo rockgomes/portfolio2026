@@ -5,7 +5,6 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import SectionHeader from './SectionHeader.astro';
-import SelectionBox from './SelectionBox.astro';
 import Cursor from './Cursor.astro';
 import Comment from './Comment.astro';
 import { isPrivate } from '../lib/private';
@@ -57,11 +56,11 @@ import ResolvedThread from './ResolvedThread.astro';
         <ul class="grid" data-grid>
           {items.map((it) => (
             <li class="card" data-id={it.id}>
-              <div class="thumb-wrap" data-draggable={it.id === 'dealfront-dynamic-lists' ? '' : undefined}>
+              <div class="thumb-wrap">
                 <a class="thumb" href={it.href} tabindex="-1" aria-hidden="true">
                   {it.img ? <Image src={it.img} alt={it.alt} widths={[485, 970]} sizes="(min-width: 1200px) 485px, (min-width: 720px) 45vw, 100vw" /> : <span class="ph"></span>}
                 </a>
-                {it.id === 'dealfront-dynamic-lists' && <><SelectionBox label="485 × 394" live /><Cursor name="Dev" color="dev" style="left: calc(100% - 6px); top: calc(100% - 6px);" /></>}
+                {it.id === 'dealfront-dynamic-lists' && <Cursor name="Dev" color="dev" style="left: calc(100% - 6px); top: calc(100% - 6px);" />}
                 {it.id === 'inbank---hire-purchase' && <><Cursor name="Client" color="client" style="left: 195px; top: 110px;" /><Comment who="Client" initial="C" when="2 min ago" style="left: 213px; top: 153px; width: 300px;">Support tickets went down after launch. Approved.</Comment></>}
                 {it.id === 'karaoke-os' && <Cursor name="PM" color="pm" style="left: 267px; top: 177px;" />}
               </div>
@@ -137,8 +136,6 @@ import ResolvedThread from './ResolvedThread.astro';
   .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
   .card:hover .thumb :global(img) { transform: scale(1.02); }
   .ph { display: block; width: 100%; height: 100%; }
-  [data-draggable] { cursor: grab; touch-action: none; }
-  [data-draggable].dragging { cursor: grabbing; z-index: 8; }
   .meta { margin: 0; display: flex; align-items: center; gap: 12px; white-space: nowrap; }
   .meta .n { color: var(--color-annotation-redline); }
   .meta .co, .meta .yr { color: var(--color-text-muted); }
