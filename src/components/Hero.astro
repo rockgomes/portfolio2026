@@ -42,12 +42,13 @@ import HeroTable from './HeroTable.astro';
   .hero { padding-block: 64px 97px; }
   .grid { display: grid; grid-template-columns: minmax(0, 498px) minmax(0, 734px); justify-content: space-between; gap: 48px; align-items: start; }
   .statement { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
-  .gutter { margin: 0; color: var(--color-annotation-measure); }
-  .h1 { margin: 0; font: var(--type-display-hero); letter-spacing: var(--tracking-display-hero); color: var(--color-text-primary); }
+  /* The type label mirrors the redline on the right (12px tall, 12px gap), so the headline's top meets the table's top */
+  .gutter { margin: 0 0 -12px; height: 12px; line-height: 12px; color: var(--color-annotation-measure); }
+  .h1 { margin: 0 0 16px; font: var(--type-display-hero); letter-spacing: var(--tracking-display-hero); color: var(--color-text-primary); }
   .h1-box { position: relative; display: block; }
-  .h1-box :global(.h1-sel) { inset: -6px -8px; }
+  .h1-box :global(.h1-sel) { inset: 0; } /* on the text box edges, like Figma, so the size label matches the box */
   /* Rock's cursor only shows while it draws the selection (Motion.astro), then leaves */
-  .h1-box :global(.h1-cursor) { left: -8px; top: -6px; visibility: hidden; }
+  .h1-box :global(.h1-cursor) { left: 0; top: 0; visibility: hidden; }
   .accent { color: var(--color-text-accent); }
   .sub { margin: 0; font: var(--type-body-lead); color: var(--color-text-secondary); }
   .sub strong { font-weight: 500; color: var(--color-text-primary); }

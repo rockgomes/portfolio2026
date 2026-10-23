@@ -33,14 +33,15 @@ import Cursor from './Cursor.astro';
   </div>
 </footer>
 <style>
+  /* The footer is its own zone (grey, edge to edge), so it is clear where the pointer turns into "You" */
+  .ftr { background: var(--color-surface-stage); border-top: 1px solid var(--color-border-strong); }
   .ftr .wrap { display: flex; flex-direction: column; gap: 48px; padding-bottom: 48px; }
   .ftr .wrap > .ruler + .main { margin-top: -48px; }
-  /* Ruler: a top line, a small tick every 8px, a bigger tick and a number every 80px */
+  /* Ruler hanging from the footer's top border: a small tick every 8px, a bigger tick and a number every 80px */
   .ruler { position: relative; height: 30px; overflow: hidden; }
   .ticks { position: absolute; left: 0; right: 0; top: 0; }
   .ticks.minor { height: 5px; background: repeating-linear-gradient(to right, var(--color-text-muted) 0 1px, transparent 1px 8px); opacity: 0.6; }
   .ticks.major { height: 11px; background: repeating-linear-gradient(to right, var(--color-text-secondary) 0 1px, transparent 1px 80px); }
-  .ruler::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--color-text-secondary); }
   .nums { position: absolute; left: 0; right: 0; top: 13px; height: 16px; color: var(--color-text-muted); }
   .nums :global(span) { position: absolute; padding-left: 4px; white-space: nowrap; }
   .nums :global(.end) { padding: 0 0 0 4px; color: var(--color-annotation-measure); }

@@ -44,7 +44,9 @@ test.describe('overlays stay on their targets', () => {
   test('headline selection wraps the headline', async ({ page }) => {
     await page.goto('/');
     const h = (await page.locator('.h1-box').boundingBox())!; const s = (await page.locator('.h1-box .sel').boundingBox())!;
-    expect(Math.abs(s.x - (h.x - 8))).toBeLessThan(2); expect(Math.abs(s.y - (h.y - 6))).toBeLessThan(2);
+    for (const k of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(s[k] - h[k]), k).toBeLessThan(2);
+    const label = await page.locator('.h1-box [data-size]').textContent();
+    expect(label).toBe(`${Math.round(h.width)} × ${Math.round(h.height)}`);
   });
 
   test('portrait selection matches the portrait', async ({ page }) => {

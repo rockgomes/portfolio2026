@@ -13,7 +13,9 @@
       const range = document.createRange(); range.setStart(node, idx); range.setEnd(node, idx + 4);
       const r = range.getBoundingClientRect(); const h = host.getBoundingClientRect();
       if (!r.width) { sel.classList.remove('on'); return; }
-      Object.assign(sel.style, { left: `${r.left - h.left - 2}px`, top: `${r.top - h.top}px`, width: `${r.width + 5}px`, height: `${r.height}px` });
+      // A range is as tall as the font (ascent + descent), taller than the line; trim it to the line so it does not reach the subtitle.
+      const lh = parseFloat(getComputedStyle(title).lineHeight) || r.height; const top = r.top + (r.height - lh) / 2;
+      Object.assign(sel.style, { left: `${r.left - h.left - 2}px`, top: `${top - h.top}px`, width: `${r.width + 5}px`, height: `${lh}px` });
       sel.classList.add('on');
     });
   }
