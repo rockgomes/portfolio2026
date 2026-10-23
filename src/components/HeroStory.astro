@@ -94,7 +94,7 @@ const messages = [
     function finish() {
       if (!tl) return;
       tl.kill(); tl = null;
-      removeEventListener('wheel', skip); removeEventListener('touchstart', skip); spec.removeEventListener('pointerdown', skip);
+      spec.removeEventListener('pointerdown', skip);
       gsap.killTweensOf([pm, dev, rock, thread, ...msgs, toggle]);
       gsap.set([pm, dev, rock], { clearProps: 'transform' });
       gsap.set([thread, ...msgs, toggle], { clearProps: 'opacity,visibility,transform,height' });
@@ -112,13 +112,13 @@ const messages = [
       [...msgs, toggle].forEach((el) => (el.hidden = true));
       gsap.set(thread, { autoAlpha: 0 });
       prepared = true;
-      addEventListener('wheel', skipEarly, { passive: true }); addEventListener('touchstart', skipEarly, { passive: true }); spec.addEventListener('pointerdown', skipEarly);
+      spec.addEventListener('pointerdown', skipEarly);
     }
-    // Before the timeline starts, a scroll or click still has to restore the table.
+    // Before the timeline starts, a click on the table still has to restore it.
     function skipEarly() { cancelled = true; unprepare(); }
     let cancelled = false;
     function unprepare() {
-      removeEventListener('wheel', skipEarly); removeEventListener('touchstart', skipEarly); spec.removeEventListener('pointerdown', skipEarly);
+      spec.removeEventListener('pointerdown', skipEarly);
       if (!prepared) return; prepared = false;
       gsap.set(thread, { clearProps: 'opacity,visibility' }); [...msgs, toggle].forEach((el) => (el.hidden = false));
       toggle.disabled = false; setOpen(false);
@@ -128,7 +128,7 @@ const messages = [
     function play() {
       if (tl) finish();
       if (!prepared) prepare();
-      removeEventListener('wheel', skipEarly); removeEventListener('touchstart', skipEarly); spec.removeEventListener('pointerdown', skipEarly);
+      spec.removeEventListener('pointerdown', skipEarly);
       prepared = false;
       try { sessionStorage.setItem(SEEN, '1'); } catch {}
       const count = table.querySelector<HTMLElement>('[data-count]')!;
@@ -158,8 +158,8 @@ const messages = [
         .to(others, { height: 0, autoAlpha: 0, duration: 0.4, ease: 'power2.inOut' }, '+=2')
         .to([pm, dev, rock], { x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, '<');
 
-      // Scrolling, or clicking the table, skips to the end. Keys do not, so screenshots work.
-      addEventListener('wheel', skip, { passive: true }); addEventListener('touchstart', skip, { passive: true }); spec.addEventListener('pointerdown', skip);
+      // Clicking the table skips to the end, so a visitor can use it. Scrolling and keys do not.
+      spec.addEventListener('pointerdown', skip);
     }
 
     // Start after the headline animation (Motion.astro), or after a short wait if that event never comes.

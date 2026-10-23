@@ -56,7 +56,7 @@ test.describe('overlays stay on their targets', () => {
   test('overlays follow their card when the filter hides others', async ({ page }) => {
     await page.goto('/');
     await page.click('.row[data-key="type"][data-val="experiment"]');
-    await expect(page.locator('.card[data-id="dealfront-dynamic-lists"]')).toHaveCount(0);
+    await expect(page.locator('.card[data-id="dealfront-dynamic-lists"]')).toBeHidden();
     await expect(page.locator('.card[data-id="karaoke-os"] .cursor')).toHaveCount(1);
     const card = (await page.locator('.card[data-id="karaoke-os"]').boundingBox())!; const cur = (await page.locator('.card[data-id="karaoke-os"] .cursor .arrow').boundingBox())!;
     expect(cur.x).toBeGreaterThan(card.x); expect(cur.x).toBeLessThan(card.x + card.width); expect(cur.y).toBeGreaterThan(card.y);
