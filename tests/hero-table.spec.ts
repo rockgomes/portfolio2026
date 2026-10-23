@@ -50,4 +50,16 @@ test.describe('hero story', () => {
     await expect(page.locator('[data-story-thread]')).toHaveAttribute('data-state', 'end');
     expect(await page.evaluate(() => localStorage.getItem('rg-hero-table'))).toBeNull();
   });
+
+  test('the resolved comment opens and folds the conversation', async ({ page }) => {
+    await page.goto('/');
+    await page.mouse.wheel(0, 100);
+    const toggle = page.locator('[data-resolved]');
+    await expect(page.locator('[data-story-thread] [data-msg]:visible')).toHaveCount(1);
+    await toggle.click();
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(page.locator('[data-story-thread] [data-msg]:visible')).toHaveCount(4);
+    await toggle.click();
+    await expect(page.locator('[data-story-thread] [data-msg]:visible')).toHaveCount(1);
+  });
 });
