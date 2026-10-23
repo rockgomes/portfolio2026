@@ -130,7 +130,7 @@ import ResolvedThread from './ResolvedThread.astro';
   .active :global(.clear-all-inline) { border: 0; background: transparent; cursor: pointer; padding: 4px 0; font: var(--type-mono-label); color: var(--color-annotation-measure); }
   .grid { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 20px; }
   .card { position: relative; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-  .card.leaving { position: absolute; pointer-events: none; transition: opacity 0.18s ease, transform 0.18s ease; opacity: 0; transform: scale(0.97); }
+  .card[hidden] { display: none; }
   .thumb-wrap { position: relative; }
   .thumb { display: block; aspect-ratio: 485 / 394; border: 1px solid var(--color-border-subtle); overflow: hidden; background: var(--color-surface-stage); }
   .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -163,11 +163,14 @@ import ResolvedThread from './ResolvedThread.astro';
   .tsel .caret.s b { top: -6px; } .tsel .caret.e b { bottom: -6px; }
   @media (max-width: 1040px) { .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; } }
   @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } .inner { padding-top: 80px; } .title { font-size: 24px; } }
-  @media (prefers-reduced-motion: reduce) { .card.leaving, .thumb :global(img) { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .thumb :global(img) { transition: none; } }
 </style>
 
 <script>
   import { GLYPHS } from '../lib/glyphs';
+  import { gsap, playOnce, reduceMotion } from '../lib/motion';
+  import { Flip } from 'gsap/Flip';
+  gsap.registerPlugin(Flip);
   type Item = { id: string; type: 'client' | 'experiment'; industry: string[]; focus: string[] };
   const DATA: Item[] = JSON.parse(document.getElementById('work-filter-data')!.textContent || '[]');
   const panel = document.querySelector<HTMLElement>('[data-filter-panel]')!;
@@ -232,26 +235,24 @@ import ResolvedThread from './ResolvedThread.astro';
     activeEl.innerHTML = pills.join('') + (pills.length > 1 ? '<button type="button" class="clear-all-inline" data-clear-all>Clear all</button>' : '');
   }
 
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const nodes = new Map<string, HTMLElement>(); grid.querySelectorAll<HTMLElement>('.card').forEach((c) => nodes.set(c.dataset.id!, c));
-  const order = [...nodes.keys()];
+  // Filtering (motion plan, moment 04): cards that stay slide to their new place with GSAP Flip, the others fade out.
+  // Hidden cards stay in the page (the hidden attribute), so Flip can animate them out and back in.
+  const cardEls = [...grid.querySelectorAll<HTMLElement>('.card')];
+  // Entry (motion plan, moment 04): each card rises in when it comes into view; the right column follows the left.
+  cardEls.forEach((el) => {
+    const col = () => (el.offsetLeft > grid.clientWidth / 3 ? 1 : 0);
+    playOnce(el, () => gsap.set(el, { autoAlpha: 0, y: 28 }), () => gsap.to(el, { autoAlpha: 1, y: 0, duration: 0.7, delay: col() * 0.12, ease: 'power3.out', clearProps: 'transform' }), 0.15);
+  });
+
   function renderGrid() {
     const vis = new Set(visible().map((d) => d.id));
-    const gb = grid.getBoundingClientRect(); const first = new Map<string, DOMRect>();
-    nodes.forEach((el, id) => { if (el.isConnected && !el.classList.contains('leaving')) first.set(id, el.getBoundingClientRect()); });
-    nodes.forEach((el, id) => {
-      if (vis.has(id) || !el.isConnected || el.classList.contains('leaving')) return;
-      const r = first.get(id);
-      if (reduce || !r) { el.remove(); return; }
-      Object.assign(el.style, { left: `${r.left - gb.left}px`, top: `${r.top - gb.top}px`, width: `${r.width}px` });
-      el.classList.add('leaving'); setTimeout(() => { el.remove(); el.classList.remove('leaving'); el.removeAttribute('style'); }, 200);
+    const before = reduceMotion() ? null : Flip.getState(cardEls);
+    cardEls.forEach((el) => { el.hidden = !vis.has(el.dataset.id!); });
+    if (before) Flip.from(before, {
+      duration: 0.6, ease: 'power3.inOut', absolute: true, stagger: 0.02, nested: true, prune: true,
+      onEnter: (els) => gsap.fromTo(els, { autoAlpha: 0, scale: 0.94 }, { autoAlpha: 1, scale: 1, duration: 0.4, delay: 0.15, ease: 'power2.out' }),
+      onLeave: (els) => gsap.to(els, { autoAlpha: 0, scale: 0.94, duration: 0.25, ease: 'power2.in' }),
     });
-    for (const id of order) { if (!vis.has(id)) continue; const el = nodes.get(id)!; if (el.classList.contains('leaving')) { el.classList.remove('leaving'); el.removeAttribute('style'); } grid.appendChild(el); }
-    if (!reduce) for (const id of order) {
-      if (!vis.has(id)) continue; const el = nodes.get(id)!; const r1 = el.getBoundingClientRect(); const r0 = first.get(id);
-      if (r0) { const dx = r0.left - r1.left, dy = r0.top - r1.top; if (dx || dy) el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.2,.7,.2,1)' }); }
-      else el.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'ease-out' });
-    }
     empty.hidden = vis.size > 0; countEl.textContent = `${vis.size} / ${DATA.length}`;
     document.dispatchEvent(new CustomEvent('work:filtered'));
   }
