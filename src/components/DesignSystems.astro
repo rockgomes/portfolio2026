@@ -47,11 +47,13 @@ const chains = [
         <article class="spec">
           <h3 class="spec-h"><span class="n t-mono-label">01</span><span class="t-heading-item">Variants, not copies</span></h3>
           <div class="area">
+            <div class="set-wrap">
             <p class="fig t-mono-label"><Glyph kind="master" /> Button<span class="pick" data-pick></span></p>
             <div class="set" role="group" aria-label="Button variants: pick one" data-set>
               {variants.map((v) => (
                 <div class="vr">{states.map((st) => <button type="button" class:list={['b', v.cls, st.cls]} data-v={v.name} data-s={st.name} aria-pressed="false">{st.name}</button>)}</div>
               ))}
+            </div>
             </div>
           </div>
           <p class="cap t-body-small">One component set with Variant, State and Size. Teams pick a combination, nobody copies and tweaks a button.</p>
@@ -61,9 +63,9 @@ const chains = [
           <h3 class="spec-h"><span class="n t-mono-label">02</span><span class="t-heading-item">Properties that make sense</span></h3>
           <div class="area" data-drag-bounds>
             <div class="ip">
-              <div class="inst">
+              <div class="inst" data-draggable>
                 <p class="fig t-mono-label"><Glyph kind="variant" /> Button</p>
-                <span class="btn-demo" data-btn data-variant="Primary" data-state="Default" data-size="Medium" data-draggable aria-hidden="true"><span class="ico t-mono-small" data-icon>+</span><span data-label>Save as view</span></span>
+                <span class="btn-demo" data-btn data-variant="Primary" data-state="Default" data-size="Medium" aria-hidden="true"><span class="ico t-mono-small" data-icon>+</span><span data-label>Save as view</span></span>
               </div>
               <div class="props t-mono-label" role="group" aria-label="Button properties">
                 <p class="ph"><Glyph kind="variant" /> Button</p>
@@ -84,9 +86,9 @@ const chains = [
           <div class="area">
             <div class="chains t-mono-small" data-chains>
               {chains.map((c, i) => (
-                <p class="chain">
-                  {i === 0 ? <button type="button" class={`sw sw-${c.sw} rebrand`} data-rebrand aria-label="Rebrand: change the primitive colour" title="Click to rebrand"></button> : <i class={`sw sw-${c.sw}`}></i>}
-                  <span class="prim" data-prim={i === 0 ? '' : undefined}>{c.prim}</span><span class="arr">→</span><span class="sem">{c.sem}</span><span class="arr">→</span><span class="use">{c.use}</span>
+                <p class:list={['chain', i === 0 && 'brand']} data-brand-row={i === 0 ? '' : undefined}>
+                  {i === 0 ? <button type="button" class="sw rebrand" data-rebrand aria-label="Rebrand: change the primitive colour" title="Click to rebrand"></button> : <i class={`sw sw-${c.sw}`}></i>}
+                  <span class="prim" data-prim={i === 0 ? '' : undefined}>{c.prim}</span><span class="arr">→</span><span class="sem">{c.sem}</span><span class="arr">→</span><span class="use">{c.use}{i === 0 && <span class="mini" aria-hidden="true">Save</span>}</span>
                 </p>
               ))}
             </div>
@@ -138,6 +140,8 @@ const chains = [
   .spec-h .n { color: var(--color-annotation-redline); }
   .area { flex: 1 0 auto; min-height: 230px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: 28px 24px; background: var(--color-surface-stage); overflow: hidden; }
   .cap { margin: 0; color: var(--color-text-secondary); }
+  /* The set's name sits on its top-left corner, like an instance's name in 02 */
+  .set-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
   .set { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px dashed var(--color-figma-component); border-radius: 4px; }
   .vr { display: flex; gap: 12px; }
   .b { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); padding: 6px 12px; border: 0; border-radius: 2px; white-space: nowrap; cursor: pointer; }
@@ -151,9 +155,9 @@ const chains = [
   .gho.hov { background: var(--color-border-subtle); }
   .dis { opacity: 0.4; }
   .ip { display: flex; gap: 24px; align-items: center; }
-  .inst { display: flex; flex-direction: column; gap: 6px; }
+  .inst { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   /* The demo button follows the properties panel (and the variant set) through data attributes */
-  .btn-demo { cursor: grab; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--color-text-primary); color: var(--color-surface-page); border: 1px solid var(--color-figma-component); font: var(--type-ui-button); white-space: nowrap; }
+  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--color-text-primary); color: var(--color-surface-page); border: 1px solid var(--color-figma-component); font: var(--type-ui-button); white-space: nowrap; }
   .btn-demo[data-variant='Secondary'] { background: var(--color-surface-page); color: var(--color-text-primary); }
   .btn-demo[data-variant='Ghost'] { background: transparent; color: var(--color-text-primary); }
   .btn-demo[data-state='Hover'][data-variant='Primary'] { background: var(--color-text-secondary); }
@@ -183,9 +187,13 @@ const chains = [
   .sw-measure { background: var(--color-annotation-measure); } .sw-primary { background: var(--color-text-primary); } .sw-redline { background: var(--color-annotation-redline); }
   .prim { width: 96px; color: var(--color-text-primary); } .sem { width: 170px; color: var(--color-annotation-measure); } .use { width: 110px; color: var(--color-text-secondary); }
   .arr { color: var(--color-text-muted); }
-  .rebrand { padding: 0; cursor: pointer; }
-  .rebrand:hover { outline: 1.5px solid var(--color-annotation-measure); outline-offset: 2px; }
-  .chip { display: inline-block; width: 8px; height: 8px; margin-left: 6px; vertical-align: 0; border: 1px solid var(--color-border-strong); }
+  /* Row 1 carries the brand colour as a variable: the swatch and the "Save" button both read it */
+  .brand { --brand: var(--color-annotation-measure); }
+  .sw.rebrand { width: 12px; height: 12px; padding: 0; cursor: pointer; background: var(--brand); outline: 1.5px dashed var(--color-annotation-measure); outline-offset: 2px; }
+  .rebrand:hover { outline-style: solid; }
+  .mini { display: inline-block; margin-left: 8px; padding: 1px 6px; border-radius: 2px; background: var(--brand); color: var(--color-surface-page); font: var(--type-mono-label); transition: background 0.3s; }
+  .chain > * { border-radius: 2px; transition: background-color 0.35s; }
+  .chain > .flash { background-color: var(--color-annotation-measure-soft); }
   .hint { margin: 4px 0 0; color: var(--color-text-muted); }
   .here { display: none; color: var(--color-text-muted); }
   .mode[data-active] .here { display: inline; }
@@ -274,14 +282,19 @@ const chains = [
   }, 0.6);
   const PALETTE = [['blue.600', '--color-annotation-measure'], ['violet.500', '--color-figma-component'], ['green.600', '--color-status-positive']];
   let brand = 0;
-  $('[data-rebrand]').addEventListener('click', (e) => {
+  const brandRow = $('[data-brand-row]');
+  $('[data-rebrand]').addEventListener('click', () => {
     brand = (brand + 1) % PALETTE.length;
-    const [name, token] = PALETTE[brand]; const sw = e.currentTarget as HTMLElement; const row = sw.closest('.chain')!;
-    sw.style.background = `var(${token})`;
-    const prim = row.querySelector<HTMLElement>('[data-prim]')!; prim.textContent = name;
-    let chip = row.querySelector<HTMLElement>('.chip'); if (!chip) { chip = document.createElement('i'); chip.className = 'chip'; row.querySelector('.use')!.append(chip); }
-    chip.style.background = `var(${token})`;
-    pop(prim); pop(chip);
+    const [name, token] = PALETTE[brand];
+    const prim = brandRow.querySelector<HTMLElement>('[data-prim]')!;
+    const parts = [...brandRow.children].slice(1) as HTMLElement[]; // primitive → semantic → use
+    if (reduceMotion()) { brandRow.style.setProperty('--brand', `var(${token})`); prim.textContent = name; return; }
+    // The change flows along the chain: the primitive first, the semantic token passes it on, the button gets it last.
+    const tl = gsap.timeline();
+    tl.add(() => { brandRow.querySelector('[data-rebrand]')!.parentElement!.style.setProperty('--brand', `var(${token})`); prim.textContent = name; });
+    parts.forEach((el, i) => tl.add(() => el.classList.add('flash'), i * 0.12).add(() => el.classList.remove('flash'), i * 0.12 + 0.45));
+    tl.add(() => pop(brandRow.querySelector('.mini')!), parts.length * 0.12 - 0.1);
+    pop(prim);
   });
 
   // 04: a real switch for this page's mode. It lasts for this visit only.
