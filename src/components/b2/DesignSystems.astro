@@ -1,6 +1,7 @@
 ---
 // Figma: Section / Design systems (48:1690)
 import SectionHeader from './SectionHeader.astro';
+import Glyph from './Glyph.astro';
 const systems = [
   { label: 'Inbank DS', name: 'Inbank', when: '2023 - 2025', facts: ['Built from scratch right after the rebrand', 'One system for checkout in four countries and the back-office', 'WCAG built in ahead of an audit'], tags: ['Tokens', 'Components', 'Accessibility'] },
   { label: 'Bigbank DS', name: 'Bigbank', when: '2016 - 2020', facts: ['Built together with one other designer', 'A coded component library, so the system is what ships', 'One system for every branch and market'], tags: ['Components', 'Code', 'Research'] },
@@ -15,7 +16,7 @@ const chains = [
 <section class="ds" id="design-systems" aria-labelledby="ds-title">
   <div class="wrap inner">
     <div class="head">
-      <p class="fig t-mono-label"><span aria-hidden="true">❖</span> Section / Design systems</p>
+      <p class="fig t-mono-label"><Glyph kind="master" /> Section / Design systems</p>
       <SectionHeader num="03" title="Design systems" titleId="ds-title" subtitle="two built from zero, one rebuilt · this page runs on a fourth" />
     </div>
 
@@ -27,7 +28,7 @@ const chains = [
       <div class="systems">
         {systems.map((s) => (
           <div class="sys">
-            <p class="fig t-mono-label"><span aria-hidden="true">◇</span> {s.label}</p>
+            <p class="fig t-mono-label"><Glyph kind="variant" /> {s.label}</p>
             <div class="card">
               <div class="top"><h3 class="t-heading-item">{s.name}</h3><span class="t-mono-small when">{s.when}</span></div>
               <ul class="facts">{s.facts.map((f) => <li><span class="dash t-mono-small" aria-hidden="true">—</span><span class="t-body-small">{f}</span></li>)}</ul>
@@ -44,7 +45,7 @@ const chains = [
         <article class="spec">
           <h3 class="spec-h"><span class="n t-mono-label">01</span><span class="t-heading-item">Variants, not copies</span></h3>
           <div class="area">
-            <p class="fig t-mono-label"><span aria-hidden="true">❖</span> Button</p>
+            <p class="fig t-mono-label"><Glyph kind="master" /> Button</p>
             <div class="set" aria-hidden="true">
               <div class="vr"><span class="b pri">Default</span><span class="b pri hov">Hover</span><span class="b pri dis">Disabled</span></div>
               <div class="vr"><span class="b sec">Default</span><span class="b sec hov">Hover</span><span class="b sec dis">Disabled</span></div>
@@ -59,17 +60,17 @@ const chains = [
           <div class="area">
             <div class="ip" aria-hidden="true">
               <div class="inst">
-                <p class="fig t-mono-label"><span>◇</span> Button</p>
+                <p class="fig t-mono-label"><Glyph kind="variant" /> Button</p>
                 <span class="btn-demo"><span class="t-mono-small">+</span><span>Save as view</span></span>
               </div>
               <div class="props t-mono-label">
-                <p class="ph">◇ Button</p>
-                <p class="pr"><span class="k"><i class="mut">◆</i>Variant</span><span class="v">Primary ▾</span></p>
-                <p class="pr"><span class="k"><i class="mut">◆</i>State</span><span class="v">Default ▾</span></p>
-                <p class="pr"><span class="k"><i class="mut">◆</i>Size</span><span class="v">Medium ▾</span></p>
+                <p class="ph"><Glyph kind="variant" /> Button</p>
+                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>Variant</span><span class="v">Primary ▾</span></p>
+                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>State</span><span class="v">Default ▾</span></p>
+                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>Size</span><span class="v">Medium ▾</span></p>
                 <p class="pr"><span class="k"><i class="pur">T</i>Label</span><span class="v">Save as view</span></p>
-                <p class="pr"><span class="k"><i class="pur">◐</i>Show icon</span><img src="/home/toggle.svg" width="24" height="14" alt="" /></p>
-                <p class="pr"><span class="k"><i class="pur">◇</i>Icon</span><span class="v">◇ plus ▾</span></p>
+                <p class="pr"><span class="k"><i class="pur"><Glyph kind="bool" /></i>Show icon</span><img src="/home/toggle.svg" width="24" height="14" alt="" /></p>
+                <p class="pr"><span class="k"><i class="pur"><Glyph kind="variant" /></i>Icon</span><span class="v"><Glyph kind="variant" /> plus ▾</span></p>
               </div>
             </div>
           </div>
@@ -148,7 +149,7 @@ const chains = [
   .ph { color: var(--color-figma-component); }
   .pr { display: flex; align-items: center; justify-content: space-between; gap: 8px; white-space: nowrap; }
   .k { display: flex; gap: 6px; color: var(--color-text-secondary); }
-  .k i { font-style: normal; } .mut { color: var(--color-text-muted); } .pur { color: var(--color-figma-component); }
+  .k i { font-style: normal; display: inline-flex; align-items: center; } .mut { color: var(--color-text-muted); } .pur { color: var(--color-figma-component); }
   .v { color: var(--color-text-primary); }
   .chains { display: flex; flex-direction: column; gap: 10px; }
   .chain { margin: 0; display: flex; gap: 10px; align-items: center; white-space: nowrap; }
