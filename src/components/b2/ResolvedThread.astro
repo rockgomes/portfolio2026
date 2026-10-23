@@ -1,0 +1,36 @@
+---
+// A resolved comment thread: a piece of feedback and how it was applied.
+// Same card language as Comment.astro (Figma 44:575), but it sits in the page flow and is real content,
+// so screen readers get it and it stays visible on small screens.
+interface Msg { who: string; initial: string; color: 'client' | 'pm' | 'rock' | 'dev'; text: string }
+interface Props { messages: Msg[]; class?: string }
+const { messages, class: cls } = Astro.props;
+---
+<aside class:list={['thread', cls]} aria-label="Resolved comment">
+  <p class="state t-mono-label">
+    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l2.6 2.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    Resolved
+  </p>
+  {messages.map((m) => (
+    <div class="msg">
+      <span class:list={['av', 't-mono-label', `c-${m.color}`]} aria-hidden="true">{m.initial}</span>
+      <div class="body">
+        <p class="who">{m.who}</p>
+        <p class="txt t-body-small">{m.text}</p>
+      </div>
+    </div>
+  ))}
+</aside>
+<style>
+  .thread { display: flex; flex-direction: column; gap: 10px; padding: 10px 14px 12px 10px; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; }
+  .state { margin: 0; display: flex; gap: 6px; align-items: center; color: var(--color-text-muted); }
+  .msg { display: flex; gap: 10px; align-items: flex-start; }
+  .av { width: 26px; height: 26px; border-radius: 13px; display: grid; place-items: center; background: var(--c); color: var(--color-surface-page); flex: none; }
+  .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 0 0; }
+  .who { margin: 0; font: var(--type-ui-button); color: var(--color-text-primary); }
+  .txt { margin: 0; color: var(--color-text-secondary); }
+  .c-client { --c: var(--color-cursor-client); }
+  .c-pm { --c: var(--color-cursor-pm); }
+  .c-rock { --c: var(--color-annotation-redline); }
+  .c-dev { --c: var(--color-annotation-measure); }
+</style>

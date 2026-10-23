@@ -1,6 +1,7 @@
 ---
 // Figma: Experience (96:6929), Timeline item 21:111
 import SectionHeader from './SectionHeader.astro';
+import ResolvedThread from './ResolvedThread.astro';
 const items = [
   { years: '2025 - now', delta: 'Δ = 1 yr+', company: 'Dealfront', role: 'Senior Product Designer', text: 'Platform projects, user management and AI features. Worked with three PMs at once, which is its own kind of design problem.' },
   { years: '2023 - 2025', delta: 'Δ = 2 yrs', company: 'Inbank', role: 'Senior Product Designer', text: 'Redesigned the hire-purchase checkout in four countries, rebuilt the customer service back-office, and built the design system from scratch right after a rebrand.' },
@@ -10,7 +11,12 @@ const items = [
 ---
 <section class="exp" id="experience" aria-labelledby="exp-title">
   <div class="wrap inner">
-    <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle="2016 → 2026 · no accordions here, it all fits" dimension="timeline.span = 10 yrs · roles = 4" />
+    <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle="2016 → 2026" dimension="timeline.span = 10 yrs · roles = 4" />
+    <div class="tl">
+    <ResolvedThread class="exp-thread" messages={[
+      { who: 'PM', initial: 'P', color: 'pm', text: 'Should the older roles go into accordions?' },
+      { who: 'Rock', initial: 'R', color: 'rock', text: 'No accordions. Four roles fit on one screen, so they all stay open.' },
+    ]} />
     <ol class="timeline">
       {items.map((it) => (
         <li class="item">
@@ -24,10 +30,15 @@ const items = [
         </li>
       ))}
     </ol>
+    </div>
   </div>
 </section>
 <style>
   .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
+  .tl { position: relative; }
+  /* Wide screens: the thread sits in the empty column right of the roles. Narrow: above the list. */
+  .tl :global(.exp-thread) { position: absolute; top: 28px; right: 0; width: 300px; }
+  @media (max-width: 1199px) { .tl :global(.exp-thread) { position: static; width: auto; max-width: 420px; margin-bottom: 24px; } }
   .timeline { list-style: none; margin: 0; padding: 0 0 0 4px; border-left: 1px solid var(--color-annotation-redline); }
   .item { display: flex; align-items: flex-start; padding-block: 28px; border-bottom: 1px solid var(--color-border-subtle); }
   .marker { position: relative; width: 32px; height: 16px; flex: none; }

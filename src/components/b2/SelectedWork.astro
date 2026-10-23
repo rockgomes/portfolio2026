@@ -19,6 +19,7 @@ const experiments = (await getCollection('experiments')).filter((e) => !isPrivat
 const items = [...projects, ...experiments].sort((a, b) => a.d.cardOrder - b.d.cardOrder);
 const cardTag = (d: (typeof items)[number]['d']) => [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Experiment' : '');
 const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.industry, focus: i.d.focus }));
+import ResolvedThread from './ResolvedThread.astro';
 ---
 <section class="work" id="work" aria-labelledby="work-title">
   <div class="wrap inner">
@@ -45,7 +46,10 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
           </div>
           <div data-filter-groups></div>
         </div>
-        <p class="sticky-note t-mono-label">stays fixed while the projects scroll</p>
+        <ResolvedThread messages={[
+          { who: 'Client', initial: 'C', color: 'client', text: 'Can the filters stay on screen while I scroll the projects?' },
+          { who: 'Rock', initial: 'R', color: 'rock', text: 'Done. The panel now stays fixed while the projects scroll.' },
+        ]} />
       </aside>
 
       <div class="main">
@@ -120,7 +124,6 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   .panel :global(.more) { border: 0; background: transparent; cursor: pointer; padding: 6px 14px 4px 46px; font: 400 12px/17px var(--font-sans); color: var(--color-text-muted); text-align: left; }
   .panel :global(.more:hover) { color: var(--color-text-primary); }
   .panel :global(.none) { padding: 6px 14px 4px 26px; font: 400 12px/17px var(--font-sans); color: var(--color-text-muted); }
-  .sticky-note { margin: 0; color: var(--color-annotation-measure); white-space: nowrap; }
   .main { min-width: 0; }
   .active { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 24px; }
   .active :global(.pill) { display: inline-flex; align-items: center; gap: 6px; padding: 4px 6px 4px 9px; border: 1px solid var(--color-annotation-measure); background: var(--color-annotation-measure-soft); border-radius: 2px; cursor: pointer; font: var(--type-mono-label); color: var(--color-text-primary); }
@@ -161,7 +164,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   .tsel .caret.s { left: -1px; } .tsel .caret.e { right: -1px; }
   .tsel .caret b { position: absolute; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--color-annotation-measure); }
   .tsel .caret.s b { top: -6px; } .tsel .caret.e b { bottom: -6px; }
-  @media (max-width: 1040px) { .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; } .sticky-note { display: none; } }
+  @media (max-width: 1040px) { .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; } }
   @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } .inner { padding-top: 80px; } .title { font-size: 24px; } }
   @media (prefers-reduced-motion: reduce) { .card.leaving, .thumb :global(img) { transition: none; } }
 </style>
