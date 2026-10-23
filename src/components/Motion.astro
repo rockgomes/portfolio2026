@@ -19,15 +19,22 @@
   });
 
   // Selection boxes: drawn from the top-left corner like a marquee drag, then the handles and the size label.
+  // Where a cursor waits inside the box (the headline), it does the drag and then leaves.
   document.querySelectorAll<HTMLElement>('[data-selection]').forEach((s) => {
     const handles = s.querySelectorAll('.h'); const size = s.querySelector('[data-size]');
-    const host = s.parentElement;
+    const host = s.parentElement!; const cursor = host.querySelector<HTMLElement>(':scope > .cursor');
     playOnce(host,
       () => { gsap.set(s, { clipPath: 'inset(-12px 100% 100% -12px)' }); gsap.set(handles, { scale: 0 }); gsap.set(size, { autoAlpha: 0 }); },
-      () => gsap.timeline({ delay: 0.25 })
-        .to(s, { clipPath: 'inset(-12px -12px -40px -12px)', duration: 0.9, ease: 'power2.inOut', clearProps: 'clipPath' })
-        .to(handles, { scale: 1, duration: 0.25, stagger: 0.03, ease: 'back.out(2)' })
-        .to(size, { autoAlpha: 1, duration: 0.3 }, '<0.1'),
+      () => {
+        const tl = gsap.timeline({ delay: 0.25 });
+        if (cursor) tl.fromTo(cursor, { autoAlpha: 0, x: -24, y: -18 }, { autoAlpha: 1, x: 0, y: 0, duration: 0.45 });
+        tl.to(s, { clipPath: 'inset(-12px -12px -40px -12px)', duration: 0.9, ease: 'power2.inOut', clearProps: 'clipPath' });
+        if (cursor) tl.to(cursor, { x: () => s.offsetWidth, y: () => s.offsetHeight, duration: 0.9, ease: 'power2.inOut' }, '<');
+        tl.to(handles, { scale: 1, duration: 0.25, stagger: 0.03, ease: 'back.out(2)' })
+          .to(size, { autoAlpha: 1, duration: 0.3 }, '<0.1');
+        if (cursor) tl.to(cursor, { autoAlpha: 0, x: '+=14', y: '+=10', duration: 0.4, ease: 'power2.in' }, '+=0.35');
+        return tl;
+      },
       0.5);
   });
 

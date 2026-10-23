@@ -96,8 +96,8 @@ const cols = [
   :global([data-hero-table] .chk[aria-checked='true']), :global([data-hero-table] .chk[aria-checked='mixed']) { background: var(--color-annotation-measure); border-color: var(--color-annotation-measure); }
   :global([data-hero-table] .chk svg) { display: none; }
   :global([data-hero-table] .chk[aria-checked='true'] svg.tick), :global([data-hero-table] .chk[aria-checked='mixed'] svg.dash) { display: block; }
-  :global(.pill) { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 7px; border-radius: 999px; font: 500 11.5px/16px var(--font-sans); }
-  :global(.pill i) { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  :global([data-hero-table] .pill) { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 7px; border-radius: 999px; font: 500 11.5px/16px var(--font-sans); }
+  :global([data-hero-table] .pill i) { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
   :global(.pill-lead) { background: var(--color-surface-sunken); color: var(--color-text-secondary); }
   :global(.pill-lead i) { background: var(--color-text-muted); }
   :global(.pill-trial) { background: var(--color-annotation-redline-soft); color: var(--color-status-negative-text); }

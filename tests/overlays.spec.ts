@@ -18,11 +18,27 @@ test.describe('overlays stay on their targets', () => {
     expect(Math.abs(box.width - (word.w + 5))).toBeLessThan(3);
   });
 
-  test('Dynamic Lists selection matches its thumbnail', async ({ page }) => {
+  test('Dev cursor sits on the Dynamic Lists thumbnail corner', async ({ page }) => {
     await page.goto('/');
     const thumb = (await page.locator('.card[data-id="dealfront-dynamic-lists"] .thumb').boundingBox())!;
-    const sel = (await page.locator('.card[data-id="dealfront-dynamic-lists"] .sel').boundingBox())!;
-    for (const k of ['x', 'y', 'width', 'height'] as const) expect(Math.abs(thumb[k] - sel[k]), k).toBeLessThan(2);
+    const cur = (await page.locator('.card[data-id="dealfront-dynamic-lists"] .cursor .arrow').boundingBox())!;
+    expect(Math.abs(cur.x - (thumb.x + thumb.width - 6))).toBeLessThan(3);
+    expect(Math.abs(cur.y - (thumb.y + thumb.height - 6))).toBeLessThan(3);
+  });
+
+  test('a dragged selection stays, shows its offset, and goes back on double-click', async ({ page }) => {
+    await page.goto('/');
+    const box = page.locator('.h1-box'); const label = box.locator('[data-size]');
+    const b = (await box.boundingBox())!;
+    await page.mouse.move(b.x + 100, b.y + 80); await page.mouse.down();
+    await page.mouse.move(b.x + 160, b.y + 110, { steps: 6 });
+    await expect(label).toHaveText('x +60 · y +30');
+    await page.mouse.up();
+    await expect(label).toHaveText(/^\d+ × \d+$/);
+    const moved = (await box.boundingBox())!;
+    expect(Math.round(moved.x - b.x)).toBe(60); expect(Math.round(moved.y - b.y)).toBe(30);
+    await box.dblclick({ position: { x: 100, y: 80 } });
+    await expect(box).not.toHaveClass(/moved/);
   });
 
   test('headline selection wraps the headline', async ({ page }) => {
