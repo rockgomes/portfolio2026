@@ -3,13 +3,13 @@
 import SectionHeader from './SectionHeader.astro';
 import ResolvedThread from './ResolvedThread.astro';
 // Independent work (from 2025) is one entry with a tab per client. Facts from Rock's CV (Oct 2026).
-type Client = { id: string; name: string; org?: string; years: string; text: string; todo?: boolean };
+type Client = { id: string; name: string; about: string; text: string; todo?: boolean }; // about: one line on the business (no dates: projects run about 6 months)
 type Item = { years: string; company: string; role: string; text?: string; clients?: Client[] };
 const items: Item[] = [
   { years: '2025 - now', company: 'Independent', role: 'Senior Product Designer · contract', clients: [
-    { id: 'well', name: 'Well', org: 'Bestway Group', years: '2025 - now', text: 'Care Homes, an NHS dispensing platform for care home medication. Redesigned how staff run 28-day medication cycles, designed onboarding and the group and unit hierarchy with the developers, and rebuilt the design system to meet AAA contrast.' },
-    { id: 'dealfront', name: 'Dealfront', years: '2025', text: 'Platform projects, user management and AI features: an AI assistant for prospect research, Dynamic Lists, and permissions with SSO for enterprise clients. Worked with three PMs at once, which is its own kind of design problem.' },
-    { id: 'romeo', name: 'Romeo', years: '20NN', text: 'Details to come (placeholder, Rock to write).', todo: true },
+    { id: 'well', name: 'Well', about: "Bestway Group · the UK's second-largest pharmacy chain, ~700 branches", text: 'Care Homes, an NHS dispensing platform for care home medication. Redesigned how staff run 28-day medication cycles, designed onboarding and the group and unit hierarchy with the developers, and rebuilt the design system to meet AAA contrast.' },
+    { id: 'dealfront', name: 'Dealfront', about: 'B2B sales intelligence SaaS', text: 'Platform projects, user management and AI features: an AI assistant for prospect research, Dynamic Lists, and permissions with SSO for enterprise clients. Worked with three PMs at once, which is its own kind of design problem.' },
+    { id: 'romeo', name: 'Romeo', about: 'Business line to come (placeholder)', text: 'Details to come (placeholder, Rock to write).', todo: true },
   ] },
   { years: '2023 - 2024', company: 'Inbank', role: 'Senior Product Designer', text: 'Redesigned the hire-purchase checkout in four countries, rebuilt the customer service back-office, and built the design system from scratch right after a rebrand.' },
   { years: '2020 - 2022', company: 'Pipedrive', role: 'Senior Product Designer', text: 'Integrations and developer experience team. Lots of user research, lots of tools for people who build tools.' },
@@ -40,7 +40,7 @@ const items: Item[] = [
                 </div>
                 {it.clients.map((c, i) => (
                   <div class:list={['cpanel', c.todo && 'todo']} role="tabpanel" id={`client-${c.id}`} aria-labelledby={`client-tab-${c.id}`} hidden={i !== 0}>
-                    <p class="cmeta t-mono-small">{c.org ? `${c.name}, ${c.org}` : c.name} · {c.years}</p>
+                    <p class="cmeta t-mono-small">{c.about}</p>
                     <p class="text">{c.text}</p>
                   </div>
                 ))}
