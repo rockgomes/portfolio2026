@@ -1,0 +1,7 @@
+---
+// Figma layer glyph as inline SVG. See src/lib/glyphs.ts for why this is not a text character.
+import { GLYPHS, type GlyphKind } from '../../lib/glyphs';
+interface Props { kind: GlyphKind }
+const { kind } = Astro.props;
+---
+<Fragment set:html={GLYPHS[kind]} />
