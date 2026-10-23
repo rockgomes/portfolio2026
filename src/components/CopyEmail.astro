@@ -22,6 +22,7 @@ const email = 'rock@rockgomes.com';
       let ok = false;
       try { await navigator.clipboard.writeText(b.dataset.copy!); ok = true; } catch { ok = false; }
       if (lab) { lab.textContent = ok ? 'copied' : b.dataset.copy!; setTimeout(() => { lab.textContent = prev; }, 1600); }
+      document.dispatchEvent(new CustomEvent('email:copied', { detail: { ok, button: b } }));
     });
   }
 </script>
