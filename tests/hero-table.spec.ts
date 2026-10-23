@@ -17,10 +17,37 @@ test.describe('hero table', () => {
   test('the + Condition menu is closed on load', async ({ page }) => {
     await expect(page.locator('[data-add-menu]')).toBeHidden();
   });
+  test('a visitor can save their own view', async ({ page }) => {
+    await expect(page.locator('[data-save-view]')).toBeHidden();
+    await page.click('[data-rm]');
+    await page.click('[data-add]'); await page.getByRole('menuitem', { name: 'Employees more than 500' }).click();
+    await page.click('[data-save-view]');
+    const tab = page.getByRole('tab', { name: 'Over 500 people' });
+    await expect(tab).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator('[data-save-view]')).toBeHidden();
+    await page.reload();
+    await expect(page.getByRole('tab', { name: 'Over 500 people' })).toHaveAttribute('aria-selected', 'true');
+    await expect(count(page)).toHaveText('22');
+  });
   test('sorting and saved state survive a reload', async ({ page }) => {
     await page.click('[data-sort="employees"]');
     await expect(page.locator('th[data-col="employees"]')).toHaveAttribute('aria-sort', 'ascending');
     await page.reload();
     await expect(page.locator('th[data-col="employees"]')).toHaveAttribute('aria-sort', 'ascending');
+  });
+});
+
+test.describe('hero story', () => {
+  test.use({ contextOptions: { reducedMotion: 'no-preference' } });
+  test.skip(({ viewport }) => (viewport?.width ?? 0) < 1200, 'the story only plays on wide screens');
+
+  test('scrolling skips to the Figma end state and saves nothing', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('[data-tabs] .tab')).toHaveCount(2); // the story starts before the view exists
+    await page.mouse.wheel(0, 100);
+    await expect(page.locator('[data-count]')).toHaveText('28');
+    await expect(page.getByRole('tab', { name: 'ICP · Not churned' })).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator('[data-story-thread]')).toHaveAttribute('data-state', 'end');
+    expect(await page.evaluate(() => localStorage.getItem('rg-hero-table'))).toBeNull();
   });
 });

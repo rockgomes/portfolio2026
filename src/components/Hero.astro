@@ -4,7 +4,7 @@ import Note from './Note.astro';
 import Dimension from './Dimension.astro';
 import SelectionBox from './SelectionBox.astro';
 import Cursor from './Cursor.astro';
-import Comment from './Comment.astro';
+import HeroStory from './HeroStory.astro';
 import HeroTable from './HeroTable.astro';
 ---
 <section class="hero" aria-labelledby="hero-title">
@@ -27,13 +27,13 @@ import HeroTable from './HeroTable.astro';
     <div class="specimen" data-specimen>
       <Dimension label="specimen.w = 734px · live" live="specimen" />
       <HeroTable />
-      <div class="caption t-mono-label"><span>fig. 00 · filter builder, example data</span><span data-table-meta>rows = 40 · fields = 6</span></div>
+      <div class="caption t-mono-label"><span>fig. 00 · filter builder, example data <button type="button" class="replay" data-story-replay hidden>↻ replay the session</button></span><span data-table-meta>rows = 40 · fields = 6</span></div>
 
       <Cursor name="Rock" color="rock" style="left: 186px; top: 144px;" />
       <Cursor name="PM" color="pm" style="left: 691px; top: 146px;" />
       <Cursor name="Dev" color="dev" style="left: 210px; top: 443px;" />
       <Cursor name="Client" color="client" style="left: 484px; top: 501px;" />
-      <Comment who="Client" initial="C" when="just now" style="left: 502px; top: 544px; width: 290px;">Can we save this filter as a view?</Comment>
+      <HeroStory />
     </div>
   </div>
 </section>
@@ -57,6 +57,8 @@ import HeroTable from './HeroTable.astro';
   [data-view-text] { display: none; }
   :global(html:not([data-view='engineer'])) [data-view-text='design'],
   :global(html[data-view='engineer']) [data-view-text='engineer'] { display: inline; }
+  .replay { margin-left: 8px; padding: 0; border: 0; background: none; font: inherit; color: var(--color-annotation-measure); cursor: pointer; }
+  .replay:hover { text-decoration: underline; }
   @media (max-width: 1199px) {
     .grid { grid-template-columns: minmax(0, 1fr); }
     .statement { max-width: 640px; }
