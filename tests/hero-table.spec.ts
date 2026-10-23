@@ -41,10 +41,10 @@ test.describe('hero story', () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } });
   test.skip(({ viewport }) => (viewport?.width ?? 0) < 1200, 'the story only plays on wide screens');
 
-  test('scrolling skips to the Figma end state and saves nothing', async ({ page }) => {
+  test('clicking the table skips to the end state and saves nothing', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('[data-tabs] .tab')).toHaveCount(2); // the story starts before the view exists
-    await page.mouse.wheel(0, 100);
+    await page.locator('[data-count]').click();
     await expect(page.locator('[data-count]')).toHaveText('28');
     await expect(page.getByRole('tab', { name: 'ICP · Not churned' })).toHaveAttribute('aria-selected', 'true');
     await expect(page.locator('[data-story-thread]')).toHaveAttribute('data-state', 'end');
@@ -53,7 +53,7 @@ test.describe('hero story', () => {
 
   test('the resolved comment opens and folds the conversation', async ({ page }) => {
     await page.goto('/');
-    await page.mouse.wheel(0, 100);
+    await page.locator('[data-count]').click();
     const toggle = page.locator('[data-resolved]');
     await expect(page.locator('[data-story-thread] [data-msg]:visible')).toHaveCount(1);
     await toggle.click();
