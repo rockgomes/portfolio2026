@@ -10,7 +10,7 @@ import HeroTable from './HeroTable.astro';
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap grid">
     <div class="statement">
-      <p class="gutter t-mono-label" aria-hidden="true" data-gutter>space.gutter = 24px</p>
+      <p class="gutter t-mono-label" aria-hidden="true" data-type-spec>h1 · IBM Plex Sans 600 · 56/60</p>
       <h1 id="hero-title" class="h1">
         <span class="h1-box" data-draggable>I design complex tools for work. <span class="accent">Then I build the working version.</span><SelectionBox label="498 × 252" live class="h1-sel" /><Cursor name="Rock" color="rock" class="h1-cursor" /></span>
       </h1>
@@ -25,7 +25,7 @@ import HeroTable from './HeroTable.astro';
     </div>
 
     <div class="specimen" data-specimen>
-      <Dimension label="specimen.w = 734px · live" live="specimen" />
+      <Dimension label="live prototype · 734 × 509" live="specimen" />
       <HeroTable />
       <div class="caption t-mono-label"><span>fig. 00 · filter builder, example data <button type="button" class="replay" data-story-replay hidden>↻ replay the session</button></span><span data-table-meta>rows = 40 · fields = 6</span></div>
 
@@ -69,16 +69,16 @@ import HeroTable from './HeroTable.astro';
 </style>
 
 <script>
-  // Live measure labels (the headline selection size is handled in Overlays): the specimen width, and the gap
-  // under the "space.gutter" label, both read from the page as it renders.
+  // Live labels (the headline selection size is handled in Overlays), read from the page as it renders:
+  // the headline's type spec, and the size of the live table.
   const fmt = (n: number) => Math.round(n);
-  const spec = document.querySelector<HTMLElement>('[data-specimen]');
-  const statement = document.querySelector<HTMLElement>('.statement');
+  const win = document.querySelector<HTMLElement>('[data-hero-table]');
+  const h1 = document.querySelector<HTMLElement>('#hero-title');
   const ro = new ResizeObserver(() => {
     const dl = document.querySelector<HTMLElement>('[data-dimension="specimen"] .label');
-    if (spec && dl) dl.textContent = `specimen.w = ${fmt(spec.offsetWidth)}px · live`;
-    const gl = document.querySelector<HTMLElement>('[data-gutter]');
-    if (statement && gl) gl.textContent = `space.gutter = ${fmt(parseFloat(getComputedStyle(statement).rowGap))}px`;
+    if (win && dl) dl.textContent = `live prototype · ${fmt(win.offsetWidth)} × ${fmt(win.offsetHeight)}`;
+    const tl = document.querySelector<HTMLElement>('[data-type-spec]');
+    if (h1 && tl) { const c = getComputedStyle(h1); tl.textContent = `h1 · ${c.fontFamily.split(',')[0].replace(/["']/g, '')} ${c.fontWeight} · ${fmt(parseFloat(c.fontSize))}/${fmt(parseFloat(c.lineHeight))}`; }
   });
-  if (spec) ro.observe(spec); if (statement) ro.observe(statement);
+  if (win) ro.observe(win); if (h1) ro.observe(h1);
 </script>

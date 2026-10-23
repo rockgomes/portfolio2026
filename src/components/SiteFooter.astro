@@ -5,6 +5,11 @@ import Cursor from './Cursor.astro';
 ---
 <footer class="ftr">
   <div class="wrap">
+    <!-- A canvas ruler instead of a plain line: real pixels across the content width (numbers filled in live) -->
+    <div class="ruler" aria-hidden="true" data-ruler>
+      <i class="ticks minor"></i><i class="ticks major"></i>
+      <span class="nums t-mono-label" data-ruler-nums>{Array.from({ length: 17 }, (_, i) => <span style={`left:${i * 80}px`}>{i * 80}</span>)}</span>
+    </div>
     <div class="main">
       <div class="cta">
         <p class="headline">Have a complex tool that needs a designer who ships?</p>
@@ -29,7 +34,17 @@ import Cursor from './Cursor.astro';
 </footer>
 <style>
   .ftr .wrap { display: flex; flex-direction: column; gap: 48px; padding-bottom: 48px; }
-  .main { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; align-items: flex-start; border-top: 1px solid var(--color-text-secondary); padding-top: 56px; }
+  .ftr .wrap > .ruler + .main { margin-top: -48px; }
+  /* Ruler: a top line, a small tick every 8px, a bigger tick and a number every 80px */
+  .ruler { position: relative; height: 30px; overflow: hidden; }
+  .ticks { position: absolute; left: 0; right: 0; top: 0; }
+  .ticks.minor { height: 5px; background: repeating-linear-gradient(to right, var(--color-text-muted) 0 1px, transparent 1px 8px); opacity: 0.6; }
+  .ticks.major { height: 11px; background: repeating-linear-gradient(to right, var(--color-text-secondary) 0 1px, transparent 1px 80px); }
+  .ruler::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--color-text-secondary); }
+  .nums { position: absolute; left: 0; right: 0; top: 13px; height: 16px; color: var(--color-text-muted); }
+  .nums :global(span) { position: absolute; padding-left: 4px; white-space: nowrap; }
+  .nums :global(.end) { padding: 0 0 0 4px; color: var(--color-annotation-measure); }
+  .main { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; align-items: flex-start; padding-top: 40px; }
   .cta { width: min(520px, 100%); display: flex; flex-direction: column; gap: 24px; }
   .headline { margin: 0; font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); color: var(--color-text-primary); }
   .sub { margin: 0; color: var(--color-text-muted); }
@@ -53,7 +68,7 @@ import Cursor from './Cursor.astro';
 </style>
 
 <script>
-  import { gsap, reduceMotion } from '../lib/motion';
+  import { gsap, playOnce, reduceMotion } from '../lib/motion';
 
   const ftr = document.querySelector<HTMLElement>('footer.ftr');
   const you = ftr?.querySelector<HTMLElement>('.cursor.c-you');
@@ -77,6 +92,21 @@ import Cursor from './Cursor.astro';
       ftr.classList.remove('you-here'); at = { x: 0, y: 0 };
       gsap.to(you, { x: 0, y: 0, duration: 0.6, ease: 'power3.inOut' });
     });
+  }
+
+  // Ruler numbers: one every 80px, as many as fit the real content width (the last one shows that width).
+  const ruler = ftr?.querySelector<HTMLElement>('[data-ruler]');
+  const nums = ruler?.querySelector<HTMLElement>('[data-ruler-nums]');
+  if (ruler && nums) {
+    const draw = () => {
+      const w = Math.round(ruler.offsetWidth); const out: string[] = [];
+      for (let x = 0; x <= w - 40; x += 80) out.push(`<span style="left:${x}px">${x}</span>`);
+      out.push(`<span class="end" style="right:0">${w}</span>`);
+      nums.innerHTML = out.join('');
+    };
+    new ResizeObserver(draw).observe(ruler); draw();
+    // Draws itself left to right once, when it comes into view.
+    playOnce(ruler, () => gsap.set(ruler, { clipPath: 'inset(0 100% 0 0)' }), () => gsap.to(ruler, { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power2.inOut', clearProps: 'clipPath' }), 0.6);
   }
 
   // Copying the email from the footer leaves a comment from You, right under the cursor.

@@ -7,7 +7,7 @@ const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer
 ---
 <header class="hdr">
   <div class="wrap inner">
-    <a class="brand" href="/"><span class="name">Rock Gomes</span><span class="role t-mono-small">senior product designer · Tallinn</span></a>
+    <a class="brand" href="/"><span class="name">Rock Gomes</span></a>
     {showSwitch && (
       <div class="switch" role="radiogroup" aria-label="Show this page for">
         <span class="lab">I'm a</span>
@@ -28,11 +28,11 @@ const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer
   </div>
 </header>
 <style>
-  .hdr { border-bottom: 1px solid var(--color-border-strong); }
+  /* Sticky: stays at the top while the page scrolls (above the overlays, which go up to z-index 12) */
+  .hdr { position: sticky; top: 0; z-index: 40; background: var(--color-surface-page); border-bottom: 1px solid var(--color-border-strong); }
   .inner { display: flex; align-items: center; gap: 24px; padding-block: 18px; min-height: 67px; }
   .brand { display: flex; gap: 8px; align-items: baseline; text-decoration: none; white-space: nowrap; min-width: 0; }
   .name { font: var(--type-ui-brand); color: var(--color-text-primary); }
-  .role { color: var(--color-text-secondary); }
   .switch { display: flex; align-items: center; gap: 10px; margin-inline: auto; }
   .lab { font: 400 11.5px/1 var(--font-mono); color: var(--color-text-muted); white-space: nowrap; }
   .seg { display: flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
@@ -42,7 +42,6 @@ const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer
   .nav { display: flex; align-items: center; gap: 24px; white-space: nowrap; }
   .nav a { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
   .nav a:hover { color: var(--color-text-primary); }
-  @media (max-width: 1240px) { .role { display: none; } }
   @media (max-width: 1040px) { .nav a { display: none; } }
   @media (max-width: 720px) { .nav { display: none; } .inner { flex-wrap: wrap; row-gap: 12px; } .switch { margin-inline: 0; } }
   @media (max-width: 420px) { .lab { display: none; } .seg button { padding: 4px 8px; } }

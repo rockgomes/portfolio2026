@@ -1,6 +1,6 @@
 /* Base styles. Values come from tokens.css. */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + 16px); } /* anchors stop below the sticky header */
 body {
   margin: 0;
   background: var(--color-surface-page);
@@ -17,7 +17,8 @@ button { font: inherit; color: inherit; }
 [hidden] { display: none !important; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
-:root { --gutter: clamp(16px, 5.56vw, 80px); --page-max: 1440px; }
+:root { --gutter: clamp(16px, 5.56vw, 80px); --page-max: 1440px; --header-h: 68px; }
+@media (max-width: 720px) { :root { --header-h: 112px; } } /* the header wraps to two rows */
 .wrap {
   width: 100%;
   max-width: var(--page-max);
