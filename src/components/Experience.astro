@@ -2,11 +2,18 @@
 // Figma: Experience (96:6929), Timeline item 21:111
 import SectionHeader from './SectionHeader.astro';
 import ResolvedThread from './ResolvedThread.astro';
-const items = [
-  { years: '2025 - now', delta: 'Δ = 1 yr+', company: 'Dealfront', role: 'Senior Product Designer', text: 'Platform projects, user management and AI features. Worked with three PMs at once, which is its own kind of design problem.' },
-  { years: '2023 - 2025', delta: 'Δ = 2 yrs', company: 'Inbank', role: 'Senior Product Designer', text: 'Redesigned the hire-purchase checkout in four countries, rebuilt the customer service back-office, and built the design system from scratch right after a rebrand.' },
-  { years: '2020 - 2022', delta: 'Δ = 2 yrs', company: 'Pipedrive', role: 'Senior Product Designer', text: 'Integrations and developer experience team. Lots of user research, lots of tools for people who build tools.' },
-  { years: '2016 - 2020', delta: 'Δ = 4 yrs', company: 'Bigbank', role: 'Product Designer', text: 'Loan application flow, the financial back-office, and a design system with a coded component library. We visited every country the bank worked in to watch people use the old tools.' },
+// Independent work (from 2025) is one entry with a tab per client. Facts from Rock's CV (Oct 2026).
+type Client = { id: string; name: string; about: string; text: string; todo?: boolean }; // about: one line on the business (no dates: projects run about 6 months)
+type Item = { years: string; company: string; role: string; text?: string; clients?: Client[] };
+const items: Item[] = [
+  { years: '2025 - now', company: 'Independent', role: 'Senior Product Designer · contract', clients: [
+    { id: 'well', name: 'Well', about: "Bestway Group · the UK's second-largest pharmacy chain, ~700 branches", text: 'Care Homes, an NHS dispensing platform for care home medication. Redesigned how staff run 28-day medication cycles, designed onboarding and the group and unit hierarchy with the developers, and rebuilt the design system to meet AAA contrast.' },
+    { id: 'dealfront', name: 'Dealfront', about: 'B2B sales intelligence SaaS', text: 'Platform projects, user management and AI features: an AI assistant for prospect research, Dynamic Lists, and permissions with SSO for enterprise clients. Worked with three PMs at once, which is its own kind of design problem.' },
+    { id: 'romeo', name: 'Romeo', about: 'Business line to come (placeholder)', text: 'Details to come (placeholder, Rock to write).', todo: true },
+  ] },
+  { years: '2023 - 2024', company: 'Inbank', role: 'Senior Product Designer', text: 'Redesigned the hire-purchase checkout in four countries, rebuilt the customer service back-office, and built the design system from scratch right after a rebrand.' },
+  { years: '2020 - 2022', company: 'Pipedrive', role: 'Senior Product Designer', text: 'Integrations and developer experience team. Lots of user research, lots of tools for people who build tools.' },
+  { years: '2016 - 2020', company: 'Bigbank', role: 'Product Designer', text: 'Loan application flow, the financial back-office, and a design system with a coded component library. We visited every country the bank worked in to watch people use the old tools.' },
 ];
 ---
 <section class="exp" id="experience" aria-labelledby="exp-title">
@@ -17,15 +24,28 @@ const items = [
       { who: 'PM', initial: 'P', color: 'pm', text: 'Should the older roles go into accordions?' },
       { who: 'Rock', initial: 'R', color: 'rock', text: 'No accordions. Four roles fit on one screen, so they all stay open.' },
     ]} />
-    <ol class="timeline">
+    <ol class="timeline" data-timeline>
       {items.map((it) => (
         <li class="item">
           <span class="marker" aria-hidden="true"><i></i></span>
-          <div class="years t-mono-small"><span>{it.years}</span><span class="d t-mono-label">{it.delta}</span></div>
+          <div class="years t-mono-small"><span>{it.years}</span></div>
           <div class="body">
             <h3 class="co t-heading-item">{it.company}</h3>
             <p class="role t-body-small">{it.role}</p>
-            <p class="text">{it.text}</p>
+            {it.text && <p class="text">{it.text}</p>}
+            {it.clients && (
+              <div class="clients" data-clients>
+                <div class="ctabs" role="tablist" aria-label="Clients">
+                  {it.clients.map((c, i) => <button type="button" class="ctab" role="tab" id={`client-tab-${c.id}`} aria-controls={`client-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{c.name}</button>)}
+                </div>
+                {it.clients.map((c, i) => (
+                  <div class:list={['cpanel', c.todo && 'todo']} role="tabpanel" id={`client-${c.id}`} aria-labelledby={`client-tab-${c.id}`} hidden={i !== 0}>
+                    <p class="cmeta t-mono-small">{c.about}</p>
+                    <p class="text">{c.text}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </li>
       ))}
@@ -37,17 +57,55 @@ const items = [
   .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
   .tl { position: relative; }
   /* Wide screens: the thread sits in the empty column right of the roles. Narrow: above the list. */
-  .tl :global(.exp-thread) { position: absolute; top: 28px; right: 0; width: 300px; }
+  .tl :global(.exp-thread) { position: absolute; top: 28px; right: 0; width: 300px; z-index: 1; } /* above the timeline layer */
   @media (max-width: 1199px) { .tl :global(.exp-thread) { position: static; width: auto; max-width: 420px; margin-bottom: 24px; } }
-  .timeline { list-style: none; margin: 0; padding: 0 0 0 4px; border-left: 1px solid var(--color-annotation-redline); }
+  /* The red line is a pseudo-element (not a border), so it can draw itself as you scroll (--draw, Motion.astro). Same place as the old 1px border. */
+  .timeline { position: relative; list-style: none; margin: 0; padding: 0 0 0 5px; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--color-annotation-redline); transform-origin: 50% 0%; transform: scaleY(var(--draw, 1)); }
   .item { display: flex; align-items: flex-start; padding-block: 28px; border-bottom: 1px solid var(--color-border-subtle); }
   .marker { position: relative; width: 32px; height: 16px; flex: none; }
-  .marker i { position: absolute; left: -4px; top: 5px; width: 7px; height: 7px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-redline); }
+  /* 7px square (border included) centred on the 1px line at the timeline's left edge; the marker box starts 5px in */
+  .marker i { position: absolute; left: -8px; top: 5px; width: 7px; height: 7px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-redline); }
   .years { width: 184px; flex: none; display: flex; flex-direction: column; gap: 4px; color: var(--color-text-secondary); white-space: nowrap; }
-  .d { color: var(--color-annotation-redline); }
   .body { width: min(540px, 100%); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
   .co { margin: 0; color: var(--color-text-primary); }
   .role { margin: 0; color: var(--color-text-secondary); }
   .text { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  /* Independent: one tab per client (same tab style as the hero table) */
+  .clients { display: flex; flex-direction: column; gap: 12px; padding-top: 6px; }
+  .ctabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .ctab { padding: 5px 10px; border-radius: 7px; border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .ctab:hover { color: var(--color-text-primary); }
+  .ctab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
+  .cpanel { display: flex; flex-direction: column; gap: 6px; }
+  .cpanel[hidden] { display: none; }
+  .cmeta { margin: 0; color: var(--color-text-muted); }
+  .todo .text { color: var(--color-text-muted); font-style: italic; }
   @media (max-width: 720px) { .item { flex-wrap: wrap; row-gap: 10px; } .years { width: auto; flex-direction: row; gap: 12px; } .body { flex: 1 1 100%; padding-left: 32px; } .inner { padding-top: 80px; } }
 </style>
+
+<script>
+  import { gsap, reduceMotion } from '../lib/motion';
+
+  // Client tabs: click or arrow keys switch the panel; the new panel fades in and the height eases.
+  document.querySelectorAll<HTMLElement>('[data-clients]').forEach((box) => {
+    const tabs = [...box.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = tabs.map((t) => box.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`)!);
+    const select = (i: number, focus = false) => {
+      const from = box.offsetHeight;
+      tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === i)); t.tabIndex = j === i ? 0 : -1; panels[j].hidden = j !== i; });
+      if (focus) tabs[i].focus();
+      if (reduceMotion()) return;
+      gsap.fromTo(box, { height: from }, { height: box.scrollHeight, duration: 0.35, ease: 'power2.out', clearProps: 'height' });
+      gsap.fromTo(panels[i], { autoAlpha: 0, y: 4 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.out', clearProps: 'transform,opacity,visibility' });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (n) { e.preventDefault(); select((i + n + tabs.length) % tabs.length, true); }
+      });
+    });
+  });
+</script>
+
