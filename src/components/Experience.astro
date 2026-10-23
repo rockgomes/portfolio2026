@@ -37,14 +37,15 @@ const items = [
   .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
   .tl { position: relative; }
   /* Wide screens: the thread sits in the empty column right of the roles. Narrow: above the list. */
-  .tl :global(.exp-thread) { position: absolute; top: 28px; right: 0; width: 300px; }
+  .tl :global(.exp-thread) { position: absolute; top: 28px; right: 0; width: 300px; z-index: 1; } /* above the timeline layer */
   @media (max-width: 1199px) { .tl :global(.exp-thread) { position: static; width: auto; max-width: 420px; margin-bottom: 24px; } }
   /* The red line is a pseudo-element (not a border), so it can draw itself as you scroll (--draw, Motion.astro). Same place as the old 1px border. */
   .timeline { position: relative; list-style: none; margin: 0; padding: 0 0 0 5px; }
   .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--color-annotation-redline); transform-origin: 50% 0%; transform: scaleY(var(--draw, 1)); }
   .item { display: flex; align-items: flex-start; padding-block: 28px; border-bottom: 1px solid var(--color-border-subtle); }
   .marker { position: relative; width: 32px; height: 16px; flex: none; }
-  .marker i { position: absolute; left: -4px; top: 5px; width: 7px; height: 7px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-redline); }
+  /* 7px square (border included) centred on the 1px line at the timeline's left edge; the marker box starts 5px in */
+  .marker i { position: absolute; left: -8px; top: 5px; width: 7px; height: 7px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-redline); }
   .years { width: 184px; flex: none; display: flex; flex-direction: column; gap: 4px; color: var(--color-text-secondary); white-space: nowrap; }
   .d { color: var(--color-annotation-redline); }
   .body { width: min(540px, 100%); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
