@@ -25,11 +25,14 @@ test.describe('design system cards', () => {
     await expect(page.locator('[data-pick]')).toHaveText(' / Ghost, Disabled');
   });
 
-  test('the rebrand swatch changes the primitive, not the semantic token', async ({ page }) => {
+  test('the rebrand swatch restyles the Primary buttons, the semantic token stays', async ({ page }) => {
     await page.goto('/');
+    const primary = page.locator('[data-set] .b[data-v="Primary"][data-s="Default"]');
+    const before = await primary.evaluate((e) => getComputedStyle(e).backgroundColor);
     await page.click('[data-rebrand]');
-    await expect(page.locator('[data-prim]')).toHaveText('violet.500');
+    await expect(page.locator('[data-prim]')).toHaveText('blue.600');
     await expect(page.locator('[data-chains] .chain').first().locator('.sem')).toHaveText('color.action.primary');
+    await expect.poll(() => primary.evaluate((e) => getComputedStyle(e).backgroundColor)).not.toBe(before);
   });
 
   test('the mode switch flips this page', async ({ page }) => {

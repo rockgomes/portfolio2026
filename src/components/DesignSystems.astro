@@ -10,7 +10,7 @@ const systems = [
 const variants = [{ name: 'Primary', cls: 'pri' }, { name: 'Secondary', cls: 'sec' }, { name: 'Ghost', cls: 'gho' }];
 const states = [{ name: 'Default', cls: '' }, { name: 'Hover', cls: 'hov' }, { name: 'Disabled', cls: 'dis' }];
 const chains = [
-  { sw: 'measure', prim: 'blue.600', sem: 'color.action.primary', use: 'button.bg' },
+  { sw: 'brand', prim: 'grey.900', sem: 'color.action.primary', use: 'button.bg' }, // row 1 drives the Primary buttons in 01 and 02
   { sw: 'primary', prim: 'grey.050', sem: 'color.text.primary', use: 'h1, row title' },
   { sw: 'redline', prim: 'red.400', sem: 'color.redline', use: 'dimension, pin' },
 ];
@@ -86,13 +86,13 @@ const chains = [
           <div class="area">
             <div class="chains t-mono-small" data-chains>
               {chains.map((c, i) => (
-                <p class:list={['chain', i === 0 && 'brand']} data-brand-row={i === 0 ? '' : undefined}>
+                <p class="chain" data-brand-row={i === 0 ? '' : undefined}>
                   {i === 0 ? <button type="button" class="sw rebrand" data-rebrand aria-label="Rebrand: change the primitive colour" title="Click to rebrand"></button> : <i class={`sw sw-${c.sw}`}></i>}
-                  <span class="prim" data-prim={i === 0 ? '' : undefined}>{c.prim}</span><span class="arr">→</span><span class="sem">{c.sem}</span><span class="arr">→</span><span class="use">{c.use}{i === 0 && <span class="mini" aria-hidden="true">Save</span>}</span>
+                  <span class="prim" data-prim={i === 0 ? '' : undefined}>{c.prim}</span><span class="arr">→</span><span class="sem">{c.sem}</span><span class="arr">→</span><span class="use">{c.use}</span>
                 </p>
               ))}
             </div>
-            <p class="hint t-mono-label">click the blue swatch to rebrand</p>
+            <p class="hint t-mono-label">click the first swatch to rebrand the buttons above</p>
           </div>
           <p class="cap t-body-small">Primitives hold values, semantic tokens give them a job, components only use the semantic layer. A rebrand is a token change.</p>
         </article>
@@ -113,6 +113,8 @@ const chains = [
   </div>
 </section>
 <style>
+  /* --brand is color.action.primary in card 03. Primary buttons in 01 and 02 read it, so a rebrand restyles them. */
+  .ds { --brand: var(--color-text-primary); --brand-hover: color-mix(in srgb, var(--brand) 78%, var(--color-surface-page)); }
   .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
   .head { display: flex; flex-direction: column; gap: 10px; }
   .fig { margin: 0; display: flex; gap: 5px; align-items: center; color: var(--color-figma-component); white-space: nowrap; }
@@ -147,8 +149,8 @@ const chains = [
   .b { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); padding: 6px 12px; border: 0; border-radius: 2px; white-space: nowrap; cursor: pointer; }
   .b[aria-pressed='true'], .b.lit { outline: 1.5px solid var(--color-annotation-measure); outline-offset: 2px; }
   .pick { color: var(--color-text-secondary); }
-  .pri { background: var(--color-text-primary); color: var(--color-surface-page); }
-  .pri.hov { background: var(--color-text-secondary); }
+  .pri { background: var(--brand); color: var(--color-surface-page); transition: background-color 0.4s; }
+  .pri.hov { background: var(--brand-hover); }
   .sec { background: var(--color-surface-page); color: var(--color-text-primary); border: 1px solid var(--color-border-strong); }
   .sec.hov { background: var(--color-border-strong); }
   .gho { color: var(--color-text-primary); }
@@ -157,10 +159,10 @@ const chains = [
   .ip { display: flex; gap: 24px; align-items: center; }
   .inst { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   /* The demo button follows the properties panel (and the variant set) through data attributes */
-  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--color-text-primary); color: var(--color-surface-page); border: 1px solid var(--color-figma-component); font: var(--type-ui-button); white-space: nowrap; }
+  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--brand); color: var(--color-surface-page); border: 1px solid var(--color-figma-component); font: var(--type-ui-button); white-space: nowrap; transition: background-color 0.4s; }
   .btn-demo[data-variant='Secondary'] { background: var(--color-surface-page); color: var(--color-text-primary); }
   .btn-demo[data-variant='Ghost'] { background: transparent; color: var(--color-text-primary); }
-  .btn-demo[data-state='Hover'][data-variant='Primary'] { background: var(--color-text-secondary); }
+  .btn-demo[data-state='Hover'][data-variant='Primary'] { background: var(--brand-hover); }
   .btn-demo[data-state='Hover'][data-variant='Secondary'] { background: var(--color-border-strong); }
   .btn-demo[data-state='Hover'][data-variant='Ghost'] { background: var(--color-border-subtle); }
   .btn-demo[data-state='Disabled'] { opacity: 0.4; }
@@ -187,11 +189,8 @@ const chains = [
   .sw-measure { background: var(--color-annotation-measure); } .sw-primary { background: var(--color-text-primary); } .sw-redline { background: var(--color-annotation-redline); }
   .prim { width: 96px; color: var(--color-text-primary); } .sem { width: 170px; color: var(--color-annotation-measure); } .use { width: 110px; color: var(--color-text-secondary); }
   .arr { color: var(--color-text-muted); }
-  /* Row 1 carries the brand colour as a variable: the swatch and the "Save" button both read it */
-  .brand { --brand: var(--color-annotation-measure); }
   .sw.rebrand { width: 12px; height: 12px; padding: 0; cursor: pointer; background: var(--brand); outline: 1.5px dashed var(--color-annotation-measure); outline-offset: 2px; }
   .rebrand:hover { outline-style: solid; }
-  .mini { display: inline-block; margin-left: 8px; padding: 1px 6px; border-radius: 2px; background: var(--brand); color: var(--color-surface-page); font: var(--type-mono-label); transition: background 0.3s; }
   .chain > * { border-radius: 2px; transition: background-color 0.35s; }
   .chain > .flash { background-color: var(--color-annotation-measure-soft); }
   .hint { margin: 4px 0 0; color: var(--color-text-muted); }
@@ -280,21 +279,25 @@ const chains = [
     rows.forEach((r, i) => tl.to([...r.children].slice(1), { opacity: 1, duration: 0.25, stagger: 0.12 }, i * 0.45));
     return tl;
   }, 0.6);
-  const PALETTE = [['blue.600', '--color-annotation-measure'], ['violet.500', '--color-figma-component'], ['green.600', '--color-status-positive']];
+  // Rebrand: the first token row is color.action.primary. A click flows along the chain, then restyles the Primary
+  // buttons in 01 and 02, which read --brand.
+  const PALETTE = [['grey.900', '--color-text-primary'], ['blue.600', '--color-annotation-measure'], ['violet.500', '--color-figma-component'], ['green.600', '--color-status-positive']];
   let brand = 0;
   const brandRow = $('[data-brand-row]');
+  const primaries = [...root.querySelectorAll<HTMLElement>('[data-set] .pri')];
   $('[data-rebrand]').addEventListener('click', () => {
     brand = (brand + 1) % PALETTE.length;
     const [name, token] = PALETTE[brand];
     const prim = brandRow.querySelector<HTMLElement>('[data-prim]')!;
+    const apply = () => root.style.setProperty('--brand', `var(${token})`);
+    prim.textContent = name;
+    if (reduceMotion()) { apply(); return; }
     const parts = [...brandRow.children].slice(1) as HTMLElement[]; // primitive → semantic → use
-    if (reduceMotion()) { brandRow.style.setProperty('--brand', `var(${token})`); prim.textContent = name; return; }
-    // The change flows along the chain: the primitive first, the semantic token passes it on, the button gets it last.
     const tl = gsap.timeline();
-    tl.add(() => { brandRow.querySelector('[data-rebrand]')!.parentElement!.style.setProperty('--brand', `var(${token})`); prim.textContent = name; });
-    parts.forEach((el, i) => tl.add(() => el.classList.add('flash'), i * 0.12).add(() => el.classList.remove('flash'), i * 0.12 + 0.45));
-    tl.add(() => pop(brandRow.querySelector('.mini')!), parts.length * 0.12 - 0.1);
     pop(prim);
+    parts.forEach((el, i) => tl.add(() => el.classList.add('flash'), i * 0.12).add(() => el.classList.remove('flash'), i * 0.12 + 0.45));
+    tl.add(() => { apply(); primaries.forEach((c) => c.classList.add('lit')); if (btn.dataset.variant === 'Primary') pop(btn); }, parts.length * 0.12)
+      .add(() => primaries.forEach((c) => c.classList.remove('lit')), '+=0.7');
   });
 
   // 04: a real switch for this page's mode. It lasts for this visit only.
