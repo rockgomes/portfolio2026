@@ -1,5 +1,5 @@
 ---
-// Figma: Section / Design systems (48:1690)
+// Figma: Section / Design systems (48:1690). The four "how I build them" cards are small working tools (motion plan, moment 05).
 import SectionHeader from './SectionHeader.astro';
 import Glyph from './Glyph.astro';
 const systems = [
@@ -7,6 +7,8 @@ const systems = [
   { label: 'Bigbank DS', name: 'Bigbank', when: '2016 - 2020', facts: ['Built together with one other designer', 'A coded component library, so the system is what ships', 'One system for every branch and market'], tags: ['Components', 'Code', 'Research'] },
   { label: 'Well DS', name: 'Well', when: 'Contract', facts: ['Rebuilt the back-office design system', 'Colour tokens updated to meet AAA contrast', 'Worked side by side with the dev team'], tags: ['Tokens', 'AAA contrast', 'Handoff'] },
 ];
+const variants = [{ name: 'Primary', cls: 'pri' }, { name: 'Secondary', cls: 'sec' }, { name: 'Ghost', cls: 'gho' }];
+const states = [{ name: 'Default', cls: '' }, { name: 'Hover', cls: 'hov' }, { name: 'Disabled', cls: 'dis' }];
 const chains = [
   { sw: 'measure', prim: 'blue.600', sem: 'color.action.primary', use: 'button.bg' },
   { sw: 'primary', prim: 'grey.050', sem: 'color.text.primary', use: 'h1, row title' },
@@ -45,11 +47,11 @@ const chains = [
         <article class="spec">
           <h3 class="spec-h"><span class="n t-mono-label">01</span><span class="t-heading-item">Variants, not copies</span></h3>
           <div class="area">
-            <p class="fig t-mono-label"><Glyph kind="master" /> Button</p>
-            <div class="set" aria-hidden="true">
-              <div class="vr"><span class="b pri">Default</span><span class="b pri hov">Hover</span><span class="b pri dis">Disabled</span></div>
-              <div class="vr"><span class="b sec">Default</span><span class="b sec hov">Hover</span><span class="b sec dis">Disabled</span></div>
-              <div class="vr"><span class="b gho">Default</span><span class="b gho hov">Hover</span><span class="b gho dis">Disabled</span></div>
+            <p class="fig t-mono-label"><Glyph kind="master" /> Button<span class="pick" data-pick></span></p>
+            <div class="set" role="group" aria-label="Button variants: pick one" data-set>
+              {variants.map((v) => (
+                <div class="vr">{states.map((st) => <button type="button" class:list={['b', v.cls, st.cls]} data-v={v.name} data-s={st.name} aria-pressed="false">{st.name}</button>)}</div>
+              ))}
             </div>
           </div>
           <p class="cap t-body-small">One component set with Variant, State and Size. Teams pick a combination, nobody copies and tweaks a button.</p>
@@ -57,20 +59,20 @@ const chains = [
 
         <article class="spec">
           <h3 class="spec-h"><span class="n t-mono-label">02</span><span class="t-heading-item">Properties that make sense</span></h3>
-          <div class="area">
-            <div class="ip" aria-hidden="true">
+          <div class="area" data-drag-bounds>
+            <div class="ip">
               <div class="inst">
                 <p class="fig t-mono-label"><Glyph kind="variant" /> Button</p>
-                <span class="btn-demo"><span class="t-mono-small">+</span><span>Save as view</span></span>
+                <span class="btn-demo" data-btn data-variant="Primary" data-state="Default" data-size="Medium" data-draggable aria-hidden="true"><span class="ico t-mono-small" data-icon>+</span><span data-label>Save as view</span></span>
               </div>
-              <div class="props t-mono-label">
+              <div class="props t-mono-label" role="group" aria-label="Button properties">
                 <p class="ph"><Glyph kind="variant" /> Button</p>
-                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>Variant</span><span class="v">Primary ▾</span></p>
-                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>State</span><span class="v">Default ▾</span></p>
-                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>Size</span><span class="v">Medium ▾</span></p>
-                <p class="pr"><span class="k"><i class="pur">T</i>Label</span><span class="v">Save as view</span></p>
-                <p class="pr"><span class="k"><i class="pur"><Glyph kind="bool" /></i>Show icon</span><img src="/home/toggle.svg" width="24" height="14" alt="" /></p>
-                <p class="pr"><span class="k"><i class="pur"><Glyph kind="variant" /></i>Icon</span><span class="v"><Glyph kind="variant" /> plus ▾</span></p>
+                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>Variant</span><button type="button" class="v" data-prop="variant" aria-label="Variant: Primary. Change">Primary ▾</button></p>
+                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>State</span><button type="button" class="v" data-prop="state" aria-label="State: Default. Change">Default ▾</button></p>
+                <p class="pr"><span class="k"><i class="mut"><Glyph kind="prop" /></i>Size</span><button type="button" class="v" data-prop="size" aria-label="Size: Medium. Change">Medium ▾</button></p>
+                <p class="pr"><label class="k" for="ds-label"><i class="pur">T</i>Label</label><input id="ds-label" class="v vin" data-prop="label" value="Save as view" maxlength="18" autocomplete="off" spellcheck="false" /></p>
+                <p class="pr"><span class="k"><i class="pur"><Glyph kind="bool" /></i>Show icon</span><button type="button" class="tg" role="switch" aria-checked="true" aria-label="Show icon" data-prop="show"></button></p>
+                <p class="pr"><span class="k"><i class="pur"><Glyph kind="variant" /></i>Icon</span><button type="button" class="v" data-prop="icon" aria-label="Icon: plus. Change"><Glyph kind="variant" /> <span data-icon-name>plus</span> ▾</button></p>
               </div>
             </div>
           </div>
@@ -80,11 +82,15 @@ const chains = [
         <article class="spec">
           <h3 class="spec-h"><span class="n t-mono-label">03</span><span class="t-heading-item">Three layers of tokens</span></h3>
           <div class="area">
-            <div class="chains t-mono-small" aria-hidden="true">
-              {chains.map((c) => (
-                <p class="chain"><i class={`sw sw-${c.sw}`}></i><span class="prim">{c.prim}</span><span class="arr">→</span><span class="sem">{c.sem}</span><span class="arr">→</span><span class="use">{c.use}</span></p>
+            <div class="chains t-mono-small" data-chains>
+              {chains.map((c, i) => (
+                <p class="chain">
+                  {i === 0 ? <button type="button" class={`sw sw-${c.sw} rebrand`} data-rebrand aria-label="Rebrand: change the primitive colour" title="Click to rebrand"></button> : <i class={`sw sw-${c.sw}`}></i>}
+                  <span class="prim" data-prim={i === 0 ? '' : undefined}>{c.prim}</span><span class="arr">→</span><span class="sem">{c.sem}</span><span class="arr">→</span><span class="use">{c.use}</span>
+                </p>
               ))}
             </div>
+            <p class="hint t-mono-label">click the blue swatch to rebrand</p>
           </div>
           <p class="cap t-body-small">Primitives hold values, semantic tokens give them a job, components only use the semantic layer. A rebrand is a token change.</p>
         </article>
@@ -93,9 +99,10 @@ const chains = [
           <h3 class="spec-h"><span class="n t-mono-label">04</span><span class="t-heading-item">Modes, not duplicates</span></h3>
           <div class="area">
             <div class="modes" aria-hidden="true">
-              <div class="mode" data-theme-sample="dark"><p class="ml t-mono-label">mode: dark</p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
-              <div class="mode" data-theme-sample="light"><p class="ml t-mono-label">mode: light</p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
+              <div class="mode" data-theme-sample="dark"><p class="ml t-mono-label">mode: dark<span class="here" data-here="dark"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
+              <div class="mode" data-theme-sample="light"><p class="ml t-mono-label">mode: light<span class="here" data-here="light"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
             </div>
+            <button type="button" class="mode-switch t-mono-label" data-mode-switch>Switch this page to dark</button>
           </div>
           <p class="cap t-body-small">One set of components with a Dark and a Light mode. This page switches between them without a single copied frame.</p>
         </article>
@@ -129,11 +136,13 @@ const chains = [
   .spec { display: flex; flex-direction: column; gap: 14px; padding: 20px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); min-width: 0; }
   .spec-h { margin: 0; display: flex; gap: 10px; align-items: baseline; color: var(--color-text-primary); }
   .spec-h .n { color: var(--color-annotation-redline); }
-  .area { height: 230px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: 28px 24px; background: var(--color-surface-stage); overflow: hidden; }
+  .area { flex: 1 0 auto; min-height: 230px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: 28px 24px; background: var(--color-surface-stage); overflow: hidden; }
   .cap { margin: 0; color: var(--color-text-secondary); }
   .set { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px dashed var(--color-figma-component); border-radius: 4px; }
   .vr { display: flex; gap: 12px; }
-  .b { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); padding: 6px 12px; border-radius: 2px; white-space: nowrap; }
+  .b { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); padding: 6px 12px; border: 0; border-radius: 2px; white-space: nowrap; cursor: pointer; }
+  .b[aria-pressed='true'], .b.lit { outline: 1.5px solid var(--color-annotation-measure); outline-offset: 2px; }
+  .pick { color: var(--color-text-secondary); }
   .pri { background: var(--color-text-primary); color: var(--color-surface-page); }
   .pri.hov { background: var(--color-text-secondary); }
   .sec { background: var(--color-surface-page); color: var(--color-text-primary); border: 1px solid var(--color-border-strong); }
@@ -143,7 +152,16 @@ const chains = [
   .dis { opacity: 0.4; }
   .ip { display: flex; gap: 24px; align-items: center; }
   .inst { display: flex; flex-direction: column; gap: 6px; }
-  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--color-text-primary); color: var(--color-surface-page); border: 1px solid var(--color-figma-component); font: var(--type-ui-button); white-space: nowrap; }
+  /* The demo button follows the properties panel (and the variant set) through data attributes */
+  .btn-demo { cursor: grab; display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--color-text-primary); color: var(--color-surface-page); border: 1px solid var(--color-figma-component); font: var(--type-ui-button); white-space: nowrap; }
+  .btn-demo[data-variant='Secondary'] { background: var(--color-surface-page); color: var(--color-text-primary); }
+  .btn-demo[data-variant='Ghost'] { background: transparent; color: var(--color-text-primary); }
+  .btn-demo[data-state='Hover'][data-variant='Primary'] { background: var(--color-text-secondary); }
+  .btn-demo[data-state='Hover'][data-variant='Secondary'] { background: var(--color-border-strong); }
+  .btn-demo[data-state='Hover'][data-variant='Ghost'] { background: var(--color-border-subtle); }
+  .btn-demo[data-state='Disabled'] { opacity: 0.4; }
+  .btn-demo[data-size='Small'] { padding: 5px 10px 5px 8px; font-size: 12px; }
+  .btn-demo[data-size='Large'] { padding: 11px 18px 11px 16px; font-size: 15px; }
   .props { width: 230px; display: flex; flex-direction: column; gap: 7px; padding: 10px 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: 4px; }
   .props p { margin: 0; }
   .ph { color: var(--color-figma-component); }
@@ -151,12 +169,29 @@ const chains = [
   .k { display: flex; gap: 6px; color: var(--color-text-secondary); }
   .k i { font-style: normal; display: inline-flex; align-items: center; } .mut { color: var(--color-text-muted); } .pur { color: var(--color-figma-component); }
   .v { color: var(--color-text-primary); }
+  button.v, .vin { margin: -2px -4px; padding: 2px 4px; border: 0; border-radius: 3px; background: transparent; font: inherit; letter-spacing: inherit; cursor: pointer; }
+  button.v:hover, .vin:hover, .vin:focus { background: var(--color-surface-stage); }
+  .vin { width: 16ch; text-align: right; cursor: text; outline: 0; }
+  .vin:focus-visible { outline: 2px solid var(--color-annotation-measure); outline-offset: 1px; }
+  .tg { position: relative; width: 24px; height: 14px; flex: none; padding: 0; border: 0; border-radius: 7px; background: var(--color-figma-component); cursor: pointer; transition: background 0.2s; }
+  .tg::after { content: ''; position: absolute; top: 2px; left: 12px; width: 10px; height: 10px; border-radius: 5px; background: var(--color-surface-page); transition: left 0.2s cubic-bezier(.2,.8,.2,1); }
+  .tg[aria-checked='false'] { background: var(--color-border-strong); }
+  .tg[aria-checked='false']::after { left: 2px; }
   .chains { display: flex; flex-direction: column; gap: 10px; }
   .chain { margin: 0; display: flex; gap: 10px; align-items: center; white-space: nowrap; }
   .sw { width: 10px; height: 10px; border: 1px solid var(--color-border-strong); flex: none; }
   .sw-measure { background: var(--color-annotation-measure); } .sw-primary { background: var(--color-text-primary); } .sw-redline { background: var(--color-annotation-redline); }
   .prim { width: 96px; color: var(--color-text-primary); } .sem { width: 170px; color: var(--color-annotation-measure); } .use { width: 110px; color: var(--color-text-secondary); }
   .arr { color: var(--color-text-muted); }
+  .rebrand { padding: 0; cursor: pointer; }
+  .rebrand:hover { outline: 1.5px solid var(--color-annotation-measure); outline-offset: 2px; }
+  .chip { display: inline-block; width: 8px; height: 8px; margin-left: 6px; vertical-align: 0; border: 1px solid var(--color-border-strong); }
+  .hint { margin: 4px 0 0; color: var(--color-text-muted); }
+  .here { display: none; color: var(--color-text-muted); }
+  .mode[data-active] .here { display: inline; }
+  .mode-switch { padding: 4px 10px; border: 1px solid var(--color-border-strong); border-radius: 4px; background: var(--color-surface-raised); color: var(--color-annotation-measure); cursor: pointer; }
+  .mode-switch:hover { border-color: var(--color-annotation-measure); }
+  @media (prefers-reduced-motion: reduce) { .tg, .tg::after { transition: none; } }
   .modes { display: flex; gap: 16px; }
   .mode { display: flex; flex-direction: column; gap: 6px; }
   .ml { margin: 0; color: var(--color-figma-component); }
@@ -180,3 +215,90 @@ const chains = [
     .chain { flex-wrap: wrap; white-space: normal; } .prim, .sem, .use { width: auto; }
   }
 </style>
+
+<script>
+  import { gsap, playOnce, reduceMotion } from '../lib/motion';
+
+  const root = document.getElementById('design-systems')!;
+  const $ = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel as any)!;
+  const btn = $('[data-btn]'); const icon = $('[data-icon]'); const label = $('[data-label]');
+  const cells = [...root.querySelectorAll<HTMLButtonElement>('[data-set] .b')];
+  const pick = $('[data-pick]');
+  const VARIANTS = ['Primary', 'Secondary', 'Ghost'], STATES = ['Default', 'Hover', 'Disabled'], SIZES = ['Small', 'Medium', 'Large'];
+  const ICONS = [['plus', '+'], ['arrow', '→'], ['check', '✓']];
+  const st = { variant: 'Primary', state: 'Default', size: 'Medium', show: true, icon: 0, picked: false };
+  const next = (list: string[], v: string) => list[(list.indexOf(v) + 1) % list.length];
+  const pop = (el: Element) => { if (!reduceMotion()) gsap.fromTo(el, { scale: 0.94 }, { scale: 1, duration: 0.3, ease: 'back.out(2.2)' }); };
+
+  // 01 + 02 share one button: the variant set picks Variant and State, the panel sets everything.
+  function paint() {
+    Object.assign(btn.dataset, { variant: st.variant, state: st.state, size: st.size });
+    icon.hidden = !st.show; icon.textContent = ICONS[st.icon][1];
+    for (const [prop, val] of [['variant', st.variant], ['state', st.state], ['size', st.size]] as const) {
+      const b = $(`[data-prop="${prop}"]`); b.textContent = `${val} ▾`; b.setAttribute('aria-label', `${prop[0].toUpperCase() + prop.slice(1)}: ${val}. Change`);
+    }
+    $('[data-icon-name]').textContent = ICONS[st.icon][0];
+    $('[data-prop="icon"]').setAttribute('aria-label', `Icon: ${ICONS[st.icon][0]}. Change`);
+    $('[data-prop="show"]').setAttribute('aria-checked', String(st.show));
+    cells.forEach((c) => c.setAttribute('aria-pressed', String(st.picked && c.dataset.v === st.variant && c.dataset.s === st.state)));
+    pick.textContent = st.picked ? ` / ${st.variant}, ${st.state}` : '';
+  }
+  cells.forEach((c) => c.addEventListener('click', () => { st.variant = c.dataset.v!; st.state = c.dataset.s!; st.picked = true; paint(); pop(btn); }));
+  root.querySelector('.props')!.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>('[data-prop]'); if (!b) return;
+    const prop = b.dataset.prop;
+    if (prop === 'variant') st.variant = next(VARIANTS, st.variant);
+    else if (prop === 'state') st.state = next(STATES, st.state);
+    else if (prop === 'size') st.size = next(SIZES, st.size);
+    else if (prop === 'show') st.show = !st.show;
+    else if (prop === 'icon') st.icon = (st.icon + 1) % ICONS.length;
+    else return;
+    if (prop === 'variant' || prop === 'state') st.picked = true;
+    paint(); pop(btn);
+  });
+  $<HTMLInputElement>('[data-prop="label"]').addEventListener('input', (e) => { label.textContent = (e.target as HTMLInputElement).value || ' '; });
+
+  // 01: the nine states light up one after another, once, when the card comes into view.
+  playOnce($('[data-set]'), () => {}, () => {
+    const tl = gsap.timeline({ delay: 0.2 });
+    cells.forEach((c, i) => tl.add(() => c.classList.add('lit'), i * 0.12).add(() => c.classList.remove('lit'), i * 0.12 + 0.3));
+    return tl;
+  }, 0.6);
+
+  // 03: each chain lights up from primitive to use, row by row. The blue swatch "rebrands" the primitive.
+  const rows = [...root.querySelectorAll<HTMLElement>('[data-chains] .chain')];
+  playOnce($('[data-chains]'), () => rows.forEach((r) => gsap.set([...r.children].slice(1), { opacity: 0.2 })), () => {
+    const tl = gsap.timeline({ delay: 0.2 });
+    rows.forEach((r, i) => tl.to([...r.children].slice(1), { opacity: 1, duration: 0.25, stagger: 0.12 }, i * 0.45));
+    return tl;
+  }, 0.6);
+  const PALETTE = [['blue.600', '--color-annotation-measure'], ['violet.500', '--color-figma-component'], ['green.600', '--color-status-positive']];
+  let brand = 0;
+  $('[data-rebrand]').addEventListener('click', (e) => {
+    brand = (brand + 1) % PALETTE.length;
+    const [name, token] = PALETTE[brand]; const sw = e.currentTarget as HTMLElement; const row = sw.closest('.chain')!;
+    sw.style.background = `var(${token})`;
+    const prim = row.querySelector<HTMLElement>('[data-prim]')!; prim.textContent = name;
+    let chip = row.querySelector<HTMLElement>('.chip'); if (!chip) { chip = document.createElement('i'); chip.className = 'chip'; row.querySelector('.use')!.append(chip); }
+    chip.style.background = `var(${token})`;
+    pop(prim); pop(chip);
+  });
+
+  // 04: a real switch for this page's mode. It lasts for this visit only.
+  const html = document.documentElement; const dark = matchMedia('(prefers-color-scheme: dark)');
+  const current = () => (html.dataset.theme === 'dark' || html.dataset.theme === 'light' ? html.dataset.theme : dark.matches ? 'dark' : 'light');
+  const sw4 = $<HTMLButtonElement>('[data-mode-switch]');
+  function paintMode() {
+    const now = current();
+    root.querySelectorAll<HTMLElement>('[data-theme-sample]').forEach((m) => m.toggleAttribute('data-active', m.dataset.themeSample === now));
+    sw4.textContent = `Switch this page to ${now === 'dark' ? 'light' : 'dark'}`;
+  }
+  sw4.addEventListener('click', () => {
+    const go = () => { html.dataset.theme = current() === 'dark' ? 'light' : 'dark'; paintMode(); };
+    const d = document as any;
+    if (d.startViewTransition && !reduceMotion()) d.startViewTransition(go); else go();
+  });
+  dark.addEventListener('change', paintMode);
+  paint(); paintMode();
+</script>
+
