@@ -32,7 +32,6 @@ import HeroTable from './HeroTable.astro';
       <Cursor name="Rock" color="rock" style="left: 186px; top: 144px;" />
       <Cursor name="PM" color="pm" style="left: 691px; top: 146px;" />
       <Cursor name="Dev" color="dev" style="left: 210px; top: 443px;" />
-      <Cursor name="Client" color="client" style="left: 484px; top: 501px;" />
       <HeroStory />
     </div>
   </div>
@@ -57,6 +56,8 @@ import HeroTable from './HeroTable.astro';
   [data-view-text] { display: none; }
   :global(html:not([data-view='engineer'])) [data-view-text='design'],
   :global(html[data-view='engineer']) [data-view-text='engineer'] { display: inline; }
+  /* Cursors and the comment thread sit above the table's + Condition menu (z-index 10) */
+  .specimen > :global(.cursor) { z-index: 12; }
   .replay { margin-left: 8px; padding: 0; border: 0; background: none; font: inherit; color: var(--color-annotation-measure); cursor: pointer; }
   .replay:hover { text-decoration: underline; }
   @media (max-width: 1199px) {

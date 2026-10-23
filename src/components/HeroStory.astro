@@ -1,14 +1,14 @@
 ---
-// Hero story (motion plan, moment 01): a short working session on the hero table.
-// The client shares a problem, Rock adds a filter, the client asks to keep it, Rock saves it as a view.
-// It ends in the Figma state (frame 96:6774): "ICP · Not churned" selected, cursors in place, one comment.
+// Hero story (motion plan, moment 01): a short working session on the hero table, based on the Dynamic Lists project.
+// The PM brings the users' problem, Rock proposes and builds the fix (a saved view), the Dev asks how it works, Rock answers.
+// It ends in the Figma state (frame 96:6774): "ICP · Not churned" selected, cursors in place, one resolved comment.
 // Plays once per session on wide screens; never with reduced motion, and never over a visitor's own table state.
-// Copy is a first draft (Rock to confirm).
+// Copy is a first draft (Rock to confirm), taken from the Dynamic Lists case study.
 const messages = [
-  { who: 'Client', initial: 'C', color: 'client', text: "Sales can't find active customers. Half of this list has churned." },
-  { who: 'Rock', initial: 'R', color: 'rock', text: 'Here is a filter that hides churned companies. Try it.' },
-  { who: 'Client', initial: 'C', color: 'client', text: 'Can we save this filter as a view?', keep: true },
-  { who: 'Rock', initial: 'R', color: 'rock', text: 'Done. It is the "ICP · Not churned" tab now.' },
+  { who: 'PM', initial: 'P', color: 'pm', text: 'Users keep copying the same list just to see one group. Then the copies stop matching.', keep: true },
+  { who: 'Rock', initial: 'R', color: 'rock', text: "Let's keep one list and save the filter as a view on top of it. Like this." },
+  { who: 'Dev', initial: 'D', color: 'dev', text: 'Does a view copy the companies, or only store the filter?' },
+  { who: 'Rock', initial: 'R', color: 'rock', text: 'Only the filter. The list stays the source of truth, so a view never drifts.' },
 ];
 ---
 <div class="thread" data-story-thread data-state="end" data-overlay aria-hidden="true">
@@ -21,13 +21,14 @@ const messages = [
       </div>
     </div>
   ))}
-  <p class="resolved t-mono-label" data-resolved>✓ Resolved</p>
+  <p class="resolved t-mono-label" data-resolved>✓ Resolved<span class="replies"> · 3 replies</span></p>
 </div>
 
 <style>
   /* Same card as Comment.astro (Figma 44:575). Anchored by its bottom edge, so a longer thread grows up over the table. */
-  .thread { position: absolute; left: 502px; top: 608px; width: 290px; transform: translateY(-100%); z-index: 6; display: flex; flex-direction: column; gap: 10px; padding: 10px 14px 12px 10px; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }
+  .thread { position: absolute; left: 502px; top: 608px; width: 290px; transform: translateY(-100%); z-index: 11; display: flex; flex-direction: column; gap: 10px; padding: 10px 14px 12px 10px; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }
   .thread[data-state='end'] .msg:not(.keep) { display: none; }
+  .thread:not([data-state='end']) .replies { display: none; }
   .msg { display: flex; gap: 10px; align-items: flex-start; }
   .av { width: 26px; height: 26px; border-radius: 13px; display: grid; place-items: center; background: var(--c); color: var(--color-surface-page); flex: none; }
   .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 0 0; }
@@ -36,7 +37,8 @@ const messages = [
   .when { color: var(--color-text-muted); }
   .txt { margin: 0; color: var(--color-text-secondary); }
   .resolved { margin: 0; padding-left: 36px; color: var(--color-status-positive); }
-  .c-client { --c: var(--color-cursor-client); }
+  .c-pm { --c: var(--color-cursor-pm); }
+  .c-dev { --c: var(--color-annotation-measure); }
   .c-rock { --c: var(--color-annotation-redline); }
 </style>
 
@@ -49,13 +51,14 @@ const messages = [
   const api = (table as any)?.heroTable;
   const thread = document.querySelector<HTMLElement>('[data-story-thread]');
   const replay = document.querySelector<HTMLButtonElement>('[data-story-replay]');
-  const client = spec?.querySelector<HTMLElement>(':scope > .cursor.c-client');
+  const pm = spec?.querySelector<HTMLElement>(':scope > .cursor.c-pm');
+  const dev = spec?.querySelector<HTMLElement>(':scope > .cursor.c-dev');
   const rock = spec?.querySelector<HTMLElement>(':scope > .cursor.c-rock');
   const wide = () => innerWidth >= 1200; // the cursors and comments only show at this width
 
-  if (spec && table && api && thread && client && rock && !reduceMotion()) run(spec, table, thread, client, rock);
+  if (spec && table && api && thread && pm && dev && rock && !reduceMotion()) run(spec, table, thread, pm, dev, rock);
 
-  function run(spec: HTMLElement, table: HTMLElement, thread: HTMLElement, client: HTMLElement, rock: HTMLElement) {
+  function run(spec: HTMLElement, table: HTMLElement, thread: HTMLElement, pm: HTMLElement, dev: HTMLElement, rock: HTMLElement) {
     const msgs = [...thread.querySelectorAll<HTMLElement>('[data-msg]')];
     const resolved = thread.querySelector<HTMLElement>('[data-resolved]')!;
     let tl: gsap.core.Timeline | null = null;
@@ -74,8 +77,8 @@ const messages = [
       if (!tl) return;
       tl.kill(); tl = null;
       removeEventListener('wheel', skip); removeEventListener('touchstart', skip); removeEventListener('keydown', skip); spec!.removeEventListener('pointerdown', skip);
-      gsap.killTweensOf([client, rock, thread, ...msgs, resolved]);
-      gsap.set([client, rock], { clearProps: 'transform' });
+      gsap.killTweensOf([pm, dev, rock, thread, ...msgs, resolved]);
+      gsap.set([pm, dev, rock], { clearProps: 'transform' });
       gsap.set([thread, ...msgs, resolved], { clearProps: 'opacity,visibility,transform' });
       thread!.dataset.state = 'end';
       if (snapshot) api.load(snapshot); api.pause(false);
@@ -88,28 +91,33 @@ const messages = [
       try { sessionStorage.setItem(SEEN, '1'); } catch {}
       thread!.dataset.state = 'story';
       gsap.set(thread, { autoAlpha: 0 }); gsap.set([...msgs, resolved], { autoAlpha: 0, y: 6 });
-      gsap.set(client, { x: 260, y: 40 }); gsap.set(rock, { x: -220, y: -40 });
-      const count = table!.querySelector<HTMLElement>('[data-count]')!;
+      gsap.set(pm, { x: 240, y: -60 }); gsap.set(dev, { x: -60, y: 220 }); gsap.set(rock, { x: -220, y: -40 });
+      const count = table.querySelector<HTMLElement>('[data-count]')!;
 
       tl = gsap.timeline({ delay: 0.6, onComplete: () => finish() });
-      tl.to(client, to(client, q('.pill-churned'), 1.1, 0.8))
+      // 1. The PM brings the users' problem
+      tl.to(pm, to(pm, q('.pill-churned'), 1.1, 0.8))
         .to(thread, { autoAlpha: 1, duration: 0.3 }, '+=0.1').to(msgs[0], say(), '<')
-        .to(rock, to(rock, q('[data-add]')), '+=0.9')
-        .add(press('[data-add]')).add(() => api.openMenu())
+      // 2. Rock proposes the fix, then builds it: a condition, then Save as view
+        .to(rock, to(rock, q('[data-add]')), '+=1.4')
+        .to(msgs[1], say(), '<0.3')
+        .add(press('[data-add]'), '+=0.5').add(() => api.openMenu())
         .to(rock, { ...to(rock, q('[data-add-i="3"]'), 0.4), duration: 0.6 }, '+=0.35')
         .add(press('[data-add-i="3"]'))
         .add(() => { api.addCond(3); gsap.to({ n: 40 }, { n: 28, duration: 0.6, ease: 'power2.out', onUpdate() { count.textContent = String(Math.round(this.targets()[0].n)); } }); }, '+=0.15')
-        .to(msgs[1], say(), '+=0.5')
-        .to(client, { ...to(client, q('[data-save-view]'), 1.6, 2.4), duration: 0.8 }, '+=0.9')
-        .to(msgs[2], say(), '+=0.1')
-        .to(rock, to(rock, q('[data-save-view]')), '+=0.9')
+        .to(rock, to(rock, q('[data-save-view]')), '+=0.7')
         .add(press('[data-save-view]'))
         .add(() => { const tab = api.saveView('ICP · Not churned'); if (tab) gsap.from(tab, { autoAlpha: 0, scale: 0.85, duration: 0.4, ease: 'back.out(1.8)' }); }, '+=0.15')
-        .to(msgs[3], say(), '+=0.5')
-        .to(resolved, say(), '+=0.6')
-        .to([msgs[0], msgs[1], msgs[3]], { autoAlpha: 0, duration: 0.3 }, '+=1.6')
-        .add(() => { thread!.dataset.state = 'end'; })
-        .to([client, rock], { x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, '<');
+      // 3. The Dev asks how it works; Rock answers
+        .to(dev, to(dev, q('[data-preset]:not([data-preset="all"]):not([data-preset="emea"])'), 0.6, 0.9), '+=0.5')
+        .to(msgs[2], say(), '+=0.1')
+        .to(rock, { ...to(rock, q('[data-count]'), 0.2, 2.2), duration: 0.7 }, '+=0.9')
+        .to(msgs[3], say(), '+=0.1')
+        .to(resolved, say(), '+=1.2')
+      // 4. Settle into the Figma state
+        .to([msgs[1], msgs[2], msgs[3]], { autoAlpha: 0, duration: 0.3 }, '+=1.6')
+        .add(() => { thread.dataset.state = 'end'; })
+        .to([pm, dev, rock], { x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, '<');
 
       addEventListener('wheel', skip, { passive: true }); addEventListener('touchstart', skip, { passive: true }); addEventListener('keydown', skip); spec!.addEventListener('pointerdown', skip);
     }

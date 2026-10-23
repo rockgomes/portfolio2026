@@ -61,9 +61,10 @@ const cols = [
   .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
   .save-view { border: 0; padding: 4px 9px; border-radius: 6px; cursor: pointer; background: var(--color-text-primary); color: var(--color-surface-page); font: 500 12px/17px var(--font-sans); white-space: nowrap; }
   .save-view:hover { opacity: 0.85; }
-  .tab { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
-  .tab:hover { color: var(--color-text-primary); }
-  .tab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
+  /* Tabs are drawn by the script, so their styles must be global inside the window (scoped styles miss them). */
+  .win :global(.tab) { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .win :global(.tab:hover) { color: var(--color-text-primary); }
+  .win :global(.tab[aria-selected='true']) { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
   .cols-btn { font-weight: 500; color: var(--color-text-primary); }
   .cols-btn :global(svg) { color: var(--color-text-secondary); }
   .where { font: 400 12px/17px var(--font-sans); color: var(--color-text-muted); }
