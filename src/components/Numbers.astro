@@ -27,7 +27,7 @@ const stats = [
   .label { display: flex; justify-content: space-between; gap: 16px; }
   .l { color: var(--color-annotation-measure); } .r { color: var(--color-text-muted); }
   .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
-  .stat { position: relative; padding-top: 24px; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .stat { position: relative; padding-top: 25px; /* 1px rule + 24px, same as the old border */ display: flex; flex-direction: column; gap: 18px; min-width: 0; }
   .rule { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--color-border-strong); }
   .value { margin: 0; display: flex; gap: 8px; align-items: baseline; white-space: nowrap; }
   .big { font: var(--type-display-row); letter-spacing: var(--tracking-display-row); color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
