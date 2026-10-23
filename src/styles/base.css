@@ -26,6 +26,9 @@ button { font: inherit; color: inherit; }
   padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
 }
 
+/* Figma layer glyphs (src/lib/glyphs.ts): 1em square, sits on the text like the character would */
+.glyph { display: inline-block; flex: none; vertical-align: -0.125em; }
+
 /* Type helpers (Figma text styles) */
 .t-mono-label { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); }
 .t-mono-small { font: var(--type-mono-small); }

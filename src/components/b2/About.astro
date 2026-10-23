@@ -47,13 +47,13 @@ const tags = [
   .tag { position: absolute; left: 39px; padding: 3px 7px; border-radius: 2px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-measure-soft); color: var(--color-annotation-measure); white-space: nowrap; }
   .leader { position: absolute; left: 33.86%; top: 50%; width: 36px; height: 1px; background: var(--color-annotation-measure); }
   .text { width: min(500px, 100%); display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-  .text > p { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  .text > p:not(.links) { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
   .text strong { font-weight: 600; color: var(--color-text-primary); }
   .facts { margin: 0; padding-top: 8px; display: flex; flex-direction: column; gap: 6px; }
   .facts div { display: flex; gap: 12px; }
   .facts dt { width: 56px; flex: none; color: var(--color-annotation-measure); }
   .facts dd { margin: 0; color: var(--color-text-secondary); }
-  .links { padding-top: 8px; display: flex; flex-wrap: wrap; gap: 16px; }
+  .links { margin: 0; padding-top: 8px; display: flex; flex-wrap: wrap; gap: 16px; }
   .links a { color: var(--color-annotation-measure); text-decoration: none; }
   .links a:hover { text-decoration: underline; }
   @media (max-width: 1040px) { .body { flex-direction: column; gap: 48px; } }

@@ -106,7 +106,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   .panel :global(.sec .clr) { margin-left: auto; border: 0; background: transparent; padding: 0; cursor: pointer; font: 500 11.5px/16px var(--font-sans); color: var(--color-annotation-measure); }
   .panel :global(.row) { width: 100%; display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 14px 0 26px; border: 0; background: transparent; cursor: pointer; text-align: left; }
   .panel :global(.row:hover) { background: var(--color-surface-stage); }
-  .panel :global(.row .ic) { width: 13px; flex: none; font: 400 11px/15px var(--font-mono); color: var(--color-figma-component); text-align: center; }
+  .panel :global(.row .ic) { width: 13px; flex: none; display: flex; justify-content: center; font: 400 11px/15px var(--font-mono); color: var(--color-figma-component); }
   .panel :global(.row .lab) { flex: 1 1 0; min-width: 0; font: 400 12px/17px var(--font-sans); color: var(--color-text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .panel :global(.row .num) { font: 400 11px/15px var(--font-mono); color: var(--color-text-muted); }
   .panel :global(.row .ok) { width: 10px; flex: none; display: grid; place-items: center; opacity: 0; color: var(--color-annotation-measure); }
@@ -167,6 +167,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
 </style>
 
 <script>
+  import { GLYPHS } from '../../lib/glyphs';
   type Item = { id: string; type: 'client' | 'experiment'; industry: string[]; focus: string[] };
   const DATA: Item[] = JSON.parse(document.getElementById('work-filter-data')!.textContent || '[]');
   const panel = document.querySelector<HTMLElement>('[data-filter-panel]')!;
@@ -178,7 +179,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   const activeEl = document.querySelector<HTMLElement>('[data-filter-active]')!;
   const FOCUS_LIMIT = 4;
   const TYPES: [string, string][] = [['all', 'All'], ['client', 'Client work'], ['experiment', 'Experiments']];
-  const MASTER = '❖', VARIANT = '◇';
+  const MASTER = GLYPHS.master, VARIANT = GLYPHS.variant;
   const CHECK = '<svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l2.6 2.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const CARET = '<svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><path d="M1.5 2.5L4 5.5L6.5 2.5Z" fill="currentColor"/></svg>';
   const state = { type: 'all', industry: [] as string[], focus: [] as string[], q: '', tab: 'groups', more: false, open: { type: true, industry: true, focus: true } as Record<string, boolean> };
