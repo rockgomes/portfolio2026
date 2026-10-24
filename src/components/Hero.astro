@@ -29,7 +29,7 @@ import HeroTable from './HeroTable.astro';
       <HeroTable />
       <div class="caption t-mono-label"><span>fig. 00 · filter builder, example data <button type="button" class="replay" data-story-replay hidden>↻ replay the session</button></span><span data-table-meta>rows = 40 · fields = 6</span></div>
 
-      <!-- Parked below the table, away from it (Rock's request; Figma has them on the table). The hero story moves them in and back. -->
+      <!-- Start points for the hero story. Hidden at rest (Rock's request): they fade in to act, then fade out. -->
       <Cursor name="Rock" color="rock" style="left: 8px; top: 596px;" />
       <Cursor name="PM" color="pm" style="left: 92px; top: 596px;" />
       <Cursor name="Dev" color="dev" style="left: 164px; top: 596px;" />
@@ -59,7 +59,7 @@ import HeroTable from './HeroTable.astro';
   :global(html:not([data-view='engineer'])) [data-view-text='design'],
   :global(html[data-view='engineer']) [data-view-text='engineer'] { display: inline; }
   /* Cursors and the comment thread sit above the table's + Condition menu (z-index 10) */
-  .specimen > :global(.cursor) { z-index: 12; }
+  .specimen > :global(.cursor) { z-index: 12; visibility: hidden; opacity: 0; }
   .replay { margin-left: 8px; padding: 0; border: 0; background: none; font: inherit; color: var(--color-annotation-measure); cursor: pointer; }
   .replay:hover { text-decoration: underline; }
   @media (max-width: 1199px) {
