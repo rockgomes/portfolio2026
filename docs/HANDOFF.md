@@ -23,6 +23,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 7. **Every measurement on the page is real**, read live from the page (headline box, type spec, table size, portrait size, timeline span).
 8. **Layout and copy** (#12, #13): Independent (2025 - now) entry with client tabs (Well, Dealfront, Romeo), Inbank 2023 - 2024; sticky header with a short "copy email" button; new hero copy (Rock's); filter panel scrolls inside on short screens; footer is its own zone with a canvas ruler; "170+ countries" and "7 live demos".
 9. **"Save as view"** is a real feature of the hero table. The table saves only after a visitor's own action.
+10. **One `h1` per page** on every case study and experiment page (#16); a smoke test keeps it that way.
 
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
@@ -30,15 +31,14 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 - Scripts that build elements with `innerHTML` need `:global(...)` styles; Astro's scoped styles do not reach them.
 
 ## Next, in this order
-1. **Fix: several `<h1>` on one case study page.** `pipedrive---app-management` has 4. Shift section headings down one level; keep the page title as the only `h1`.
-2. **Hero table "Columns" button** - it does nothing yet. Make it a small menu to show and hide columns.
-3. **Mobile navigation** - below 1040px the nav links are hidden and there is no menu.
-4. **Recruiter view** (Figma `94:6774`). A one-page summary: role, availability pills, facts table, short work list, contact card, "Download CV (PDF)". Build it with tokens.
-5. **Engineer view** (Figma `97:7542`). Same page with Dev Mode details: green annotations (`data-view="engineer"` tokens), an inspect panel on the hero table, a "Shipped, with source" row of repo cards. Read real component and prop names from `rockgomes/filter-builder` first.
-6. **View switch animation** with GSAP Flip, once the two views exist (the filter already uses Flip; reuse that).
-7. **Case study and experiment pages** restyled to the new design. Keep all embeds working.
-8. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
-9. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
+1. **Hero table "Columns" button** - it does nothing yet. Make it a small menu to show and hide columns.
+2. **Mobile navigation** - below 1040px the nav links are hidden and there is no menu.
+3. **Recruiter view** (Figma `94:6774`). A one-page summary: role, availability pills, facts table, short work list, contact card, "Download CV (PDF)". Build it with tokens.
+4. **Engineer view** (Figma `97:7542`). Same page with Dev Mode details: green annotations (`data-view="engineer"` tokens), an inspect panel on the hero table, a "Shipped, with source" row of repo cards. Read real component and prop names from `rockgomes/filter-builder` first.
+5. **View switch animation** with GSAP Flip, once the two views exist (the filter already uses Flip; reuse that).
+6. **Case study and experiment pages: a full pass.** Rock: "we have freedom to make it the way we want/need". Not a restyle only: rethink the layout and structure in the new design. Keep all embeds working and keep one `h1` per page (a smoke test checks it).
+7. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
+8. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
 
 ## Open questions for Rock (do not guess)
 - **Draft copy he has not confirmed:** the hero story comments (PM, Rock, Dev); the Dev and PM comments in Selected work; the footer line ("© year Rock Gomes · Tallinn, Estonia" / "Updated month year"); "as of October 2026" in Numbers; the Experience comment "Four roles fit on one screen" (the client tabs now hide some details).
