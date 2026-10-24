@@ -28,8 +28,10 @@ import ResolvedThread from './ResolvedThread.astro';
     </div>
 
     <div class="layout">
-      <aside class="side" aria-label="Filter projects">
-        <div class="panel" data-filter-panel>
+      <aside class="side" aria-label="Filter projects" data-side>
+        <!-- Below 1040px the panel folds into this button, so the projects come first -->
+        <button type="button" class="ftoggle" aria-expanded="false" aria-controls="filter-panel" data-filter-toggle>Filter projects <span class="fcount t-mono-label" data-filter-toggle-count>{items.length} / {items.length}</span><svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+        <div class="panel" id="filter-panel" data-filter-panel>
           <div class="tabs" role="tablist" aria-label="Filter mode">
             <button type="button" role="tab" aria-selected="true" data-tab="groups">Filters</button>
             <button type="button" role="tab" aria-selected="false" data-tab="flat">Tags</button>
@@ -44,8 +46,9 @@ import ResolvedThread from './ResolvedThread.astro';
             </label>
           </div>
           <div data-filter-groups></div>
+          <button type="button" class="fshow" data-filter-show>Show {items.length} projects</button>
         </div>
-        <ResolvedThread messages={[
+        <ResolvedThread class="side-thread" messages={[
           { who: 'Client', initial: 'C', color: 'client', text: 'Can the filters stay on screen while I scroll the projects?' },
           { who: 'Rock', initial: 'R', color: 'rock', text: 'Done. The panel now stays fixed while the projects scroll.' },
         ]} />
@@ -169,7 +172,20 @@ import ResolvedThread from './ResolvedThread.astro';
   .tsel .caret.s { left: -1px; } .tsel .caret.e { right: -1px; }
   .tsel .caret b { position: absolute; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--color-annotation-measure); }
   .tsel .caret.s b { top: -6px; } .tsel .caret.e b { bottom: -6px; }
-  @media (max-width: 1040px) { .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; } }
+  .ftoggle, .fshow { display: none; }
+  @media (max-width: 1040px) {
+    .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; }
+    /* The panel folds into a button; it opens in place, and "Show N projects" closes it and scrolls to the cards */
+    .ftoggle { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--color-border-strong); background: var(--color-surface-page); cursor: pointer; font: 500 13px/18px var(--font-sans); color: var(--color-text-primary); }
+    .ftoggle svg { color: var(--color-text-secondary); transition: transform 0.2s; }
+    .ftoggle[aria-expanded='true'] svg { transform: rotate(180deg); }
+    .fcount { color: var(--color-text-muted); }
+    .side:not([data-open]) > .panel { display: none; }
+    .fshow { display: block; margin: 8px 10px 4px; padding: 10px; border: 0; border-radius: 6px; background: var(--color-text-primary); color: var(--color-surface-page); cursor: pointer; font: 500 13px/18px var(--font-sans); }
+    /* The comment describes the sticky panel, which only exists on wide screens */
+    .side :global(.side-thread) { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ftoggle svg { transition: none; } }
   @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } .inner { padding-top: 80px; } .title { font-size: 24px; } }
   @media (prefers-reduced-motion: reduce) { .thumb :global(img) { transition: none; } }
 </style>
@@ -182,6 +198,14 @@ import ResolvedThread from './ResolvedThread.astro';
   type Item = { id: string; type: 'client' | 'experiment'; industry: string[]; focus: string[] };
   const DATA: Item[] = JSON.parse(document.getElementById('work-filter-data')!.textContent || '[]');
   const panel = document.querySelector<HTMLElement>('[data-filter-panel]')!;
+  const side = document.querySelector<HTMLElement>('[data-side]')!;
+  const toggleBtn = document.querySelector<HTMLButtonElement>('[data-filter-toggle]')!;
+  const toggleCount = document.querySelector<HTMLElement>('[data-filter-toggle-count]')!;
+  const showBtn = document.querySelector<HTMLButtonElement>('[data-filter-show]')!;
+  // Small screens: the toggle opens and closes the panel; "Show N projects" closes it and scrolls to the cards.
+  const setPanel = (open: boolean) => { side.toggleAttribute('data-open', open); toggleBtn.setAttribute('aria-expanded', String(open)); };
+  toggleBtn.addEventListener('click', () => setPanel(!side.hasAttribute('data-open')));
+  showBtn.addEventListener('click', () => { setPanel(false); const pills = document.querySelector<HTMLElement>('[data-filter-active]'); (pills && !pills.hidden ? pills : document.querySelector('[data-grid]'))?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); toggleBtn.focus({ preventScroll: true }); });
   const groupsEl = panel.querySelector<HTMLElement>('[data-filter-groups]')!;
   const countEl = panel.querySelector<HTMLElement>('[data-filter-count]')!;
   const searchEl = panel.querySelector<HTMLInputElement>('[data-filter-search]')!;
@@ -277,6 +301,7 @@ import ResolvedThread from './ResolvedThread.astro';
       gsap.fromTo(grid, { height: from }, { height: to, duration: 0.55, ease: 'power3.inOut', clearProps: 'height' });
     }
     empty.hidden = vis.size > 0; countEl.textContent = `${vis.size} / ${DATA.length}`;
+    toggleCount.textContent = countEl.textContent; showBtn.textContent = vis.size === 1 ? 'Show 1 project' : `Show ${vis.size} projects`;
     document.dispatchEvent(new CustomEvent('work:filtered'));
   }
 

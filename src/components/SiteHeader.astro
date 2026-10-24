@@ -4,6 +4,7 @@ import CopyEmail from './CopyEmail.astro';
 interface Props { showSwitch?: boolean }
 const { showSwitch = true } = Astro.props;
 const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer', 'Engineer']];
+const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['/#experience', 'Experience'], ['/#about', 'About']];
 ---
 <header class="hdr">
   <div class="wrap inner">
@@ -19,13 +20,19 @@ const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer
       </div>
     )}
     <nav class="nav" aria-label="Main">
-      <a href="/#work">Work</a>
-      <a href="/?type=experiment#work">Experiments</a>
-      <a href="/#experience">Experience</a>
-      <a href="/#about">About</a>
+      {links.map(([href, label]) => <a href={href}>{label}</a>)}
       <CopyEmail variant="short" /> <!-- short: the full address is in the footer -->
     </nav>
+    <div class="menu-wrap">
+      <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-menu" data-menu-btn>Menu <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+      <!-- Below 1040px the nav links move into this panel, right under the button (same style as the filter panel) -->
+      <nav class="mpanel" id="site-menu" aria-label="Main" data-menu hidden>
+        {links.map(([href, label], i) => <a href={href} data-menu-link><span class="n t-mono-label">0{i + 1}</span>{label}</a>)}
+        <div class="mcopy"><span class="t-mono-label lab2">rock@rockgomes.com</span><CopyEmail variant="short" /></div>
+      </nav>
+    </div>
   </div>
+  <div class="mbackdrop" data-menu-backdrop hidden></div>
 </header>
 <style>
   /* Sticky: stays at the top while the page scrolls (above the overlays, which go up to z-index 12) */
@@ -42,8 +49,28 @@ const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer
   .nav { display: flex; align-items: center; gap: 24px; white-space: nowrap; }
   .nav a { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
   .nav a:hover { color: var(--color-text-primary); }
-  @media (max-width: 1040px) { .nav a { display: none; } }
-  @media (max-width: 720px) { .nav { display: none; } .inner { flex-wrap: wrap; row-gap: 12px; } .switch { margin-inline: 0; } }
+  .menu-btn { display: none; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 500 12.5px/18px var(--font-sans); color: var(--color-text-primary); white-space: nowrap; }
+  .menu-btn svg { color: var(--color-text-secondary); transition: transform 0.2s; }
+  .menu-btn[aria-expanded='true'] svg { transform: rotate(180deg); }
+  .menu-wrap { position: relative; display: none; }
+  .mpanel { position: absolute; top: calc(100% + 8px); right: 0; z-index: 2; width: 300px; display: flex; flex-direction: column; padding: 6px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 10px; box-shadow: var(--shadow-panel); }
+  /* The page dims behind the open menu. It lives inside the header's layer (z-index 40), at -1: under the header
+     and the menu, above the page. A tap on it closes the menu. */
+  .mbackdrop { position: fixed; inset: 0; z-index: -1; background: color-mix(in srgb, var(--color-text-primary) 28%, transparent); }
+  .mpanel a { display: flex; align-items: baseline; gap: 12px; padding: 10px 12px; border-radius: 6px; font: var(--type-ui-nav); color: var(--color-text-primary); text-decoration: none; }
+  .mpanel a:hover, .mpanel a:focus-visible { background: var(--color-annotation-measure-soft); }
+  .mpanel .n { color: var(--color-annotation-redline); }
+  .mcopy { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; padding: 10px 12px 6px; border-top: 1px solid var(--color-border-subtle); }
+  .lab2 { color: var(--color-text-secondary); }
+  @media (min-width: 1041px) { .mpanel, .mbackdrop { display: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .menu-btn svg { transition: none; } }
+  @media (max-width: 1040px) { .nav a { display: none; } .menu-wrap { display: block; } .menu-btn { display: inline-flex; } }
+  @media (max-width: 720px) {
+    .nav { display: none; } .inner { flex-wrap: wrap; row-gap: 12px; } .menu-wrap { margin-left: auto; } .switch { order: 3; flex-basis: 100%; margin-inline: 0; }
+    /* Phones: the panel spans the content width (gutter to gutter), with bigger tap targets */
+    .mpanel { width: calc(100vw - 2 * max(var(--gutter), env(safe-area-inset-left, 0px))); }
+    .mpanel a { padding: 14px 12px; font-size: 17px; }
+  }
   @media (max-width: 420px) { .lab { display: none; } .seg button { padding: 4px 8px; } }
 </style>
 <script>
@@ -72,4 +99,26 @@ const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer
     const i = VIEWS.indexOf(root.dataset.view || 'design'); const n = VIEWS[(i + (k === 'ArrowRight' ? 1 : VIEWS.length - 1)) % VIEWS.length];
     apply(n, true); group.querySelector<HTMLButtonElement>(`[data-view-option="${n}"]`)?.focus(); e.preventDefault();
   });
+
+  // Mobile menu (below 1040px): a panel under the Menu button over a dimmed page. A link, Escape, or a tap on the
+  // backdrop closes it.
+  const menuBtn = document.querySelector<HTMLButtonElement>('[data-menu-btn]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const backdrop = document.querySelector<HTMLElement>('[data-menu-backdrop]');
+  if (menuBtn && menu && backdrop) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const setMenu = (open: boolean, focus = false) => {
+      menu.hidden = !open; backdrop.hidden = !open; menuBtn.setAttribute('aria-expanded', String(open));
+      if (open && !reduce) {
+        menu.animate([{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'none' }], { duration: 200, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        backdrop.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200 });
+      }
+      if (open && focus) menu.querySelector<HTMLElement>('[data-menu-link]')?.focus();
+    };
+    menuBtn.addEventListener('click', () => setMenu(menu.hidden !== false, true));
+    menu.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('[data-menu-link]')) setMenu(false); });
+    backdrop.addEventListener('click', () => setMenu(false));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { setMenu(false); menuBtn.focus(); } });
+    addEventListener('resize', () => { if (innerWidth > 1040 && !menu.hidden) setMenu(false); });
+  }
 </script>
