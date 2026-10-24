@@ -3,7 +3,7 @@
 // The PM brings the users' problem, Rock proposes and builds the fix (a saved view), the Dev asks how it works, Rock answers.
 // It starts after the headline animation and ends in the resting state: "ICP · Not churned" selected, no cursors
 // (they fade in to act and fade out at the end), and one resolved comment that opens to show the whole conversation.
-// Plays once per session on wide screens; never with reduced motion, and never over a visitor's own table state.
+// Plays once per browser tab on wide screens, never with reduced motion. A visitor's own table state is put back after it.
 // Copy is a first draft (Rock to confirm), taken from the Dynamic Lists case study.
 const messages = [
   { who: 'PM', initial: 'P', color: 'pm', text: 'Users duplicate a list just to filter it in different ways. Then the copies stop matching.', keep: true },
@@ -172,7 +172,8 @@ const messages = [
     }
 
     let seen = false; try { seen = sessionStorage.getItem(SEEN) === '1'; } catch {}
-    if (wide() && !seen && !api.hasUserState()) startWhenReady();
+    // A visitor's own table state is saved before the story and put back after it, so it never gets lost.
+    if (wide() && !seen) startWhenReady();
     if (replay) { replay.hidden = !wide(); replay.addEventListener('click', (e) => { e.stopPropagation(); play(); }); }
   }
 </script>

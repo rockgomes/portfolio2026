@@ -1,9 +1,10 @@
 ---
 // Figma: Selection box (44:563). Absolutely fills its positioned parent. The size label can be live (data-size).
-interface Props { label?: string; live?: boolean; class?: string; style?: string }
-const { label = '', live = false, class: cls, style } = Astro.props;
+// fit="text": the box wraps the text lines of its parent (with descenders and overhangs), not the parent's box (Overlays.astro).
+interface Props { label?: string; live?: boolean; fit?: 'text'; class?: string; style?: string }
+const { label = '', live = false, fit, class: cls, style } = Astro.props;
 ---
-<span class:list={['sel', cls]} style={style} data-overlay aria-hidden="true" data-selection={live ? 'live' : undefined}>
+<span class:list={['sel', cls]} style={style} data-overlay aria-hidden="true" data-selection={live ? 'live' : undefined} data-fit={fit}>
   <i class="h tl"></i><i class="h tc"></i><i class="h tr"></i><i class="h ml"></i><i class="h mr"></i><i class="h bl"></i><i class="h bc"></i><i class="h br"></i>
   {label && <span class="size t-mono-label" data-size>{label}</span>}
 </span>

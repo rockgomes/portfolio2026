@@ -1,6 +1,5 @@
 ---
 // Figma: Hero (96:6786) = Statement (96:6787) + Specimen with the live table window (96:6797).
-import Note from './Note.astro';
 import Dimension from './Dimension.astro';
 import SelectionBox from './SelectionBox.astro';
 import Cursor from './Cursor.astro';
@@ -12,16 +11,10 @@ import HeroTable from './HeroTable.astro';
     <div class="statement">
       <p class="gutter t-mono-label" aria-hidden="true" data-type-spec>h1 · IBM Plex Sans 600 · 56/60</p>
       <h1 id="hero-title" class="h1">
-        <span class="h1-box" data-draggable>I design products, start to finish. <span class="accent">Clear, tested, and ready to go live.</span><SelectionBox label="498 × 252" live class="h1-sel" /><Cursor name="Rock" color="rock" class="h1-cursor" /></span>
+        <span class="h1-box" data-draggable>I design products, start to finish. <span class="accent">Clear, tested, and ready to go live.</span><SelectionBox label="498 × 252" live fit="text" class="h1-sel" /><Cursor name="Rock" color="rock" class="h1-cursor" /></span>
       </h1>
       <p class="sub lead">I'm Rock, a Senior Product Designer based in Tallinn, open to contract and full-time projects.</p>
       <p class="sub">I design the screens, build the tokens and components behind them, and ship a version the team can click through before anyone writes a ticket.</p>
-      <div class="notes">
-        <Note label="note 01">
-          <span data-view-text="design">The table on the right is real. Add a filter, sort a column, save a view. Nothing you do gets lost.</span>
-          <span data-view-text="engineer">The table on the right is real code. Inspect any part, then open the source on GitHub.</span>
-        </Note>
-      </div>
     </div>
 
     <div class="specimen" data-specimen>
@@ -44,20 +37,16 @@ import HeroTable from './HeroTable.astro';
   .statement { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
   /* The type label mirrors the redline on the right (12px tall, 12px gap), so the headline's top meets the table's top */
   .gutter { margin: 0 0 -12px; height: 12px; line-height: 12px; color: var(--color-annotation-measure); }
-  .h1 { margin: 0 0 16px; font: var(--type-display-hero); letter-spacing: var(--tracking-display-hero); color: var(--color-text-primary); }
+  .h1 { margin: 0 0 28px; font: var(--type-display-hero); letter-spacing: var(--tracking-display-hero); color: var(--color-text-primary); }
   .h1-box { position: relative; display: block; }
-  .h1-box :global(.h1-sel) { inset: 0; } /* on the text box edges, like Figma, so the size label matches the box */
+  /* The headline box wraps the letters (Overlays.astro measures the text lines), and its label shows that size */
   /* Rock's cursor only shows while it draws the selection (Motion.astro), then leaves */
   .h1-box :global(.h1-cursor) { left: 0; top: 0; visibility: hidden; }
   .accent { color: var(--color-text-accent); }
   .sub { margin: 0; font: var(--type-body-lead); color: var(--color-text-secondary); }
   .sub.lead { font-weight: 500; color: var(--color-text-primary); }
-  .notes { display: flex; flex-direction: column; gap: 12px; }
   .specimen { position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
   .caption { display: flex; justify-content: space-between; gap: 16px; padding-left: 24px; color: var(--color-text-muted); }
-  [data-view-text] { display: none; }
-  :global(html:not([data-view='engineer'])) [data-view-text='design'],
-  :global(html[data-view='engineer']) [data-view-text='engineer'] { display: inline; }
   /* Cursors and the comment thread sit above the table's + Condition menu (z-index 10) */
   .specimen > :global(.cursor) { z-index: 12; visibility: hidden; opacity: 0; }
   .replay { margin-left: 8px; padding: 0; border: 0; background: none; font: inherit; color: var(--color-annotation-measure); cursor: pointer; }
