@@ -19,6 +19,7 @@ test('no sideways scroll on the homepage', async ({ page }) => {
 });
 
 test('every case study and experiment page works (same URLs as Webflow)', async ({ page }) => {
-  for (const s of slugs('projects')) { const r = await page.goto(`/project/${s}`); expect(r?.status(), s).toBe(200); await expect(page.locator('h1').first()).toBeVisible(); }
-  for (const s of slugs('experiments')) { const r = await page.goto(`/experiments/${s}`); expect(r?.status(), s).toBe(200); await expect(page.locator('h1').first()).toBeVisible(); }
+  // Each page has exactly one h1 (the page title); section headings start at h2.
+  for (const s of slugs('projects')) { const r = await page.goto(`/project/${s}`); expect(r?.status(), s).toBe(200); await expect(page.locator('h1'), s).toHaveCount(1); }
+  for (const s of slugs('experiments')) { const r = await page.goto(`/experiments/${s}`); expect(r?.status(), s).toBe(200); await expect(page.locator('h1'), s).toHaveCount(1); }
 });

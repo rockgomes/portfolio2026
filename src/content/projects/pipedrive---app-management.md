@@ -54,17 +54,17 @@ This is how the file was looking after a few iterations of ideation sessions. To
 
 ![](../../assets/projects/pipedrive---app-management/group-17805.avif)
 
-# Breakdown of the solution
+## Breakdown of the solution
 
 ![](../../assets/projects/pipedrive---app-management/group-17806.avif)
 
-# These are the forms for each new item
+### These are the forms for each new item
 
 ‍
 
 ![](../../assets/projects/pipedrive---app-management/group-17807.avif)
 
-# Conclusion
+## Conclusion
 
 This project was very straightforward. We already had a good research, enough resources, and the steps for the app creation are pretty well defined.
 
