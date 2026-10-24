@@ -173,7 +173,12 @@ const messages = [
 
     let seen = false; try { seen = sessionStorage.getItem(SEEN) === '1'; } catch {}
     // A visitor's own table state is saved before the story and put back after it, so it never gets lost.
-    if (wide() && !seen) startWhenReady();
+    // In the recruiter view the hero is hidden, so the story waits until the visitor switches back.
+    const html = document.documentElement;
+    if (wide() && !seen) {
+      if (html.dataset.view !== 'recruiter') startWhenReady();
+      else html.addEventListener('viewchange', function onView(e) { if ((e as CustomEvent).detail !== 'recruiter') { html.removeEventListener('viewchange', onView); startWhenReady(); } });
+    }
     if (replay) { replay.hidden = !wide(); replay.addEventListener('click', (e) => { e.stopPropagation(); play(); }); }
   }
 </script>

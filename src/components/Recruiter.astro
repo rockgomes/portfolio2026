@@ -1,0 +1,115 @@
+---
+// Figma: View - Recruiter (94:6774). The one-page summary shown when the header switch is on "Recruiter"
+// (?view=recruiter). Facts follow Rock's CV (Oct 2026): "10+ years", Well listed by name.
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import CopyEmail from './CopyEmail.astro';
+
+const pills = ['Contract or full-time', 'Remote first', 'Tallinn, Estonia (UTC+2)'];
+const facts = [
+  ['experience', '10+ years'],
+  ['companies', 'Well (Bestway Group), Dealfront, Inbank, Pipedrive, Bigbank'],
+  ['strong at', 'Back-office systems, data-heavy SaaS, design systems, prototyping'],
+  ['tools', 'Figma, design tokens, CSS, GSAP, Next.js, AI assistants'],
+  ['languages', 'English, Portuguese'],
+];
+// Short lines from Figma; title, company, year and image come from each project's content file.
+const picks: [string, string][] = [
+  ['dealfront-ai-company-profile', 'An AI layer that answers sales questions. Shipped in two weeks.'],
+  ['dealfront-dynamic-lists', 'Saved filter and column views on one list.'],
+  ['inbank---customer-service-backoffice', 'Rebuilt the internal support tool from scratch.'],
+  ['inbank---hire-purchase', 'Checkout redesign across 4 countries. Fewer support tickets.'],
+  ['pipedrive---app-management', 'Pipedrive marketplace apps, managed in one place.'],
+];
+const projects = await getCollection('projects');
+const experiments = await getCollection('experiments');
+const total = projects.length + experiments.length;
+const work = picks.map(([id, line]) => ({ e: projects.find((p) => p.id === id)!, line })).filter((w) => w.e);
+---
+<section class="rec" data-recruiter aria-labelledby="rec-title">
+  <div class="wrap grid">
+    <div class="main">
+      <p class="eyebrow">The short version</p>
+      <h1 id="rec-title" class="title">Senior Product Designer.<br />Complex B2B tools, design systems.</h1>
+      <ul class="pills">
+        <li class="pill open"><i aria-hidden="true"></i>Open to work</li>
+        {pills.map((p) => <li class="pill">{p}</li>)}
+      </ul>
+      <p class="lede">Ten years designing software people use all day at work: loan back-offices, support tools, data-heavy CRM lists and checkouts across four countries. I also build working prototypes, so teams can test the real thing before anyone writes a ticket.</p>
+      <dl class="facts">
+        {facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+      </dl>
+    </div>
+
+    <aside class="side" aria-labelledby="rec-work">
+      <div class="side-h"><h2 id="rec-work">Selected work</h2><a href="/?view=design#work" data-view-link="design">See all {total}</a></div>
+      <ul class="work">
+        {work.map(({ e, line }) => (
+          <li>
+            <a class="item" href={`/project/${e.id}`}>
+              <span class="thumb">{e.data.homeImage && <Image src={e.data.homeImage} alt="" widths={[88, 176]} sizes="88px" />}</span>
+              <span class="txt">
+                <span class="t">{e.data.cardTitle}</span>
+                <span class="l">{line}</span>
+                <span class="m">{[e.data.cardCompany, e.data.cardYear].filter(Boolean).join(' · ')}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="contact">
+        <p class="mail">rock@rockgomes.com <CopyEmail variant="short" /></p>
+        <p class="note">Email is the fastest way. I reply within a day.</p>
+        <a class="li" href="https://www.linkedin.com/in/rockgomes" target="_blank" rel="noopener">linkedin.com/in/rockgomes</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .rec { padding-block: 56px 96px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 768px) minmax(0, 440px); justify-content: space-between; gap: 72px; align-items: start; }
+  .main { display: flex; flex-direction: column; min-width: 0; }
+  .eyebrow { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-muted); }
+  .title { margin: 12px 0 0; font: 600 44px/1.08 var(--font-sans); letter-spacing: -0.025em; color: var(--color-text-primary); text-wrap: balance; }
+  .pills { list-style: none; margin: 0; padding: 14px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 1px solid var(--color-border-strong); border-radius: 999px; font: 400 13px/17px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .pill.open { border-color: var(--color-cursor-client); background: var(--color-status-positive-soft); color: var(--color-status-positive); }
+  .pill.open i { width: 6px; height: 6px; border-radius: 3px; background: var(--color-cursor-client); }
+  .lede { margin: 22px 0 0; max-width: 640px; font: 400 16px/1.6 var(--font-sans); color: var(--color-text-secondary); }
+  .facts { margin: 30px 0 0; max-width: 680px; border-top: 1px solid var(--color-border-subtle); }
+  .facts div { display: grid; grid-template-columns: 150px minmax(0, 1fr); border-bottom: 1px solid var(--color-border-subtle); }
+  .facts dt { padding: 14px 0 12px; font: 400 12px/16px var(--font-mono); color: var(--color-text-muted); }
+  .facts dd { margin: 0; padding: 12px 0; font: 400 14px/18px var(--font-sans); color: var(--color-text-primary); }
+  .side { display: flex; flex-direction: column; min-width: 0; }
+  .side-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .side-h h2 { margin: 0; font: 600 13px/17px var(--font-sans); color: var(--color-text-primary); }
+  .side-h a { font: 400 13px/17px var(--font-sans); color: var(--color-annotation-measure); text-decoration: none; }
+  .side-h a:hover { text-decoration: underline; }
+  .work { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .item { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 14px; align-items: center; padding: 8px; border-radius: 10px; text-decoration: none; }
+  .item:hover, .item:focus-visible { background: var(--color-surface-stage); }
+  .thumb { width: 88px; height: 58px; border-radius: 6px; border: 1px solid var(--color-border-subtle); overflow: hidden; background: var(--color-surface-stage); }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .txt { display: flex; flex-direction: column; min-width: 0; }
+  .t { font: 600 14px/18px var(--font-sans); color: var(--color-text-primary); }
+  .l { padding-top: 2px; font: 400 12.5px/17.5px var(--font-sans); color: var(--color-text-secondary); }
+  .m { font: 400 11px/14px var(--font-mono); color: var(--color-text-muted); }
+  .contact { margin-top: 28px; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border: 1px solid var(--color-border-strong); border-radius: 12px; }
+  .contact p { margin: 0; }
+  .mail { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; font: 700 15px/20px var(--font-sans); color: var(--color-text-primary); }
+  .note { font: 400 13px/17px var(--font-sans); color: var(--color-text-secondary); }
+  .li { font: 400 12px/16px var(--font-mono); color: var(--color-annotation-measure); text-decoration: none; }
+  .li:hover { text-decoration: underline; }
+  @media (max-width: 1040px) { .grid { grid-template-columns: minmax(0, 1fr); gap: 48px; } }
+  @media (max-width: 560px) { .title { font-size: 34px; } .facts div { grid-template-columns: 110px minmax(0, 1fr); } }
+</style>
+
+<script>
+  // "See all 14" switches back to the design lead view (the header switch listens for viewchange).
+  document.querySelectorAll<HTMLAnchorElement>('[data-view-link]').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelector<HTMLButtonElement>(`[data-view-option="${a.dataset.viewLink}"]`)?.click();
+    requestAnimationFrame(() => document.getElementById('work')?.scrollIntoView());
+  }));
+</script>

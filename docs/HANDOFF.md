@@ -1,4 +1,4 @@
-# Handoff - October 24, 2026
+# Handoff - October 24, 2026 (updated after #19)
 
 Where the rockgomes.com rebuild stands, and what comes next. Written for a new Claude Code session working on this repo. Read `CLAUDE.md` first.
 
@@ -24,6 +24,9 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 8. **Layout and copy** (#12, #13): Independent (2025 - now) entry with client tabs (Well, Dealfront, Romeo), Inbank 2023 - 2024; sticky header with a short "copy email" button; new hero copy (Rock's); filter panel scrolls inside on short screens; footer is its own zone with a canvas ruler; "170+ countries" and "7 live demos".
 9. **"Save as view"** is a real feature of the hero table. The table saves only after a visitor's own action.
 10. **One `h1` per page** on every case study and experiment page (#16); a smoke test keeps it that way.
+11. **Columns menu** on the hero table (#17): show and hide columns, remembered.
+12. **Small screens** (#18): a Menu button and panel below 1040px; the filter panel folds into a "Filter projects" button; side comments are hidden; section links stop with the title under the header.
+13. **Recruiter view** (#19, Figma `94:6774`): the header switch on "Recruiter" (or `/?view=recruiter`) swaps the homepage for a one-page summary (`Recruiter.astro`): role, pills, facts, five projects, contact card. Facts follow the CV (10+ years; Well named). The hero story waits while it is open.
 
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
@@ -31,14 +34,12 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 - Scripts that build elements with `innerHTML` need `:global(...)` styles; Astro's scoped styles do not reach them.
 
 ## Next, in this order
-1. **Hero table "Columns" button** - it does nothing yet. Make it a small menu to show and hide columns.
-2. **Mobile navigation** - below 1040px the nav links are hidden and there is no menu.
-3. **Recruiter view** (Figma `94:6774`). A one-page summary: role, availability pills, facts table, short work list, contact card, "Download CV (PDF)". Build it with tokens.
-4. **Engineer view** (Figma `97:7542`). Same page with Dev Mode details: green annotations (`data-view="engineer"` tokens), an inspect panel on the hero table, a "Shipped, with source" row of repo cards. Read real component and prop names from `rockgomes/filter-builder` first.
-5. **View switch animation** with GSAP Flip, once the two views exist (the filter already uses Flip; reuse that).
-6. **Case study and experiment pages: a full pass.** Rock: "we have freedom to make it the way we want/need". Not a restyle only: rethink the layout and structure in the new design. Keep all embeds working and keep one `h1` per page (a smoke test checks it).
-7. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
-8. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
+1. **Download CV (PDF)** in the recruiter view: waiting for Rock's OK to publish his CV file (`~/Documents/Rock_Gomes_Senior_Product_Designer_CV.pdf`) on the site.
+2. **Engineer view** (Figma `97:7542`). Same page with Dev Mode details: green annotations (`data-view="engineer"` tokens), an inspect panel on the hero table, a "Shipped, with source" row of repo cards. Read real component and prop names from `rockgomes/filter-builder` first.
+3. **View switch animation** with GSAP Flip, once the two views exist (the filter already uses Flip; reuse that).
+4. **Case study and experiment pages: a full pass.** Rock: "we have freedom to make it the way we want/need". Not a restyle only: rethink the layout and structure in the new design. Keep all embeds working and keep one `h1` per page (a smoke test checks it).
+5. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
+6. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
 
 ## Open questions for Rock (do not guess)
 - **Draft copy he has not confirmed:** the hero story comments (PM, Rock, Dev); the Dev and PM comments in Selected work; the footer line ("© year Rock Gomes · Tallinn, Estonia" / "Updated month year"); "as of October 2026" in Numbers; the Experience comment "Four roles fit on one screen" (the client tabs now hide some details).
@@ -47,5 +48,4 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 - Card copy and years for Flex Academy and the 3 Pipedrive projects (`cardToCheck: true`).
 - Project order in Selected work (currently as in Figma, newest client work first).
 - Design systems cards use long-dash bullets as in Figma. Keep or change to "-"?
-- "10 years" in the recruiter view: confirm.
 - Figma is behind the site in a few places Rock chose: section numbers hang in the margin, token row 1 is grey.900, hero cursors are hidden at rest, the footer is a grey zone. Update Figma or not.
