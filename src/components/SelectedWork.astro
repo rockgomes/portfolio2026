@@ -60,9 +60,10 @@ import ResolvedThread from './ResolvedThread.astro';
                 <a class="thumb" href={it.href} tabindex="-1" aria-hidden="true">
                   {it.img ? <Image src={it.img} alt={it.alt} widths={[485, 970]} sizes="(min-width: 1200px) 485px, (min-width: 720px) 45vw, 100vw" /> : <span class="ph"></span>}
                 </a>
-                {it.id === 'dealfront-dynamic-lists' && <Cursor name="Dev" color="dev" style="left: calc(100% - 6px); top: calc(100% - 6px);" />}
-                {it.id === 'inbank---hire-purchase' && <><Cursor name="Client" color="client" style="left: 195px; top: 110px;" /><Comment who="Client" initial="C" when="2 min ago" style="left: 213px; top: 153px; width: 300px;">Support tickets went down after launch. Approved.</Comment></>}
-                {it.id === 'karaoke-os' && <Cursor name="PM" color="pm" style="left: 267px; top: 177px;" />}
+                {/* Collaborators come in when the card comes into view, comment, then leave with their comment (Motion.astro). */}
+                {it.id === 'dealfront-dynamic-lists' && <><Cursor name="Dev" color="dev" style="left: 150px; top: 200px;" /><Comment who="Dev" initial="D" color="dev" when="just now" style="left: 168px; top: 243px; width: 290px;">Views only store the filter, so this was easy to build.</Comment></>}
+                {it.id === 'inbank---hire-purchase' && <><Cursor name="Client" color="client" style="left: 195px; top: 110px;" /><Comment who="Client" initial="C" when="2 min ago" style="left: 213px; top: 153px; width: 300px;">Support tickets went down after launch. Great job!</Comment></>}
+                {it.id === 'bigbank---loan-flow' && <><Cursor name="PM" color="pm" style="left: 150px; top: 150px;" /><Comment who="PM" initial="P" color="pm" when="just now" style="left: 168px; top: 193px; width: 290px;">This flow now works the same in all 7 countries. One design, no forks.</Comment></>}
               </div>
               <p class="meta"><span class="n t-mono-small">{it.d.cardNumber}</span><span class="co t-mono-label">{it.d.cardCompany}</span><span class="sp"></span>{it.d.cardYear && <span class="yr t-mono-small">{it.d.cardYear}</span>}</p>
               <h3 class="title"><a href={it.href}>{it.d.cardTitle || it.d.name}</a></h3>
@@ -156,6 +157,7 @@ import ResolvedThread from './ResolvedThread.astro';
   .demo { position: relative; z-index: 2; color: var(--color-annotation-measure); text-decoration: none; white-space: nowrap; }
   .demo:hover { text-decoration: underline; }
   .card :global([data-overlay]) { z-index: 3; }
+  .thumb-wrap :global(.cursor) { visibility: hidden; opacity: 0; } /* only on screen while acting */
   .empty { border: 1px dashed var(--color-border-strong); padding: 36px 24px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
   .empty p { margin: 0; } .empty-t { font: var(--type-heading-item); }
   .empty-s { color: var(--color-text-muted); }

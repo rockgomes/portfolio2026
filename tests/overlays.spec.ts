@@ -18,14 +18,6 @@ test.describe('overlays stay on their targets', () => {
     expect(Math.abs(box.width - (word.w + 5))).toBeLessThan(3);
   });
 
-  test('Dev cursor sits on the Dynamic Lists thumbnail corner', async ({ page }) => {
-    await page.goto('/');
-    const thumb = (await page.locator('.card[data-id="dealfront-dynamic-lists"] .thumb').boundingBox())!;
-    const cur = (await page.locator('.card[data-id="dealfront-dynamic-lists"] .cursor .arrow').boundingBox())!;
-    expect(Math.abs(cur.x - (thumb.x + thumb.width - 6))).toBeLessThan(3);
-    expect(Math.abs(cur.y - (thumb.y + thumb.height - 6))).toBeLessThan(3);
-  });
-
   test('a dragged selection stays, shows its offset, and goes back on double-click', async ({ page }) => {
     await page.goto('/');
     const box = page.locator('.h1-box'); const label = box.locator('[data-size]');
@@ -59,10 +51,19 @@ test.describe('overlays stay on their targets', () => {
 
   test('overlays follow their card when the filter hides others', async ({ page }) => {
     await page.goto('/');
-    await page.click('.row[data-key="type"][data-val="experiment"]');
+    await page.click('.row[data-key="industry"][data-val="Fintech"]');
     await expect(page.locator('.card[data-id="dealfront-dynamic-lists"]')).toBeHidden();
-    await expect(page.locator('.card[data-id="karaoke-os"] .cursor')).toHaveCount(1);
-    const card = (await page.locator('.card[data-id="karaoke-os"]').boundingBox())!; const cur = (await page.locator('.card[data-id="karaoke-os"] .cursor .arrow').boundingBox())!;
-    expect(cur.x).toBeGreaterThan(card.x); expect(cur.x).toBeLessThan(card.x + card.width); expect(cur.y).toBeGreaterThan(card.y);
+    await expect(page.locator('.card[data-id="bigbank---loan-flow"] .cursor')).toHaveCount(1);
+    await page.waitForTimeout(800);
+    const [card, cur] = await page.evaluate(() => [document.querySelector('.card[data-id="bigbank---loan-flow"]')!, document.querySelector('.card[data-id="bigbank---loan-flow"] .cursor .arrow')!].map((e) => { const r = e.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width }; }));
+    expect(cur.x).toBeGreaterThan(card.x); expect(cur.x).toBeLessThan(card.x + card.w); expect(cur.y).toBeGreaterThan(card.y);
+  });
+
+  test('with reduced motion, Selected work shows the comments without cursors', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('[data-grid] .thumb-wrap > .cursor').first()).toBeHidden();
+    await expect(page.locator('.card[data-id="inbank---hire-purchase"] .cm')).toContainText('Great job!');
+    await expect(page.locator('.card[data-id="dealfront-dynamic-lists"] .cm')).toContainText('Dev');
+    await expect(page.locator('.card[data-id="bigbank---loan-flow"] .cm')).toContainText('PM');
   });
 });
