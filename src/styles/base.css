@@ -25,6 +25,7 @@ button { font: inherit; color: inherit; }
 @media (max-width: 1199px) { :root { --to-title: 145px; } }
 @media (max-width: 720px) { :root { --to-title: 105px; } }
 section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title)); }
+[data-grid], [data-filter-active] { scroll-margin-top: calc(var(--header-h) + 16px); } /* "Show N projects" on small screens */
 .wrap {
   width: 100%;
   max-width: var(--page-max);
