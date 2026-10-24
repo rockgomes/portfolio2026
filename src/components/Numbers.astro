@@ -3,8 +3,8 @@
 const stats = [
   { value: '10', unit: 'years', count: 10, text: 'Designing tools people use all day at work: loan back-offices, CRM integrations, sales data and support tools.' },
   { value: '3', unit: 'design systems', count: 3, text: 'Two built from zero at Inbank and Bigbank, one rebuilt at Well. Tokens, components and docs that teams actually use.' },
-  { value: 'Global', unit: 'reach', text: 'Pipedrive is used worldwide. At Bigbank I designed for about 7 countries, and the Inbank checkout runs in 4.' },
-  { value: 'NN', unit: 'live demos', text: 'Prototypes and products I built and shipped in code, from case study recreations to side projects.' },
+  { value: '170+', unit: 'countries', count: 170, suffix: '+', text: 'Pipedrive is used in 170+ countries. At Bigbank I designed for 7 markets, and the Inbank checkout runs in 4.' }, // Pipedrive's own figure
+  { value: '7', unit: 'live demos', count: 7, text: 'Prototypes and products I built and shipped in code, from case study recreations to side projects.' },
 ];
 ---
 <section class="numbers" aria-label="In numbers">
@@ -14,7 +14,7 @@ const stats = [
       {stats.map((s) => (
         <div class="stat">
           <i class="rule" data-stat-rule aria-hidden="true"></i>
-          <p class="value"><span class="big" data-count-to={s.count}>{s.value}</span><span class="unit t-mono-small">{s.unit}</span></p>
+          <p class="value"><span class="big" data-count-to={s.count} data-suffix={s.suffix}>{s.value}</span><span class="unit t-mono-small">{s.unit}</span></p>
           <p class="text">{s.text}</p>
         </div>
       ))}
@@ -44,8 +44,8 @@ const stats = [
       for (const en of entries) {
         if (!en.isIntersecting) continue; io.unobserve(en.target);
         const el = en.target as HTMLElement; const to = Number(el.dataset.countTo); if (!to) continue;
-        const t0 = performance.now(); const dur = 900;
-        const step = (t: number) => { const p = Math.min(1, (t - t0) / dur); el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); };
+        const t0 = performance.now(); const dur = 900; const suffix = el.dataset.suffix ?? '';
+        const step = (t: number) => { const p = Math.min(1, (t - t0) / dur); el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))) + (p < 1 ? '' : suffix); if (p < 1) requestAnimationFrame(step); };
         el.textContent = '0'; requestAnimationFrame(step);
       }
     }, { threshold: 0.6 });

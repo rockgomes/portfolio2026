@@ -133,7 +133,7 @@ const messages = [
       try { sessionStorage.setItem(SEEN, '1'); } catch {}
       const count = table.querySelector<HTMLElement>('[data-count]')!;
 
-      // The cursors fade in at their start points (below the table) as they move, and fade out at the end.
+      // The cursors fade in as they move up from their start points (below the table), and go back there fading out.
       tl = gsap.timeline({ delay: 0.3, onComplete: () => finish() });
       // 1. The PM brings the users' problem
       tl.to(pm, { ...to(pm, q('.pill-churned'), 1.1, 0.8), autoAlpha: 1 })
@@ -156,7 +156,7 @@ const messages = [
         .add(post(toggle), '+=1.2')
       // 4. Fold the thread; the cursors leave
         .to(others, { height: 0, autoAlpha: 0, duration: 0.4, ease: 'power2.inOut' }, '+=2')
-        .to([pm, dev, rock], { autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, '<');
+        .to([pm, dev, rock], { x: 0, y: 0, autoAlpha: 0, duration: 0.9, ease: 'power2.inOut', stagger: 0.12 }, '<'); // back the way they came
 
       // Clicking the table skips to the end, so a visitor can use it. Scrolling and keys do not.
       spec.addEventListener('pointerdown', skip);
