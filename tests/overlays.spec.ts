@@ -59,10 +59,11 @@ test.describe('overlays stay on their targets', () => {
     expect(cur.x).toBeGreaterThan(card.x); expect(cur.x).toBeLessThan(card.x + card.w); expect(cur.y).toBeGreaterThan(card.y);
   });
 
-  test('collaborators in Selected work are hidden at rest; their comments stay', async ({ page }) => {
+  test('with reduced motion, Selected work shows the comments without cursors', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('[data-grid] .thumb-wrap > .cursor').first()).toBeHidden();
     await expect(page.locator('.card[data-id="inbank---hire-purchase"] .cm')).toContainText('Great job!');
     await expect(page.locator('.card[data-id="dealfront-dynamic-lists"] .cm')).toContainText('Dev');
+    await expect(page.locator('.card[data-id="bigbank---loan-flow"] .cm')).toContainText('PM');
   });
 });
