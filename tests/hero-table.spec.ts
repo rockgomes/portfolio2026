@@ -29,6 +29,22 @@ test.describe('hero table', () => {
     await expect(page.getByRole('tab', { name: 'Over 500 people' })).toHaveAttribute('aria-selected', 'true');
     await expect(count(page)).toHaveText('22');
   });
+  test('the Columns menu hides and shows columns, and remembers it', async ({ page }) => {
+    await page.click('[data-columns]');
+    await expect(page.locator('[data-cols-menu]')).toBeVisible();
+    await expect(page.locator('[data-col-toggle="company"]')).toBeDisabled();
+    await page.click('[data-col-toggle="industry"]');
+    await expect(page.locator('[data-col-toggle="industry"]')).toHaveAttribute('aria-checked', 'false');
+    await expect(page.locator('th[data-col="industry"]')).toBeHidden();
+    await expect(page.locator('[data-rows] td[data-col="industry"]').first()).toBeHidden();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('[data-cols-menu]')).toBeHidden();
+    await expect(page.locator('[data-columns]')).toBeFocused();
+    await page.reload();
+    await expect(page.locator('th[data-col="industry"]')).toBeHidden();
+    await page.click('[data-columns]'); await page.click('[data-col-toggle="industry"]');
+    await expect(page.locator('th[data-col="industry"]')).toBeVisible();
+  });
   test('sorting and saved state survive a reload', async ({ page }) => {
     await page.click('[data-sort="employees"]');
     await expect(page.locator('th[data-col="employees"]')).toHaveAttribute('aria-sort', 'ascending');

@@ -1,5 +1,6 @@
 ---
-// Figma: Table window (96:6797). Interactive: saved views (your own too), editable conditions, sorting, row selection.
+// Figma: Table window (96:6797). Interactive: saved views (your own too), editable conditions, sorting, row selection,
+// and a Columns menu to show or hide columns (not in Figma; same style as the + Condition menu).
 // State is saved in localStorage, so "nothing you do gets lost". HeroStory drives it through `root.heroTable`.
 import { companies } from '../data/companies';
 const chevron = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
@@ -20,7 +21,15 @@ const cols = [
       <button type="button" class="tab" role="tab" data-preset="emea" aria-selected="false">EMEA</button>
     </div>
     <span class="sp"></span>
-    <button type="button" class="tab cols-btn" data-columns aria-expanded="false">Columns <Fragment set:html={chevron} /></button>
+    <div class="cols-wrap">
+      <button type="button" class="tab cols-btn" data-columns aria-haspopup="menu" aria-expanded="false" aria-controls="cols-menu">Columns <Fragment set:html={chevron} /></button>
+      <div class="menu cols-menu" role="menu" id="cols-menu" aria-label="Show columns" data-cols-menu hidden>
+        {cols.map((c) => (
+          <button type="button" role="menuitemcheckbox" aria-checked="true" data-col-toggle={c.key} disabled={c.key === 'company'}><span class="box" aria-hidden="true"><Fragment set:html={`<svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l2.6 2.5L9 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`} /></span>{c.label}</button>
+        ))}
+        <p class="note t-mono-label">Company always shows</p>
+      </div>
+    </div>
   </div>
   <div class="bar filters">
     <span class="where">Where</span>
@@ -35,7 +44,7 @@ const cols = [
   </div>
   <div class="scroll" tabindex="0" aria-label="Companies table">
     <table>
-      <colgroup><col style="width:40px" />{cols.map((c) => <col style={`width:${c.w}px`} />)}</colgroup>
+      <colgroup><col style="width:40px" />{cols.map((c) => <col style={`width:${c.w}px`} data-col={c.key} />)}</colgroup>
       <thead>
         <tr>
           <th class="cb"><button type="button" class="chk" role="checkbox" aria-checked="false" aria-label="Select all rows" data-check-all></button></th>
@@ -66,6 +75,24 @@ const cols = [
   .win :global(.tab:hover) { color: var(--color-text-primary); }
   .win :global(.tab[aria-selected='true']) { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
   .cols-btn { font-weight: 500; color: var(--color-text-primary); }
+  .cols-btn :global(svg) { transition: transform 0.2s; }
+  .cols-btn[aria-expanded='true'] :global(svg) { transform: rotate(180deg); }
+  .cols-wrap { position: relative; }
+  .cols-wrap .cols-menu { left: auto; right: 0; } /* opens to the left, inside the window */
+  .cols-menu button { display: flex; align-items: center; gap: 10px; }
+  .cols-menu button:disabled { cursor: default; color: var(--color-text-muted); }
+  .cols-menu button:disabled:hover { background: transparent; }
+  .cols-menu .box { width: 14px; height: 14px; flex: none; display: grid; place-items: center; border-radius: 4px; border: 1.3px solid var(--color-border-control); color: transparent; }
+  .cols-menu button[aria-checked='true'] .box { background: var(--color-annotation-measure); border-color: var(--color-annotation-measure); color: var(--color-selection-handle); }
+  .cols-menu button:disabled .box { opacity: 0.5; }
+  .cols-menu .note { margin: 4px 10px 6px; color: var(--color-text-muted); }
+  /* Hidden columns (Columns menu): the window carries data-hide="industry country ..." */
+  :global([data-hero-table][data-hide~='industry'] [data-col='industry']),
+  :global([data-hero-table][data-hide~='country'] [data-col='country']),
+  :global([data-hero-table][data-hide~='employees'] [data-col='employees']),
+  :global([data-hero-table][data-hide~='status'] [data-col='status']),
+  :global([data-hero-table][data-hide~='last'] [data-col='last']) { display: none; }
+  @media (prefers-reduced-motion: reduce) { .cols-btn :global(svg) { transition: none; } }
   .cols-btn :global(svg) { color: var(--color-text-secondary); }
   .where { font: 400 12px/17px var(--font-sans); color: var(--color-text-muted); }
   .conds { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -145,11 +172,12 @@ const cols = [
   const TICK = '<svg class="tick" width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l2.6 2.5L9 1" stroke="var(--color-selection-handle)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><svg class="dash" width="8" height="2" viewBox="0 0 8 2" aria-hidden="true"><path d="M1 1h6" stroke="var(--color-selection-handle)" stroke-width="1.7" stroke-linecap="round"/></svg>';
 
   const copyConds = (cs: Cond[]) => cs.map((c) => ({ ...c }));
-  const fresh = () => ({ view: 'icp', conds: copyConds(ICP.conds), views: [{ ...ICP, conds: copyConds(ICP.conds) }] as View[], sort: { key: 'company', dir: 1 }, selected: [] as string[] });
+  const fresh = () => ({ view: 'icp', conds: copyConds(ICP.conds), views: [{ ...ICP, conds: copyConds(ICP.conds) }] as View[], sort: { key: 'company', dir: 1 }, selected: [] as string[], hidden: [] as string[] });
   let state = fresh();
   let hasUserState = false;
   try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && Array.isArray(s.conds)) { state = { ...state, ...s }; hasUserState = true; } } catch {}
   if (!Array.isArray(state.views)) state.views = fresh().views; // state saved before "Save as view" existed
+  if (!Array.isArray(state.hidden)) state.hidden = []; // state saved before the Columns menu existed
   let paused = false; // while the hero story plays, nothing is saved
   const save = () => { if (paused) return; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
   const allViews = () => [ALL, ...state.views, EMEA];
@@ -176,6 +204,9 @@ const cols = [
   const checkAll = root.querySelector<HTMLButtonElement>('[data-check-all]')!;
   const tabsEl = root.querySelector<HTMLElement>('[data-tabs]')!;
   const saveBtn = root.querySelector<HTMLButtonElement>('[data-save-view]')!;
+  const colsBtn = root.querySelector<HTMLButtonElement>('[data-columns]')!;
+  const colsMenu = root.querySelector<HTMLElement>('[data-cols-menu]')!;
+  const colToggles = [...colsMenu.querySelectorAll<HTMLButtonElement>('[data-col-toggle]')];
   checkAll.innerHTML = TICK;
 
   function renderConds() {
@@ -186,7 +217,7 @@ const cols = [
   }
   function renderRows() {
     const v = visible(); countEl.textContent = String(v.length);
-    rowsEl.innerHTML = v.map((r) => `<tr aria-selected="${state.selected.includes(r.company)}" data-co="${esc(r.company)}"><td class="cb"><button type="button" class="chk" role="checkbox" aria-checked="${state.selected.includes(r.company)}" aria-label="Select ${esc(r.company)}">${TICK}</button></td><td class="co">${esc(r.company)}</td><td>${esc(r.industry)}</td><td>${esc(r.country)}</td><td class="num">${r.employees.toLocaleString('en')}</td><td><span class="pill pill-${r.status.toLowerCase()}"><i></i>${r.status}</span></td><td class="date">${r.last}</td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--color-text-muted)">No companies match. Remove a condition.</td></tr>`;
+    rowsEl.innerHTML = v.map((r) => `<tr aria-selected="${state.selected.includes(r.company)}" data-co="${esc(r.company)}"><td class="cb"><button type="button" class="chk" role="checkbox" aria-checked="${state.selected.includes(r.company)}" aria-label="Select ${esc(r.company)}">${TICK}</button></td><td class="co" data-col="company">${esc(r.company)}</td><td data-col="industry">${esc(r.industry)}</td><td data-col="country">${esc(r.country)}</td><td class="num" data-col="employees">${r.employees.toLocaleString('en')}</td><td data-col="status"><span class="pill pill-${r.status.toLowerCase()}"><i></i>${r.status}</span></td><td class="date" data-col="last">${r.last}</td></tr>`).join('') || `<tr><td colspan="7" style="text-align:center;color:var(--color-text-muted)">No companies match. Remove a condition.</td></tr>`;
     const visSel = v.filter((r) => state.selected.includes(r.company)).length;
     checkAll.setAttribute('aria-checked', visSel === 0 ? 'false' : visSel === v.length ? 'true' : 'mixed');
     root.querySelectorAll<HTMLElement>('th[data-col]').forEach((th) => {
@@ -196,7 +227,13 @@ const cols = [
     });
     tabsEl.innerHTML = allViews().map((v) => `<button type="button" class="tab" role="tab" data-preset="${esc(v.id)}" aria-selected="${v.id === state.view}">${esc(v.name)}</button>`).join('');
     saveBtn.hidden = !(state.view === '' && state.conds.length > 0);
+    root.dataset.hide = state.hidden.join(' ');
+    colToggles.forEach((b) => b.setAttribute('aria-checked', String(!state.hidden.includes(b.dataset.colToggle!))));
   }
+  const setColsMenu = (open: boolean, focus = false) => {
+    colsMenu.hidden = !open; colsBtn.setAttribute('aria-expanded', String(open));
+    if (open && focus) colToggles.find((b) => !b.disabled)?.focus();
+  };
   // draw() only paints; render() also saves. Only a visitor's own actions save, so a first visit leaves nothing behind.
   const draw = () => { renderConds(); renderRows(); };
   const render = () => { draw(); save(); };
@@ -227,6 +264,9 @@ const cols = [
     const preset = t.closest<HTMLElement>('[data-preset]');
     if (preset) { const v = allViews().find((x) => x.id === preset.dataset.preset); if (v) { state.view = v.id; state.conds = copyConds(v.conds); } return render(); }
     if (t.closest('[data-save-view]')) { saveView(); return; }
+    if (t.closest('[data-columns]')) { setColsMenu(colsMenu.hidden !== false, true); return; }
+    const col = t.closest<HTMLButtonElement>('[data-col-toggle]');
+    if (col && !col.disabled) { const k = col.dataset.colToggle!; state.hidden = state.hidden.includes(k) ? state.hidden.filter((h) => h !== k) : [...state.hidden, k]; return render(); }
     const cond = t.closest<HTMLElement>('.cond'); const i = cond ? Number(cond.dataset.i) : -1;
     if (t.closest('[data-rm]')) { state.conds.splice(i, 1); state.view = ''; return render(); }
     if (t.closest('[data-op]')) { const c = state.conds[i]; const o = OPS[c.field]; c.op = o[(o.indexOf(c.op) + 1) % o.length]; state.view = ''; return render(); }
@@ -242,5 +282,12 @@ const cols = [
   });
   document.addEventListener('click', (e) => { if (!menu.hidden && !(e.target as HTMLElement).closest('.add-wrap')) { menu.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); } });
   menu.addEventListener('keydown', (e) => { if (e.key === 'Escape') { menu.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); addBtn.focus(); } });
+  // Columns menu: closes on Escape or a click outside; arrow keys move between the items.
+  document.addEventListener('click', (e) => { if (!colsMenu.hidden && !(e.target as HTMLElement).closest('.cols-wrap')) setColsMenu(false); });
+  colsMenu.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { setColsMenu(false); colsBtn.focus(); return; }
+    const items = colToggles.filter((b) => !b.disabled); const i = items.indexOf(document.activeElement as HTMLButtonElement);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); items[(i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length]?.focus(); }
+  });
   draw();
 </script>
