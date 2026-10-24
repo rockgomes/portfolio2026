@@ -12,15 +12,15 @@ import HeroTable from './HeroTable.astro';
     <div class="statement">
       <p class="gutter t-mono-label" aria-hidden="true" data-type-spec>h1 · IBM Plex Sans 600 · 56/60</p>
       <h1 id="hero-title" class="h1">
-        <span class="h1-box" data-draggable>I design complex tools for work. <span class="accent">Then I build the working version.</span><SelectionBox label="498 × 252" live class="h1-sel" /><Cursor name="Rock" color="rock" class="h1-cursor" /></span>
+        <span class="h1-box" data-draggable>I design products, start to finish. <span class="accent">Clear, tested, and ready to go live.</span><SelectionBox label="498 × 252" live class="h1-sel" /><Cursor name="Rock" color="rock" class="h1-cursor" /></span>
       </h1>
-      <p class="sub">Back-office systems, data-heavy SaaS, design systems. <strong>I design the screens, build the tokens and components behind them, and ship a version the team can click through before anyone writes a ticket.</strong></p>
+      <p class="sub lead">I'm Rock, a Senior Product Designer based in Tallinn, open to contract and full-time projects.</p>
+      <p class="sub">I design the screens, build the tokens and components behind them, and ship a version the team can click through before anyone writes a ticket.</p>
       <div class="notes">
         <Note label="note 01">
           <span data-view-text="design">The table on the right is real. Add a filter, sort a column, save a view. Nothing you do gets lost.</span>
           <span data-view-text="engineer">The table on the right is real code. Inspect any part, then open the source on GitHub.</span>
         </Note>
-        <Note label="note 02">Senior Product Designer, Tallinn, Estonia. Open to contract and full-time, any industry where the tool is complex.</Note>
       </div>
     </div>
 
@@ -51,7 +51,7 @@ import HeroTable from './HeroTable.astro';
   .h1-box :global(.h1-cursor) { left: 0; top: 0; visibility: hidden; }
   .accent { color: var(--color-text-accent); }
   .sub { margin: 0; font: var(--type-body-lead); color: var(--color-text-secondary); }
-  .sub strong { font-weight: 500; color: var(--color-text-primary); }
+  .sub.lead { font-weight: 500; color: var(--color-text-primary); }
   .notes { display: flex; flex-direction: column; gap: 12px; }
   .specimen { position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
   .caption { display: flex; justify-content: space-between; gap: 16px; padding-left: 24px; color: var(--color-text-muted); }
