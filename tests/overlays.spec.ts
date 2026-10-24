@@ -41,10 +41,14 @@ test.describe('overlays stay on their targets', () => {
     await expect(box).not.toHaveClass(/moved/);
   });
 
-  test('headline selection wraps the headline', async ({ page }) => {
+  test('headline selection wraps the letters, and its label is its size', async ({ page }) => {
     await page.goto('/');
-    const h = (await page.locator('.h1-box').boundingBox())!; const s = (await page.locator('.h1-box .sel').boundingBox())!;
-    expect(Math.abs(s.x - (h.x - 8))).toBeLessThan(2); expect(Math.abs(s.y - (h.y - 6))).toBeLessThan(2);
+    await page.evaluate(() => document.fonts.ready);
+    const ink = await page.evaluate(() => { const r = document.createRange(); r.selectNodeContents(document.querySelector('#hero-title .h1-box')!.firstChild!); const rs = [...r.getClientRects(), ...(() => { const q = document.createRange(); q.selectNodeContents(document.querySelector('#hero-title .accent')!); return [...q.getClientRects()]; })()]; return { l: Math.min(...rs.map((x) => x.left)), t: Math.min(...rs.map((x) => x.top)), r: Math.max(...rs.map((x) => x.right)), b: Math.max(...rs.map((x) => x.bottom)) }; });
+    const s = (await page.locator('.h1-box .sel').boundingBox())!;
+    expect(s.x).toBeLessThanOrEqual(ink.l + 1); expect(s.y).toBeLessThanOrEqual(ink.t + 1);
+    expect(s.x + s.width).toBeGreaterThanOrEqual(ink.r - 1); expect(s.y + s.height).toBeGreaterThanOrEqual(ink.b - 1);
+    await expect(page.locator('.h1-box [data-size]')).toHaveText(`${Math.round(s.width)} × ${Math.round(s.height)}`);
   });
 
   test('portrait selection matches the portrait', async ({ page }) => {

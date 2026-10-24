@@ -8,7 +8,7 @@ test('homepage loads without console errors', async ({ page }) => {
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('I design complex tools for work.');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('I design products, start to finish.');
   expect(errors).toEqual([]);
 });
 

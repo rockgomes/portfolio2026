@@ -13,15 +13,32 @@
       const range = document.createRange(); range.setStart(node, idx); range.setEnd(node, idx + 4);
       const r = range.getBoundingClientRect(); const h = host.getBoundingClientRect();
       if (!r.width) { sel.classList.remove('on'); return; }
-      Object.assign(sel.style, { left: `${r.left - h.left - 2}px`, top: `${r.top - h.top}px`, width: `${r.width + 5}px`, height: `${r.height}px` });
+      // A range is as tall as the font (ascent + descent), taller than the line; trim it to the line so it does not reach the subtitle.
+      const lh = parseFloat(getComputedStyle(title).lineHeight) || r.height; const top = r.top + (r.height - lh) / 2;
+      Object.assign(sel.style, { left: `${r.left - h.left - 2}px`, top: `${top - h.top}px`, width: `${r.width + 5}px`, height: `${lh}px` });
       sel.classList.add('on');
     });
   }
   // 2. Live size labels: every selection box marked live shows the real size of the element it selects.
+  // Boxes marked data-fit="text" wrap the text lines of their parent (descenders and overhangs included), and
+  // their label shows the size of that box. The parent's waiting cursor (headline) starts at the box's corner.
+  function fitToText(s: HTMLElement) {
+    const p = s.parentElement!; const pr = p.getBoundingClientRect(); const box = { l: Infinity, t: Infinity, r: -Infinity, b: -Infinity };
+    const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement?.closest('[data-overlay]') || !n.textContent?.trim() ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+    const range = document.createRange();
+    while (walker.nextNode()) { range.selectNodeContents(walker.currentNode); for (const r of range.getClientRects()) { box.l = Math.min(box.l, r.left); box.t = Math.min(box.t, r.top); box.r = Math.max(box.r, r.right); box.b = Math.max(box.b, r.bottom); } }
+    if (!isFinite(box.l)) return;
+    const left = Math.floor(box.l - pr.left), top = Math.floor(box.t - pr.top), w = Math.ceil(box.r - pr.left) - left, h = Math.ceil(box.b - pr.top) - top;
+    Object.assign(s.style, { left: `${left}px`, top: `${top}px`, width: `${w}px`, height: `${h}px`, right: 'auto', bottom: 'auto' });
+    const cur = p.querySelector<HTMLElement>(':scope > .cursor'); if (cur) Object.assign(cur.style, { left: `${left}px`, top: `${top}px` });
+  }
   function placeSizes() {
     document.querySelectorAll<HTMLElement>('[data-selection="live"]').forEach((s) => {
       const p = s.parentElement!; const lab = s.querySelector<HTMLElement>('[data-size]');
-      if (lab && !p.classList.contains('dragging')) lab.textContent = `${Math.round(p.offsetWidth)} × ${Math.round(p.offsetHeight)}`;
+      if (p.classList.contains('dragging')) return;
+      if (s.dataset.fit === 'text') fitToText(s);
+      const el = s.dataset.fit === 'text' ? s : p;
+      if (lab) lab.textContent = `${Math.round(el.offsetWidth)} × ${Math.round(el.offsetHeight)}`;
     });
   }
   const all = () => { placeTextSelection(); placeSizes(); };

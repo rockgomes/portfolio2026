@@ -1,6 +1,5 @@
 ---
 // Figma: Hero (96:6786) = Statement (96:6787) + Specimen with the live table window (96:6797).
-import Note from './Note.astro';
 import Dimension from './Dimension.astro';
 import SelectionBox from './SelectionBox.astro';
 import Cursor from './Cursor.astro';
@@ -10,26 +9,20 @@ import HeroTable from './HeroTable.astro';
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap grid">
     <div class="statement">
-      <p class="gutter t-mono-label" aria-hidden="true" data-gutter>space.gutter = 24px</p>
+      <p class="gutter t-mono-label" aria-hidden="true" data-type-spec>h1 · IBM Plex Sans 600 · 56/60</p>
       <h1 id="hero-title" class="h1">
-        <span class="h1-box" data-draggable>I design complex tools for work. <span class="accent">Then I build the working version.</span><SelectionBox label="498 × 252" live class="h1-sel" /><Cursor name="Rock" color="rock" class="h1-cursor" /></span>
+        <span class="h1-box" data-draggable>I design products, start to finish. <span class="accent">Clear, tested, and ready to go live.</span><SelectionBox label="498 × 252" live fit="text" class="h1-sel" /><Cursor name="Rock" color="rock" class="h1-cursor" /></span>
       </h1>
-      <p class="sub">Back-office systems, data-heavy SaaS, design systems. <strong>I design the screens, build the tokens and components behind them, and ship a version the team can click through before anyone writes a ticket.</strong></p>
-      <div class="notes">
-        <Note label="note 01">
-          <span data-view-text="design">The table on the right is real. Add a filter, sort a column, save a view. Nothing you do gets lost.</span>
-          <span data-view-text="engineer">The table on the right is real code. Inspect any part, then open the source on GitHub.</span>
-        </Note>
-        <Note label="note 02">Senior Product Designer, Tallinn, Estonia. Open to contract and full-time, any industry where the tool is complex.</Note>
-      </div>
+      <p class="sub lead">I'm Rock, a Senior Product Designer based in Tallinn, open to contract and full-time projects.</p>
+      <p class="sub">I design the screens, build the tokens and components behind them, and ship a version the team can click through before anyone writes a ticket.</p>
     </div>
 
     <div class="specimen" data-specimen>
-      <Dimension label="specimen.w = 734px · live" live="specimen" />
+      <Dimension label="live prototype · 734 × 509" live="specimen" />
       <HeroTable />
       <div class="caption t-mono-label"><span>fig. 00 · filter builder, example data <button type="button" class="replay" data-story-replay hidden>↻ replay the session</button></span><span data-table-meta>rows = 40 · fields = 6</span></div>
 
-      <!-- Parked below the table, away from it (Rock's request; Figma has them on the table). The hero story moves them in and back. -->
+      <!-- Start points for the hero story. Hidden at rest (Rock's request): they fade in to act, then fade out. -->
       <Cursor name="Rock" color="rock" style="left: 8px; top: 596px;" />
       <Cursor name="PM" color="pm" style="left: 92px; top: 596px;" />
       <Cursor name="Dev" color="dev" style="left: 164px; top: 596px;" />
@@ -42,23 +35,20 @@ import HeroTable from './HeroTable.astro';
   .hero { padding-block: 64px 97px; }
   .grid { display: grid; grid-template-columns: minmax(0, 498px) minmax(0, 734px); justify-content: space-between; gap: 48px; align-items: start; }
   .statement { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
-  .gutter { margin: 0; color: var(--color-annotation-measure); }
-  .h1 { margin: 0; font: var(--type-display-hero); letter-spacing: var(--tracking-display-hero); color: var(--color-text-primary); }
+  /* The type label mirrors the redline on the right (12px tall, 12px gap), so the headline's top meets the table's top */
+  .gutter { margin: 0 0 -12px; height: 12px; line-height: 12px; color: var(--color-annotation-measure); }
+  .h1 { margin: 0 0 28px; font: var(--type-display-hero); letter-spacing: var(--tracking-display-hero); color: var(--color-text-primary); }
   .h1-box { position: relative; display: block; }
-  .h1-box :global(.h1-sel) { inset: -6px -8px; }
+  /* The headline box wraps the letters (Overlays.astro measures the text lines), and its label shows that size */
   /* Rock's cursor only shows while it draws the selection (Motion.astro), then leaves */
-  .h1-box :global(.h1-cursor) { left: -8px; top: -6px; visibility: hidden; }
+  .h1-box :global(.h1-cursor) { left: 0; top: 0; visibility: hidden; }
   .accent { color: var(--color-text-accent); }
   .sub { margin: 0; font: var(--type-body-lead); color: var(--color-text-secondary); }
-  .sub strong { font-weight: 500; color: var(--color-text-primary); }
-  .notes { display: flex; flex-direction: column; gap: 12px; }
+  .sub.lead { font-weight: 500; color: var(--color-text-primary); }
   .specimen { position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
   .caption { display: flex; justify-content: space-between; gap: 16px; padding-left: 24px; color: var(--color-text-muted); }
-  [data-view-text] { display: none; }
-  :global(html:not([data-view='engineer'])) [data-view-text='design'],
-  :global(html[data-view='engineer']) [data-view-text='engineer'] { display: inline; }
   /* Cursors and the comment thread sit above the table's + Condition menu (z-index 10) */
-  .specimen > :global(.cursor) { z-index: 12; }
+  .specimen > :global(.cursor) { z-index: 12; visibility: hidden; opacity: 0; }
   .replay { margin-left: 8px; padding: 0; border: 0; background: none; font: inherit; color: var(--color-annotation-measure); cursor: pointer; }
   .replay:hover { text-decoration: underline; }
   @media (max-width: 1199px) {
@@ -69,16 +59,16 @@ import HeroTable from './HeroTable.astro';
 </style>
 
 <script>
-  // Live measure labels (the headline selection size is handled in Overlays): the specimen width, and the gap
-  // under the "space.gutter" label, both read from the page as it renders.
+  // Live labels (the headline selection size is handled in Overlays), read from the page as it renders:
+  // the headline's type spec, and the size of the live table.
   const fmt = (n: number) => Math.round(n);
-  const spec = document.querySelector<HTMLElement>('[data-specimen]');
-  const statement = document.querySelector<HTMLElement>('.statement');
+  const win = document.querySelector<HTMLElement>('[data-hero-table]');
+  const h1 = document.querySelector<HTMLElement>('#hero-title');
   const ro = new ResizeObserver(() => {
     const dl = document.querySelector<HTMLElement>('[data-dimension="specimen"] .label');
-    if (spec && dl) dl.textContent = `specimen.w = ${fmt(spec.offsetWidth)}px · live`;
-    const gl = document.querySelector<HTMLElement>('[data-gutter]');
-    if (statement && gl) gl.textContent = `space.gutter = ${fmt(parseFloat(getComputedStyle(statement).rowGap))}px`;
+    if (win && dl) dl.textContent = `live prototype · ${fmt(win.offsetWidth)} × ${fmt(win.offsetHeight)}`;
+    const tl = document.querySelector<HTMLElement>('[data-type-spec]');
+    if (h1 && tl) { const c = getComputedStyle(h1); tl.textContent = `h1 · ${c.fontFamily.split(',')[0].replace(/["']/g, '')} ${c.fontWeight} · ${fmt(parseFloat(c.fontSize))}/${fmt(parseFloat(c.lineHeight))}`; }
   });
-  if (spec) ro.observe(spec); if (statement) ro.observe(statement);
+  if (win) ro.observe(win); if (h1) ro.observe(h1);
 </script>

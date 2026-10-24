@@ -1,9 +1,9 @@
 ---
 // Hero story (motion plan, moment 01): a short working session on the hero table, based on the Dynamic Lists project.
 // The PM brings the users' problem, Rock proposes and builds the fix (a saved view), the Dev asks how it works, Rock answers.
-// It starts after the headline animation and ends in the resting state: "ICP · Not churned" selected, the cursors
-// parked below the table (Hero.astro), and one resolved comment that opens to show the whole conversation.
-// Plays once per session on wide screens; never with reduced motion, and never over a visitor's own table state.
+// It starts after the headline animation and ends in the resting state: "ICP · Not churned" selected, no cursors
+// (they fade in to act and fade out at the end), and one resolved comment that opens to show the whole conversation.
+// Plays once per browser tab on wide screens, never with reduced motion. A visitor's own table state is put back after it.
 // Copy is a first draft (Rock to confirm), taken from the Dynamic Lists case study.
 const messages = [
   { who: 'PM', initial: 'P', color: 'pm', text: 'Users duplicate a list just to filter it in different ways. Then the copies stop matching.', keep: true },
@@ -96,7 +96,7 @@ const messages = [
       tl.kill(); tl = null;
       spec.removeEventListener('pointerdown', skip);
       gsap.killTweensOf([pm, dev, rock, thread, ...msgs, toggle]);
-      gsap.set([pm, dev, rock], { clearProps: 'transform' });
+      gsap.set([pm, dev, rock], { clearProps: 'transform,opacity,visibility' });
       gsap.set([thread, ...msgs, toggle], { clearProps: 'opacity,visibility,transform,height' });
       [...msgs, toggle].forEach((el) => (el.hidden = false));
       toggle.disabled = false; setOpen(false);
@@ -133,13 +133,13 @@ const messages = [
       try { sessionStorage.setItem(SEEN, '1'); } catch {}
       const count = table.querySelector<HTMLElement>('[data-count]')!;
 
-      // The cursors start where they are parked (below the table) and go back there at the end.
+      // The cursors fade in as they move up from their start points (below the table), and go back there fading out.
       tl = gsap.timeline({ delay: 0.3, onComplete: () => finish() });
       // 1. The PM brings the users' problem
-      tl.to(pm, to(pm, q('.pill-churned'), 1.1, 0.8))
+      tl.to(pm, { ...to(pm, q('.pill-churned'), 1.1, 0.8), autoAlpha: 1 })
         .add(() => { msgs[0].hidden = false; }).to(thread, { autoAlpha: 1, duration: 0.3 })
       // 2. Rock proposes the fix, then builds it: a condition, then Save as view
-        .to(rock, to(rock, q('[data-add]')), '+=1.4')
+        .to(rock, { ...to(rock, q('[data-add]')), autoAlpha: 1 }, '+=1.4')
         .add(post(msgs[1]), '<0.3')
         .add(press('[data-add]'), '+=1.2').add(() => api.openMenu())
         .to(rock, { ...to(rock, q('[data-add-i="3"]'), 0.4), duration: 0.6 }, '+=0.35')
@@ -149,14 +149,14 @@ const messages = [
         .add(press('[data-save-view]'))
         .add(() => { const tab = api.saveView('ICP · Not churned'); if (tab) gsap.from(tab, { autoAlpha: 0, scale: 0.85, duration: 0.4, ease: 'back.out(1.8)' }); }, '+=0.15')
       // 3. The Dev asks how it works; Rock answers
-        .to(dev, to(dev, q('[data-preset]:not([data-preset="all"]):not([data-preset="emea"])'), 0.6, 0.9), '+=0.5')
+        .to(dev, { ...to(dev, q('[data-preset]:not([data-preset="all"]):not([data-preset="emea"])'), 0.6, 0.9), autoAlpha: 1 }, '+=0.5')
         .add(post(msgs[2]), '+=0.1')
         .to(rock, { ...to(rock, q('[data-count]'), 0.2, 2.2), duration: 0.7 }, '+=1.4')
         .add(post(msgs[3]), '+=0.1')
         .add(post(toggle), '+=1.2')
-      // 4. Fold the thread, park the cursors
+      // 4. Fold the thread; the cursors leave
         .to(others, { height: 0, autoAlpha: 0, duration: 0.4, ease: 'power2.inOut' }, '+=2')
-        .to([pm, dev, rock], { x: 0, y: 0, duration: 0.9, ease: 'power2.inOut' }, '<');
+        .to([pm, dev, rock], { x: 0, y: 0, autoAlpha: 0, duration: 0.9, ease: 'power2.inOut', stagger: 0.12 }, '<'); // back the way they came
 
       // Clicking the table skips to the end, so a visitor can use it. Scrolling and keys do not.
       spec.addEventListener('pointerdown', skip);
@@ -172,7 +172,8 @@ const messages = [
     }
 
     let seen = false; try { seen = sessionStorage.getItem(SEEN) === '1'; } catch {}
-    if (wide() && !seen && !api.hasUserState()) startWhenReady();
+    // A visitor's own table state is saved before the story and put back after it, so it never gets lost.
+    if (wide() && !seen) startWhenReady();
     if (replay) { replay.hidden = !wide(); replay.addEventListener('click', (e) => { e.stopPropagation(); play(); }); }
   }
 </script>

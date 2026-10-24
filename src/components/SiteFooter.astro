@@ -5,6 +5,11 @@ import Cursor from './Cursor.astro';
 ---
 <footer class="ftr">
   <div class="wrap">
+    <!-- A canvas ruler instead of a plain line: real pixels across the content width (numbers filled in live) -->
+    <div class="ruler" aria-hidden="true" data-ruler>
+      <i class="ticks minor"></i><i class="ticks major"></i>
+      <span class="nums t-mono-label" data-ruler-nums>{Array.from({ length: 17 }, (_, i) => <span style={`left:${i * 80}px`}>{i * 80}</span>)}</span>
+    </div>
     <div class="main">
       <div class="cta">
         <p class="headline">Have a complex tool that needs a designer who ships?</p>
@@ -22,14 +27,25 @@ import Cursor from './Cursor.astro';
       </div>
     </div>
     <div class="colophon t-mono-label">
-      <p>rev 2026.10<span class="gap"></span>Set in IBM Plex Sans and IBM Plex Mono<span class="gap"></span>Built with Astro, hosted on Netlify</p>
-      <p>Motion turns off when your device asks for reduced motion<span class="gap"></span>Built by hand, by Rock</p>
+      <p>© {new Date().getFullYear()} Rock Gomes · Tallinn, Estonia</p>
+      <p>Updated {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>
     </div>
   </div>
 </footer>
 <style>
+  /* The footer is its own zone (grey, edge to edge), so it is clear where the pointer turns into "You" */
+  .ftr { background: var(--color-surface-stage); border-top: 1px solid var(--color-border-strong); }
   .ftr .wrap { display: flex; flex-direction: column; gap: 48px; padding-bottom: 48px; }
-  .main { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; align-items: flex-start; border-top: 1px solid var(--color-text-secondary); padding-top: 56px; }
+  .ftr .wrap > .ruler + .main { margin-top: -48px; }
+  /* Ruler hanging from the footer's top border: a small tick every 8px, a bigger tick and a number every 80px */
+  .ruler { position: relative; height: 30px; overflow: hidden; }
+  .ticks { position: absolute; left: 0; right: 0; top: 0; }
+  .ticks.minor { height: 5px; background: repeating-linear-gradient(to right, var(--color-text-muted) 0 1px, transparent 1px 8px); opacity: 0.6; }
+  .ticks.major { height: 11px; background: repeating-linear-gradient(to right, var(--color-text-secondary) 0 1px, transparent 1px 80px); }
+  .nums { position: absolute; left: 0; right: 0; top: 13px; height: 16px; color: var(--color-text-muted); }
+  .nums :global(span) { position: absolute; padding-left: 4px; white-space: nowrap; }
+  .nums :global(.end) { padding: 0 0 0 4px; color: var(--color-annotation-measure); }
+  .main { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; align-items: flex-start; padding-top: 40px; }
   .cta { width: min(520px, 100%); display: flex; flex-direction: column; gap: 24px; }
   .headline { margin: 0; font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); color: var(--color-text-primary); }
   .sub { margin: 0; color: var(--color-text-muted); }
@@ -40,10 +56,8 @@ import Cursor from './Cursor.astro';
   .links .lab { margin: 0; color: var(--color-annotation-measure); }
   .links a { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
   .links a:hover { color: var(--color-text-primary); }
-  .colophon { border-top: 1px solid var(--color-border-subtle); padding-top: 16px; display: flex; flex-direction: column; gap: 6px; color: var(--color-text-muted); }
+  .colophon { border-top: 1px solid var(--color-border-subtle); padding-top: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; color: var(--color-text-muted); }
   .colophon p { margin: 0; }
-  .gap { display: inline-block; width: 3em; }
-  @media (max-width: 720px) { .gap { display: block; width: 0; height: 0; } }
   /* While the pointer is in the footer, the "You" cursor replaces the system arrow (script below) */
   :global(.ftr.you-here), :global(.ftr.you-here *) { cursor: none !important; }
   .copied { position: absolute; z-index: 7; display: flex; gap: 8px; align-items: center; padding: 6px 12px 7px 6px; white-space: nowrap; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }
@@ -53,7 +67,7 @@ import Cursor from './Cursor.astro';
 </style>
 
 <script>
-  import { gsap, reduceMotion } from '../lib/motion';
+  import { gsap, playOnce, reduceMotion } from '../lib/motion';
 
   const ftr = document.querySelector<HTMLElement>('footer.ftr');
   const you = ftr?.querySelector<HTMLElement>('.cursor.c-you');
@@ -77,6 +91,21 @@ import Cursor from './Cursor.astro';
       ftr.classList.remove('you-here'); at = { x: 0, y: 0 };
       gsap.to(you, { x: 0, y: 0, duration: 0.6, ease: 'power3.inOut' });
     });
+  }
+
+  // Ruler numbers: one every 80px, as many as fit the real content width (the last one shows that width).
+  const ruler = ftr?.querySelector<HTMLElement>('[data-ruler]');
+  const nums = ruler?.querySelector<HTMLElement>('[data-ruler-nums]');
+  if (ruler && nums) {
+    const draw = () => {
+      const w = Math.round(ruler.offsetWidth); const out: string[] = [];
+      for (let x = 0; x <= w - 40; x += 80) out.push(`<span style="left:${x}px">${x}</span>`);
+      out.push(`<span class="end" style="right:0">${w}</span>`);
+      nums.innerHTML = out.join('');
+    };
+    new ResizeObserver(draw).observe(ruler); draw();
+    // Draws itself left to right once, when it comes into view.
+    playOnce(ruler, () => gsap.set(ruler, { clipPath: 'inset(0 100% 0 0)' }), () => gsap.to(ruler, { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power2.inOut', clearProps: 'clipPath' }), 0.6);
   }
 
   // Copying the email from the footer leaves a comment from You, right under the cursor.
