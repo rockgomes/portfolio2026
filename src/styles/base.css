@@ -1,6 +1,6 @@
 /* Base styles. Values come from tokens.css. */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + 16px); } /* anchors stop below the sticky header */
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--color-surface-page);
@@ -19,6 +19,12 @@ button { font: inherit; color: inherit; }
 
 :root { --gutter: clamp(16px, 5.56vw, 80px); --page-max: 1440px; --header-h: 68px; }
 @media (max-width: 720px) { :root { --header-h: 112px; } } /* the header wraps to two rows */
+/* Links to a section (#work, #experience...) stop with the section title 24px under the sticky header.
+   --to-title is the space between a section's top and its title (padding, plus the number line below 1200px). */
+:root { --to-title: 120px; }
+@media (max-width: 1199px) { :root { --to-title: 145px; } }
+@media (max-width: 720px) { :root { --to-title: 105px; } }
+section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title)); }
 .wrap {
   width: 100%;
   max-width: var(--page-max);
