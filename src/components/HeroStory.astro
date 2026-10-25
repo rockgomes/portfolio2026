@@ -139,7 +139,8 @@ const messages = [
       // The cursors fade in as they move up from their start points (below the table), and go back there fading out.
       tl = gsap.timeline({ delay: 0.3, onComplete: () => finish() });
       // 1. The PM brings the users' problem
-      tl.to(pm, { ...to(pm, q('.pill-churned'), 1.1, 0.8), autoAlpha: 1 })
+      // The PM stops on the pill, not beside it: at 1200px the table hides the Status column, and a PM beside the pill stuck out past the screen edge.
+      tl.to(pm, { ...to(pm, q('.pill-churned'), 0.3, 0.8), autoAlpha: 1 })
         .add(() => { msgs[0].hidden = false; }).to(thread, { autoAlpha: 1, duration: 0.3 })
       // 2. Rock proposes the fix, then builds it: a condition, then Save as view
         .to(rock, { ...to(rock, q('[data-add]')), autoAlpha: 1 }, '+=1.4')
