@@ -1,0 +1,237 @@
+---
+// Figma: Dev mode inspect panel (98:8263), Dev selection (98:8260, 98:8261) and connector (98:8307, 98:8389), in View - Engineer (97:7542).
+// Engineer view only. Point at any part of the hero table to see the matching component in rockgomes/filter-builder:
+// the real call site (copied from the repo, linked to its lines), the props this table has right now, and live layout and tokens.
+// The hero table is a smaller rebuild of Fieldset, so the panel links to the source; it does not claim this table is that code.
+// Lives inside the Specimen, so it moves with the table. Hidden below 1200px, like the other overlays.
+---
+<div class="insp" data-engineer data-inspector>
+  <span class="dsel hover" data-dsel-hover aria-hidden="true"><span class="dlab t-mono-label" data-dlab></span></span>
+  <span class="dsel" data-dsel aria-hidden="true"><span class="dlab t-mono-label" data-dlab></span></span>
+  <span class="link h" data-link-h aria-hidden="true"></span>
+  <span class="link v" data-link-v aria-hidden="true"></span>
+
+  <aside class="panel" aria-label="Inspect" data-panel>
+    <div class="head">
+      <p class="title-row"><span class="title" data-title>Condition</span><span class="ready t-mono-label">Ready for dev</span></p>
+      <p class="sub t-mono-label">Component · <span data-name>ConditionRow</span></p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Inspect">
+      <button type="button" role="tab" id="insp-t-code" aria-controls="insp-p-code" aria-selected="true" data-tab="code">Code</button>
+      <button type="button" role="tab" id="insp-t-props" aria-controls="insp-p-props" aria-selected="false" tabindex="-1" data-tab="props">Properties</button>
+      <button type="button" role="tab" id="insp-t-tokens" aria-controls="insp-p-tokens" aria-selected="false" tabindex="-1" data-tab="tokens">Tokens</button>
+    </div>
+    <div role="tabpanel" id="insp-p-code" aria-labelledby="insp-t-code" data-pane="code">
+      <div class="code-wrap"><pre class="code" tabindex="0" aria-label="Call site in filter-builder" data-code></pre></div>
+      <dl class="rows" data-layout></dl>
+    </div>
+    <div role="tabpanel" id="insp-p-props" aria-labelledby="insp-t-props" data-pane="props" hidden>
+      <p class="hint t-mono-label">Props on this table, right now</p>
+      <dl class="rows" data-props></dl>
+    </div>
+    <div role="tabpanel" id="insp-p-tokens" aria-labelledby="insp-t-tokens" data-pane="tokens" hidden>
+      <dl class="rows" data-tokens></dl>
+    </div>
+    <p class="source"><span class="repo t-mono-label" data-file>rockgomes/filter-builder</span><a data-gh href="https://github.com/rockgomes/filter-builder" target="_blank" rel="noopener">Open on GitHub ↗</a></p>
+  </aside>
+</div>
+
+<style>
+  .insp { position: absolute; inset: 0; pointer-events: none; z-index: 6; }
+  @media (max-width: 1199px) { .insp { display: none !important; } }
+  @media print { .insp { display: none !important; } }
+
+  /* Dev selection: green box 3px outside the part, name label above its left corner */
+  .dsel { position: absolute; display: none; border: 1.5px solid var(--color-annotation-measure); border-radius: 9px; }
+  .dsel.hover { border-width: 1px; border-style: dashed; }
+  .dsel.on { display: block; }
+  .dlab { position: absolute; left: -1.5px; bottom: calc(100% + 2px); padding: 1px 6px; border-radius: 4px; background: var(--color-annotation-measure); color: var(--color-surface-page); font-weight: 500; white-space: nowrap; }
+  .hover .dlab { background: var(--color-surface-page); color: var(--color-annotation-measure); border: 1px solid var(--color-annotation-measure); }
+  .link { position: absolute; display: none; background: var(--color-annotation-measure); }
+  .link.on { display: block; }
+  .link.h { height: 1.5px; }
+  .link.v { width: 1.5px; }
+
+  .panel { position: absolute; width: 300px; pointer-events: auto; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 10px; box-shadow: var(--shadow-panel); overflow: hidden; }
+  .head { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px 10px; }
+  .head p { margin: 0; }
+  .title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .title { font: 600 13px/17px var(--font-sans); color: var(--color-text-primary); }
+  .ready { padding: 2px 7px; border-radius: 999px; background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; white-space: nowrap; }
+  .sub { color: var(--color-text-muted); }
+  .tabs { display: flex; gap: 16px; padding: 0 14px; border-bottom: 1px solid var(--color-border-subtle); }
+  .tabs button { padding: 0 0 7px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; font: 400 12px/16px var(--font-sans); color: var(--color-text-muted); }
+  .tabs button:hover { color: var(--color-text-primary); }
+  .tabs button[aria-selected='true'] { border-bottom-color: var(--color-annotation-measure); color: var(--color-text-primary); font-weight: 500; }
+  .code-wrap { padding: 12px 14px 4px; }
+  .code { margin: 0; max-height: 134px; padding: 10px 12px; border-radius: 6px; background: var(--color-surface-stage); overflow: auto; font: 400 11.5px/19px var(--font-mono); color: var(--color-text-primary); }
+  .code :global(.p) { color: var(--color-text-muted); }
+  .code :global(.c) { color: var(--color-figma-component); }
+  .code :global(.s) { color: var(--color-status-positive); }
+  .code :global(.e) { color: var(--color-status-negative-text); }
+  .hint { margin: 0; padding: 12px 14px 0; color: var(--color-text-muted); }
+  .rows { margin: 0; padding: 10px 14px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .rows :global(div) { display: flex; justify-content: space-between; align-items: center; gap: 12px; font: var(--type-mono-label); }
+  .rows :global(dt) { color: var(--color-text-muted); white-space: nowrap; }
+  .rows :global(dd) { margin: 0; min-width: 0; color: var(--color-text-primary); text-align: right; overflow-wrap: anywhere; }
+  .rows :global(.sw) { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; border-radius: 2px; border: 1px solid var(--color-border-strong); }
+  .source { margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px 12px; border-top: 1px solid var(--color-border-subtle); }
+  .repo { color: var(--color-text-secondary); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .source a { flex: none; font: 500 12px/16px var(--font-sans); color: var(--color-annotation-measure); text-decoration: none; }
+  .source a:hover { text-decoration: underline; }
+</style>
+
+<script>
+  // The parts of the hero table, matched to filter-builder (commit SHA below). `site` is the real call site in the repo.
+  const SHA = 'dbab9093d59f25add2f4e1a6ec320459b30413a4';
+  const GH = `https://github.com/rockgomes/filter-builder/blob/${SHA}/`;
+  type Snap = { view: string; conds: { field: string; op: string; value: string }[]; views: { id: string; name: string }[]; sort: { key: string; dir: number }; selected: string[]; hidden: string[] };
+  type Part = { sel: string; title: string; name: string; file: string; lines: string; site: string; props: (el: HTMLElement, s: Snap, win: HTMLElement) => [string, string][] };
+  const OP: Record<string, string> = { is: 'is', 'is not': 'is_not', 'more than': 'gt', 'less than': 'lt' };
+  const str = (v: string) => JSON.stringify(v);
+  const PARTS: Part[] = [
+    { sel: '.cond', title: 'Condition', name: 'ConditionRow', file: 'src/components/FilterPanel/FilterPanel.tsx', lines: 'L76-L84',
+      site: `<ConditionRow\n  key={node.id}\n  cond={node}\n  parentId="root"\n  isFirst={i === 0}\n  joinerOp={state.tree.op}\n  hits={hitCounts[node.id]}\n  dispatch={dispatch}\n/>`,
+      props: (el, s) => { const i = Number(el.dataset.i); const c = s.conds[i]; return c ? [['cond.field', str(c.field)], ['cond.op', str(OP[c.op] ?? c.op)], ['cond.value', str(c.value)], ['isFirst', String(i === 0)], ['joinerOp', '"AND"']] : []; } },
+    { sel: '[data-tabs]', title: 'Saved views', name: 'ViewChips', file: 'src/components/TopBar/TopBar.tsx', lines: 'L37-L42',
+      site: `<ViewChips\n  views={state.views}\n  activeView={state.activeView}\n  isDirty={isViewDirty(state)}\n  onSelect={(viewId) => dispatch({ type: 'view/select', viewId })}\n/>`,
+      props: (_el, s, win) => [['views.length', String(win.querySelectorAll('[data-tabs] .tab').length)], ['activeView', s.view ? str(s.view) : 'null']] },
+    { sel: '[data-columns]', title: 'Columns', name: 'ColumnsMenu', file: 'src/components/TopBar/TopBar.tsx', lines: 'L118-L124',
+      site: `<ColumnsMenu\n  colOrder={state.colOrder}\n  hidden={state.hidden}\n  onToggle={(key) => dispatch({ type: 'columns/toggleVisible', key })}\n  onMove={(key, direction) => dispatch({ type: 'columns/move', key, direction })}\n  onClose={() => dispatch({ type: 'columns/setMenuOpen', open: false })}\n/>`,
+      props: (_el, s) => [['hidden', s.hidden.length ? `{ ${s.hidden.map((h) => `${h}: true`).join(', ')} }` : '{}']] },
+    { sel: '.count', title: 'Match count', name: 'MatchCount', file: 'src/components/FilterPanel/FilterPanel.tsx', lines: 'L61-L72',
+      site: `<MatchCount\n  count={filtered.length}\n  total={rows.length}\n  ignoredCount={ignoredCount}\n  saveMenuOpen={state.saveMenuOpen}\n  hasConditions={hasConditions}\n  activeViewName={activeView?.name ?? null}\n  canUpdateActiveView={activeView !== undefined && !activeView.locked}\n  pendingConfirm={state.pendingConfirm}\n  isDirty={isViewDirty(state)}\n  dispatch={dispatch}\n/>`,
+      props: (el, s) => { const [count, , total] = (el.textContent || '').trim().split(/\s+/); const v = s.views.find((x) => x.id === s.view); return [['count', count], ['total', total], ['hasConditions', String(s.conds.length > 0)], ['activeViewName', v ? str(v.name) : 'null']]; } },
+    { sel: 'thead th', title: 'Column header', name: 'TableHeader', file: 'src/components/Table/Table.tsx', lines: 'L91-L101',
+      site: `<TableHeader\n  sorts={state.sorts}\n  nameWidth={state.nameWidth}\n  columns={columns}\n  dispatch={dispatch}\n  startResize={startResize}\n  selectedCount={selCount}\n  matchingCount={matchingCount}\n  matchingIds={sortedIds}\n  selMenuOpen={state.selMenuOpen}\n/>`,
+      props: (_el, s) => [['sort.key', str(s.sort.key)], ['sort.dir', s.sort.dir === 1 ? '"asc"' : '"desc"'], ['selectedCount', String(s.selected.length)]] },
+    { sel: 'tbody tr[data-co]', title: 'Row', name: 'TableRow', file: 'src/components/Table/Table.tsx', lines: 'L108-L118',
+      site: `<TableRow\n  key={company.id}\n  company={company}\n  columns={columns}\n  nameWidth={state.nameWidth}\n  rowHeight={rowHeight}\n  absIndex={range.start + i}\n  selected={isSelected(state.selection, company.id)}\n  sortedIds={sortedIds}\n  dispatch={dispatch}\n/>`,
+      props: (el, s) => { const rows = [...el.parentElement!.children]; return [['company', str(el.dataset.co || '')], ['absIndex', String(rows.indexOf(el))], ['selected', String(s.selected.includes(el.dataset.co || ''))]]; } },
+  ];
+  // Colour tokens the panel can name (read live, so they follow the theme and the engineer view).
+  const TOKENS = ['text-primary', 'text-secondary', 'text-muted', 'text-accent', 'surface-page', 'surface-raised', 'surface-stage', 'surface-sunken', 'border-subtle', 'border-strong', 'border-control', 'annotation-measure', 'annotation-measure-soft', 'annotation-redline', 'annotation-redline-soft', 'status-positive', 'status-positive-soft', 'status-negative-text'];
+
+  const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const hl = (src: string) => src.split('\n').map((line) => {
+    if (/^<\w/.test(line)) return `<span class="p">&lt;</span><span class="c">${esc(line.slice(1))}</span>`;
+    if (line.trim() === '/>') return `<span class="p">/&gt;</span>`;
+    const m = line.match(/^(\s*)(\w+)=(.*)$/);
+    if (!m) return esc(line);
+    const val = m[3].startsWith('"') ? `<span class="s">${esc(m[3])}</span>` : `<span class="e">${esc(m[3])}</span>`;
+    return `${m[1]}${esc(m[2])}<span class="p">=</span>${val}`;
+  }).join('\n');
+  const dl = (rows: [string, string][]) => rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${v}</dd></div>`).join('');
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-inspector]')) {
+    const spec = root.parentElement!;
+    const win = spec.querySelector<HTMLElement>('[data-hero-table]')!;
+    const panel = root.querySelector<HTMLElement>('[data-panel]')!;
+    const box = root.querySelector<HTMLElement>('[data-dsel]')!;
+    const hov = root.querySelector<HTMLElement>('[data-dsel-hover]')!;
+    const lh = root.querySelector<HTMLElement>('[data-link-h]')!;
+    const lv = root.querySelector<HTMLElement>('[data-link-v]')!;
+    const $ = (s: string) => root.querySelector<HTMLElement>(s)!;
+    const probe = document.createElement('i'); probe.style.display = 'none'; root.append(probe);
+    let sel: { part: Part; key: string } | null = null;
+    let hover: HTMLElement | null = null;
+
+    const partOf = (t: EventTarget | null) => {
+      const el = t instanceof Element ? t : null;
+      if (!el || !win.contains(el)) return null;
+      for (const part of PARTS) { const hit = el.closest<HTMLElement>(part.sel); if (hit && win.contains(hit)) return { part, el: hit }; }
+      return null;
+    };
+    // A part is found again after each redraw (the table rebuilds its rows and conditions) by its place in the list.
+    const keyOf = (part: Part, el: HTMLElement) => String([...win.querySelectorAll(part.sel)].indexOf(el));
+    const find = (s: { part: Part; key: string }) => win.querySelectorAll<HTMLElement>(s.part.sel)[Number(s.key)] || win.querySelector<HTMLElement>(s.part.sel);
+    const tokenFor = (value: string) => {
+      if (!value || value === 'rgba(0, 0, 0, 0)' || value === 'transparent') return null;
+      for (const t of TOKENS) { probe.style.color = `var(--color-${t})`; if (getComputedStyle(probe).color === value) return t; }
+      return null;
+    };
+    const place = (b: HTMLElement, el: HTMLElement | null, name = '') => {
+      if (!el) { b.classList.remove('on'); return null; }
+      const r = el.getBoundingClientRect(), s = spec.getBoundingClientRect();
+      Object.assign(b.style, { left: `${r.left - s.left - 3}px`, top: `${r.top - s.top - 3}px`, width: `${r.width + 6}px`, height: `${r.height + 6}px` });
+      b.querySelector<HTMLElement>('[data-dlab]')!.textContent = name;
+      b.classList.add('on');
+      return { left: r.left - s.left - 3, top: r.top - s.top - 3, right: r.right - s.left + 3, bottom: r.bottom - s.top + 3 };
+    };
+
+    function layout() {
+      const w = win.getBoundingClientRect(), s = spec.getBoundingClientRect();
+      // Figma: the panel's right edge is 40px past the table, its top 120px below the table's top
+      panel.style.left = `${w.right - s.left + 40 - 300}px`;
+      panel.style.top = `${w.top - s.top + 120}px`;
+      const el = sel && find(sel);
+      const b = place(box, el, sel?.part.name);
+      place(hov, hover && hover !== el ? hover : null, hover ? partOf(hover)?.part.name : '');
+      // Connector: from the box's right edge across to 40px inside the panel, then down to it (only when the part is above and left of it)
+      const p = { left: panel.offsetLeft, top: panel.offsetTop };
+      const x = p.left + 40;
+      if (b && b.right < x && (b.top + b.bottom) / 2 < p.top) {
+        const y = (b.top + b.bottom) / 2;
+        Object.assign(lh.style, { left: `${b.right}px`, top: `${y}px`, width: `${x - b.right}px` });
+        Object.assign(lv.style, { left: `${x}px`, top: `${y}px`, height: `${p.top - y}px` });
+        lh.classList.add('on'); lv.classList.add('on');
+      } else { lh.classList.remove('on'); lv.classList.remove('on'); }
+    }
+
+    function fill() {
+      const el = sel && find(sel);
+      if (!sel || !el) return;
+      const { part } = sel;
+      const snap: Snap = (win as any).heroTable.snapshot();
+      $('[data-title]').textContent = part.title;
+      $('[data-name]').textContent = part.name;
+      $('[data-code]').innerHTML = hl(part.site);
+      const cs = getComputedStyle(el);
+      const border = parseFloat(cs.borderTopWidth) ? tokenFor(cs.borderTopColor) : null;
+      // The text sample is the first element inside the part that holds visible text
+      const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.textContent?.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT) });
+      const text = (tw.nextNode()?.parentElement as HTMLElement | null) || el;
+      const ts = getComputedStyle(text);
+      $('[data-layout]').innerHTML = dl([
+        ['height', `${Math.round(el.getBoundingClientRect().height)}`],
+        ['radius', `${parseFloat(cs.borderTopLeftRadius) || 0}`],
+        ['border', border ? `color/${border.replace('-', '/')}` : 'none'],
+        ['text', `${ts.fontFamily.split(',')[0].replace(/"/g, '')} ${parseFloat(ts.fontSize)}`],
+      ]);
+      $('[data-props]').innerHTML = dl(part.props(el, snap, win).map(([k, v]) => [k, esc(v)]));
+      const used = new Map<string, string>();
+      const add = (role: string, v: string) => { const t = tokenFor(v); if (t && !used.has(role)) used.set(role, t); };
+      add('fill', cs.backgroundColor); if (border) used.set('border', border); add('text', ts.color);
+      $('[data-tokens]').innerHTML = used.size ? dl([...used].map(([role, t]) => [role, `<span class="sw" style="background: var(--color-${t})"></span>color/${t.replace('-', '/')}`])) : dl([['tokens', 'none']]);
+      $('[data-file]').textContent = `${part.file.split('/').pop()}:${part.lines.slice(1).split('-')[0]}`;
+      $('[data-file]').title = `rockgomes/filter-builder/${part.file}`;
+      $('[data-gh]').setAttribute('href', `${GH}${part.file}#${part.lines}`);
+      layout();
+    }
+
+    const select = (part: Part, el: HTMLElement) => { sel = { part, key: keyOf(part, el) }; fill(); };
+    win.addEventListener('pointermove', (e) => { const p = partOf(e.target); hover = p?.el ?? null; layout(); });
+    win.addEventListener('pointerleave', () => { hover = null; layout(); });
+    // Clicks keep working on the table; they also pick the part for the panel. Keyboard focus does the same.
+    win.addEventListener('click', (e) => { const p = partOf(e.target); if (p) select(p.part, p.el); }, true);
+    win.addEventListener('focusin', (e) => { const p = partOf(e.target); if (p) select(p.part, p.el); });
+    win.addEventListener('table:draw', () => setTimeout(fill)); // after the table's own click handler
+    new ResizeObserver(() => layout()).observe(spec);
+
+    // Tabs (arrow keys move between them)
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const show = (t: HTMLButtonElement, focus = false) => {
+      tabs.forEach((b) => { const on = b === t; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; root.querySelector<HTMLElement>(`[data-pane="${b.dataset.tab}"]`)!.hidden = !on; });
+      if (focus) t.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => show(t));
+      t.addEventListener('keydown', (e) => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d) { e.preventDefault(); show(tabs[(i + d + tabs.length) % tabs.length], true); } });
+    });
+
+    // Start on the first condition, as in Figma; fill again when the engineer view opens (layout needs it visible).
+    const start = () => { if (document.documentElement.dataset.view !== 'engineer') return; const first = win.querySelector<HTMLElement>('.cond') ? PARTS[0] : PARTS[1]; if (!sel) sel = { part: first, key: '0' }; fill(); };
+    document.documentElement.addEventListener('viewchange', () => setTimeout(start));
+    if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
+  }
+</script>

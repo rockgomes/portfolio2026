@@ -1,0 +1,76 @@
+---
+// Figma: Repos (98:8308), in View - Engineer (97:7542). Engineer view only.
+// Links and stack come from each experiment's content file (liveDemoUrl, sourceCodeUrl, tools), so they stay in one place.
+// The short lines are from Figma.
+import { getCollection } from 'astro:content';
+import repoIcon from '../assets/icons/repo.svg';
+
+const picks: [string, string][] = [
+  ['fieldset', 'Fieldset. A filter builder over 50,000 rows that never loses your work.'],
+  ['karaoke-os', 'Karaoke OS. What the bar’s QR code should have opened.'],
+  ['moveoutsale', 'MoveOutSale. Sell a flat’s worth of furniture when you move.'],
+  ['portfolio-presentation-template', 'A scroll-driven case-study page with live prototypes.'],
+];
+// The stack chips leave out hosting and the AI assistant, and drop details in brackets ("GSAP (ScrollTrigger + Flip)" is "GSAP").
+const NOT_STACK = ['Netlify', 'Claude Code'];
+const experiments = await getCollection('experiments');
+const repos = picks
+  .map(([id, line]) => ({ e: experiments.find((x) => x.id === id), line }))
+  .filter((r) => r.e?.data.sourceCodeUrl)
+  .map(({ e, line }) => ({
+    name: e!.data.sourceCodeUrl!.split('/').pop()!,
+    line,
+    demo: e!.data.liveDemoUrl,
+    source: e!.data.sourceCodeUrl!,
+    stack: (e!.data.tools ?? '').split(/,(?![^(]*\))/).map((t: string) => t.replace(/\(.*\)/, '').trim()).filter((t: string) => t && !NOT_STACK.includes(t)),
+  }));
+---
+<section class="repos" data-engineer aria-labelledby="repos-title">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="repos-title" class="t-heading-item">Shipped, with source</h2>
+      <a class="gh t-mono-label" href="https://github.com/rockgomes" target="_blank" rel="noopener">github.com/rockgomes · public repos, live demos</a>
+    </div>
+    <ul class="cards">
+      {repos.map((r) => (
+        <li class="card">
+          <p class="top">
+            <img src={repoIcon.src} width="14" height="14" alt="" />
+            <span class="name">{r.name}</span>
+            <span class="public">Public</span>
+          </p>
+          <p class="line">{r.line}</p>
+          <ul class="stack" aria-label="Built with">{r.stack.map((s: string) => <li class="t-mono-label">{s}</li>)}</ul>
+          <p class="links">
+            {r.demo && <a href={r.demo} target="_blank" rel="noopener">Live demo <span aria-hidden="true">↗</span></a>}
+            <a class="src" href={r.source} target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .repos { padding-block: 56px 72px; border-top: 1px solid var(--color-border-subtle); }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .head h2 { margin: 0; color: var(--color-text-primary); }
+  .gh { color: var(--color-annotation-measure); text-decoration: none; }
+  .gh:hover { text-decoration: underline; }
+  .cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .card { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 10px; }
+  .card p { margin: 0; }
+  .top { display: flex; align-items: center; gap: 8px; }
+  .top img { flex: none; }
+  .name { flex: 1; min-width: 0; font: var(--type-mono-small); font-weight: 500; color: var(--color-annotation-measure); overflow-wrap: anywhere; }
+  .public { flex: none; padding: 1px 6px; border: 1px solid var(--color-border-strong); border-radius: 999px; font: 500 10.5px/14px var(--font-sans); color: var(--color-text-muted); }
+  .line { font: var(--type-body-small); color: var(--color-text-secondary); }
+  .stack { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .stack li { padding: 2px 7px; border-radius: 4px; background: var(--color-surface-stage); color: var(--color-text-secondary); }
+  .links { display: flex; gap: 16px; margin-top: auto !important; }
+  .links a { font: 500 12.5px/1.4 var(--font-sans); color: var(--color-text-primary); text-decoration: none; }
+  .links a.src { color: var(--color-annotation-measure); }
+  .links a:hover { text-decoration: underline; }
+  @media (max-width: 1040px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .cards { grid-template-columns: minmax(0, 1fr); } }
+</style>
