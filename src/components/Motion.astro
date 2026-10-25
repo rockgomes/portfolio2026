@@ -36,6 +36,9 @@
         tl.to(handles, { scale: 1, duration: 0.25, stagger: 0.03, ease: 'back.out(2)' })
           .to(size, { autoAlpha: 1, duration: 0.3 }, '<0.1');
         if (cursor) tl.to(cursor, { autoAlpha: 0, x: '+=14', y: '+=10', duration: 0.4, ease: 'power2.in' }, '+=0.35');
+        // Once it has faded out, the cursor goes back to its start: a hidden cursor at the far corner still made the page
+        // taller (the portrait's ends below the footer). Nothing visible changes.
+        if (cursor) tl.set(cursor, { x: 0, y: 0 });
         // The hero story waits for the headline to finish (HeroStory.astro)
         if (cursor) tl.eventCallback('onComplete', () => document.dispatchEvent(new Event('hero:headline-done')));
         return tl;

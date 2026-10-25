@@ -30,3 +30,16 @@ test.describe('footer ruler', () => {
     await expect.poll(() => ruler.evaluate((el) => (el as HTMLElement).style.clipPath), { timeout: 4000 }).toBe('');
   });
 });
+
+// Nothing may reach below the footer: the About cursor used to end its (hidden) drag below it and add space.
+test.describe('page end', () => {
+  test.use({ contextOptions: { reducedMotion: 'no-preference' } });
+  test('the page ends at the footer, also after the About animation', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('#about').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(3500); // the portrait selection and its cursor finish
+    await page.locator('footer.ftr').scrollIntoViewIfNeeded();
+    const gap = await page.evaluate(() => document.documentElement.scrollHeight - Math.round(document.querySelector('footer.ftr')!.getBoundingClientRect().bottom + scrollY));
+    expect(gap).toBeLessThanOrEqual(0);
+  });
+});
