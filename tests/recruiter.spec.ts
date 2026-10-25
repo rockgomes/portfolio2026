@@ -19,3 +19,12 @@ test('the header switch opens the recruiter view', async ({ page }) => {
   await expect(page.locator('[data-recruiter]')).toBeVisible();
   await expect(page).toHaveURL(/view=recruiter/);
 });
+
+test('Download CV links to the PDF, which is served', async ({ page, request }) => {
+  await page.goto('/?view=recruiter');
+  const link = page.locator('[data-recruiter] a.cv');
+  await expect(link).toHaveAttribute('href', '/Rock_Gomes_CV.pdf');
+  const r = await request.get('/Rock_Gomes_CV.pdf');
+  expect(r.status()).toBe(200);
+  expect(r.headers()['content-type']).toContain('pdf');
+});

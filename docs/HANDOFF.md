@@ -26,7 +26,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 10. **One `h1` per page** on every case study and experiment page (#16); a smoke test keeps it that way.
 11. **Columns menu** on the hero table (#17): show and hide columns, remembered.
 12. **Small screens** (#18): a Menu button and panel below 1040px; the filter panel folds into a "Filter projects" button; side comments are hidden; section links stop with the title under the header.
-13. **Recruiter view** (#19, Figma `94:6774`): the header switch on "Recruiter" (or `/?view=recruiter`) swaps the homepage for a one-page summary (`Recruiter.astro`): role, pills, facts, five projects, contact card. Facts follow the CV (10+ years; Well named). The hero story waits while it is open.
+13. **Recruiter view** (#19, Figma `94:6774`): the header switch on "Recruiter" (or `/?view=recruiter`) swaps the homepage for a one-page summary (`Recruiter.astro`): role, pills, facts, five projects, contact card. Facts follow the CV (10+ years; Well named). The hero story waits while it is open. "Download CV (PDF)" (header, and the contact card on phones) serves `public/Rock_Gomes_CV.pdf`, a copy of Rock's CV published with his OK; replace that file when the CV changes.
 
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
@@ -34,12 +34,11 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 - Scripts that build elements with `innerHTML` need `:global(...)` styles; Astro's scoped styles do not reach them.
 
 ## Next, in this order
-1. **Download CV (PDF)** in the recruiter view: waiting for Rock's OK to publish his CV file (`~/Documents/Rock_Gomes_Senior_Product_Designer_CV.pdf`) on the site.
-2. **Engineer view** (Figma `97:7542`). Same page with Dev Mode details: green annotations (`data-view="engineer"` tokens), an inspect panel on the hero table, a "Shipped, with source" row of repo cards. Read real component and prop names from `rockgomes/filter-builder` first.
-3. **View switch animation** with GSAP Flip, once the two views exist (the filter already uses Flip; reuse that).
-4. **Case study and experiment pages: a full pass.** Rock: "we have freedom to make it the way we want/need". Not a restyle only: rethink the layout and structure in the new design. Keep all embeds working and keep one `h1` per page (a smoke test checks it).
-5. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
-6. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
+1. **Engineer view** (Figma `97:7542`). Same page with Dev Mode details: green annotations (`data-view="engineer"` tokens), an inspect panel on the hero table, a "Shipped, with source" row of repo cards. Read real component and prop names from `rockgomes/filter-builder` first.
+2. **View switch animation** with GSAP Flip, once the two views exist (the filter already uses Flip; reuse that).
+3. **Case study and experiment pages: a full pass.** Rock: "we have freedom to make it the way we want/need". Not a restyle only: rethink the layout and structure in the new design. Keep all embeds working and keep one `h1` per page (a smoke test checks it).
+4. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
+5. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
 
 ## Open questions for Rock (do not guess)
 - **Draft copy he has not confirmed:** the hero story comments (PM, Rock, Dev); the Dev and PM comments in Selected work; the footer line ("© year Rock Gomes · Tallinn, Estonia" / "Updated month year"); "as of October 2026" in Numbers; the Experience comment "Four roles fit on one screen" (the client tabs now hide some details).
