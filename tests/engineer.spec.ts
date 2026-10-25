@@ -48,3 +48,16 @@ test('below 1200px the inspect panel hides, like the other overlays', async ({ p
   await expect(page.locator('.repos')).toBeVisible();
   await expect(page.locator('[data-panel]')).toBeHidden();
 });
+
+test('the inspect panel collapses to a small tab, and stays collapsed after a reload', async ({ page }) => {
+  await page.goto('/?view=engineer');
+  const fold = page.locator('[data-fold]');
+  await fold.click();
+  await expect(fold).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#insp-body')).toBeHidden();
+  await expect(page.locator('[data-dsel]')).toBeHidden(); // the table shows clean
+  await page.reload();
+  await expect(page.locator('[data-fold]')).toHaveAttribute('aria-expanded', 'false');
+  await page.locator('[data-fold]').click();
+  await expect(page.locator('#insp-body')).toBeVisible();
+});
