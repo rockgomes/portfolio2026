@@ -45,6 +45,12 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 /* Type helpers (Figma text styles) */
 .t-mono-label { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); }
 .t-mono-small { font: var(--type-mono-small); }
+
+/* Button (Figma: Button / Copy email, 20:17). One box for every small action button; .btn-primary is the filled one. */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: 2px; color: var(--color-annotation-measure); font-family: var(--font-mono); white-space: nowrap; text-decoration: none; cursor: pointer; }
+.btn:hover { border-color: var(--color-annotation-measure); }
+.btn-primary { background: var(--color-text-primary); border-color: var(--color-text-primary); color: var(--color-surface-page); }
+.btn-primary:hover { background: var(--color-text-secondary); border-color: var(--color-text-secondary); }
 .t-mono-body { font: var(--type-mono-body); }
 .t-heading-item { font: var(--type-heading-item); letter-spacing: var(--tracking-heading-item); }
 .t-body-small { font: var(--type-body-small); }
@@ -71,3 +77,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .prose iframe { max-width: 100%; }
 .prose ul, .prose ol { padding-left: 1.2em; }
 .list-title { font-size: clamp(32px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1; margin: 0 0 32px; }
+
+/* Audience views (header switch, ?view=): "Recruiter" swaps the homepage content for the one-page summary */
+html[data-view='recruiter'] #main > :not([data-recruiter]) { display: none !important; }
+html:not([data-view='recruiter']) [data-recruiter] { display: none !important; }
