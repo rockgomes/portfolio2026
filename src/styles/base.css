@@ -1,6 +1,7 @@
 /* Base styles. Values come from tokens.css. */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+/* The page is white (body); the area a Mac shows when the page bounces past its end is the footer's grey, so no white strip appears under the footer */
+html { -webkit-text-size-adjust: 100%; background: var(--color-surface-stage); }
 body {
   margin: 0;
   background: var(--color-surface-page);
