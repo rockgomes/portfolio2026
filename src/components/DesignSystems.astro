@@ -123,9 +123,9 @@ const chains = [
   .lede { width: 380px; flex: none; display: flex; flex-direction: column; gap: 14px; }
   .lede p { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
   .lede strong { font-weight: 600; color: var(--color-text-primary); }
-  .systems { flex: 1 0 0; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .systems { flex: 1 0 0; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-24); }
   .sys { display: flex; flex-direction: column; gap: var(--space-8); min-width: 0; }
-  .card { flex: 1 0 auto; display: flex; flex-direction: column; gap: 14px; padding: 20px; background: var(--color-surface-raised); border: 1px solid var(--color-figma-component); }
+  .card { flex: 1 0 auto; display: flex; flex-direction: column; gap: 14px; padding: var(--space-24); background: var(--color-surface-raised); border: 1px solid var(--color-figma-component); }
   .top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-8); }
   .top h3 { margin: 0; color: var(--color-text-primary); white-space: nowrap; }
   .when { color: var(--color-text-muted); white-space: nowrap; }
@@ -135,13 +135,13 @@ const chains = [
   .facts .t-body-small { color: var(--color-text-secondary); }
   .tags { display: flex; flex-wrap: wrap; gap: 6px; padding-top: var(--space-4); }
   .ptag { padding: 3px 7px; border-radius: var(--radius-tag); background: var(--color-figma-component-soft); color: var(--color-figma-component); white-space: nowrap; }
-  .specimens { display: flex; flex-direction: column; gap: 20px; }
+  .specimens { display: flex; flex-direction: column; gap: var(--space-24); }
   .how { margin: 0; color: var(--color-annotation-measure); }
-  .spec-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-  .spec { display: flex; flex-direction: column; gap: 14px; padding: 20px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); min-width: 0; }
+  .spec-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-24); }
+  .spec { display: flex; flex-direction: column; gap: 14px; padding: var(--space-24); background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); min-width: 0; }
   .spec-h { margin: 0; display: flex; gap: 10px; align-items: baseline; color: var(--color-text-primary); }
   .spec-h .n { color: var(--color-annotation-redline); }
-  .area { flex: 1 0 auto; min-height: 230px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: 28px 24px; background: var(--color-surface-stage); overflow: hidden; }
+  .area { flex: 1 0 auto; min-height: 230px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: var(--space-32) var(--space-24); background: var(--color-surface-stage); overflow: hidden; }
   .cap { margin: 0; color: var(--color-text-secondary); }
   /* The set's name sits on its top-left corner, like an instance's name in 02 */
   .set-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-8); }
