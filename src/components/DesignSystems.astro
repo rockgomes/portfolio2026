@@ -34,7 +34,7 @@ const chains = [
             <div class="card">
               <div class="top"><h3 class="t-heading-item">{s.name}</h3><span class="t-mono-small when">{s.when}</span></div>
               <ul class="facts">{s.facts.map((f) => <li><span class="dash t-mono-small" aria-hidden="true">—</span><span class="t-body-small">{f}</span></li>)}</ul>
-              <div class="tags">{s.tags.map((t) => <span class="ptag t-mono-label">{t}</span>)}</div>
+              <div class="tags">{s.tags.map((t) => <span class="ptag ui-tag ui-tag-component">{t}</span>)}</div>
             </div>
           </div>
         ))}
@@ -101,8 +101,8 @@ const chains = [
           <h3 class="spec-h"><span class="n t-mono-label">04</span><span class="t-heading-item">Modes, not duplicates</span></h3>
           <div class="area">
             <div class="modes" aria-hidden="true">
-              <div class="mode" data-theme-sample="dark"><p class="ml t-mono-label">mode: dark<span class="here" data-here="dark"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
-              <div class="mode" data-theme-sample="light"><p class="ml t-mono-label">mode: light<span class="here" data-here="light"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
+              <div class="mode" data-theme-sample="dark"><p class="ml t-mono-label">mode: dark<span class="here" data-here="dark"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag ui-tag">Data, SaaS</span></div></div>
+              <div class="mode" data-theme-sample="light"><p class="ml t-mono-label">mode: light<span class="here" data-here="light"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag ui-tag">Data, SaaS</span></div></div>
             </div>
             <button type="button" class="btn" data-mode-switch>Switch this page to dark</button>
           </div>
@@ -134,7 +134,6 @@ const chains = [
   .dash { color: var(--color-figma-component); flex: none; }
   .facts .t-body-small { color: var(--color-text-secondary); }
   .tags { display: flex; flex-wrap: wrap; gap: 6px; padding-top: var(--space-4); }
-  .ptag { padding: 3px 7px; border-radius: var(--radius-tag); background: var(--color-figma-component-soft); color: var(--color-figma-component); white-space: nowrap; }
   .specimens { display: flex; flex-direction: column; gap: var(--space-24); }
   .how { margin: 0; color: var(--color-annotation-measure); }
   .spec-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-24); }
@@ -206,7 +205,7 @@ const chains = [
   .sample p { margin: 0; }
   .st { font: 500 13px/1.4 var(--font-sans); color: var(--s-primary); }
   .sd { color: var(--s-secondary); }
-  .stag { padding: 2px 6px; border-radius: var(--radius-tag); background: var(--s-soft); color: var(--s-measure); }
+  .stag { background: var(--s-soft); color: var(--s-measure); } /* the shared Tag, in the demo's own colours */
   /* The two samples always show their own mode, whatever the page theme is (Figma values). */
   [data-theme-sample='dark'] { --s-page: #111316; --s-border: rgba(232,234,238,0.14); --s-primary: #e8eaee; --s-secondary: #b0b5bd; --s-measure: #4fd3ea; --s-soft: rgba(79,211,234,0.14); }
   [data-theme-sample='dark'] .ml { color: #a879ff; }
