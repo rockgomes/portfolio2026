@@ -32,9 +32,9 @@ import ResolvedThread from './ResolvedThread.astro';
         <!-- Below 1040px the panel folds into this button, so the projects come first -->
         <button type="button" class="ftoggle" aria-expanded="false" aria-controls="filter-panel" data-filter-toggle>Filter projects <span class="fcount t-mono-label" data-filter-toggle-count>{items.length} / {items.length}</span><svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
         <div class="panel" id="filter-panel" data-filter-panel>
-          <div class="tabs" role="tablist" aria-label="Filter mode">
-            <button type="button" role="tab" aria-selected="true" data-tab="groups">Filters</button>
-            <button type="button" role="tab" aria-selected="false" data-tab="flat">Tags</button>
+          <div class="tabs utabs" role="tablist" aria-label="Filter mode">
+            <button type="button" class="utab" role="tab" aria-selected="true" data-tab="groups">Filters</button>
+            <button type="button" class="utab" role="tab" aria-selected="false" data-tab="flat">Tags</button>
             <span class="sp"></span>
             <span class="cnt t-mono-label" aria-live="polite" data-filter-count>{items.length} / {items.length}</span>
           </div>
@@ -103,9 +103,8 @@ import ResolvedThread from './ResolvedThread.astro';
   .side > .panel { flex: 0 1 auto; min-height: 220px; display: flex; flex-direction: column; }
   .side > .panel > :global(*) { flex: none; }
   .side > .panel > [data-filter-groups] { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
-  .tabs { display: flex; align-items: center; gap: 14px; padding: 12px 14px 10px; border-bottom: 1px solid var(--color-border-subtle); }
-  .tabs button { border: 0; background: transparent; padding: 0; cursor: pointer; font: 500 12px/17px var(--font-sans); color: var(--color-text-muted); }
-  .tabs button[aria-selected='true'] { font-weight: 600; color: var(--color-text-primary); }
+  .tabs { padding-top: var(--space-12); } /* the shared Underline tab bar (.utabs) */
+  .tabs .cnt { padding-bottom: 7px; }
   .sp { flex: 1 1 0; }
   .cnt { color: var(--color-text-muted); letter-spacing: 0; }
   .search-wrap { padding: 10px 10px 4px; }
