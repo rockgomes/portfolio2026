@@ -84,3 +84,4 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 /* Audience views (header switch, ?view=): "Recruiter" swaps the homepage content for the one-page summary */
 html[data-view='recruiter'] #main > :not([data-recruiter]) { display: none !important; }
 html:not([data-view='recruiter']) [data-recruiter] { display: none !important; }
+html:not([data-view='engineer']) [data-engineer] { display: none !important; }

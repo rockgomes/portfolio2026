@@ -235,7 +235,7 @@ const cols = [
     if (open && focus) colToggles.find((b) => !b.disabled)?.focus();
   };
   // draw() only paints; render() also saves. Only a visitor's own actions save, so a first visit leaves nothing behind.
-  const draw = () => { renderConds(); renderRows(); };
+  const draw = () => { renderConds(); renderRows(); root.dispatchEvent(new Event('table:draw')); }; // Inspector (engineer view) listens
   const render = () => { draw(); save(); };
 
   // Save the current conditions as a view of your own (up to 3; the oldest goes first).
