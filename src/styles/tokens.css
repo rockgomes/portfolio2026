@@ -1,5 +1,6 @@
 /* Design tokens. Exported from the tokens variable collection in Figma on 2026-10-25.
-   Light = "Light - Crisp" mode, Dark = "Dark" mode, engineer view = "Light - Dev" mode.
+   Light = "Light - Crisp" mode, Dark = "Dark" mode, engineer view = "Light - Dev" mode,
+   recruiter view = "Light - Recruiter" mode.
    Do not edit values here by hand: change them in Figma and re-export. */
 :root {
   --color-surface-page: #ffffff;
@@ -91,6 +92,18 @@
 }
 @media (prefers-color-scheme: dark) {
   :root[data-view="engineer"]:not([data-theme="light"]) {
+    --color-annotation-measure: #4fd3ea;
+    --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
+  }
+}
+
+/* Recruiter view: violet replaces the annotation blue (light theme only) */
+:root[data-view="recruiter"]:not([data-theme="dark"]) {
+  --color-annotation-measure: #6e5be8;
+  --color-annotation-measure-soft: rgba(110, 91, 232, 0.13);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-view="recruiter"]:not([data-theme="light"]) {
     --color-annotation-measure: #4fd3ea;
     --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
   }
