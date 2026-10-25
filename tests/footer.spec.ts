@@ -17,3 +17,16 @@ test.describe('footer pointer', () => {
     await expect(page.locator('[data-copied]')).toBeVisible();
   });
 });
+
+// The ruler starts hidden and draws itself once the footer scrolls into view. It used to stay hidden for good
+// when the footer was below the fold at load (Chrome counts a fully clipped element as 0% visible).
+test.describe('footer ruler', () => {
+  test.use({ contextOptions: { reducedMotion: 'no-preference' } });
+  test('draws when the footer scrolls into view', async ({ page }) => {
+    await page.goto('/');
+    const ruler = page.locator('[data-ruler]');
+    await expect(ruler).toHaveAttribute('style', /inset\(0px 100%/); // hidden while below the fold
+    await page.locator('footer.ftr').scrollIntoViewIfNeeded();
+    await expect.poll(() => ruler.evaluate((el) => (el as HTMLElement).style.clipPath), { timeout: 4000 }).toBe('');
+  });
+});
