@@ -10,7 +10,7 @@ const systems = [
 const variants = [{ name: 'Primary', cls: 'pri' }, { name: 'Secondary', cls: 'sec' }, { name: 'Ghost', cls: 'gho' }];
 const states = [{ name: 'Default', cls: '' }, { name: 'Hover', cls: 'hov' }, { name: 'Disabled', cls: 'dis' }];
 const chains = [
-  { sw: 'brand', prim: 'grey.900', sem: 'color.action.primary', use: 'button.bg' }, // row 1 drives the Primary buttons in 01 and 02
+  { sw: 'brand', prim: 'blue.600', sem: 'color.action.primary', use: 'button.bg' }, // row 1 drives the Primary buttons in 01 and 02
   { sw: 'primary', prim: 'grey.050', sem: 'color.text.primary', use: 'h1, row title' },
   { sw: 'redline', prim: 'red.400', sem: 'color.redline', use: 'dimension, pin' },
 ];
@@ -104,7 +104,7 @@ const chains = [
               <div class="mode" data-theme-sample="dark"><p class="ml t-mono-label">mode: dark<span class="here" data-here="dark"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
               <div class="mode" data-theme-sample="light"><p class="ml t-mono-label">mode: light<span class="here" data-here="light"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag t-mono-label">Data, SaaS</span></div></div>
             </div>
-            <button type="button" class="mode-switch t-mono-label" data-mode-switch>Switch this page to dark</button>
+            <button type="button" class="btn" data-mode-switch>Switch this page to dark</button>
           </div>
           <p class="cap t-body-small">One set of components with a Dark and a Light mode. This page switches between them without a single copied frame.</p>
         </article>
@@ -114,7 +114,8 @@ const chains = [
 </section>
 <style>
   /* --brand is color.action.primary in card 03. Primary buttons in 01 and 02 read it, so a rebrand restyles them. */
-  .ds { --brand: var(--color-text-primary); --brand-hover: color-mix(in srgb, var(--brand) 78%, var(--color-surface-page)); }
+  /* Same look as the site's buttons (.btn and .btn-primary in base.css) */
+  .ds { --brand: var(--color-annotation-measure); --brand-hover: color-mix(in srgb, var(--brand) 85%, var(--color-text-primary)); }
   .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
   .head { display: flex; flex-direction: column; gap: 10px; }
   .fig { margin: 0; display: flex; gap: 5px; align-items: center; color: var(--color-figma-component); white-space: nowrap; }
@@ -146,28 +147,29 @@ const chains = [
   .set-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
   .set { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px dashed var(--color-figma-component); border-radius: 4px; }
   .vr { display: flex; gap: 12px; }
-  .b { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); padding: 6px 12px; border: 0; border-radius: 2px; white-space: nowrap; cursor: pointer; }
+  .b { font: 400 12.5px/18px var(--font-sans); padding: 5px 10px; background: transparent; border: 1px solid transparent; border-radius: 7px; color: var(--color-text-secondary); white-space: nowrap; cursor: pointer; }
   .b[aria-pressed='true'], .b.lit { outline: 1.5px solid var(--color-annotation-measure); outline-offset: 2px; }
   .pick { color: var(--color-text-secondary); }
-  .pri { background: var(--brand); color: var(--color-surface-page); transition: background-color 0.4s; }
-  .pri.hov { background: var(--brand-hover); }
-  .sec { background: var(--color-surface-page); color: var(--color-text-primary); border: 1px solid var(--color-border-strong); }
-  .sec.hov { background: var(--color-border-strong); }
-  .gho { color: var(--color-text-primary); }
+  .pri { background: var(--brand); border-color: var(--brand); color: var(--color-surface-page); font-weight: 500; transition: background-color 0.4s, border-color 0.4s; }
+  .pri.hov { background: var(--brand-hover); border-color: var(--brand-hover); }
+  .sec { border-color: var(--color-border-strong); }
+  .sec.hov, .gho.hov { color: var(--color-text-primary); }
   .gho.hov { background: var(--color-border-subtle); }
   .dis { opacity: 0.4; }
   .ip { display: flex; gap: 24px; align-items: center; }
   .inst { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   /* The demo button follows the properties panel (and the variant set) through data attributes */
-  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--brand); color: var(--color-surface-page); border: 1px solid var(--color-figma-component); font: var(--type-ui-button); white-space: nowrap; transition: background-color 0.4s; }
-  .btn-demo[data-variant='Secondary'] { background: var(--color-surface-page); color: var(--color-text-primary); }
-  .btn-demo[data-variant='Ghost'] { background: transparent; color: var(--color-text-primary); }
-  .btn-demo[data-state='Hover'][data-variant='Primary'] { background: var(--brand-hover); }
-  .btn-demo[data-state='Hover'][data-variant='Secondary'] { background: var(--color-border-strong); }
+  /* The purple outline is the selected instance, as in Figma; the button inside is the site's button */
+  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 5px 10px; border-radius: 7px; background: var(--brand); color: var(--color-surface-page); border: 1px solid var(--brand); outline: 1px solid var(--color-figma-component); outline-offset: 2px; font: 500 12.5px/18px var(--font-sans); white-space: nowrap; transition: background-color 0.4s, border-color 0.4s; }
+  .btn-demo[data-variant='Secondary'], .btn-demo[data-variant='Ghost'] { background: transparent; color: var(--color-text-secondary); font-weight: 400; }
+  .btn-demo[data-variant='Secondary'] { border-color: var(--color-border-strong); }
+  .btn-demo[data-variant='Ghost'] { border-color: transparent; }
+  .btn-demo[data-state='Hover'][data-variant='Primary'] { background: var(--brand-hover); border-color: var(--brand-hover); }
+  .btn-demo[data-state='Hover'][data-variant='Secondary'], .btn-demo[data-state='Hover'][data-variant='Ghost'] { color: var(--color-text-primary); }
   .btn-demo[data-state='Hover'][data-variant='Ghost'] { background: var(--color-border-subtle); }
   .btn-demo[data-state='Disabled'] { opacity: 0.4; }
-  .btn-demo[data-size='Small'] { padding: 5px 10px 5px 8px; font-size: 12px; }
-  .btn-demo[data-size='Large'] { padding: 11px 18px 11px 16px; font-size: 15px; }
+  .btn-demo[data-size='Small'] { padding: 3px 8px; font-size: 12px; }
+  .btn-demo[data-size='Large'] { padding: 8px 14px; font-size: 14px; }
   .props { width: 230px; display: flex; flex-direction: column; gap: 7px; padding: 10px 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: 4px; }
   .props p { margin: 0; }
   .ph { color: var(--color-figma-component); }
@@ -196,8 +198,6 @@ const chains = [
   .hint { margin: 4px 0 0; color: var(--color-text-muted); }
   .here { display: none; color: var(--color-text-muted); }
   .mode[data-active] .here { display: inline; }
-  .mode-switch { padding: 4px 10px; border: 1px solid var(--color-border-strong); border-radius: 4px; background: var(--color-surface-raised); color: var(--color-annotation-measure); cursor: pointer; }
-  .mode-switch:hover { border-color: var(--color-annotation-measure); }
   @media (prefers-reduced-motion: reduce) { .tg, .tg::after { transition: none; } }
   .modes { display: flex; gap: 16px; }
   .mode { display: flex; flex-direction: column; gap: 6px; }
@@ -281,7 +281,7 @@ const chains = [
   }, 0.6);
   // Rebrand: the first token row is color.action.primary. A click flows along the chain, then restyles the Primary
   // buttons in 01 and 02, which read --brand.
-  const PALETTE = [['grey.900', '--color-text-primary'], ['blue.600', '--color-annotation-measure'], ['violet.500', '--color-figma-component'], ['green.600', '--color-status-positive']];
+  const PALETTE = [['blue.600', '--color-annotation-measure'], ['violet.500', '--color-figma-component'], ['green.600', '--color-status-positive'], ['grey.900', '--color-text-primary']];
   let brand = 0;
   const brandRow = $('[data-brand-row]');
   const primaries = [...root.querySelectorAll<HTMLElement>('[data-set] .pri')];
