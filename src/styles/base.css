@@ -82,3 +82,4 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 html[data-view='recruiter'] #main > :not([data-recruiter]) { display: none !important; }
 html:not([data-view='recruiter']) [data-recruiter] { display: none !important; }
 html:not([data-view='engineer']) [data-engineer] { display: none !important; }
+html[data-view='engineer'] [data-not-engineer] { display: none !important; }

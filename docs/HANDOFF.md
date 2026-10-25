@@ -29,6 +29,8 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 13. **Recruiter view** (#19, Figma `94:6774`): the header switch on "Recruiter" (or `/?view=recruiter`) swaps the homepage for a one-page summary (`Recruiter.astro`): role, pills, facts, five projects, contact card. Facts follow the CV (10+ years; Well named). The hero story waits while it is open. "Download CV (PDF)" (header, and the contact card on phones) serves `public/Rock_Gomes_CV.pdf`, a copy of Rock's CV published with his OK; replace that file when the CV changes.
 14. **Engineer view** (Figma `97:7542`): the switch on "Engineer" (or `/?view=engineer`) keeps the homepage and adds two things. (a) A Dev Mode inspect panel on the hero table (`Inspector.astro`): point at or click any part (condition, saved views, Columns, match count, column header, row) to see the matching `rockgomes/filter-builder` component, its real call site (linked to the lines at a fixed commit), the props this table has right now, and live layout and tokens. The story and its comment wait in this view. Hidden below 1200px. (b) "Shipped, with source" (`Repos.astro`): four repo cards; links and stack come from the experiment files (`liveDemoUrl`, `sourceCodeUrl`, `tools`).
 
+15. **Engineer view: design systems as developer docs** (`DesignSystemsDev.astro`, from the Figma DS states, Oct 25). In the engineer view it replaces `DesignSystems.astro`. A side list (Overview, Tokens, Components, Modes, Accessibility) switches one box. Overview shows real chains on this site: Figma variable, exported CSS variable (read from `tokens.css` at build), the CSS that uses it. Tokens reuses card 03's chains and rebrand; Components the Variant / State / Size set; Modes switches the page mode; Accessibility computes contrast live from the tokens. Copy is a draft.
+
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
 - That bot commit does not trigger CI. To get a check on it, close and reopen the PR.
@@ -42,6 +44,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 5. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
 
 ## Open questions for Rock (do not guess)
+- **Engineer design systems copy (draft):** the lede and the four points ("Tokens you import", "Props you can predict", ...). Check: did the code components at Inbank, Bigbank and Well really have the same Variant / State / Size props as Figma?
 - **Draft copy he has not confirmed:** the hero story comments (PM, Rock, Dev); the Dev and PM comments in Selected work; the footer line ("© year Rock Gomes · Tallinn, Estonia" / "Updated month year"); "as of October 2026" in Numbers; the Experience comment "Four roles fit on one screen" (the client tabs now hide some details).
 - **Romeo** (Independent client tab): business line, text, whether to name the work.
 - Final filter tags per project (`tagsToCheck: true`).

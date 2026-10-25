@@ -1,0 +1,283 @@
+---
+// Engineer view only: the design systems section as developer docs (Figma: "Engineer view - explorations", Direction B
+// "Docs" and the DS states, Oct 25). The design lead view keeps DesignSystems.astro.
+// The side list switches what the box shows. Every chain here is real on this site: Figma variable → exported CSS
+// variable (read from tokens.css at build) → the CSS that uses it. Tokens reuses the three-layer chains of card 03.
+import SectionHeader from './SectionHeader.astro';
+import Glyph from './Glyph.astro';
+import tokensCss from '../styles/tokens.css?raw';
+
+const block = (start: string) => { const i = tokensCss.indexOf(start); return i < 0 ? '' : tokensCss.slice(i, tokensCss.indexOf('}', i)); };
+const val = (css: string, name: string) => css.match(new RegExp(`--${name}:\\s*([^;]+);`))?.[1].trim() ?? '';
+const light = block(':root {'), dark = block(':root[data-theme="dark"] {');
+
+// Overview: one decision, three places
+const examples = [
+  { tab: 'Primary button colour', v: 'color/text/primary', mode: 'Light - Crisp', css: `--color-text-primary: ${val(light, 'color-text-primary')};`, sw: val(light, 'color-text-primary'), use: `.btn-primary {\n  background: var(--color-text-primary);\n}`, where: 'Download CV (PDF) button' },
+  { tab: 'Accent colour', v: 'color/annotation/redline', mode: 'Light - Crisp', css: `--color-annotation-redline: ${val(light, 'color-annotation-redline')};`, sw: val(light, 'color-annotation-redline'), use: `.line {\n  background: var(--color-annotation-redline);\n}`, where: 'every dimension line on this page' },
+  { tab: 'Dark mode', v: 'color/surface/page', mode: 'Dark', css: `:root[data-theme="dark"] {\n  --color-surface-page: ${val(dark, 'color-surface-page')};\n}`, sw: val(dark, 'color-surface-page'), use: `body {\n  background: var(--color-surface-page);\n}`, where: 'the page itself' },
+];
+// Tokens: the three-layer chains from card 03 (primitive → semantic → component)
+const chains = [
+  { tab: 'button.bg', prim: 'grey.900', sem: 'color.action.primary', use: 'button.bg', sw: 'brand' },
+  { tab: 'text', prim: 'grey.050', sem: 'color.text.primary', use: 'h1, row title', sw: 'primary' },
+  { tab: 'redline', prim: 'red.400', sem: 'color.redline', use: 'dimension, pin', sw: 'redline' },
+];
+const toc = [['overview', 'Overview'], ['tokens', 'Tokens'], ['components', 'Components'], ['modes', 'Modes'], ['a11y', 'Accessibility']];
+const points = [
+  ['Tokens you import', 'Figma variables export as CSS variables. No raw hex in components.'],
+  ['Props you can predict', 'Variant, State and Size in Figma are the same three props in code.'],
+  ['Modes, not forks', 'Light, dark and brand are modes of one token set.'],
+  ['Accessibility in the tokens', 'WCAG built in at Inbank, AAA colour tokens at Well.'],
+];
+---
+<section class="dsd" id="design-systems-dev" data-engineer aria-labelledby="dsd-title">
+  <div class="wrap inner">
+    <SectionHeader num="03" title="Design systems" titleId="dsd-title" subtitle="how my design systems meet your code" />
+    <div class="layout">
+      <div class="toc" role="tablist" aria-label="Design systems" aria-orientation="vertical" data-toc>
+        {toc.map(([id, label], i) => <button type="button" role="tab" id={`dsd-t-${id}`} aria-controls="dsd-box" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-ds={id}>{label}</button>)}
+      </div>
+      <div class="body">
+        <p class="lede"><strong>I built design systems from scratch at Inbank and Bigbank, and rebuilt one at Well.</strong> For engineers, the point is simple: one decision, made once, shows up the same in Figma, in CSS and in the component.</p>
+
+        <div class="box" id="dsd-box" role="tabpanel" aria-labelledby="dsd-t-overview" data-box>
+          <!-- Overview -->
+          <div class="pane" data-pane="overview">
+            <div class="bar"><div class="tabs" role="tablist" aria-label="Examples">{examples.map((x, i) => <button type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-sub={i}>{x.tab}</button>)}</div></div>
+            {examples.map((x, i) => (
+              <div class="cols" data-subpane={i} hidden={i !== 0}>
+                <div><p class="lbl">Figma variable</p><p><i class="sw" style={`background:${x.sw}`}></i>{x.v}</p><p class="dim">↳ "{x.mode}": {x.sw}</p></div>
+                <div><p class="lbl">CSS (exported)</p><pre>{x.css}</pre></div>
+                <div><p class="lbl">Component</p><pre>{x.use}</pre><p class="dim">used by: {x.where}</p></div>
+              </div>
+            ))}
+          </div>
+          <!-- Tokens -->
+          <div class="pane" data-pane="tokens" hidden>
+            <div class="bar"><div class="tabs" role="tablist" aria-label="Token chains">{chains.map((c, i) => <button type="button" role="tab" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-sub={i}>{c.tab}</button>)}</div></div>
+            {chains.map((c, i) => (
+              <div class="cols" data-subpane={i} hidden={i !== 0}>
+                <div><p class="lbl">Primitive</p><p>{i === 0 ? <button type="button" class="sw rebrand" data-rebrand aria-label="Rebrand: change the primitive colour"></button> : <i class={`sw sw-${c.sw}`}></i>}<span data-prim={i === 0 ? '' : undefined}>{c.prim}</span></p>{i === 0 && <p class="dim">click the swatch to rebrand</p>}</div>
+                <div><p class="lbl">Semantic</p><p>{c.sem}</p><p class="dim">gives the value a job</p></div>
+                <div><p class="lbl">Component</p><p>{c.use}</p><p class="dim">{i === 0 ? 'the Primary button in Components follows' : 'only uses the semantic layer'}</p></div>
+              </div>
+            ))}
+          </div>
+          <!-- Components -->
+          <div class="pane" data-pane="components" hidden>
+            <div class="bar">
+              <div class="tabs"><span class="tab-on">Button</span></div>
+              <div class="ctl" role="group" aria-label="Button properties">
+                <button type="button" class="part" data-prop="variant">Variant <b>Primary</b></button>
+                <button type="button" class="part" data-prop="state">State <b>Default</b></button>
+                <button type="button" class="part" data-prop="size">Size <b>Medium</b></button>
+              </div>
+            </div>
+            <div class="cols">
+              <div><p class="lbl">Figma component</p><p class="fig"><Glyph kind="master" /> Button</p><p class="dim" data-fig-props>Variant=Primary, State=Default, Size=Medium</p></div>
+              <div><p class="lbl">Props</p><pre data-code></pre></div>
+              <div><p class="lbl">Preview</p><span class="btn-demo" data-btn data-variant="Primary" data-state="Default" data-size="Medium" aria-hidden="true"><span class="t-mono-small">+</span>Save as view</span></div>
+            </div>
+          </div>
+          <!-- Modes -->
+          <div class="pane" data-pane="modes" hidden>
+            <div class="bar">
+              <div class="tabs"><span class="tab-on">Surface and text</span></div>
+              <div class="ctl"><div class="seg" role="radiogroup" aria-label="Page mode" data-modes><button type="button" role="radio" data-mode="light">Light</button><button type="button" role="radio" data-mode="dark">Dark</button></div></div>
+            </div>
+            <div class="cols">
+              <div><p class="lbl">Figma mode</p><p data-mode-name>tokens / Light - Dev</p><p class="dim">same variables, other values</p></div>
+              <div><p class="lbl">CSS (this page, now)</p><pre data-mode-css></pre></div>
+              <div><p class="lbl">Preview</p><div class="mini"><b>Dynamic Lists</b><span>Saved filter and column views.</span></div></div>
+            </div>
+          </div>
+          <!-- Accessibility -->
+          <div class="pane" data-pane="a11y" hidden>
+            <div class="bar">
+              <div class="tabs"><span class="tab-on">Text on page</span></div>
+              <div class="ctl"><div class="seg" role="radiogroup" aria-label="Page mode" data-modes><button type="button" role="radio" data-mode="light">Light</button><button type="button" role="radio" data-mode="dark">Dark</button></div></div>
+            </div>
+            <div class="cols">
+              <div><p class="lbl">Token</p><p data-a11y="name"></p></div>
+              <div><p class="lbl">Ratio on color/surface/page</p><p data-a11y="ratio"></p></div>
+              <div><p class="lbl">AA, small text</p><p data-a11y="pass"></p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="points">
+          {points.map(([h, p]) => <div><h3>{h}</h3><p>{p}</p></div>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dsd { --brand: var(--color-text-primary); --brand-hover: color-mix(in srgb, var(--brand) 78%, var(--color-surface-page)); }
+  .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
+  .layout { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 72px; }
+  .toc { display: flex; flex-direction: column; align-self: start; border-left: 1px solid var(--color-border-subtle); }
+  .toc button { margin-left: -1px; padding: 4px 0 4px 16px; border: 0; border-left: 2px solid transparent; background: none; text-align: left; cursor: pointer; font: 400 13px/18px var(--font-sans); color: var(--color-text-muted); }
+  .toc button:hover { color: var(--color-text-primary); }
+  .toc button[aria-selected='true'] { border-left-color: var(--color-annotation-measure); color: var(--color-text-primary); font-weight: 500; }
+  .body { min-width: 0; }
+  .lede { margin: 0; max-width: 720px; font: var(--type-body-default); color: var(--color-text-secondary); }
+  .lede strong { font-weight: 600; color: var(--color-text-primary); }
+  .box { margin-top: 28px; border: 1px solid var(--color-border-strong); border-radius: 10px; background: var(--color-surface-page); overflow: hidden; }
+  .bar { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--color-border-subtle); }
+  .tabs { display: flex; min-width: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .tabs button, .tab-on { padding: 8px 14px; border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-muted); white-space: nowrap; }
+  .tabs button:hover { color: var(--color-text-primary); }
+  .tabs button[aria-selected='true'], .tab-on { border-bottom-color: var(--color-annotation-measure); color: var(--color-text-primary); font-weight: 500; cursor: default; }
+  .ctl { margin-left: auto; display: flex; gap: 6px; padding: 5px 10px 5px 0; flex-wrap: wrap; justify-content: flex-end; }
+  /* Same as the hero table's condition parts */
+  .part { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border: 1px solid var(--color-border-strong); border-radius: 7px; background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .part:hover { background: var(--color-surface-stage); }
+  .part b { font-weight: 500; color: var(--color-text-primary); }
+  /* Same as the header's "I'm a" switch */
+  .seg { display: flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
+  .seg button { border: 0; background: transparent; padding: 3px 10px; border-radius: 6px; cursor: pointer; font: 400 12.5px/16px var(--font-sans); color: var(--color-text-secondary); }
+  .seg button:hover { color: var(--color-text-primary); }
+  .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; }
+  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); min-height: 120px; font: var(--type-mono-small); color: var(--color-text-primary); }
+  .cols > div { padding: 14px 16px; border-right: 1px solid var(--color-border-subtle); min-width: 0; }
+  .cols > div:last-child { border-right: 0; }
+  .cols p, .cols pre { margin: 0; font: inherit; line-height: 1.65; }
+  .cols pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .lbl { margin-bottom: 8px !important; font: var(--type-mono-label) !important; letter-spacing: var(--tracking-mono-label); text-transform: uppercase; color: var(--color-text-muted); }
+  .dim { color: var(--color-text-muted); }
+  .fig { display: flex; gap: 6px; align-items: center; }
+  .sw { display: inline-block; width: 12px; height: 12px; margin-right: 8px; border-radius: 3px; border: 1px solid var(--color-border-strong); vertical-align: -1px; }
+  .sw-primary { background: var(--color-text-primary); } .sw-redline { background: var(--color-annotation-redline); }
+  .sw.rebrand { padding: 0; cursor: pointer; background: var(--brand); outline: 1.5px dashed var(--color-annotation-measure); outline-offset: 2px; }
+  .rebrand:hover { outline-style: solid; }
+  /* Same button as card 01/02; reads --brand, so a rebrand in Tokens restyles it */
+  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 8px 14px 8px 12px; border-radius: 2px; background: var(--brand); color: var(--color-surface-page); border: 1px solid transparent; font: var(--type-ui-button); white-space: nowrap; transition: background-color 0.4s; }
+  .btn-demo[data-variant='Secondary'] { background: var(--color-surface-page); color: var(--color-text-primary); border-color: var(--color-border-strong); }
+  .btn-demo[data-variant='Ghost'] { background: transparent; color: var(--color-text-primary); }
+  .btn-demo[data-state='Hover'][data-variant='Primary'] { background: var(--brand-hover); }
+  .btn-demo[data-state='Hover'][data-variant='Secondary'] { background: var(--color-border-strong); }
+  .btn-demo[data-state='Hover'][data-variant='Ghost'] { background: var(--color-border-subtle); }
+  .btn-demo[data-state='Disabled'] { opacity: 0.4; }
+  .btn-demo[data-size='Small'] { padding: 5px 10px 5px 8px; font-size: 12px; }
+  .btn-demo[data-size='Large'] { padding: 11px 18px 11px 16px; font-size: 15px; }
+  .mini { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 8px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); font-family: var(--font-sans); }
+  .mini b { font-size: 13px; font-weight: 500; } .mini span { font-size: 12px; color: var(--color-text-secondary); }
+  .cols :global(.ok) { color: var(--color-status-positive); } .cols :global(.no) { color: var(--color-status-negative-text); } /* made by the script */
+  .points { margin-top: 32px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .points h3 { margin: 0; font: 600 16px/1.3 var(--font-sans); color: var(--color-text-primary); }
+  .points p { margin: 6px 0 0; font: var(--type-body-small); color: var(--color-text-secondary); }
+  @media (prefers-reduced-motion: reduce) { .btn-demo { transition: none; } }
+  @media (max-width: 1040px) {
+    .layout { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .toc { flex-direction: row; flex-wrap: wrap; border-left: 0; border-bottom: 1px solid var(--color-border-subtle); }
+    .toc button { margin: 0 0 -1px; padding: 6px 12px; border-left: 0; border-bottom: 2px solid transparent; }
+    .toc button[aria-selected='true'] { border-bottom-color: var(--color-annotation-measure); }
+    .points { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .inner { padding-top: 80px; }
+    .bar { flex-wrap: wrap; }
+    .ctl { margin-left: 0; padding: 0 10px 8px; justify-content: flex-start; }
+    .cols { grid-template-columns: minmax(0, 1fr); }
+    .cols > div { border-right: 0; border-bottom: 1px solid var(--color-border-subtle); }
+    .cols > div:last-child { border-bottom: 0; }
+    .points { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+
+<script>
+  import { reduceMotion } from '../lib/motion';
+
+  const root = document.getElementById('design-systems-dev');
+  if (root) {
+    const $ = <T extends HTMLElement = HTMLElement>(s: string) => root.querySelector<T>(s)!;
+    const box = $('[data-box]');
+
+    // Tabs, with arrow keys (the side list is vertical, the tabs in the box are horizontal)
+    function tabs(list: HTMLElement, onPick: (b: HTMLButtonElement) => void, keys: [string, string]) {
+      const items = [...list.querySelectorAll<HTMLButtonElement>(':scope > button[role="tab"]')];
+      const pick = (b: HTMLButtonElement, focus = false) => {
+        items.forEach((x) => { const on = x === b; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; });
+        if (focus) b.focus();
+        onPick(b);
+      };
+      items.forEach((b, i) => {
+        b.addEventListener('click', () => pick(b));
+        b.addEventListener('keydown', (e) => { const d = e.key === keys[1] ? 1 : e.key === keys[0] ? -1 : 0; if (d) { e.preventDefault(); pick(items[(i + d + items.length) % items.length], true); } });
+      });
+    }
+    tabs($('[data-toc]'), (b) => {
+      root.querySelectorAll<HTMLElement>('[data-pane]').forEach((p) => (p.hidden = p.dataset.pane !== b.dataset.ds));
+      box.setAttribute('aria-labelledby', b.id);
+      if (b.dataset.ds === 'modes' || b.dataset.ds === 'a11y') paintMode();
+    }, ['ArrowUp', 'ArrowDown']);
+    root.querySelectorAll<HTMLElement>('.pane .tabs[role="tablist"]').forEach((list) => {
+      const pane = list.closest<HTMLElement>('[data-pane]')!;
+      tabs(list, (b) => pane.querySelectorAll<HTMLElement>('[data-subpane]').forEach((p) => (p.hidden = p.dataset.subpane !== b.dataset.sub)), ['ArrowLeft', 'ArrowRight']);
+    });
+
+    // Components: the same Variant / State / Size set as card 01; props and preview follow
+    const VARIANTS = ['Primary', 'Secondary', 'Ghost'], STATES = ['Default', 'Hover', 'Disabled'], SIZES = ['Small', 'Medium', 'Large'];
+    const SIZE_PROP: Record<string, string> = { Small: 'sm', Medium: 'md', Large: 'lg' };
+    const st: Record<string, string> = { variant: 'Primary', state: 'Default', size: 'Medium' };
+    const lists: Record<string, string[]> = { variant: VARIANTS, state: STATES, size: SIZES };
+    const btn = $('[data-btn]');
+    function paintButton() {
+      Object.assign(btn.dataset, st);
+      root!.querySelectorAll<HTMLButtonElement>('[data-prop]').forEach((b) => {
+        const k = b.dataset.prop!; b.querySelector('b')!.textContent = st[k];
+        b.setAttribute('aria-label', `${k[0].toUpperCase() + k.slice(1)}: ${st[k]}. Change`);
+      });
+      $('[data-fig-props]').textContent = `Variant=${st.variant}, State=${st.state}, Size=${st.size}`;
+      $('[data-code]').textContent = `<Button\n  variant="${st.variant.toLowerCase()}"\n  state="${st.state.toLowerCase()}"\n  size="${SIZE_PROP[st.size]}"\n/>`;
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-prop]').forEach((b) => b.addEventListener('click', () => {
+      const k = b.dataset.prop!, l = lists[k]; st[k] = l[(l.indexOf(st[k]) + 1) % l.length]; paintButton();
+    }));
+
+    // Tokens: the first swatch rebrands color.action.primary (as in card 03); the Primary button above follows
+    const PALETTE = [['grey.900', '--color-text-primary'], ['red.400', '--color-annotation-redline'], ['green.600', '--color-status-positive']]; // names match their colour in every view
+    let brand = 0;
+    $('[data-rebrand]').addEventListener('click', () => {
+      brand = (brand + 1) % PALETTE.length;
+      $('[data-prim]').textContent = PALETTE[brand][0];
+      root!.style.setProperty('--brand', `var(${PALETTE[brand][1]})`);
+    });
+
+    // Modes + Accessibility: a real switch for this page's mode (like card 04); values and ratios are read live
+    const html = document.documentElement, darkMq = matchMedia('(prefers-color-scheme: dark)');
+    const current = () => (html.dataset.theme === 'dark' || html.dataset.theme === 'light' ? html.dataset.theme : darkMq.matches ? 'dark' : 'light');
+    const read = (name: string) => getComputedStyle(html).getPropertyValue(name).trim();
+    const lum = (hex: string) => {
+      const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4));
+      return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    };
+    const ratio = (a: string, b: string) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+    const A11Y = ['text-primary', 'text-secondary', 'text-muted', 'annotation-measure'];
+    function paintMode() {
+      const now = current();
+      root!.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.mode === now)));
+      const engineer = html.dataset.view === 'engineer';
+      $('[data-mode-name]').textContent = `tokens / ${now === 'dark' ? 'Dark' : engineer ? 'Light - Dev' : 'Light - Crisp'}`;
+      $('[data-mode-css]').textContent = [':root {', ...['surface-page', 'text-primary', 'annotation-measure'].map((n) => `  --color-${n}: ${read(`--color-${n}`)};`), '}'].join('\n');
+      const page = read('--color-surface-page');
+      const rows = A11Y.map((n) => { const v = read(`--color-${n}`); return { n, r: /^#[0-9a-f]{6}$/i.test(v) && /^#[0-9a-f]{6}$/i.test(page) ? ratio(v, page) : NaN }; });
+      $('[data-a11y="name"]').innerHTML = rows.map((x) => `color/${x.n.replace('-', '/')}`).join('<br>');
+      $('[data-a11y="ratio"]').innerHTML = rows.map((x) => (isNaN(x.r) ? '-' : `${x.r.toFixed(1)} : 1`)).join('<br>');
+      $('[data-a11y="pass"]').innerHTML = rows.map((x) => (x.r >= 4.5 ? '<span class="ok">passes</span>' : '<span class="no">fails</span>')).join('<br>');
+    }
+    root.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) => b.addEventListener('click', () => {
+      if (b.dataset.mode === current()) return;
+      const go = () => { html.dataset.theme = b.dataset.mode; paintMode(); };
+      const d = document as any;
+      if (d.startViewTransition && !reduceMotion()) d.startViewTransition(go); else go();
+    }));
+    darkMq.addEventListener('change', paintMode);
+    html.addEventListener('viewchange', paintMode);
+
+    paintButton(); paintMode();
+  }
+</script>
