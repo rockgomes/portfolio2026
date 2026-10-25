@@ -1,45 +1,55 @@
 import { test, expect } from '@playwright/test';
 
-// Engineer view: the design systems section as developer docs (DesignSystemsDev.astro).
-test('the engineer view swaps in the docs version of design systems', async ({ page }) => {
+// Engineer view: the design systems section as one stacked story (DesignSystemsDev.astro).
+test('the engineer view swaps in the stacked design systems section', async ({ page }) => {
   await page.goto('/?view=engineer');
   await expect(page.locator('#design-systems-dev')).toBeVisible();
   await expect(page.locator('#design-systems')).toBeHidden();
+  for (const id of ['dsd-tokens', 'dsd-components', 'dsd-modes', 'dsd-a11y']) await expect(page.locator(`#${id}`)).toBeVisible();
   await page.locator('[data-view-option="design"]').click();
   await expect(page.locator('#design-systems')).toBeVisible();
   await expect(page.locator('#design-systems-dev')).toBeHidden();
 });
 
-test('the side list switches the box, also with the arrow keys', async ({ page }) => {
+test('a token change reaches the components, the mode panel and the contrast check', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/?view=engineer');
   const ds = page.locator('#design-systems-dev');
-  await expect(ds.locator('[data-pane="overview"]')).toBeVisible();
-  await ds.getByRole('tab', { name: 'Components' }).click();
-  await expect(ds.locator('[data-pane="components"]')).toBeVisible();
-  await expect(ds.locator('[data-pane="overview"]')).toBeHidden();
-  await page.keyboard.press('ArrowDown');
-  await expect(ds.locator('[data-pane="modes"]')).toBeVisible();
-  await expect(ds.getByRole('tab', { name: 'Modes' })).toBeFocused();
+  const muted = ds.locator('[data-a11y="muted"] [data-r="light"]');
+  await expect(muted).toContainText('3.3 : 1 fails');
+  await ds.locator('[data-token="muted"] [data-opt="1"]').click();
+  await expect(muted).toContainText('5.0 : 1 passes');
+  await expect(ds.locator('[data-token="muted"] [data-hex]')).toHaveText('#6b6f76');
+  await expect.poll(() => ds.locator('#dsd-components .meta').evaluate((e) => getComputedStyle(e).color)).toBe('rgb(107, 111, 118)');
+  await expect.poll(() => ds.locator('[data-mode-panel="light"] .meta').evaluate((e) => getComputedStyle(e).color)).toBe('rgb(107, 111, 118)');
+  await expect.poll(() => ds.locator('[data-mode-panel="dark"] .meta').evaluate((e) => getComputedStyle(e).color)).toBe('rgb(124, 130, 139)'); // Dark keeps its own value
+  await ds.locator('[data-reset]').click();
+  await expect(muted).toContainText('3.3 : 1 fails');
 });
 
-test('Components: a property change updates the props and the preview', async ({ page }) => {
+test('swatches work with the arrow keys', async ({ page }) => {
+  await page.goto('/?view=engineer');
+  const group = page.locator('#design-systems-dev [data-token="accent"]');
+  await group.locator('[data-opt="0"]').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(group.locator('[data-opt="1"]')).toBeFocused();
+  await expect(group.locator('[data-opt="1"]')).toHaveAttribute('aria-checked', 'true');
+});
+
+test('Components: a property change updates the code and the preview', async ({ page }) => {
   await page.goto('/?view=engineer');
   const ds = page.locator('#design-systems-dev');
-  await ds.getByRole('tab', { name: 'Components' }).click();
   await ds.locator('[data-prop="variant"]').click();
   await expect(ds.locator('[data-code]')).toContainText('variant="secondary"');
   await expect(ds.locator('[data-btn]')).toHaveAttribute('data-variant', 'Secondary');
-  await expect(ds.locator('[data-fig-props]')).toHaveText('Variant=Secondary, State=Default, Size=Medium');
 });
 
-test('Accessibility: ratios are read from the tokens, per mode', async ({ page }) => {
+test('the mode switch changes the page; swatches follow the mode', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/?view=engineer');
   const ds = page.locator('#design-systems-dev');
-  await ds.getByRole('tab', { name: 'Accessibility' }).click();
-  const pane = ds.locator('[data-pane="a11y"]');
-  await pane.locator('[data-mode="light"]').click();
-  await expect(pane.locator('[data-a11y="ratio"]')).toContainText('16.8 : 1'); // text/primary on white
-  await pane.locator('[data-mode="dark"]').click();
+  await ds.locator('[data-mode="dark"]').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  await expect(pane.locator('[data-a11y="ratio"]')).toContainText('15.4 : 1');
+  await expect(ds.locator('[data-token="text"] [data-hex]')).toHaveText('#e8eaee');
+  await expect(ds.locator('[data-mode-panel="dark"]')).toHaveAttribute('data-current', '');
 });
