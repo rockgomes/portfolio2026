@@ -22,7 +22,7 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
     <nav class="nav" aria-label="Main">
       {links.map(([href, label]) => <a href={href}>{label}</a>)}
       <CopyEmail variant="short" /> <!-- short: the full address is in the footer -->
-      <a class="cv-btn" href="/Rock_Gomes_CV.pdf" download>Download CV (PDF)</a> <!-- recruiter view only (Figma 94:6774) -->
+      <a class="cv-btn btn btn-primary t-mono-label" href="/Rock_Gomes_CV.pdf" download>Download CV (PDF)</a> <!-- recruiter view only (Figma 94:6774) -->
     </nav>
     <div class="menu-wrap">
       <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-menu" data-menu-btn>Menu <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
@@ -48,8 +48,8 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
   .seg button:hover { color: var(--color-text-primary); }
   .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; }
   .nav { display: flex; align-items: center; gap: 24px; white-space: nowrap; }
-  .nav a { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
-  .nav a:hover { color: var(--color-text-primary); }
+  .nav a:not(.btn) { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
+  .nav a:not(.btn):hover { color: var(--color-text-primary); }
   .menu-btn { display: none; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 500 12.5px/18px var(--font-sans); color: var(--color-text-primary); white-space: nowrap; }
   .menu-btn svg { color: var(--color-text-secondary); transition: transform 0.2s; }
   .menu-btn[aria-expanded='true'] svg { transform: rotate(180deg); }
@@ -64,9 +64,8 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
   .mcopy { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; padding: 10px 12px 6px; border-top: 1px solid var(--color-border-subtle); }
   .lab2 { color: var(--color-text-secondary); }
   @media (min-width: 1041px) { .mpanel, .mbackdrop { display: none !important; } }
-  .nav .cv-btn { display: none; padding: 7px 14px; border-radius: 2px; background: var(--color-text-primary); color: var(--color-surface-page); font: 500 12.5px/18px var(--font-sans); text-decoration: none; white-space: nowrap; }
-  .nav .cv-btn:hover { color: var(--color-surface-page); opacity: 0.85; }
-  :global(html[data-view='recruiter']) .nav .cv-btn { display: inline-flex; }
+  .nav .cv-btn { display: none; margin-left: -16px; } /* Figma: 8px from copy email (nav gap is 24px) */
+  @media (min-width: 1041px) { :global(html[data-view='recruiter']) .nav .cv-btn { display: inline-flex; } } /* phones: the contact card has it */
   /* The recruiter view is one page: no section links */
   :global(html[data-view='recruiter']) .nav a:not(.cv-btn), :global(html[data-view='recruiter']) .menu-wrap { display: none !important; }
   @media (prefers-reduced-motion: reduce) { .menu-btn svg { transition: none; } }
