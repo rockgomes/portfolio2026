@@ -57,17 +57,17 @@ const repos = picks
   .head h2 { margin: 0; color: var(--color-text-primary); }
   .gh { color: var(--color-annotation-measure); text-decoration: none; }
   .gh:hover { text-decoration: underline; }
-  .cards { list-style: none; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .cards { list-style: none; margin: var(--space-24) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-16); }
   .card { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 10px; }
   .card p { margin: 0; }
-  .top { display: flex; align-items: center; gap: 8px; }
+  .top { display: flex; align-items: center; gap: var(--space-8); }
   .top img { flex: none; }
   .name { flex: 1; min-width: 0; font: var(--type-mono-small); font-weight: 500; color: var(--color-annotation-measure); overflow-wrap: anywhere; }
-  .public { flex: none; padding: 1px 6px; border: 1px solid var(--color-border-strong); border-radius: 999px; font: 500 10.5px/14px var(--font-sans); color: var(--color-text-muted); }
+  .public { flex: none; padding: 1px 6px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); font: 500 10.5px/14px var(--font-sans); color: var(--color-text-muted); }
   .line { font: var(--type-body-small); color: var(--color-text-secondary); }
   .stack { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
   .stack li { padding: 2px 7px; border-radius: 4px; background: var(--color-surface-stage); color: var(--color-text-secondary); }
-  .links { display: flex; gap: 16px; margin-top: auto !important; }
+  .links { display: flex; gap: var(--space-16); margin-top: auto !important; }
   .links a { font: 500 12.5px/1.4 var(--font-sans); color: var(--color-text-primary); text-decoration: none; }
   .links a.src { color: var(--color-annotation-measure); }
   .links a:hover { text-decoration: underline; }

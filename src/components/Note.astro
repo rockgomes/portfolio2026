@@ -5,7 +5,7 @@ const { label } = Astro.props;
 ---
 <p class="note t-mono-label"><span class="k">{label}</span><span class="v"><slot /></span></p>
 <style>
-  .note { margin: 0; display: flex; gap: 8px; align-items: flex-start; }
+  .note { margin: 0; display: flex; gap: var(--space-8); align-items: flex-start; }
   .k { color: var(--color-annotation-redline); white-space: nowrap; flex: none; }
   .v { color: var(--color-text-muted); flex: 1 0 0; min-width: 0; }
 </style>

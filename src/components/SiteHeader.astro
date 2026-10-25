@@ -38,8 +38,8 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
 <style>
   /* Sticky: stays at the top while the page scrolls (above the overlays, which go up to z-index 12) */
   .hdr { position: sticky; top: 0; z-index: 40; background: var(--color-surface-page); border-bottom: 1px solid var(--color-border-strong); }
-  .inner { display: flex; align-items: center; gap: 24px; padding-block: 18px; min-height: 67px; }
-  .brand { display: flex; gap: 8px; align-items: baseline; text-decoration: none; white-space: nowrap; min-width: 0; }
+  .inner { display: flex; align-items: center; gap: var(--space-24); padding-block: 18px; min-height: 67px; }
+  .brand { display: flex; gap: var(--space-8); align-items: baseline; text-decoration: none; white-space: nowrap; min-width: 0; }
   .name { font: var(--type-ui-brand); color: var(--color-text-primary); }
   .switch { display: flex; align-items: center; gap: 10px; margin-inline: auto; }
   .lab { font: 400 11.5px/1 var(--font-mono); color: var(--color-text-muted); white-space: nowrap; }
@@ -47,10 +47,10 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
   .seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: 400 12.5px/16px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
   .seg button:hover { color: var(--color-text-primary); }
   .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; }
-  .nav { display: flex; align-items: center; gap: 24px; white-space: nowrap; }
+  .nav { display: flex; align-items: center; gap: var(--space-24); white-space: nowrap; }
   .nav a:not(.btn) { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
   .nav a:not(.btn):hover { color: var(--color-text-primary); }
-  .menu-btn { display: none; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 500 12.5px/18px var(--font-sans); color: var(--color-text-primary); white-space: nowrap; }
+  .menu-btn { display: none; align-items: center; gap: 6px; padding: 5px 10px; border-radius: var(--radius-control); border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 500 12.5px/18px var(--font-sans); color: var(--color-text-primary); white-space: nowrap; }
   .menu-btn svg { color: var(--color-text-secondary); transition: transform 0.2s; }
   .menu-btn[aria-expanded='true'] svg { transform: rotate(180deg); }
   .menu-wrap { position: relative; display: none; }
@@ -58,10 +58,10 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
   /* The page dims behind the open menu. It lives inside the header's layer (z-index 40), at -1: under the header
      and the menu, above the page. A tap on it closes the menu. */
   .mbackdrop { position: fixed; inset: 0; z-index: -1; background: color-mix(in srgb, var(--color-text-primary) 28%, transparent); }
-  .mpanel a { display: flex; align-items: baseline; gap: 12px; padding: 10px 12px; border-radius: 6px; font: var(--type-ui-nav); color: var(--color-text-primary); text-decoration: none; }
+  .mpanel a { display: flex; align-items: baseline; gap: var(--space-12); padding: 10px 12px; border-radius: 6px; font: var(--type-ui-nav); color: var(--color-text-primary); text-decoration: none; }
   .mpanel a:hover, .mpanel a:focus-visible { background: var(--color-annotation-measure-soft); }
   .mpanel .n { color: var(--color-annotation-redline); }
-  .mcopy { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; padding: 10px 12px 6px; border-top: 1px solid var(--color-border-subtle); }
+  .mcopy { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); margin-top: 6px; padding: 10px 12px 6px; border-top: 1px solid var(--color-border-subtle); }
   .lab2 { color: var(--color-text-secondary); }
   @media (min-width: 1041px) { .mpanel, .mbackdrop { display: none !important; } }
   .nav .cv-btn { display: none; margin-left: -16px; } /* Figma: 8px from copy email (nav gap is 24px) */
@@ -71,12 +71,12 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
   @media (prefers-reduced-motion: reduce) { .menu-btn svg { transition: none; } }
   @media (max-width: 1040px) { .nav a { display: none; } .menu-wrap { display: block; } .menu-btn { display: inline-flex; } }
   @media (max-width: 720px) {
-    .nav { display: none; } .inner { flex-wrap: wrap; row-gap: 12px; } .menu-wrap { margin-left: auto; } .switch { order: 3; flex-basis: 100%; margin-inline: 0; }
+    .nav { display: none; } .inner { flex-wrap: wrap; row-gap: var(--space-12); } .menu-wrap { margin-left: auto; } .switch { order: 3; flex-basis: 100%; margin-inline: 0; }
     /* Phones: the panel spans the content width (gutter to gutter), with bigger tap targets */
     .mpanel { width: calc(100vw - 2 * max(var(--gutter), env(safe-area-inset-left, 0px))); }
     .mpanel a { padding: 14px 12px; font-size: 17px; }
   }
-  @media (max-width: 420px) { .lab { display: none; } .seg button { padding: 4px 8px; } }
+  @media (max-width: 420px) { .lab { display: none; } .seg button { padding: var(--space-4) var(--space-8); } }
 </style>
 <script>
   // View switch: sets <html data-view>, keeps it in the URL (?view=) and in localStorage.

@@ -50,7 +50,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 /* Button (Figma: Button 193:109 and Button / Copy email). The site's control style, same as the table and client tabs.
    .btn-primary is the Primary style: the main action (Download CV), a solid accent button.
    The soft accent look is only for selected tabs and options, never for a button. */
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; background: transparent; border: 1px solid var(--color-border-strong); border-radius: 7px; color: var(--color-text-secondary); font: 400 12.5px/18px var(--font-sans); white-space: nowrap; text-decoration: none; cursor: pointer; }
+.btn { display: inline-flex; align-items: center; gap: var(--space-8); padding: 5px 10px; background: transparent; border: 1px solid var(--color-border-strong); border-radius: var(--radius-control); color: var(--color-text-secondary); font: 400 12.5px/18px var(--font-sans); white-space: nowrap; text-decoration: none; cursor: pointer; }
 .btn:hover { color: var(--color-text-primary); }
 .btn-primary { background: var(--color-annotation-measure); border-color: var(--color-annotation-measure); color: var(--color-surface-page); font-weight: 500; }
 .btn-primary:hover { background: color-mix(in srgb, var(--color-annotation-measure) 85%, var(--color-text-primary)); color: var(--color-surface-page); }
@@ -65,21 +65,21 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 /* Article (case study) pages - restyled in a later step */
 .article { max-width: 768px; margin: 0 auto; padding-block: 48px 96px; }
 .eyebrow { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-accent); }
-.article h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.03em; margin: 8px 0 16px; text-wrap: balance; }
-.lead { font-size: 19px; color: var(--color-text-secondary); margin: 0 0 32px; }
-.hero-img { width: 100%; height: auto; display: block; margin: 0 0 48px; border: 1px solid var(--color-border-subtle); }
-.meta { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-muted); margin-bottom: 32px; }
+.article h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.05; letter-spacing: -0.03em; margin: var(--space-8) 0 var(--space-16); text-wrap: balance; }
+.lead { font-size: 19px; color: var(--color-text-secondary); margin: 0 0 var(--space-32); }
+.hero-img { width: 100%; height: auto; display: block; margin: 0 0 var(--space-48); border: 1px solid var(--color-border-subtle); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: var(--font-mono); font-size: 12px; color: var(--color-text-muted); margin-bottom: var(--space-32); }
 .prose h2 { font-size: 28px; letter-spacing: -0.02em; line-height: 1.2; margin: 56px 0 12px; }
 .prose h3 { font-size: 21px; line-height: 1.3; margin: 40px 0 8px; }
-.prose h4 { font-size: 17px; margin: 32px 0 8px; }
+.prose h4 { font-size: 17px; margin: var(--space-32) 0 var(--space-8); }
 .prose p, .prose li { color: var(--color-text-secondary); }
 .prose strong { color: var(--color-text-primary); }
-.prose img { width: 100%; height: auto; display: block; margin: 32px 0 0; border: 1px solid var(--color-border-subtle); }
+.prose img { width: 100%; height: auto; display: block; margin: var(--space-32) 0 0; border: 1px solid var(--color-border-subtle); }
 .prose figcaption { font-family: var(--font-mono); font-size: 12px; color: var(--color-text-muted); margin: 10px 0 32px; }
-.prose figure { margin: 32px 0; }
+.prose figure { margin: var(--space-32) 0; }
 .prose iframe { max-width: 100%; }
 .prose ul, .prose ol { padding-left: 1.2em; }
-.list-title { font-size: clamp(32px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1; margin: 0 0 32px; }
+.list-title { font-size: clamp(32px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1; margin: 0 0 var(--space-32); }
 
 /* Audience views (header switch, ?view=): "Recruiter" swaps the homepage content for the one-page summary */
 html[data-view='recruiter'] #main > :not([data-recruiter]) { display: none !important; }
