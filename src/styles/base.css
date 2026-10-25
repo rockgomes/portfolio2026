@@ -46,11 +46,12 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .t-mono-label { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); }
 .t-mono-small { font: var(--type-mono-small); }
 
-/* Button (Figma: Button / Copy email, 20:17). One box for every small action button; .btn-primary is the filled one. */
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: 2px; color: var(--color-annotation-measure); font-family: var(--font-mono); white-space: nowrap; text-decoration: none; cursor: pointer; }
-.btn:hover { border-color: var(--color-annotation-measure); }
-.btn-primary { background: var(--color-text-primary); border-color: var(--color-text-primary); color: var(--color-surface-page); }
-.btn-primary:hover { background: var(--color-text-secondary); border-color: var(--color-text-secondary); }
+/* Button (Figma: Button 193:109 and Button / Copy email). The site's control style, same as the table and client tabs.
+   .btn-primary is the Accent style: the main action (Download CV). */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 5px 10px; background: transparent; border: 1px solid var(--color-border-strong); border-radius: 7px; color: var(--color-text-secondary); font: 400 12.5px/18px var(--font-sans); white-space: nowrap; text-decoration: none; cursor: pointer; }
+.btn:hover { color: var(--color-text-primary); }
+.btn-primary { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
+.btn-primary:hover { color: var(--color-annotation-measure); }
 .t-mono-body { font: var(--type-mono-body); }
 .t-heading-item { font: var(--type-heading-item); letter-spacing: var(--tracking-heading-item); }
 .t-body-small { font: var(--type-body-small); }
