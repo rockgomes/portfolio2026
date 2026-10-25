@@ -28,3 +28,13 @@ test('Download CV links to the PDF, which is served', async ({ page, request }) 
   expect(r.status()).toBe(200);
   expect(r.headers()['content-type']).toContain('pdf');
 });
+
+// Each view has its own accent: blue for design lead, violet for recruiter (light theme).
+test('the recruiter view uses the violet accent', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/?view=recruiter');
+  const accent = () => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--color-annotation-measure').trim());
+  expect(await accent()).toBe('#6e5be8');
+  await page.locator('[data-view-option="design"]').click();
+  expect(await accent()).toBe('#1b6fe3');
+});
