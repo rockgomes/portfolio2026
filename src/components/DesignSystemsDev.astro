@@ -264,6 +264,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .theme:hover { color: var(--color-text-primary); background: var(--color-surface-stage); }
 
   .scroll { grid-area: scroll; overflow-y: auto; overscroll-behavior: auto; }
+  .scroll:focus-visible { outline-offset: -2px; } /* the window clips anything outside it */
   .page { animation: sb-in 0.18s ease-out; }
   @keyframes sb-in { from { opacity: 0; } to { opacity: 1; } }
 
