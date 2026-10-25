@@ -14,7 +14,7 @@ Rock is a senior product designer, not a developer. He reads code and makes smal
 
 ## Design rules
 - **Tokens come from Figma.** `src/styles/tokens.css` is exported from the tokens variable collection in that Figma file (modes: Light - Crisp = light, Dark, Light - Dev = engineer view). Do not hand-edit values; change Figma and re-export. Use `var(--color-...)`, `var(--type-...)`, `var(--shadow-...)` only, never raw hex in components.
-- **Match Figma.** Build from `get_design_context` on the Figma node and compare a screenshot side by side before calling it done. The design lead view is frame `96:6774`; v3 full page is `90:6006`; recruiter view `94:6774`; engineer (dev mode) view `97:7542`.
+- **Match Figma.** Build from `get_design_context` on the Figma node and compare a screenshot side by side before calling it done. The design lead view (the full homepage) is frame `96:6774`; recruiter view `94:6774`; engineer (dev mode) view `187:1648`. These frames match the live site; when copy changes in code, update them too. Older frames (v3 `90:6006`, the old engineer `97:7542`) are on the Archive page.
 - **Overlays never float on the page.** Cursors, selection boxes, comments and the text selection are children of the element they point at (see `Cursor.astro`, `SelectionBox.astro`). After any layout change, run `npx playwright test overlays.spec.ts`. Overlays hide below 1200px.
 - **Reuse existing icons and components** from the Figma file before drawing new ones (for example the ❖ master and ◇ variant glyphs in IBM Plex Mono).
 - Accessibility: real buttons and links, visible focus, `prefers-reduced-motion` turns motion off, no sideways scroll at 400px.
