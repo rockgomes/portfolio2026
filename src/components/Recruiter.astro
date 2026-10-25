@@ -75,8 +75,8 @@ const work = picks.map(([id, line]) => ({ e: projects.find((p) => p.id === id)!,
   .title { margin: 12px 0 0; font: 600 44px/1.08 var(--font-sans); letter-spacing: -0.025em; color: var(--color-text-primary); text-wrap: balance; }
   .pills { list-style: none; margin: 0; padding: 14px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 1px solid var(--color-border-strong); border-radius: 999px; font: 400 13px/17px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
-  .pill.open { border-color: var(--color-cursor-client); background: var(--color-status-positive-soft); color: var(--color-status-positive); }
-  .pill.open i { width: 6px; height: 6px; border-radius: 3px; background: var(--color-cursor-client); }
+  .pill.open { border-color: var(--color-status-positive); background: var(--color-status-positive-soft); color: var(--color-status-positive); }
+  .pill.open i { width: 6px; height: 6px; border-radius: 3px; background: var(--color-status-positive); }
   .lede { margin: 22px 0 0; max-width: 640px; font: 400 16px/1.6 var(--font-sans); color: var(--color-text-secondary); }
   .facts { margin: 30px 0 0; max-width: 680px; border-top: 1px solid var(--color-border-subtle); }
   .facts div { display: grid; grid-template-columns: 150px minmax(0, 1fr); border-bottom: 1px solid var(--color-border-subtle); }
