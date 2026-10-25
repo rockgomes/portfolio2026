@@ -7,6 +7,8 @@
   import { gsap, playOnce, reduceMotion } from '../lib/motion';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
+  // Switching views adds or removes sections, so scroll animations measure the page again (SiteHeader sends viewchange).
+  document.documentElement.addEventListener('viewchange', () => requestAnimationFrame(() => ScrollTrigger.refresh()));
 
   // Redlines: both halves grow out from the label, then the end ticks, then the label.
   document.querySelectorAll<HTMLElement>('.dim').forEach((d) => {
