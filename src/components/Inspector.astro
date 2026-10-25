@@ -17,10 +17,10 @@
       <p class="sub t-mono-label">Component · <span data-name>ConditionRow</span></p>
     </div>
     <div class="body" id="insp-body" data-body>
-    <div class="tabs" role="tablist" aria-label="Inspect">
-      <button type="button" role="tab" id="insp-t-code" aria-controls="insp-p-code" aria-selected="true" data-tab="code">Code</button>
-      <button type="button" role="tab" id="insp-t-props" aria-controls="insp-p-props" aria-selected="false" tabindex="-1" data-tab="props">Properties</button>
-      <button type="button" role="tab" id="insp-t-tokens" aria-controls="insp-p-tokens" aria-selected="false" tabindex="-1" data-tab="tokens">Tokens</button>
+    <div class="tabs utabs" role="tablist" aria-label="Inspect">
+      <button type="button" class="utab" role="tab" id="insp-t-code" aria-controls="insp-p-code" aria-selected="true" data-tab="code">Code</button>
+      <button type="button" class="utab" role="tab" id="insp-t-props" aria-controls="insp-p-props" aria-selected="false" tabindex="-1" data-tab="props">Properties</button>
+      <button type="button" class="utab" role="tab" id="insp-t-tokens" aria-controls="insp-p-tokens" aria-selected="false" tabindex="-1" data-tab="tokens">Tokens</button>
     </div>
     <div role="tabpanel" id="insp-p-code" aria-labelledby="insp-t-code" data-pane="code">
       <div class="code-wrap"><pre class="code" tabindex="0" aria-label="Call site in filter-builder" data-code></pre></div>
@@ -72,10 +72,6 @@
   @media (prefers-reduced-motion: reduce) { .fold svg { transition: none; } }
   .title { font: 600 13px/17px var(--font-sans); color: var(--color-text-primary); }
   .sub { color: var(--color-text-muted); }
-  .tabs { display: flex; gap: var(--space-16); padding: 0 14px; border-bottom: 1px solid var(--color-border-subtle); }
-  .tabs button { padding: 0 0 7px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; font: 400 12px/16px var(--font-sans); color: var(--color-text-muted); }
-  .tabs button:hover { color: var(--color-text-primary); }
-  .tabs button[aria-selected='true'] { border-bottom-color: var(--color-annotation-measure); color: var(--color-text-primary); font-weight: 500; }
   .code-wrap { padding: 12px 14px 4px; }
   .code { margin: 0; max-height: 134px; padding: 10px 12px; border-radius: 6px; background: var(--color-surface-stage); overflow: auto; font: 400 11.5px/19px var(--font-mono); color: var(--color-text-primary); }
   .code :global(.p) { color: var(--color-text-muted); }
