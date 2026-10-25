@@ -22,7 +22,7 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
     <nav class="nav" aria-label="Main">
       {links.map(([href, label]) => <a href={href}>{label}</a>)}
       <CopyEmail variant="short" /> <!-- short: the full address is in the footer -->
-      <a class="cv-btn btn btn-primary t-mono-label" href="/Rock_Gomes_CV.pdf" download>Download CV (PDF)</a> <!-- recruiter view only (Figma 94:6774) -->
+      <a class="cv-btn btn btn-primary" href="/Rock_Gomes_CV.pdf" download>Download CV (PDF)</a> <!-- recruiter view only (Figma 94:6774) -->
     </nav>
     <div class="menu-wrap">
       <button type="button" class="menu-btn" aria-expanded="false" aria-controls="site-menu" data-menu-btn>Menu <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
