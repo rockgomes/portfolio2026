@@ -116,25 +116,25 @@ const chains = [
   /* --brand is color.action.primary in card 03. Primary buttons in 01 and 02 read it, so a rebrand restyles them. */
   /* Same look as the site's buttons (.btn and .btn-primary in base.css) */
   .ds { --brand: var(--color-annotation-measure); --brand-hover: color-mix(in srgb, var(--brand) 85%, var(--color-text-primary)); }
-  .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
+  .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-top: var(--space-120); }
   .head { display: flex; flex-direction: column; gap: 10px; }
   .fig { margin: 0; display: flex; gap: 5px; align-items: center; color: var(--color-figma-component); white-space: nowrap; }
-  .intro { display: flex; gap: 80px; align-items: stretch; }
+  .intro { display: flex; gap: var(--space-80); align-items: stretch; }
   .lede { width: 380px; flex: none; display: flex; flex-direction: column; gap: 14px; }
   .lede p { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
   .lede strong { font-weight: 600; color: var(--color-text-primary); }
   .systems { flex: 1 0 0; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-  .sys { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .sys { display: flex; flex-direction: column; gap: var(--space-8); min-width: 0; }
   .card { flex: 1 0 auto; display: flex; flex-direction: column; gap: 14px; padding: 20px; background: var(--color-surface-raised); border: 1px solid var(--color-figma-component); }
-  .top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+  .top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-8); }
   .top h3 { margin: 0; color: var(--color-text-primary); white-space: nowrap; }
   .when { color: var(--color-text-muted); white-space: nowrap; }
-  .facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-8); }
   .facts li { display: flex; gap: 10px; }
   .dash { color: var(--color-figma-component); flex: none; }
   .facts .t-body-small { color: var(--color-text-secondary); }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px; }
-  .ptag { padding: 3px 7px; border-radius: 2px; background: var(--color-figma-component-soft); color: var(--color-figma-component); white-space: nowrap; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; padding-top: var(--space-4); }
+  .ptag { padding: 3px 7px; border-radius: var(--radius-tag); background: var(--color-figma-component-soft); color: var(--color-figma-component); white-space: nowrap; }
   .specimens { display: flex; flex-direction: column; gap: 20px; }
   .how { margin: 0; color: var(--color-annotation-measure); }
   .spec-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
@@ -144,10 +144,10 @@ const chains = [
   .area { flex: 1 0 auto; min-height: 230px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: 28px 24px; background: var(--color-surface-stage); overflow: hidden; }
   .cap { margin: 0; color: var(--color-text-secondary); }
   /* The set's name sits on its top-left corner, like an instance's name in 02 */
-  .set-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-  .set { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px dashed var(--color-figma-component); border-radius: 4px; }
-  .vr { display: flex; gap: 12px; }
-  .b { font: 400 12.5px/18px var(--font-sans); padding: 5px 10px; background: transparent; border: 1px solid transparent; border-radius: 7px; color: var(--color-text-secondary); white-space: nowrap; cursor: pointer; }
+  .set-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-8); }
+  .set { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-16); border: 1px dashed var(--color-figma-component); border-radius: 4px; }
+  .vr { display: flex; gap: var(--space-12); }
+  .b { font: 400 12.5px/18px var(--font-sans); padding: 5px 10px; background: transparent; border: 1px solid transparent; border-radius: var(--radius-control); color: var(--color-text-secondary); white-space: nowrap; cursor: pointer; }
   .b[aria-pressed='true'], .b.lit { outline: 1.5px solid var(--color-annotation-measure); outline-offset: 2px; }
   .pick { color: var(--color-text-secondary); }
   .pri { background: var(--brand); border-color: var(--brand); color: var(--color-surface-page); font-weight: 500; transition: background-color 0.4s, border-color 0.4s; }
@@ -156,11 +156,11 @@ const chains = [
   .sec.hov, .gho.hov { color: var(--color-text-primary); }
   .gho.hov { background: var(--color-border-subtle); }
   .dis { opacity: 0.4; }
-  .ip { display: flex; gap: 24px; align-items: center; }
+  .ip { display: flex; gap: var(--space-24); align-items: center; }
   .inst { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   /* The demo button follows the properties panel (and the variant set) through data attributes */
   /* The purple outline is the selected instance, as in Figma; the button inside is the site's button */
-  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 5px 10px; border-radius: 7px; background: var(--brand); color: var(--color-surface-page); border: 1px solid var(--brand); outline: 1px solid var(--color-figma-component); outline-offset: 2px; font: 500 12.5px/18px var(--font-sans); white-space: nowrap; transition: background-color 0.4s, border-color 0.4s; }
+  .btn-demo { display: inline-flex; gap: 6px; align-items: center; padding: 5px 10px; border-radius: var(--radius-control); background: var(--brand); color: var(--color-surface-page); border: 1px solid var(--brand); outline: 1px solid var(--color-figma-component); outline-offset: 2px; font: 500 12.5px/18px var(--font-sans); white-space: nowrap; transition: background-color 0.4s, border-color 0.4s; }
   .btn-demo[data-variant='Secondary'], .btn-demo[data-variant='Ghost'] { background: transparent; color: var(--color-text-secondary); font-weight: 400; }
   .btn-demo[data-variant='Secondary'] { border-color: var(--color-border-strong); }
   .btn-demo[data-variant='Ghost'] { border-color: transparent; }
@@ -173,7 +173,7 @@ const chains = [
   .props { width: 230px; display: flex; flex-direction: column; gap: 7px; padding: 10px 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: 4px; }
   .props p { margin: 0; }
   .ph { color: var(--color-figma-component); }
-  .pr { display: flex; align-items: center; justify-content: space-between; gap: 8px; white-space: nowrap; }
+  .pr { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); white-space: nowrap; }
   .k { display: flex; gap: 6px; color: var(--color-text-secondary); }
   .k i { font-style: normal; display: inline-flex; align-items: center; } .mut { color: var(--color-text-muted); } .pur { color: var(--color-figma-component); }
   .v { color: var(--color-text-primary); }
@@ -193,30 +193,30 @@ const chains = [
   .arr { color: var(--color-text-muted); }
   .sw.rebrand { width: 12px; height: 12px; padding: 0; cursor: pointer; background: var(--brand); outline: 1.5px dashed var(--color-annotation-measure); outline-offset: 2px; }
   .rebrand:hover { outline-style: solid; }
-  .chain > * { border-radius: 2px; transition: background-color 0.35s; }
+  .chain > * { border-radius: var(--radius-tag); transition: background-color 0.35s; }
   .chain > .flash { background-color: var(--color-annotation-measure-soft); }
-  .hint { margin: 4px 0 0; color: var(--color-text-muted); }
+  .hint { margin: var(--space-4) 0 0; color: var(--color-text-muted); }
   .here { display: none; color: var(--color-text-muted); }
   .mode[data-active] .here { display: inline; }
   @media (prefers-reduced-motion: reduce) { .tg, .tg::after { transition: none; } }
-  .modes { display: flex; gap: 16px; }
+  .modes { display: flex; gap: var(--space-16); }
   .mode { display: flex; flex-direction: column; gap: 6px; }
   .ml { margin: 0; color: var(--color-figma-component); }
-  .sample { width: 200px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; padding: 14px; border-radius: 4px; background: var(--s-page); border: 1px solid var(--s-border); }
+  .sample { width: 200px; display: flex; flex-direction: column; gap: var(--space-8); align-items: flex-start; padding: 14px; border-radius: 4px; background: var(--s-page); border: 1px solid var(--s-border); }
   .sample p { margin: 0; }
   .st { font: 500 13px/1.4 var(--font-sans); color: var(--s-primary); }
   .sd { color: var(--s-secondary); }
-  .stag { padding: 2px 6px; border-radius: 2px; background: var(--s-soft); color: var(--s-measure); }
+  .stag { padding: 2px 6px; border-radius: var(--radius-tag); background: var(--s-soft); color: var(--s-measure); }
   /* The two samples always show their own mode, whatever the page theme is (Figma values). */
   [data-theme-sample='dark'] { --s-page: #111316; --s-border: rgba(232,234,238,0.14); --s-primary: #e8eaee; --s-secondary: #b0b5bd; --s-measure: #4fd3ea; --s-soft: rgba(79,211,234,0.14); }
   [data-theme-sample='dark'] .ml { color: #a879ff; }
   [data-theme-sample='light'] { --s-page: #ffffff; --s-border: rgba(0,0,0,0.1); --s-primary: #1d1d1f; --s-secondary: #4e5157; --s-measure: #1b6fe3; --s-soft: rgba(27,111,227,0.14); }
   [data-theme-sample='light'] .ml { color: #9747ff; }
-  @media (max-width: 1240px) { .intro { flex-direction: column; gap: 32px; } .lede { width: min(560px, 100%); } }
+  @media (max-width: 1240px) { .intro { flex-direction: column; gap: var(--space-32); } .lede { width: min(560px, 100%); } }
   @media (max-width: 1040px) { .spec-grid { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 860px) { .systems { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 560px) {
-    .inner { padding-top: 80px; }
+    .inner { padding-top: var(--space-80); }
     .area { height: auto; min-height: 230px; overflow-x: auto; justify-content: flex-start; align-items: flex-start; }
     .ip, .modes { flex-direction: column; align-items: flex-start; }
     .chain { flex-wrap: wrap; white-space: normal; } .prim, .sem, .use { width: auto; }

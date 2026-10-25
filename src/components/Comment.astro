@@ -15,7 +15,7 @@ const { who, initial, when, color = 'client', style, class: cls } = Astro.props;
   .av { width: 26px; height: 26px; border-radius: 13px; display: grid; place-items: center; background: var(--c); color: var(--color-surface-page); flex: none; }
   .c-client { --c: var(--color-cursor-client); } .c-pm { --c: var(--color-cursor-pm); } .c-dev { --c: var(--color-annotation-measure); } .c-rock { --c: var(--color-annotation-redline); }
   .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 0 0; }
-  .meta { margin: 0; display: flex; gap: 8px; align-items: baseline; white-space: nowrap; }
+  .meta { margin: 0; display: flex; gap: var(--space-8); align-items: baseline; white-space: nowrap; }
   .who { font: var(--type-ui-button); color: var(--color-text-primary); }
   .when { color: var(--color-text-muted); }
   .txt { margin: 0; color: var(--color-text-secondary); }

@@ -14,12 +14,12 @@ const { num, title, subtitle, dimension, id, titleId } = Astro.props;
   {dimension && <Dimension label={dimension} />}
 </div>
 <style>
-  .sh { display: flex; flex-direction: column; gap: 12px; position: relative; }
+  .sh { display: flex; flex-direction: column; gap: var(--space-12); position: relative; }
   /* The number hangs in the left margin, so the title, subtitle and section content share one left edge.
      Below 1200px the margin is too narrow, so the number sits on its own line above the title. */
   .row { position: relative; }
   .num { position: absolute; right: calc(100% + 14px); top: 0; font: var(--type-mono-small); line-height: 44px; color: var(--color-annotation-redline); white-space: nowrap; }
   .title { margin: 0; font: var(--type-display-row); letter-spacing: var(--tracking-display-row); color: var(--color-text-primary); text-wrap: balance; }
   .sub { margin: 0; color: var(--color-annotation-measure); }
-  @media (max-width: 1199px) { .num { position: static; display: block; line-height: 1.4; margin-bottom: 8px; } }
+  @media (max-width: 1199px) { .num { position: static; display: block; line-height: 1.4; margin-bottom: var(--space-8); } }
 </style>

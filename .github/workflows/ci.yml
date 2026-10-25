@@ -23,6 +23,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Tokens match Figma export
+        run: npm run tokens:check
       - name: Type check
         run: npm run check
       - name: Build

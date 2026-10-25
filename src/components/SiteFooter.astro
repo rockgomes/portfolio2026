@@ -35,7 +35,7 @@ import Cursor from './Cursor.astro';
 <style>
   /* The footer is its own zone (grey, edge to edge), so it is clear where the pointer turns into "You" */
   .ftr { background: var(--color-surface-stage); border-top: 1px solid var(--color-border-strong); }
-  .ftr .wrap { display: flex; flex-direction: column; gap: 48px; padding-bottom: 48px; }
+  .ftr .wrap { display: flex; flex-direction: column; gap: var(--space-48); padding-bottom: var(--space-48); }
   .ftr .wrap > .ruler + .main { margin-top: -48px; }
   /* Ruler hanging from the footer's top border: a small tick every 8px, a bigger tick and a number every 80px */
   .ruler { position: relative; height: 30px; overflow: hidden; }
@@ -43,26 +43,26 @@ import Cursor from './Cursor.astro';
   .ticks.minor { height: 5px; background: repeating-linear-gradient(to right, var(--color-text-muted) 0 1px, transparent 1px 8px); opacity: 0.6; }
   .ticks.major { height: 11px; background: repeating-linear-gradient(to right, var(--color-text-secondary) 0 1px, transparent 1px 80px); }
   .nums { position: absolute; left: 0; right: 0; top: 13px; height: 16px; color: var(--color-text-muted); }
-  .nums :global(span) { position: absolute; padding-left: 4px; white-space: nowrap; }
-  .nums :global(.end) { padding: 0 0 0 4px; color: var(--color-annotation-measure); }
-  .main { display: flex; flex-wrap: wrap; gap: 48px; justify-content: space-between; align-items: flex-start; padding-top: 40px; }
-  .cta { width: min(520px, 100%); display: flex; flex-direction: column; gap: 24px; }
+  .nums :global(span) { position: absolute; padding-left: var(--space-4); white-space: nowrap; }
+  .nums :global(.end) { padding: 0 0 0 var(--space-4); color: var(--color-annotation-measure); }
+  .main { display: flex; flex-wrap: wrap; gap: var(--space-48); justify-content: space-between; align-items: flex-start; padding-top: 40px; }
+  .cta { width: min(520px, 100%); display: flex; flex-direction: column; gap: var(--space-24); }
   .headline { margin: 0; font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); color: var(--color-text-primary); }
   .sub { margin: 0; color: var(--color-text-muted); }
-  .email { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .email { display: flex; gap: var(--space-12); align-items: center; flex-wrap: wrap; }
   .addr { font: var(--type-body-default); color: var(--color-text-primary); text-decoration: none; }
   .btn-wrap { position: relative; display: inline-flex; }
   .links { display: flex; flex-direction: column; gap: 10px; }
   .links .lab { margin: 0; color: var(--color-annotation-measure); }
   .links a { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
   .links a:hover { color: var(--color-text-primary); }
-  .colophon { border-top: 1px solid var(--color-border-subtle); padding-top: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; color: var(--color-text-muted); }
+  .colophon { border-top: 1px solid var(--color-border-subtle); padding-top: var(--space-16); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; color: var(--color-text-muted); }
   .colophon p { margin: 0; }
   /* While the pointer is in the footer, the "You" cursor replaces the system arrow (script below) */
   :global(.ftr.you-here), :global(.ftr.you-here *) { cursor: none !important; }
-  .copied { position: absolute; z-index: 7; display: flex; gap: 8px; align-items: center; padding: 6px 12px 7px 6px; white-space: nowrap; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }
+  .copied { position: absolute; z-index: 7; display: flex; gap: var(--space-8); align-items: center; padding: 6px 12px 7px 6px; white-space: nowrap; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }
   .copied .av { width: 22px; height: 22px; border-radius: 11px; display: grid; place-items: center; background: var(--color-cursor-pm); color: var(--color-surface-page); }
-  .copied b { font-weight: 600; color: var(--color-text-primary); margin-right: 4px; }
+  .copied b { font-weight: 600; color: var(--color-text-primary); margin-right: var(--space-4); }
   .copied .t-body-small { color: var(--color-text-secondary); }
 </style>
 

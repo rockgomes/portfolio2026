@@ -54,7 +54,7 @@ const items: Item[] = [
   </div>
 </section>
 <style>
-  .inner { display: flex; flex-direction: column; gap: 48px; padding-top: 120px; }
+  .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-top: var(--space-120); }
   .tl { position: relative; }
   /* Wide screens: the thread sits in the empty column right of the roles. Narrow: hidden. */
   .tl :global(.exp-thread) { position: absolute; top: 28px; right: 0; width: 300px; z-index: 1; } /* above the timeline layer */
@@ -66,22 +66,22 @@ const items: Item[] = [
   .marker { position: relative; width: 32px; height: 16px; flex: none; }
   /* 7px square (border included) centred on the 1px line at the timeline's left edge; the marker box starts 5px in */
   .marker i { position: absolute; left: -8px; top: 5px; width: 7px; height: 7px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-redline); }
-  .years { width: 184px; flex: none; display: flex; flex-direction: column; gap: 4px; color: var(--color-text-secondary); white-space: nowrap; }
+  .years { width: 184px; flex: none; display: flex; flex-direction: column; gap: var(--space-4); color: var(--color-text-secondary); white-space: nowrap; }
   .body { width: min(540px, 100%); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
   .co { margin: 0; color: var(--color-text-primary); }
   .role { margin: 0; color: var(--color-text-secondary); }
   .text { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
   /* Independent: one tab per client (same tab style as the hero table) */
-  .clients { display: flex; flex-direction: column; gap: 12px; padding-top: 6px; }
-  .ctabs { display: flex; gap: 8px; flex-wrap: wrap; }
-  .ctab { padding: 5px 10px; border-radius: 7px; border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .clients { display: flex; flex-direction: column; gap: var(--space-12); padding-top: 6px; }
+  .ctabs { display: flex; gap: var(--space-8); flex-wrap: wrap; }
+  .ctab { padding: 5px 10px; border-radius: var(--radius-control); border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
   .ctab:hover { color: var(--color-text-primary); }
   .ctab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
   .cpanel { display: flex; flex-direction: column; gap: 6px; }
   .cpanel[hidden] { display: none; }
   .cmeta { margin: 0; color: var(--color-text-muted); }
   .todo .text { color: var(--color-text-muted); font-style: italic; }
-  @media (max-width: 720px) { .item { flex-wrap: wrap; row-gap: 10px; } .years { width: auto; flex-direction: row; gap: 12px; } .body { flex: 1 1 100%; padding-left: 32px; } .inner { padding-top: 80px; } }
+  @media (max-width: 720px) { .item { flex-wrap: wrap; row-gap: 10px; } .years { width: auto; flex-direction: row; gap: var(--space-12); } .body { flex: 1 1 100%; padding-left: var(--space-32); } .inner { padding-top: var(--space-80); } }
 </style>
 
 <script>

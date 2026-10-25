@@ -8,6 +8,8 @@
     "preview": "astro preview",
     "migrate": "node scripts/migrate.mjs",
     "check": "astro check",
+    "tokens": "node scripts/build-tokens.mjs",
+    "tokens:check": "node scripts/build-tokens.mjs --check",
     "test": "playwright test",
     "test:update": "playwright test visual.spec.ts --update-snapshots"
   },
