@@ -1,6 +1,7 @@
 /* Design tokens. Exported from the tokens variable collection in Figma on 2026-10-25.
-   Light = "Light - Crisp" mode, Dark = "Dark" mode, engineer view = "Light - Dev" mode,
-   recruiter view = "Light - Recruiter" mode.
+   Light = "Light - Crisp" mode, Dark = "Dark" mode.
+   Engineer view = "Light - Dev" and "Dark - Dev" modes.
+   Recruiter view = "Light - Recruiter" and "Dark - Recruiter" modes.
    Do not edit values here by hand: change them in Figma and re-export. */
 :root {
   --color-surface-page: #ffffff;
@@ -85,27 +86,35 @@
   }
 }
 
-/* Engineer view: Dev Mode green replaces the annotation blue (light theme only) */
+/* Engineer view: Dev Mode green replaces the annotation blue */
 :root[data-view="engineer"]:not([data-theme="dark"]) {
   --color-annotation-measure: #0a7d44;
   --color-annotation-measure-soft: rgba(20, 174, 92, 0.13);
 }
+:root[data-view="engineer"][data-theme="dark"] {
+  --color-annotation-measure: #3dd68c;
+  --color-annotation-measure-soft: rgba(61, 214, 140, 0.14);
+}
 @media (prefers-color-scheme: dark) {
   :root[data-view="engineer"]:not([data-theme="light"]) {
-    --color-annotation-measure: #4fd3ea;
-    --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
+    --color-annotation-measure: #3dd68c;
+    --color-annotation-measure-soft: rgba(61, 214, 140, 0.14);
   }
 }
 
-/* Recruiter view: violet replaces the annotation blue (light theme only) */
+/* Recruiter view: violet replaces the annotation blue */
 :root[data-view="recruiter"]:not([data-theme="dark"]) {
   --color-annotation-measure: #6e5be8;
   --color-annotation-measure-soft: rgba(110, 91, 232, 0.13);
 }
+:root[data-view="recruiter"][data-theme="dark"] {
+  --color-annotation-measure: #a98bfa;
+  --color-annotation-measure-soft: rgba(169, 139, 250, 0.14);
+}
 @media (prefers-color-scheme: dark) {
   :root[data-view="recruiter"]:not([data-theme="light"]) {
-    --color-annotation-measure: #4fd3ea;
-    --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
+    --color-annotation-measure: #a98bfa;
+    --color-annotation-measure-soft: rgba(169, 139, 250, 0.14);
   }
 }
 
