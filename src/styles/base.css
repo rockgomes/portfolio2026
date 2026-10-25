@@ -54,6 +54,19 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .btn:hover { color: var(--color-text-primary); }
 .btn-primary { background: var(--color-annotation-measure); border-color: var(--color-annotation-measure); color: var(--color-surface-page); font-weight: 500; }
 .btn-primary:hover { background: color-mix(in srgb, var(--color-annotation-measure) 85%, var(--color-text-primary)); color: var(--color-surface-page); }
+/* Pill (Figma: Pill): fully round. Default size for facts (recruiter), Small for badges ("Public", "Ready for dev").
+   Not called .pill because the hero table already uses that name. */
+.ui-pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); font: 400 13px/17px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+.ui-pill-sm { gap: 4px; padding: 1px 6px; font: 500 10.5px/14px var(--font-sans); color: var(--color-text-muted); }
+.ui-pill-positive { border-color: var(--color-status-positive); background: var(--color-status-positive-soft); color: var(--color-status-positive); }
+.ui-pill-positive i { width: 6px; height: 6px; border-radius: 50%; background: var(--color-status-positive); }
+.ui-pill-accent { border-color: transparent; background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); }
+/* Tag (Figma: Tag): 2px corners, mono label. One size; the tone says what it is. */
+.ui-tag { display: inline-flex; align-items: center; gap: 6px; padding: 3px 7px; border: 1px solid transparent; border-radius: var(--radius-tag); font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); color: var(--color-text-secondary); background: var(--color-surface-stage); white-space: nowrap; }
+.ui-tag-accent { border-color: var(--color-annotation-measure-soft); background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); }
+.ui-tag-outline { border-color: var(--color-annotation-measure-soft); background: var(--color-surface-page); color: var(--color-annotation-measure); }
+.ui-tag-component { background: var(--color-figma-component-soft); color: var(--color-figma-component); }
+.ui-tag-selected { border-color: var(--color-annotation-measure); background: var(--color-annotation-measure-soft); color: var(--color-text-primary); cursor: pointer; }
 .t-mono-body { font: var(--type-mono-body); }
 .t-heading-item { font: var(--type-heading-item); letter-spacing: var(--tracking-heading-item); }
 .t-body-small { font: var(--type-body-small); }
