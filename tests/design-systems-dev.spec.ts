@@ -44,7 +44,9 @@ test.describe('storybook (desktop)', () => {
     await root.getByRole('radio', { name: 'Default' }).check();
     await expect(demo).toHaveText('Save');
     await expect(demo).not.toHaveClass(/btn-primary/);
-    await root.getByLabel('State').selectOption('Focus');
+    await root.getByRole('button', { name: 'State: Default' }).click();
+    await root.getByRole('menuitemradio', { name: 'Focus' }).click();
+    await expect(root.getByRole('button', { name: 'State: Focus' })).toBeVisible();
     await expect(demo).toHaveClass(/is-focus/);
   });
 
@@ -64,9 +66,27 @@ test.describe('storybook (desktop)', () => {
     await root.locator('[data-sb-go="colour"]').click();
     const val = root.locator('[data-sb-page="colour"] [data-sb-val="annotation-measure"]');
     await expect(val).toHaveText('#0a7d44');
-    await root.locator('[data-sb-theme-btn]').click();
+    const theme = root.getByRole('button', { name: 'Theme: Light - Dev' });
+    await theme.click();
+    await root.getByRole('menuitemradio', { name: 'Dark - Dev' }).click();
     await expect(val).toHaveText('#3dd68c');
-    await expect(root.locator('[data-sb-theme-btn] [data-sb-mode-name]')).toHaveText('Dark - Dev');
+    await expect(root.getByRole('button', { name: 'Theme: Dark - Dev' })).toBeVisible();
+  });
+
+  test('dropdowns close with Escape and move with arrow keys', async ({ page }) => {
+    await page.goto('/?view=engineer');
+    const root = page.locator(sb);
+    await root.locator('[data-sb-go="pill"]').click();
+    const btn = root.locator('[data-sb-dd="status"] [data-sb-dd-btn]');
+    await btn.focus();
+    await page.keyboard.press('ArrowDown');
+    await expect(root.getByRole('menuitemradio', { name: 'Customer' })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+    await expect(root.locator('[data-sb-demo-pill]')).toHaveClass(/pill-churned/);
+    await btn.click();
+    await page.keyboard.press('Escape');
+    await expect(root.locator('#sb-dd-status')).toBeHidden();
   });
 
   test('the demo segmented control works with arrow keys', async ({ page }) => {

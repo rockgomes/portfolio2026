@@ -3,6 +3,8 @@
 // the screen-size frames (238:2, 238:197) and the phone frames (243:15, 243:165).
 // Every story renders the site's real classes and tokens. Values on the Colour page are read live from tokens.css.
 import SectionHeader from './SectionHeader.astro';
+import SbDropdown from './SbDropdown.astro';
+const chevron = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
 
 const systems = [
   { name: 'Inbank', when: '2023 - 2025', scope: 'Built from scratch right after the rebrand. One system for checkout in four countries and the back-office.' },
@@ -32,7 +34,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
       <div class="navbar">
         <button type="button" class="menu" aria-expanded="false" aria-controls="sb-nav" data-sb-menu>
           <span class="crumb"><span class="mut" data-sb-crumb-group>Introduction /</span> <span class="cur" data-sb-crumb>Design systems</span></span>
-          <span class="mut caret" aria-hidden="true">▾</span>
+          <span class="caret"><Fragment set:html={chevron} /></span>
         </button>
       </div>
 
@@ -57,7 +59,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
           <button type="button" role="tab" class="tab" id="sb-tab-canvas" aria-selected="false" aria-disabled="true" data-sb-tab="canvas">Canvas</button>
           <button type="button" role="tab" class="tab" id="sb-tab-docs" aria-selected="true" data-sb-tab="docs">Docs</button>
         </div>
-        <button type="button" class="theme" data-sb-theme-btn><span class="lbl">theme: </span><span data-sb-mode-name>Light - Dev</span> ▾</button>
+        <SbDropdown name="theme" label="Theme" options={['Light - Dev', 'Dark - Dev']} value="Light - Dev" />
       </div>
 
       <div class="scroll" role="region" aria-label="Design system page" tabindex="0" data-sb-scroll>
@@ -153,7 +155,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
                 <tbody>
                   <tr><th scope="row" class="mono">Label</th><td class="hide-s">Text on the button. A text property in Figma, the element content in code.</td><td><input class="ctl" type="text" value="Button" maxlength="20" aria-label="Label" data-sb-c-label /></td></tr>
                   <tr><th scope="row" class="mono">Style</th><td class="hide-s">Default is .btn, Primary adds .btn-primary.</td><td><span class="radios" role="radiogroup" aria-label="Style"><label><input type="radio" name="sb-style" value="default" data-sb-c-style /> Default</label><label><input type="radio" name="sb-style" value="primary" checked data-sb-c-style /> Primary</label></span></td></tr>
-                  <tr><th scope="row" class="mono">State</th><td class="hide-s">Hover is :hover, Focus is :focus-visible.</td><td><select class="ctl" aria-label="State" data-sb-c-state><option>Default</option><option>Hover</option><option>Focus</option></select></td></tr>
+                  <tr><th scope="row" class="mono">State</th><td class="hide-s">Hover is :hover, Focus is :focus-visible.</td><td><SbDropdown name="state" label="State" options={['Default', 'Hover', 'Focus']} value="Default" /></td></tr>
                 </tbody>
               </table>
             </div>
@@ -208,7 +210,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
               <p class="ct">Controls</p>
               <table class="tbl">
                 <thead><tr><th>Name</th><th class="hide-s">Values</th><th>Control</th></tr></thead>
-                <tbody><tr><th scope="row" class="mono">Status</th><td class="hide-s">{statuses.join(', ')}</td><td><select class="ctl" aria-label="Status" data-sb-c-status>{statuses.map((s) => <option selected={s === 'Customer'}>{s}</option>)}</select></td></tr></tbody>
+                <tbody><tr><th scope="row" class="mono">Status</th><td class="hide-s">{statuses.join(', ')}</td><td><SbDropdown name="status" label="Status" options={statuses} value="Customer" /></td></tr></tbody>
               </table>
             </div>
           </div>
@@ -255,13 +257,11 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .item[aria-current='page'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; }
   .none { margin: var(--space-16) 0 0; padding-left: var(--space-8); font: var(--type-ui-control); color: var(--color-text-muted); }
 
-  .bar { grid-area: bar; display: flex; align-items: center; gap: var(--space-16); padding: 0 var(--space-16); border-bottom: 1px solid var(--color-border-subtle); }
+  .bar { grid-area: bar; display: flex; align-items: center; gap: var(--space-16); padding: 6px var(--space-16) 0; border-bottom: 1px solid var(--color-border-subtle); }
   .tabs { display: flex; gap: var(--space-24); margin-right: auto; }
-  .tab { padding: 11px 0 9px; border: 0; border-bottom: 2px solid transparent; background: transparent; font: var(--type-ui-control); color: var(--color-text-muted); cursor: pointer; }
+  .tab { padding: 5px 0 9px; border: 0; border-bottom: 2px solid transparent; background: transparent; font: var(--type-ui-control); color: var(--color-text-muted); cursor: pointer; }
   .tab[aria-selected='true'] { color: var(--color-text-primary); font-weight: 500; border-bottom-color: var(--color-annotation-measure); }
   .tab[aria-disabled='true'] { cursor: default; opacity: 0.5; }
-  .theme { padding: 4px 6px; border: 0; border-radius: 4px; background: transparent; font: 11px/16px var(--font-mono); color: var(--color-text-muted); cursor: pointer; white-space: nowrap; }
-  .theme:hover { color: var(--color-text-primary); background: var(--color-surface-stage); }
 
   .scroll { grid-area: scroll; overflow-y: auto; overscroll-behavior: auto; }
   .scroll:focus-visible { outline-offset: -2px; } /* the window clips anything outside it */
@@ -330,12 +330,12 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .hint { margin: 0; padding: 0 var(--space-24) var(--space-24); text-align: center; font: var(--type-body-small); color: var(--color-text-muted); }
   .controls { border-top: 1px solid var(--color-border-strong); padding: 0 var(--space-16) var(--space-16); }
   .ct { margin: 0 0 var(--space-4); padding: 10px 0 8px; font: 500 12.5px/18px var(--font-sans); color: var(--color-text-primary); }
-  .ctl { padding: 4px 8px; border: 1px solid var(--color-border-control); border-radius: 6px; background: var(--color-surface-page); font: var(--type-ui-control); color: var(--color-text-primary); max-width: 100%; }
+  .ctl { padding: 5px 10px; border: 1px solid var(--color-border-strong); border-radius: 7px; background: transparent; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-primary); max-width: 100%; }
   .radios { display: inline-flex; gap: var(--space-16); flex-wrap: wrap; }
   .radios label { display: inline-flex; gap: 6px; align-items: center; font: var(--type-ui-control); color: var(--color-text-primary); cursor: pointer; }
   .radios input { accent-color: var(--color-annotation-measure); margin: 0; }
 
-  @media (prefers-reduced-motion: reduce) { .page { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .page { animation: none; } .caret { transition: none; } }
   @media (max-width: 1040px) { .stories { grid-template-columns: minmax(0, 1fr); } .win { grid-template-columns: 200px minmax(0, 1fr); } }
 
   /* Phones: no fixed height and no inner scroll. The page scrolls, the sidebar becomes a menu button. */
@@ -343,8 +343,11 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     .inner { padding-top: var(--space-80); gap: var(--space-24); }
     .win { height: auto; grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: 'menu' 'side' 'bar' 'scroll'; }
     .navbar { grid-area: menu; display: block; padding: 10px var(--space-12); background: var(--color-surface-stage); border-bottom: 1px solid var(--color-border-subtle); }
-    .menu { display: flex; width: 100%; align-items: center; gap: 10px; padding: 7px 10px; border: 1px solid var(--color-border-control); border-radius: 6px; background: var(--color-surface-page); font: var(--type-ui-control); color: var(--color-text-primary); text-align: left; cursor: pointer; }
-    .menu[aria-expanded='true'] { border-color: var(--color-annotation-measure); }
+    /* Same look as the Columns button in HeroTable.astro */
+    .menu { display: flex; width: 100%; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid var(--color-border-strong); border-radius: 7px; background: var(--color-surface-page); font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); text-align: left; cursor: pointer; }
+    .menu:hover, .menu[aria-expanded='true'] { color: var(--color-text-primary); }
+    .caret { display: inline-flex; transition: transform 0.2s; }
+    .menu[aria-expanded='true'] .caret { transform: rotate(180deg); }
     .crumb { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .cur { font-weight: 500; }
     .side { display: none; border-right: 0; border-bottom: 1px solid var(--color-border-strong); overflow: visible; padding: var(--space-12); }
@@ -352,7 +355,6 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     .brand { display: none; }
     .item { padding-block: 10px; }
     .bar { padding: 0 var(--space-12); }
-    .lbl { display: none; }
     .scroll { overflow: visible; }
     .docs { padding: var(--space-24) var(--space-16) 28px; }
     .ph { font-size: 30px; line-height: 34px; }
@@ -428,7 +430,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   });
 
   // Phones: the menu button opens the page list in place
-  function setMenu(open: boolean) { menu.setAttribute('aria-expanded', String(open)); win.toggleAttribute('data-sb-open', open); menu.querySelector('.caret')!.textContent = open ? '▴' : '▾'; }
+  function setMenu(open: boolean) { menu.setAttribute('aria-expanded', String(open)); win.toggleAttribute('data-sb-open', open); }
   menu.addEventListener('click', () => setMenu(menu.getAttribute('aria-expanded') !== 'true'));
   phone.addEventListener('change', () => setMenu(false));
 
@@ -448,6 +450,35 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     if (e.key === '/' && !t.matches('input, select, textarea')) { e.preventDefault(); if (phone.matches) setMenu(true); find.focus(); }
   });
 
+  // Dropdowns (SbDropdown.astro): open on click, close on Escape or a click outside, arrow keys move in the menu
+  const dds = [...root.querySelectorAll<HTMLElement>('[data-sb-dd]')];
+  const pickers: Record<string, (v: string) => void> = {};
+  function onPick(name: string, fn: (v: string) => void) { pickers[name] = fn; }
+  const ddParts = (dd: HTMLElement) => ({ btn: dd.querySelector<HTMLButtonElement>('[data-sb-dd-btn]')!, menu: dd.querySelector<HTMLElement>('[role="menu"]')!, items: [...dd.querySelectorAll<HTMLButtonElement>('[role="menuitemradio"]')] });
+  function setDd(dd: HTMLElement, open: boolean, focus = false) {
+    const { btn, menu, items } = ddParts(dd);
+    menu.hidden = !open; btn.setAttribute('aria-expanded', String(open));
+    if (open && focus) (items.find((i) => i.getAttribute('aria-checked') === 'true') ?? items[0]).focus();
+  }
+  function setDdValue(dd: HTMLElement, v: string) {
+    const { btn, items } = ddParts(dd);
+    items.forEach((i) => i.setAttribute('aria-checked', String(i.dataset.value === v)));
+    dd.querySelector('[data-sb-dd-value]')!.textContent = v;
+    btn.setAttribute('aria-label', `${ddParts(dd).menu.getAttribute('aria-label')}: ${v}`);
+  }
+  dds.forEach((dd) => {
+    const { btn, menu, items } = ddParts(dd);
+    btn.addEventListener('click', () => { const open = btn.getAttribute('aria-expanded') !== 'true'; dds.forEach((d) => d !== dd && setDd(d, false)); setDd(dd, open); });
+    btn.addEventListener('keydown', (e) => { if (e.key === 'ArrowDown') { e.preventDefault(); setDd(dd, true, true); } else if (e.key === 'Escape') setDd(dd, false); });
+    items.forEach((i) => i.addEventListener('click', () => { setDdValue(dd, i.dataset.value!); setDd(dd, false); btn.focus(); pickers[dd.dataset.sbDd!]?.(i.dataset.value!); }));
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { setDd(dd, false); btn.focus(); return; }
+      const n = items.indexOf(document.activeElement as HTMLButtonElement);
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); items[(n + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].focus(); }
+    });
+  });
+  document.addEventListener('click', (e) => dds.forEach((dd) => { if (!dd.contains(e.target as Node)) setDd(dd, false); }));
+
   // Theme: one switch for this page (this visit only), shown in the toolbar, the Modes story and the Modes page
   const html = document.documentElement; const dark = matchMedia('(prefers-color-scheme: dark)');
   const theme = () => (html.dataset.theme === 'dark' || html.dataset.theme === 'light' ? html.dataset.theme : dark.matches ? 'dark' : 'light');
@@ -457,7 +488,6 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     const d = document as any;
     if (d.startViewTransition && !reduceMotion()) d.startViewTransition(go); else go();
   };
-  root.querySelector('[data-sb-theme-btn]')!.addEventListener('click', () => setTheme(theme() === 'dark' ? 'light' : 'dark'));
   root.querySelector('[data-sb-theme-btn2]')!.addEventListener('click', () => setTheme(theme() === 'dark' ? 'light' : 'dark'));
   root.querySelectorAll<HTMLButtonElement>('[data-sb-set-theme]').forEach((b) => b.addEventListener('click', () => setTheme(b.dataset.sbSetTheme!)));
 
@@ -465,12 +495,14 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   function paintMode() {
     const t = theme(); const name = t === 'dark' ? 'Dark - Dev' : 'Light - Dev';
     root.querySelectorAll('[data-sb-mode-name]').forEach((el) => (el.textContent = name));
+    setDdValue(root.querySelector<HTMLElement>('[data-sb-dd="theme"]')!, name);
     root.querySelectorAll<HTMLButtonElement>('[data-sb-set-theme]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.sbSetTheme === t)));
     root.querySelectorAll<HTMLElement>('[data-sb-mode-cell]').forEach((c) => c.toggleAttribute('data-sb-active', c.dataset.sbModeCell === t));
     root.querySelector('[data-sb-theme-btn2]')!.textContent = `Switch this page to ${t === 'dark' ? 'light' : 'dark'}`;
     const cs = getComputedStyle(html);
     root.querySelectorAll<HTMLElement>('[data-sb-val]').forEach((v) => (v.textContent = cs.getPropertyValue(`--color-${v.dataset.sbVal}`).trim()));
   }
+  onPick('theme', (v) => setTheme(v === 'Dark - Dev' ? 'dark' : 'light'));
   new MutationObserver(paintMode).observe(html, { attributes: true, attributeFilter: ['data-theme', 'data-view'] });
   dark.addEventListener('change', paintMode);
 
@@ -478,15 +510,16 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   const demo = root.querySelector<HTMLAnchorElement>('[data-sb-demo-btn]')!;
   demo.addEventListener('click', (e) => e.preventDefault());
   const label = root.querySelector<HTMLInputElement>('[data-sb-c-label]')!;
-  const state = root.querySelector<HTMLSelectElement>('[data-sb-c-state]')!;
+  let state = 'Default';
   function paintBtn() {
     demo.textContent = label.value || ' ';
     const style = root.querySelector<HTMLInputElement>('[data-sb-c-style]:checked')!.value;
     demo.classList.toggle('btn-primary', style === 'primary');
-    demo.classList.toggle('is-hover', state.value === 'Hover');
-    demo.classList.toggle('is-focus', state.value === 'Focus');
+    demo.classList.toggle('is-hover', state === 'Hover');
+    demo.classList.toggle('is-focus', state === 'Focus');
   }
-  label.addEventListener('input', paintBtn); state.addEventListener('change', paintBtn);
+  label.addEventListener('input', paintBtn);
+  onPick('state', (v) => { state = v; paintBtn(); });
   root.querySelectorAll('[data-sb-c-style]').forEach((r) => r.addEventListener('change', paintBtn));
 
   // Segmented control story: a real radio group, with arrow keys
@@ -503,10 +536,9 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
 
   // Status pill story
   const pill = root.querySelector<HTMLElement>('[data-sb-demo-pill]')!;
-  const status = root.querySelector<HTMLSelectElement>('[data-sb-c-status]')!;
-  status.addEventListener('change', () => {
-    pill.className = `pill pill-${status.value.toLowerCase()} big`;
-    root.querySelector('[data-sb-demo-pill-label]')!.textContent = status.value;
+  onPick('status', (v) => {
+    pill.className = `pill pill-${v.toLowerCase()} big`;
+    root.querySelector('[data-sb-demo-pill-label]')!.textContent = v;
   });
 
   show('intro'); paintMode();
