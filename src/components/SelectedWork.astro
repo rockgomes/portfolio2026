@@ -139,7 +139,7 @@ import ResolvedThread from './ResolvedThread.astro';
   .active :global(.pill) { display: inline-flex; align-items: center; gap: 6px; padding: 4px 6px 4px 9px; border: 1px solid var(--color-annotation-measure); background: var(--color-annotation-measure-soft); border-radius: var(--radius-tag); cursor: pointer; font: var(--type-mono-label); color: var(--color-text-primary); }
   .active :global(.pill i) { font-style: normal; color: var(--color-text-muted); }
   .active :global(.clear-all-inline) { border: 0; background: transparent; cursor: pointer; padding: var(--space-4) 0; font: var(--type-mono-label); color: var(--color-annotation-measure); }
-  .grid { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 20px; }
+  .grid { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-48) var(--space-24); }
   .card { position: relative; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
   .card[hidden] { display: none; }
   .thumb-wrap { position: relative; }
@@ -162,7 +162,7 @@ import ResolvedThread from './ResolvedThread.astro';
   .demo:hover { text-decoration: underline; }
   .card :global([data-overlay]) { z-index: 3; }
   .thumb-wrap :global(.cursor) { visibility: hidden; opacity: 0; } /* only on screen while acting */
-  .empty { border: 1px dashed var(--color-border-strong); padding: 36px 24px; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .empty { border: 1px dashed var(--color-border-strong); padding: var(--space-32) var(--space-24); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
   .empty p { margin: 0; } .empty-t { font: var(--type-heading-item); }
   .empty-s { color: var(--color-text-muted); }
   .clear-all { border: 1px solid var(--color-border-strong); background: var(--color-surface-page); padding: 6px 10px; border-radius: 2px; cursor: pointer; font: var(--type-mono-label); color: var(--color-annotation-measure); }
