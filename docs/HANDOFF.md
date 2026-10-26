@@ -1,4 +1,4 @@
-# Handoff - October 26, 2026 (updated after the view switch motion)
+# Handoff - October 26, 2026 (updated after the recruiter header)
 
 Where the rockgomes.com rebuild stands, and what comes next. Written for a new Claude Code session working on this repo. Read `CLAUDE.md` first.
 
@@ -35,6 +35,10 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
    - **Shared components** (global classes in `base.css`, matching Figma components): Button (`.btn`, `.btn-primary`), Underline tab (`.utabs`, `.utab`), Pill (`.ui-pill`, sizes and tones), Tag (`.ui-tag`, tones). The boxed Tab and the Segmented control are unchanged. The Design systems demo buttons stay separate on purpose.
 17. **View switch motion** (`src/lib/view-switch.ts`): the page fades out, the view changes, and while it fades back in, sections that change place slide to their new place (same 0.55s and easing as the filter) and every other section on screen rises 16px into place, so something always moves. The colours fade too. The section being read stays in place on the screen; if the new view does not have it, the page goes to the top. Only sections on screen animate; a second click ends the running switch. Instant with reduced motion. The motion after the change starts one frame late, because laying out the new view takes the browser about 150ms. It sends `viewchange` when the view changes and `viewsettled` when the motion ends (scroll animations measure the page again then). While it runs, `<html data-switching>` is set; tests wait for it to go.
 
+18. **Switching views ends the hero story** (#43): leaving the design lead view jumps the story to its end, as a click on the table does.
+19. **Recruiter header** (#44, Figma `94:6775`): Experience and About links, Copy email and the CV button. From 1041px to 1279px the links move into the Menu, so they never touch the view switch.
+20. **Copy confirmed by Rock** (October 26, 2026): the hero story comments, the Projects comments, the footer line and "as of October 2026" in Numbers. The Experience comment was removed.
+
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
 - That bot commit does not trigger CI. To get a check on it, close and reopen the PR.
@@ -48,7 +52,6 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 3. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
 
 ## Open questions for Rock (do not guess)
-- **Draft copy he has not confirmed:** the hero story comments (PM, Rock, Dev); the Dev and PM comments in Projects; the footer line ("© year Rock Gomes · Tallinn, Estonia" / "Updated month year"); "as of October 2026" in Numbers; the Experience comment "Four roles fit on one screen" (the client tabs now hide some details).
 - **Romeo** (Independent client tab): business line, text, whether to name the work.
 - Final filter tags per project (`tagsToCheck: true`).
 - Card copy and years for Flex Academy and the 3 Pipedrive projects (`cardToCheck: true`).
