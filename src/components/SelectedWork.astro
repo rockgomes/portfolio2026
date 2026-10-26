@@ -30,11 +30,11 @@ import ResolvedThread from './ResolvedThread.astro';
     <div class="layout">
       <aside class="side" aria-label="Filter projects" data-side>
         <!-- Below 1040px the panel folds into this button, so the projects come first -->
-        <button type="button" class="ftoggle" aria-expanded="false" aria-controls="filter-panel" data-filter-toggle>Filter projects <span class="fcount t-mono-label" data-filter-toggle-count>{items.length} / {items.length}</span><svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
+        <button type="button" class="ftoggle btn" aria-expanded="false" aria-controls="filter-panel" data-filter-toggle>Filter projects <span class="fcount t-mono-label" data-filter-toggle-count>{items.length} / {items.length}</span><svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
         <div class="panel" id="filter-panel" data-filter-panel>
-          <div class="tabs" role="tablist" aria-label="Filter mode">
-            <button type="button" role="tab" aria-selected="true" data-tab="groups">Filters</button>
-            <button type="button" role="tab" aria-selected="false" data-tab="flat">Tags</button>
+          <div class="tabs utabs" role="tablist" aria-label="Filter mode">
+            <button type="button" class="utab" role="tab" aria-selected="true" data-tab="groups">Filters</button>
+            <button type="button" class="utab" role="tab" aria-selected="false" data-tab="flat">Tags</button>
             <span class="sp"></span>
             <span class="cnt t-mono-label" aria-live="polite" data-filter-count>{items.length} / {items.length}</span>
           </div>
@@ -46,7 +46,7 @@ import ResolvedThread from './ResolvedThread.astro';
             </label>
           </div>
           <div data-filter-groups></div>
-          <button type="button" class="fshow" data-filter-show>Show {items.length} projects</button>
+          <button type="button" class="fshow btn btn-primary" data-filter-show>Show {items.length} projects</button>
         </div>
         <ResolvedThread class="side-thread" messages={[
           { who: 'Client', initial: 'C', color: 'client', text: 'Can the filters stay on screen while I scroll the projects?' },
@@ -73,7 +73,7 @@ import ResolvedThread from './ResolvedThread.astro';
               <h3 class="title"><a href={it.href}>{it.d.cardTitle || it.d.name}</a></h3>
               <p class="line">{it.d.cardLine}</p>
               <p class="foot">
-                {cardTag(it.d) && <span class="tag t-mono-label">{cardTag(it.d)}</span>}
+                {cardTag(it.d) && <span class="tag ui-tag ui-tag-accent">{cardTag(it.d)}</span>}
                 {it.demo && <a class="demo t-mono-label" href={it.demo} target="_blank" rel="noopener">+ Open live demo ↗</a>}
               </p>
             </li>
@@ -82,7 +82,7 @@ import ResolvedThread from './ResolvedThread.astro';
         <div class="empty" data-filter-empty hidden>
           <p class="empty-t">No projects match all of these.</p>
           <p class="empty-s t-mono-label">Remove a filter to see more.</p>
-          <button type="button" class="clear-all" data-clear-all>Clear all filters</button>
+          <button type="button" class="clear-all btn" data-clear-all>Clear all filters</button>
         </div>
       </div>
     </div>
@@ -103,9 +103,8 @@ import ResolvedThread from './ResolvedThread.astro';
   .side > .panel { flex: 0 1 auto; min-height: 220px; display: flex; flex-direction: column; }
   .side > .panel > :global(*) { flex: none; }
   .side > .panel > [data-filter-groups] { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
-  .tabs { display: flex; align-items: center; gap: 14px; padding: 12px 14px 10px; border-bottom: 1px solid var(--color-border-subtle); }
-  .tabs button { border: 0; background: transparent; padding: 0; cursor: pointer; font: 500 12px/17px var(--font-sans); color: var(--color-text-muted); }
-  .tabs button[aria-selected='true'] { font-weight: 600; color: var(--color-text-primary); }
+  .tabs { padding-top: var(--space-12); } /* the shared Underline tab bar (.utabs) */
+  .tabs .cnt { padding-bottom: 7px; }
   .sp { flex: 1 1 0; }
   .cnt { color: var(--color-text-muted); letter-spacing: 0; }
   .search-wrap { padding: 10px 10px 4px; }
@@ -136,7 +135,6 @@ import ResolvedThread from './ResolvedThread.astro';
   .panel :global(.none) { padding: 6px 14px 4px 26px; font: 400 12px/17px var(--font-sans); color: var(--color-text-muted); }
   .main { min-width: 0; }
   .active { display: flex; flex-wrap: wrap; gap: var(--space-8); align-items: center; margin-bottom: var(--space-24); }
-  .active :global(.pill) { display: inline-flex; align-items: center; gap: 6px; padding: 4px 6px 4px 9px; border: 1px solid var(--color-annotation-measure); background: var(--color-annotation-measure-soft); border-radius: var(--radius-tag); cursor: pointer; font: var(--type-mono-label); color: var(--color-text-primary); }
   .active :global(.pill i) { font-style: normal; color: var(--color-text-muted); }
   .active :global(.clear-all-inline) { border: 0; background: transparent; cursor: pointer; padding: var(--space-4) 0; font: var(--type-mono-label); color: var(--color-annotation-measure); }
   .grid { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-48) var(--space-24); }
@@ -157,7 +155,6 @@ import ResolvedThread from './ResolvedThread.astro';
   .card:has(.title a:focus-visible) { outline: 2px solid var(--color-annotation-measure); outline-offset: 6px; }
   .line { margin: 0; font: var(--type-body-row); color: var(--color-text-secondary); }
   .foot { margin: 0; display: flex; align-items: center; gap: var(--space-16); flex-wrap: wrap; }
-  .tag { padding: 3px 7px; border-radius: var(--radius-tag); background: var(--color-annotation-measure-soft); border: 1px solid var(--color-annotation-measure-soft); color: var(--color-annotation-measure); white-space: nowrap; }
   .demo { position: relative; z-index: 2; color: var(--color-annotation-measure); text-decoration: none; white-space: nowrap; }
   .demo:hover { text-decoration: underline; }
   .card :global([data-overlay]) { z-index: 3; }
@@ -165,7 +162,6 @@ import ResolvedThread from './ResolvedThread.astro';
   .empty { border: 1px dashed var(--color-border-strong); padding: var(--space-32) var(--space-24); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
   .empty p { margin: 0; } .empty-t { font: var(--type-heading-item); }
   .empty-s { color: var(--color-text-muted); }
-  .clear-all { border: 1px solid var(--color-border-strong); background: var(--color-surface-page); padding: 6px 10px; border-radius: 2px; cursor: pointer; font: var(--type-mono-label); color: var(--color-annotation-measure); }
   .tsel { position: absolute; pointer-events: none; display: none; }
   .tsel.on { display: block; }
   .tsel .hl { position: absolute; inset: 0; background: var(--color-annotation-measure-soft); }
@@ -177,12 +173,12 @@ import ResolvedThread from './ResolvedThread.astro';
   @media (max-width: 1040px) {
     .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; }
     /* The panel folds into a button; it opens in place, and "Show N projects" closes it and scrolls to the cards */
-    .ftoggle { display: inline-flex; align-self: flex-start; align-items: center; gap: var(--space-8); padding: var(--space-8) var(--space-12); border-radius: 8px; border: 1px solid var(--color-border-strong); background: var(--color-surface-page); cursor: pointer; font: 500 13px/18px var(--font-sans); color: var(--color-text-primary); }
+    .ftoggle { display: inline-flex; align-self: flex-start; } /* the shared Button (.btn) */
     .ftoggle svg { color: var(--color-text-secondary); transition: transform 0.2s; }
     .ftoggle[aria-expanded='true'] svg { transform: rotate(180deg); }
     .fcount { color: var(--color-text-muted); }
     .side:not([data-open]) > .panel { display: none; }
-    .fshow { display: block; margin: 8px 10px 4px; padding: 10px; border: 0; border-radius: 6px; background: var(--color-text-primary); color: var(--color-surface-page); cursor: pointer; font: 500 13px/18px var(--font-sans); }
+    .fshow { display: flex; justify-content: center; margin: 8px 10px 4px; } /* the shared Button, Primary */
     /* The comment describes the sticky panel, which only exists on wide screens */
     .side :global(.side-thread) { display: none; }
   }
@@ -262,8 +258,8 @@ import ResolvedThread from './ResolvedThread.astro';
 
   function renderActive() {
     const pills: string[] = [];
-    if (state.type !== 'all') pills.push(`<button type="button" class="pill" data-pill="type">Type <i>is</i> ${state.type === 'client' ? 'Client work' : 'Experiments'} ×</button>`);
-    for (const [k, label] of [['industry', 'Industry'], ['focus', 'Focus']] as const) if (state[k].length) pills.push(`<button type="button" class="pill" data-pill="${k}">${label} <i>is</i> ${state[k].map(esc).join(' <i>or</i> ')} ×</button>`);
+    if (state.type !== 'all') pills.push(`<button type="button" class="pill ui-tag ui-tag-selected" data-pill="type">Type <i>is</i> ${state.type === 'client' ? 'Client work' : 'Experiments'} ×</button>`);
+    for (const [k, label] of [['industry', 'Industry'], ['focus', 'Focus']] as const) if (state[k].length) pills.push(`<button type="button" class="pill ui-tag ui-tag-selected" data-pill="${k}">${label} <i>is</i> ${state[k].map(esc).join(' <i>or</i> ')} ×</button>`);
     activeEl.hidden = !pills.length;
     activeEl.innerHTML = pills.join('') + (pills.length > 1 ? '<button type="button" class="clear-all-inline" data-clear-all>Clear all</button>' : '');
   }

@@ -18,7 +18,7 @@ const tags = [
     <div class="body">
       <div class="portrait" data-draggable>
         <Image src={portrait} alt="Rock standing on a rock by a mountain lake, in black and white" widths={[440, 880]} sizes="440px" class="img" />
-        {tags.map((g) => <span class="tag t-mono-label" style={`top:${(g.top / 544 * 100).toFixed(2)}%`}>{g.t}</span>)}
+        {tags.map((g) => <span class="tag ui-tag ui-tag-outline" style={`top:${(g.top / 544 * 100).toFixed(2)}%`}>{g.t}</span>)}
         <i class="leader" aria-hidden="true"></i>
         <SelectionBox label="440 × 544" live />
         <Cursor name="Rock" color="rock" style="left: 434px; top: 538px;" />
@@ -44,7 +44,7 @@ const tags = [
   .body { display: flex; gap: var(--space-80); align-items: flex-start; }
   .portrait { position: relative; width: 440px; max-width: 100%; aspect-ratio: 440 / 544; border: 1px solid var(--color-border-strong); flex: none; touch-action: none; }
   .portrait :global(.img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .tag { position: absolute; left: 39px; padding: 3px 7px; border-radius: var(--radius-tag); background: var(--color-surface-page); border: 1px solid var(--color-annotation-measure-soft); color: var(--color-annotation-measure); white-space: nowrap; }
+  .tag { position: absolute; left: 39px; } /* the shared Tag, outline tone */
   .leader { position: absolute; left: 33.86%; top: 50%; width: 36px; height: 1px; background: var(--color-annotation-measure); }
   .text { width: min(500px, 100%); display: flex; flex-direction: column; gap: var(--space-16); min-width: 0; }
   .text > p:not(.links) { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
