@@ -120,10 +120,14 @@ const links = [
     }
     switchView(v, push);
   };
-  const fromUrl = new URL(location.href).searchParams.get('view');
-  let stored: string | null = null; try { stored = localStorage.getItem('rg-view'); } catch {}
-  apply(fromUrl || stored || 'design', false);
   const group = document.querySelector('.switch .seg');
+  // Only pages with the switch (the homepage) take the chosen view. Case study pages are the same for every visitor,
+  // so a view chosen on the homepage does not follow the visitor there (it stays stored for the way back).
+  if (group) {
+    const fromUrl = new URL(location.href).searchParams.get('view');
+    let stored: string | null = null; try { stored = localStorage.getItem('rg-view'); } catch {}
+    apply(fromUrl || stored || 'design', false);
+  }
   group?.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-view-option]'); if (b) apply(b.dataset.viewOption!, true); });
   group?.addEventListener('keydown', (e) => {
     const k = (e as KeyboardEvent).key; if (k !== 'ArrowRight' && k !== 'ArrowLeft') return;

@@ -35,7 +35,7 @@ const { src, video, poster, caption, title, videoLabel } = Astro.props;
       if (s < 0.5) {
         fig.toggleAttribute('data-phone', true);
         // Phones: the recording plays on its own, unless the visitor asked for reduced motion (then it keeps its controls)
-        if (!reduceMotion()) { video.controls = false; video.play().catch(() => {}); }
+        if (!reduceMotion()) { video.controls = false; video.play().catch(() => { video.controls = true; }); } // blocked autoplay (iOS Low Power Mode): give the controls back
       } else {
         fig.toggleAttribute('data-phone', false);
         video.pause();

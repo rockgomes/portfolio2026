@@ -76,3 +76,29 @@ for (const width of [320, 400]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
   });
 }
+
+// Case pages are the same for every visitor: a view chosen on the homepage must not follow the visitor here.
+test('a stored recruiter or engineer view does not change the case page', async ({ page }) => {
+  await page.goto('/?view=recruiter');
+  await page.goto(FLEX);
+  await expect(page.locator('[data-case-summary]')).toBeVisible();
+  await page.goto('/?view=engineer');
+  await page.goto(FLEX);
+  await expect(page.locator('[data-next-case] .meta .co')).toBeVisible();
+  await expect(page.locator('[data-next-case] .meta .file')).toBeHidden();
+});
+
+test('the old body under the summary keeps the article styles', async ({ page }) => {
+  await page.goto(FLEX);
+  expect(await page.locator('.case-body h2').first().evaluate((e) => getComputedStyle(e).fontSize)).toBe('28px');
+});
+
+test.describe('live page with motion', () => {
+  test.use({ contextOptions: { reducedMotion: 'no-preference' } });
+  test('if the browser blocks autoplay, the recording gets its controls back', async ({ page }) => {
+    await page.addInitScript(() => { HTMLMediaElement.prototype.play = () => Promise.reject(new DOMException('blocked', 'NotAllowedError')); });
+    await page.setViewportSize({ width: 400, height: 860 });
+    await page.goto(FLEX);
+    await expect(page.locator('[data-live] video')).toHaveAttribute('controls', '');
+  });
+});

@@ -24,7 +24,7 @@ const isCase = !!d.problem;
       <CaseSummary title={d.cardTitle || d.name} subtitle={d.subtitle} lead={d.heroDescription} facts={d.facts} problem={d.problem} decision={d.decision} result={d.result} links={d.links}>
         {d.live ? <LivePage {...d.live} /> : d.homeImage && <Image class="case-hero" src={d.homeImage} alt={d.homeImageAlt} widths={[768, 1536]} sizes="(min-width: 1440px) 1280px, 100vw" loading="eager" />}
       </CaseSummary>
-      <div class="case-body"><Content /></div>
+      <div class="case-body prose"><Content /></div>
       <NextCase currentId={entry.id} />
     </>
   ) : (
