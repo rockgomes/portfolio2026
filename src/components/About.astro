@@ -24,7 +24,7 @@ const tags = [
         {tags.map((g) => <span class="tag ui-tag ui-tag-outline" style={`top:${(g.top / 544 * 100).toFixed(2)}%`}><span data-not-engineer>{g.k}: {g.v}</span><span data-engineer><span class="k">data-{g.k}="</span>{g.v}<span class="k">"</span></span></span>)}
         <i class="leader" aria-hidden="true"></i>
         <SelectionBox label="440 × 544" live />
-        <Cursor name="Rock" color="rock" style="left: 434px; top: 538px;" />
+        <Cursor name="Rock" color="rock" class="p-cursor" />
       </div>
       <p class="alt t-mono-label" data-engineer aria-hidden="true"><span class="k">alt</span>="{alt}"</p>
       </div>
@@ -49,6 +49,8 @@ const tags = [
   .body { display: flex; gap: var(--space-80); align-items: flex-start; }
   .pcol { display: flex; flex-direction: column; gap: var(--space-12); width: 440px; max-width: 100%; flex: none; }
   .portrait { position: relative; width: 100%; aspect-ratio: 440 / 544; border: 1px solid var(--color-border-strong); flex: none; touch-action: none; }
+  /* Rock's cursor works as in the hero headline: it only shows while it draws the selection (Motion.astro), then leaves */
+  .portrait :global(.p-cursor) { left: 0; top: 0; visibility: hidden; }
   .portrait :global(.img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .tag { position: absolute; left: 39px; } /* the shared Tag, outline tone */
   .leader { position: absolute; left: 33.86%; top: 50%; width: 36px; height: 1px; background: var(--color-annotation-measure); }
