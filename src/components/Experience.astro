@@ -87,6 +87,11 @@ const items: Item[] = [
   .cmeta { margin: 0; color: var(--color-text-muted); }
   .todo .text { color: var(--color-text-muted); font-style: italic; }
   .corow { display: flex; align-items: center; gap: var(--space-12); flex-wrap: wrap; }
+  /* Recruiter view (Figma: Timeline item, View=Recruiter): the same timeline in the recruiter accent, not the designer
+     redline. A round 9px dot centred on the 1px line; the current role fills its dot. */
+  :global(html[data-view='recruiter']) .timeline::before { background: var(--color-annotation-measure); }
+  :global(html[data-view='recruiter']) .marker i { left: -9px; top: 4px; width: 9px; height: 9px; border: 1.5px solid var(--color-annotation-measure); border-radius: 50%; }
+  :global(html[data-view='recruiter']) .item:first-child .marker i { background: var(--color-annotation-measure); }
   /* Engineer view (Figma: Experience A - git log graph): the red timeline becomes a git log graph. One green branch line
      from the current role down, round commits (filled = HEAD), client tabs as branches with the Lucide git-branch icon.
      No resolved thread here. */

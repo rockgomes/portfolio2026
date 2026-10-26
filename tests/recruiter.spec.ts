@@ -80,3 +80,42 @@ test('the recruiter view has no designer layer', async ({ page }) => {
   await expect(page.locator('#experience .exp-thread')).toBeVisible();
   await expect(page.locator('#about .facts')).toBeVisible();
 });
+
+test('recruiter view: the timeline in the recruiter accent, dots centred on the line', async ({ page }) => {
+  await page.goto('/?view=recruiter#experience');
+  const tl = page.locator('#experience .timeline');
+  await tl.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1500); // the dots pop in
+  const r = await tl.evaluate((el) => {
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--color-annotation-measure').trim();
+    const probe = document.createElement('i'); probe.style.color = accent; document.body.append(probe); const want = getComputedStyle(probe).color; probe.remove();
+    const b = getComputedStyle(el, '::before'); const t = el.getBoundingClientRect();
+    const line = t.left + parseFloat(b.left) + parseFloat(b.width) / 2;
+    const dots = [...el.querySelectorAll('.marker i')].map((i) => { const d = i.getBoundingClientRect(); return d.left + d.width / 2; });
+    return { want, line: b.backgroundColor, first: getComputedStyle(el.querySelector('.marker i')!).backgroundColor, off: Math.max(...dots.map((d) => Math.abs(d - line))) };
+  });
+  expect(r.line).toBe(r.want);
+  expect(r.first).toBe(r.want);
+  expect(r.off).toBeLessThan(0.6);
+});
+
+test.describe('recruiter footer', () => {
+  test.use({ contextOptions: { reducedMotion: 'no-preference' }, permissions: ['clipboard-read', 'clipboard-write'] });
+  test('no ruler, no "You" cursor or comment, and the CV button', async ({ page, viewport }) => {
+    await page.goto('/?view=recruiter');
+    const footer = page.locator('footer.ftr'); await footer.scrollIntoViewIfNeeded();
+    await expect(footer.locator('[data-ruler]')).toBeHidden();
+    await expect(footer.locator('.cursor')).toBeHidden();
+    await expect(footer.getByRole('link', { name: 'Download CV (PDF)' })).toBeVisible();
+    const gap = await page.evaluate(() => document.querySelector('footer .headline')!.getBoundingClientRect().top - document.querySelector('footer')!.getBoundingClientRect().top);
+    expect(gap).toBeGreaterThan(32); // the content sits inside the footer, under its top line
+    if ((viewport?.width ?? 0) >= 1200) {
+      const f = (await footer.boundingBox())!;
+      await page.mouse.move(f.x + 300, f.y + 40); await page.mouse.move(f.x + 320, f.y + 90, { steps: 3 });
+      await expect(footer).not.toHaveClass(/you-here/);
+    }
+    await footer.locator('[data-copy]').click();
+    await expect(footer.locator('[data-copy]')).toContainText('copied');
+    await expect(page.locator('[data-copied]')).toBeHidden();
+  });
+});

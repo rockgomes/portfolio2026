@@ -1,6 +1,7 @@
 ---
 // Figma: Footer (96:6970). The "You" cursor becomes the visitor's own pointer inside the footer (motion plan, moment 07).
 // Engineer view (Figma 187:1648): <footer> tags instead of the ruler, no "You" cursor, and copying prints a status line.
+// Recruiter view (Figma 94:6774): sober. No ruler, no "You" cursor or comment (the button says "copied"), and the CV button.
 import CopyEmail from './CopyEmail.astro';
 import Cursor from './Cursor.astro';
 import IconGitBranch from './IconGitBranch.astro';
@@ -29,6 +30,7 @@ const built = new Date().toISOString().slice(0, 10);
           <a href="mailto:rock@rockgomes.com" class="addr">rock@rockgomes.com</a>
           <span class="btn-wrap" data-you-area><CopyEmail variant="short" /><Cursor name="You" color="you" style="left: 66px; top: 23px;" /><span class="copied" data-copied data-overlay aria-hidden="true" hidden><span class="av t-mono-label">Y</span><span class="t-body-small"><b>You</b> Copied</span></span></span>
           <span class="ok t-mono-label" role="status" data-engineer data-copied-dev></span>
+          <a class="cv btn btn-primary" href="/Rock_Gomes_CV.pdf" download>Download CV (PDF)</a>
         </div>
       </div>
       <div class="links">
@@ -78,6 +80,10 @@ const built = new Date().toISOString().slice(0, 10);
   :global(html[data-view='engineer']) .ftr .wrap { padding-bottom: var(--space-16); }
   .ok { color: var(--color-annotation-measure); }
   .ok:empty { display: none; }
+  .cv { display: none; } /* recruiter view only */
+  :global(html[data-view='recruiter']) .cv { display: inline-flex; }
+  :global(html[data-view='recruiter']) .ruler { display: none; }
+  :global(html[data-view='recruiter']) .ftr .wrap > .ruler + .main { margin-top: 0; padding-top: var(--space-64); } /* nothing above it to overlap */
   .build .br { color: var(--color-annotation-measure); }
   .build :global(.gb) { color: var(--color-annotation-measure); vertical-align: -2px; margin-right: 6px; }
   .build .sha { color: var(--color-text-secondary); }
@@ -107,7 +113,7 @@ const built = new Date().toISOString().slice(0, 10);
       at = { x: e.clientX - b.left - you.offsetLeft - 1, y: e.clientY - b.top - you.offsetTop - 1 }; // the arrow's tip is 1px in
       gsap.set(you, at);
     };
-    ftr.addEventListener('pointerenter', (e) => { if (!wide() || document.documentElement.dataset.view === 'engineer') return; gsap.killTweensOf(you); ftr.classList.add('you-here'); place(e); });
+    ftr.addEventListener('pointerenter', (e) => { if (!wide() || ['engineer', 'recruiter'].includes(document.documentElement.dataset.view ?? '')) return; gsap.killTweensOf(you); ftr.classList.add('you-here'); place(e); });
     ftr.addEventListener('pointermove', (e) => { if (ftr.classList.contains('you-here')) place(e); });
     ftr.addEventListener('pointerleave', () => {
       if (!ftr.classList.contains('you-here')) return;
@@ -144,6 +150,7 @@ const built = new Date().toISOString().slice(0, 10);
       clearTimeout(devTimer); devTimer = window.setTimeout(() => (devOk.textContent = ''), 2000);
       return;
     }
+    if (document.documentElement.dataset.view === 'recruiter') return; // sober: the button's own "copied" is enough
     if (!ok || !ftr || !you || !bubble || !ftr.contains(button)) return;
     bubble.style.left = `${you.offsetLeft + at.x + 14}px`; bubble.style.top = `${you.offsetTop + at.y + 40}px`;
     bubble.hidden = false;
