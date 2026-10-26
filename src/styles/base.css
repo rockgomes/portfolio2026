@@ -109,8 +109,8 @@ html:not([data-view='recruiter']) [data-recruiter] { display: none !important; }
 html:not([data-view='engineer']) [data-engineer] { display: none !important; }
 /* The designer pieces the engineer view swaps for developer ones (code tags, file names) */
 html[data-view='engineer'] [data-not-engineer] { display: none !important; }
-/* The engineer view has no collaborators on the page: no cursors (the footer "You" cursor is the visitor's own) */
-html[data-view='engineer'] #main .cursor { display: none !important; }
+/* The engineer view has no Figma multiplayer: no cursors anywhere, the footer "You" cursor too */
+html[data-view='engineer'] .cursor { display: none !important; }
 /* While the view switches (src/lib/view-switch.ts), the colours of the new view fade in instead of jumping */
 html.view-fading, html.view-fading *, html.view-fading *::before, html.view-fading *::after {
   transition: color 0.3s, background-color 0.3s, border-color 0.3s, fill 0.3s, stroke 0.3s, box-shadow 0.3s !important;
