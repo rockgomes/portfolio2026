@@ -90,27 +90,12 @@ const items: Item[] = [
 </style>
 
 <script>
-  import { gsap, reduceMotion } from '../lib/motion';
+  import { bindChoice } from '../lib/choice';
 
   // Client tabs: click or arrow keys switch the panel; the new panel fades in and the height eases.
   document.querySelectorAll<HTMLElement>('[data-clients]').forEach((box) => {
     const tabs = [...box.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    const panels = tabs.map((t) => box.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`)!);
-    const select = (i: number, focus = false) => {
-      const from = box.offsetHeight;
-      tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === i)); t.tabIndex = j === i ? 0 : -1; panels[j].hidden = j !== i; });
-      if (focus) tabs[i].focus();
-      if (reduceMotion()) return;
-      gsap.fromTo(box, { height: from }, { height: box.scrollHeight, duration: 0.35, ease: 'power2.out', clearProps: 'height' });
-      gsap.fromTo(panels[i], { autoAlpha: 0, y: 4 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.out', clearProps: 'transform,opacity,visibility' });
-    };
-    tabs.forEach((t, i) => {
-      t.addEventListener('click', () => select(i));
-      t.addEventListener('keydown', (e) => {
-        const n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-        if (n) { e.preventDefault(); select((i + n + tabs.length) % tabs.length, true); }
-      });
-    });
+    bindChoice({ options: tabs, panels: tabs.map((t) => box.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`)), box });
   });
 </script>
 

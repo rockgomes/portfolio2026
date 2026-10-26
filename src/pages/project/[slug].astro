@@ -39,9 +39,6 @@ const isCase = !!d.problem;
 </Base>
 <style>
   .case-hero { width: 100%; height: auto; display: block; border: 1px solid var(--color-border-strong); }
-  /* Until each part moves to its own component, the rest of the old body reads like the old page */
-  .case-body :global(.case-old) { max-width: 768px; margin: 0 auto; padding: var(--space-48) var(--gutter) var(--space-96); }
-  /* Sketch C 376:10124: 96px between the section title and each decision (CaseSection already gives 48) */
-  .case-body :global(.decisions) { display: flex; flex-direction: column; gap: var(--space-96); margin-top: var(--space-48); }
-  @media (max-width: 720px) { .case-body :global(.decisions) { gap: var(--space-64); margin-top: var(--space-16); } }
+  /* The coverage line under the design system stats (sketch C 377:10243) */
+  .case-body :global(.coverage) { margin: 0; font: var(--type-mono-body); color: var(--color-text-secondary); }
 </style>

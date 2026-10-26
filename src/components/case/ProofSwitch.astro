@@ -34,31 +34,12 @@ const on = (i: number) => (i === selected ? 'true' : 'false');
   [data-proof-panel][hidden] { display: none; }
 </style>
 <script>
-  import { gsap, reduceMotion } from '../../lib/motion';
+  import { bindChoice } from '../../lib/choice';
 
   document.querySelectorAll<HTMLElement>('[data-switch]').forEach((sw) => {
-    const opts = [...sw.querySelectorAll<HTMLButtonElement>('.ctrl button')];
-    const panels = opts.map((o) => sw.querySelector<HTMLElement>(`#${o.getAttribute('aria-controls')}`)!);
-    const box = sw.querySelector<HTMLElement>('.panels')!;
-    const attr = opts[0].getAttribute('role') === 'tab' ? 'aria-selected' : 'aria-checked';
-    const select = (i: number, focus = false) => {
-      const from = box.offsetHeight;
-      opts.forEach((o, j) => { o.setAttribute(attr, String(j === i)); o.tabIndex = j === i ? 0 : -1; });
-      panels.forEach((p, j) => {
-        if (j !== i) p.querySelectorAll('video').forEach((v) => v.pause());
-        p.hidden = j !== i;
-      });
-      if (focus) opts[i].focus();
-      if (reduceMotion()) return;
-      gsap.fromTo(box, { height: from }, { height: box.scrollHeight, duration: 0.35, ease: 'power2.out', clearProps: 'height' });
-      gsap.fromTo(panels[i], { autoAlpha: 0, y: 4 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.out', clearProps: 'transform,opacity,visibility' });
-    };
-    opts.forEach((o, i) => {
-      o.addEventListener('click', () => select(i));
-      o.addEventListener('keydown', (e) => {
-        const n = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
-        if (n) { e.preventDefault(); select((i + n + opts.length) % opts.length, true); }
-      });
-    });
+    const options = [...sw.querySelectorAll<HTMLButtonElement>('.ctrl button')];
+    const panels = options.map((o) => sw.querySelector<HTMLElement>(`#${o.getAttribute('aria-controls')}`));
+    // A video in a panel that closes stops; the one in the new panel starts through its own in-view rule
+    bindChoice({ options, panels, box: sw.querySelector<HTMLElement>('.panels')!, onSelect: (i) => panels.forEach((p, j) => { if (j !== i) p?.querySelectorAll('video').forEach((v) => v.pause()); }) });
   });
 </script>

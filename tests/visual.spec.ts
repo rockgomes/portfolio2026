@@ -32,9 +32,14 @@ test('first row of work cards', async ({ page }) => {
 });
 
 // Case study pages. The live page is another site, so its iframe is masked.
-test('case study summary looks the same as the approved screenshots', async ({ page }) => {
+test('case study page looks the same as the approved screenshots', async ({ page }) => {
   await page.goto('/project/flex-academy');
   await loadImages(page);
   await shoot(page, '[data-case-summary]', 'case-summary.png', ['[data-live] iframe', '[data-live] video']);
   await shoot(page, '[data-next-case]', 'case-next.png');
+  await shoot(page, '#decisions', 'case-decisions.png', ['#decisions video']);
+  await shoot(page, '#process', 'case-process.png');
+  await shoot(page, '#system', 'case-system.png');
+  await shoot(page, '#built', 'case-built.png');
+  await shoot(page, '#result', 'case-result.png');
 });

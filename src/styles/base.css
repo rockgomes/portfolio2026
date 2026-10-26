@@ -46,6 +46,9 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 /* Type helpers (Figma text styles) */
 .t-mono-label { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); }
 .t-mono-small { font: var(--type-mono-small); }
+/* A list with "- " in front of each line, as the case study sketches write lists */
+.t-dash-list { margin: 0; padding: 0; list-style: none; }
+.t-dash-list > li::before { content: '- '; }
 
 /* Button (Figma: Button 193:109 and Button / Copy email). The site's control style, same as the table and client tabs.
    .btn-primary is the Primary style: the main action (Download CV), a solid accent button.
@@ -71,6 +74,11 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .ui-tab:hover { color: var(--color-text-primary); }
 .ui-tab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
 .utab[aria-selected='true'] { border-bottom-color: var(--color-annotation-measure); color: var(--color-text-primary); font: var(--type-ui-tab-strong); }
+/* Pin (Figma: Pin 21:125): a numbered marker on a picture. .ui-pin-callout is the smaller soft one in front of a
+   Callout line (Figma: Callout 21:121), so a list under the picture names each pin. */
+.ui-pin { display: inline-grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 10px; background: var(--color-annotation-redline); font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); color: var(--color-surface-page); }
+.ui-pin-callout { width: 18px; height: 18px; border-radius: 9px; border: 1px solid var(--color-annotation-redline); background: var(--color-annotation-redline-soft); color: var(--color-annotation-redline); }
+.ui-callout { display: flex; gap: var(--space-12); align-items: flex-start; font: var(--type-body-small); color: var(--color-text-secondary); }
 /* Pill (Figma: Pill): fully round. Default size for facts (recruiter), Small for badges ("Public", "Ready for dev").
    Not called .pill because the hero table already uses that name. */
 .ui-pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); font: var(--type-ui-pill); color: var(--color-text-secondary); white-space: nowrap; }

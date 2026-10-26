@@ -1,0 +1,96 @@
+---
+// Inspect the layers of a hero (sketch C 377:10183, from the old fa-ins embed). Numbered pins sit on the real layers
+// of the picture (children of the picture's own box, overlays rule), with a Callout list under it. Picking a pin or a
+// line lists that layer's tokens with their value in the current mode; Light / Dark swaps the picture and the values.
+// Uses the shared .ui-seg, .ui-pin, .ui-callout, the Proof frame and bindChoice. Pins show at every width.
+import Proof from './Proof.astro';
+import type { Pin } from '../../data/flex-academy';
+interface Pic { src: string; alt: string }
+interface Props { pins: Pin[]; tokens: Record<string, [string, string]>; spaces: Record<string, string>; light: Pic; dark: Pic; width: number; height: number }
+const { pins, tokens, spaces, light, dark, width, height } = Astro.props;
+const pct = (v: number, of: number) => `${(v / of) * 100}%`;
+// One line per prop: a swatch (or glyph), the token name, and what it is with its value per mode
+const rows = (p: Pin) => p.props.map(([k, name, note]) => {
+  if (k === 'c') return { swatch: tokens[name], glyph: '', name, what: note ?? 'fill', values: tokens[name] };
+  if (k === 'x') return { swatch: null, shadow: true, glyph: '', name, what: 'effect', values: tokens[name] };
+  if (k === 't') return { swatch: null, glyph: 'Aa', name, what: 'text style', values: [note ?? '', note ?? ''] };
+  const v = `${spaces[name]} px`;
+  return { swatch: null, glyph: name.startsWith('radius') ? '◜' : '↔', name, what: note ?? 'corner radius', values: [v, v] };
+});
+---
+<div class="inspect" data-inspect data-mode="light">
+  <div class="ui-seg ctrl" role="radiogroup" aria-label="Token mode" data-inspect-mode>
+    <button type="button" role="radio" aria-checked="true" tabindex="0">Light</button>
+    <button type="button" role="radio" aria-checked="false" tabindex="-1">Dark</button>
+  </div>
+  <Proof>
+    <div class="stage">
+      <img class="light" src={light.src} alt={light.alt} width={width} height={height} loading="lazy" decoding="async" />
+      <img class="dark" src={dark.src} alt={dark.alt} width={width} height={height} loading="lazy" decoding="async" />
+      {pins.map((p, i) => (
+        <span class="layer" data-layer={i} style={`left:${pct(p.x, width)};top:${pct(p.y, height)};width:${pct(p.w, width)};height:${pct(p.h, height)}`}>
+          <button type="button" class="ui-pin" tabindex="-1" aria-hidden="true" data-pick={i}>{i + 1}</button>
+        </span>
+      ))}
+    </div>
+  </Proof>
+  <ul class="callouts">
+    {pins.map((p, i) => (
+      <li><button type="button" class="ui-callout" aria-pressed="false" data-pick={i}><span class="ui-pin ui-pin-callout" aria-hidden="true">{i + 1}</span>{p.kind}</button></li>
+    ))}
+  </ul>
+  <div class="panel" data-inspect-panel aria-live="polite">
+    {pins.map((p, i) => (
+      <ul class="props" data-props-of={i} hidden aria-label={`Tokens of ${p.name}`}>
+        {rows(p).map((r) => (
+          <li>
+            <span class:list={['sw', r.shadow && 'shadow']} aria-hidden="true">
+              {r.swatch && <><i class="light" style={`background:${r.swatch[0]}`}></i><i class="dark" style={`background:${r.swatch[1]}`}></i></>}
+              {r.glyph}
+            </span>
+            <code>{r.name}</code>
+            <span class="what">{r.what} · <span class="light">{r.values[0]}</span><span class="dark">{r.values[1]}</span></span>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>
+<style>
+  .inspect { display: flex; flex-direction: column; gap: var(--space-12); min-width: 0; }
+  .ctrl { align-self: flex-start; }
+  .ctrl button:focus-visible, .ui-callout:focus-visible { outline: 2px solid var(--color-annotation-measure); outline-offset: 2px; }
+  .stage { position: relative; }
+  .stage img { display: block; width: 100%; height: auto; }
+  .inspect[data-mode='light'] .dark, .inspect[data-mode='dark'] .light { display: none; }
+  .layer { position: absolute; border: 1.5px solid transparent; border-radius: 6px; pointer-events: none; }
+  .layer.on { border-color: var(--color-annotation-redline); }
+  .layer .ui-pin { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); border: 0; padding: 0; cursor: pointer; pointer-events: auto; }
+  .callouts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .ui-callout { width: 100%; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
+  .ui-callout:hover, .ui-callout[aria-pressed='true'] { color: var(--color-text-primary); }
+  .props { list-style: none; margin: 0; padding: var(--space-16) 0 0; border-top: 1px solid var(--color-border-subtle); display: flex; flex-direction: column; gap: var(--space-8); }
+  .props[hidden] { display: none; }
+  .props li { display: grid; grid-template-columns: 22px auto minmax(0, 1fr); gap: var(--space-12); align-items: center; }
+  .sw { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--color-border-strong); overflow: hidden; font: var(--type-mono-label); color: var(--color-text-muted); }
+  .sw i { width: 100%; height: 100%; }
+  .sw.shadow { box-shadow: var(--shadow-panel); }
+  code { font: var(--type-mono-body); color: var(--color-text-primary); }
+  .what { font: var(--type-body-small); color: var(--color-text-muted); overflow-wrap: anywhere; }
+  @media (max-width: 560px) { .props li { grid-template-columns: 22px minmax(0, 1fr); } .what { grid-column: 2; } }
+</style>
+<script>
+  import { bindChoice } from '../../lib/choice';
+
+  document.querySelectorAll<HTMLElement>('[data-inspect]').forEach((ins) => {
+    const modes = [...ins.querySelectorAll<HTMLButtonElement>('[data-inspect-mode] [role="radio"]')];
+    bindChoice({ options: modes, onSelect: (i) => { ins.dataset.mode = i ? 'dark' : 'light'; } });
+    const lines = [...ins.querySelectorAll<HTMLButtonElement>('.ui-callout')];
+    const pick = (i: number) => {
+      lines.forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
+      ins.querySelectorAll<HTMLElement>('[data-layer]').forEach((l) => l.classList.toggle('on', l.dataset.layer === String(i)));
+      ins.querySelectorAll<HTMLElement>('[data-props-of]').forEach((u) => { u.hidden = u.dataset.propsOf !== String(i); });
+    };
+    ins.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.addEventListener('click', () => pick(Number(b.dataset.pick))));
+  });
+</script>
