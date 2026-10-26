@@ -17,6 +17,8 @@ const experiments = (await getCollection('experiments')).filter((e) => !isPrivat
 }));
 const items = [...projects, ...experiments].sort((a, b) => a.d.cardOrder - b.d.cardOrder);
 const cardTag = (d: (typeof items)[number]['d']) => [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Experiment' : '');
+// Engineer view: the tags as GitHub topics (lower case), the same tags as the designer card shows.
+const topics = (d: (typeof items)[number]['d']) => [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].map((t) => t.toLowerCase().replace(/\s+/g, '-'));
 const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.industry, focus: i.d.focus }));
 ---
 <section class="work" id="work" aria-labelledby="work-title">
@@ -29,7 +31,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
       <aside class="side" aria-label="Filter projects" data-side>
         <!-- Below 1040px the panel folds into this button, so the projects come first -->
         <button type="button" class="ftoggle btn" aria-expanded="false" aria-controls="filter-panel" data-filter-toggle>Filter projects <span class="fcount t-mono-label" data-filter-toggle-count>{items.length} / {items.length}</span><svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
-        <div class="panel" id="filter-panel" data-filter-panel>
+        <div class="panel" id="filter-panel" data-filter-panel data-not-engineer>
           <div class="tabs utabs" role="tablist" aria-label="Filter mode">
             <button type="button" class="utab" role="tab" aria-selected="true" data-tab="groups">Filters</button>
             <button type="button" class="utab" role="tab" aria-selected="false" data-tab="flat">Tags</button>
@@ -46,10 +48,22 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
           <div data-filter-groups></div>
           <button type="button" class="fshow btn btn-primary" data-filter-show>Show {items.length} projects</button>
         </div>
+        <!-- Engineer view (Figma: Projects B and C, sketches): the same filter, written as code or as a terminal command.
+             Both are here for Rock to compare; the tabs switch between them. -->
+        <div class="panel dpanel" data-dev-panel data-engineer>
+          <div class="tabs utabs" role="tablist" aria-label="Filter style">
+            <button type="button" class="utab" role="tab" aria-selected="true" data-dev-tab="code">Code</button>
+            <button type="button" class="utab" role="tab" aria-selected="false" data-dev-tab="term">Terminal</button>
+            <span class="sp"></span>
+            <span class="cnt t-mono-label" aria-live="polite" data-dev-count>{items.length} / {items.length}</span>
+          </div>
+          <div class="dbody t-mono-body" data-dev-body></div>
+          <button type="button" class="fshow btn btn-primary" data-filter-show>Show {items.length} projects</button>
+        </div>
       </aside>
 
       <div class="main">
-        <div class="active" data-filter-active hidden></div>
+        <div class="active" data-filter-active hidden data-not-engineer></div>
         <ul class="grid" data-grid>
           {items.map((it) => (
             <li class="card" data-id={it.id}>
@@ -63,12 +77,14 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
                 {it.id === 'inbank---hire-purchase' && <><Cursor name="Client" color="client" style="left: min(195px, calc(100% - 290px)); top: 110px;" /><Comment who="Client" initial="C" when="2 min ago" style="left: min(213px, calc(100% - 272px)); top: 153px; width: 300px;">Support tickets went down after launch. Great job!</Comment></>}
                 {it.id === 'bigbank---loan-flow' && <><Cursor name="PM" color="pm" style="left: min(150px, calc(100% - 335px)); top: 150px;" /><Comment who="PM" initial="P" color="pm" when="just now" style="left: min(168px, calc(100% - 317px)); top: 193px; width: 290px;">This flow now works the same in all 7 countries. One design, no forks.</Comment></>}
               </div>
-              <p class="meta"><span class="n t-mono-small">{it.d.cardNumber}</span><span class="co t-mono-label">{it.d.cardCompany}</span><span class="sp"></span>{it.d.cardYear && <span class="yr t-mono-small">{it.d.cardYear}</span>}</p>
+              <p class="meta"><span class="n t-mono-small" data-not-engineer>{it.d.cardNumber}</span><span class="co t-mono-label" data-not-engineer>{it.d.cardCompany}</span><span class="file t-mono-label" data-engineer>{it.id}.md</span><span class="sp"></span>{it.d.cardYear && <span class="yr t-mono-small">{it.d.cardYear}</span>}</p>
               <h3 class="title"><a href={it.href}>{it.d.cardTitle || it.d.name}</a></h3>
               <p class="line">{it.d.cardLine}</p>
               <p class="foot">
-                {cardTag(it.d) && <span class="tag ui-tag ui-tag-accent">{cardTag(it.d)}</span>}
-                {it.demo && <a class="demo t-mono-label" href={it.demo} target="_blank" rel="noopener">+ Open live demo ↗</a>}
+                {cardTag(it.d) && <span class="tag ui-tag ui-tag-accent" data-not-engineer>{cardTag(it.d)}</span>}
+                {topics(it.d).map((t) => <span class="topic" data-engineer>{t}</span>)}
+                {it.demo && <a class="demo t-mono-label" href={it.demo} target="_blank" rel="noopener" data-not-engineer>+ Open live demo ↗</a>}
+                {it.demo && <a class="demo-dev" href={it.demo} target="_blank" rel="noopener" data-engineer>Live demo ↗</a>}
               </p>
             </li>
           ))}
@@ -157,6 +173,32 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   .empty p { margin: 0; } .empty-t { font: var(--type-heading-item); }
   .empty-s { color: var(--color-text-muted); }
   .ftoggle, .fshow { display: none; }
+  /* Engineer view: file name instead of number and company, GitHub topic pills, plain "Live demo" link, no cursors */
+  .meta .file { color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; }
+  .topic { padding: 2px 9px; border-radius: 999px; background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font: var(--type-ui-pill-small); }
+  .foot:has(.topic) { gap: var(--space-8); }
+  .demo-dev { position: relative; z-index: 2; margin-left: var(--space-8); font: var(--type-ui-pill-small); color: var(--color-text-primary); text-decoration: none; white-space: nowrap; }
+  .demo-dev:hover { text-decoration: underline; }
+  :global(html[data-view='engineer']) .thumb-wrap :global(.cursor) { display: none; }
+  /* The filter as code (B) or as a terminal (C). Each value is a real button: off values are commented out (B)
+     or plain (C); on values are green. */
+  .dbody { padding: 10px 0 12px; white-space: pre; color: var(--color-text-primary); overflow-x: auto; }
+  .dpanel :global(.ln) { display: flex; gap: var(--space-8); width: 100%; min-height: 19px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: inherit; text-align: left; }
+  .dpanel :global(.ln > .code) { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .dpanel :global(button.ln) { cursor: pointer; }
+  .dpanel :global(button.ln:hover) { background: var(--color-surface-stage); }
+  .dpanel :global(button.ln:focus-visible) { outline: 2px solid var(--color-annotation-measure); outline-offset: -2px; }
+  .dpanel :global(button.ln:disabled) { cursor: default; opacity: 0.4; }
+  .dpanel :global(button.ln:disabled:hover) { background: transparent; }
+  .dpanel :global(.p), .dpanel :global(.c), .dpanel :global(.num), .dpanel :global(.out) { color: var(--color-text-muted); }
+  .dpanel :global(.s) { color: var(--color-status-positive); }
+  .dpanel :global(.nw) { white-space: nowrap; }
+  .dpanel :global(.f) { color: var(--color-text-secondary); }
+  .dpanel :global([data-mode='term'] button.ln[aria-checked='true']) { background: var(--color-annotation-measure-soft); }
+  .dpanel :global(button.ln[aria-checked='true'] .f), .dpanel :global(button.ln[aria-checked='true'] .num) { color: var(--color-annotation-measure); }
+  .dpanel :global(.caret) { display: inline-block; width: 7px; height: 14px; vertical-align: -2px; background: var(--color-text-primary); animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .dpanel :global(.caret) { animation: none; } }
   @media (max-width: 1040px) {
     .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; }
     /* The panel folds into a button; it opens in place, and "Show N projects" closes it and scrolls to the cards */
@@ -165,6 +207,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
     .ftoggle[aria-expanded='true'] svg { transform: rotate(180deg); }
     .fcount { color: var(--color-text-muted); }
     .side:not([data-open]) > .panel { display: none; }
+    .dpanel { max-width: none; }
     .fshow { display: flex; justify-content: center; margin: 8px 10px 4px; } /* the shared Button, Primary */
     /* The comment describes the sticky panel, which only exists on wide screens */
   }
@@ -184,11 +227,11 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   const side = document.querySelector<HTMLElement>('[data-side]')!;
   const toggleBtn = document.querySelector<HTMLButtonElement>('[data-filter-toggle]')!;
   const toggleCount = document.querySelector<HTMLElement>('[data-filter-toggle-count]')!;
-  const showBtn = document.querySelector<HTMLButtonElement>('[data-filter-show]')!;
+  const showBtns = [...document.querySelectorAll<HTMLButtonElement>('[data-filter-show]')];
   // Small screens: the toggle opens and closes the panel; "Show N projects" closes it and scrolls to the cards.
   const setPanel = (open: boolean) => { side.toggleAttribute('data-open', open); toggleBtn.setAttribute('aria-expanded', String(open)); };
   toggleBtn.addEventListener('click', () => setPanel(!side.hasAttribute('data-open')));
-  showBtn.addEventListener('click', () => { setPanel(false); const pills = document.querySelector<HTMLElement>('[data-filter-active]'); (pills && !pills.hidden ? pills : document.querySelector('[data-grid]'))?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); toggleBtn.focus({ preventScroll: true }); });
+  showBtns.forEach((b) => b.addEventListener('click', () => { setPanel(false); const pills = document.querySelector<HTMLElement>('[data-filter-active]'); (pills && !pills.hidden ? pills : document.querySelector('[data-grid]'))?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); toggleBtn.focus({ preventScroll: true }); }));
   const groupsEl = panel.querySelector<HTMLElement>('[data-filter-groups]')!;
   const countEl = panel.querySelector<HTMLElement>('[data-filter-count]')!;
   const searchEl = panel.querySelector<HTMLInputElement>('[data-filter-search]')!;
@@ -284,7 +327,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
       gsap.fromTo(grid, { height: from }, { height: to, duration: 0.55, ease: 'power3.inOut', clearProps: 'height' });
     }
     empty.hidden = vis.size > 0; countEl.textContent = `${vis.size} / ${DATA.length}`;
-    toggleCount.textContent = countEl.textContent; showBtn.textContent = vis.size === 1 ? 'Show 1 project' : `Show ${vis.size} projects`;
+    toggleCount.textContent = countEl.textContent; showBtns.forEach((b) => { b.textContent = vis.size === 1 ? 'Show 1 project' : `Show ${vis.size} projects`; });
     document.dispatchEvent(new CustomEvent('work:filtered'));
   }
 
@@ -294,7 +337,67 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
     for (const k of ['industry', 'focus'] as const) { if (state[k].length) u.searchParams.set(k, state[k].map(slug).join(',')); else u.searchParams.delete(k); }
     history.replaceState(null, '', u);
   }
-  const render = (grid = true) => { renderPanel(); renderActive(); if (grid) { renderGrid(); syncUrl(); } };
+  // Engineer view: the same state, drawn as code (B) or as a terminal command (C)
+  const dev = document.querySelector<HTMLElement>('[data-dev-panel]')!;
+  const devBody = dev.querySelector<HTMLElement>('[data-dev-body]')!;
+  const devCount = dev.querySelector<HTMLElement>('[data-dev-count]')!;
+  let devTab = 'code';
+  const sp = (cls: string, t: string) => `<span class="${cls}">${esc(t)}</span>`;
+  const plain = (html: string) => `<div class="ln"><span class="code">${html}</span></div>`;
+  const val = (key: string, v: string, on: boolean, n: number, multi: boolean, html: string, off = false) =>
+    `<button type="button" class="ln" role="${multi ? 'checkbox' : 'radio'}" aria-checked="${on}" aria-label="${esc(v)}, ${n} projects" data-key="${key}" data-val="${esc(v)}"${off ? ' disabled' : ''}><span class="code">${html}</span><span class="num">${n}</span></button>`;
+  const devTags = (k: 'industry' | 'focus') => tagRows(k);
+  function renderDev() {
+    const n = visible().length; let h = '';
+    if (devTab === 'code') {
+      h += plain(sp('', 'getCollection') + sp('p', '("work")'));
+      h += plain(sp('', 'where') + sp('p', ' = {'));
+      const typeOn = (v: string) => state.type === 'all' || state.type === v;
+      h += plain(sp('', '  type') + sp('p', ': ['));
+      for (const [v] of TYPES.slice(1)) { const on = typeOn(v); h += val('type', v, on, countFor('type', v), false, on ? sp('s', `    "${v}"`) + sp('p', ',') : sp('c', `    // "${v}",`), on && state.type !== 'all'); }
+      h += plain(sp('p', '  ],'));
+      for (const k of ['industry', 'focus'] as const) {
+        const any = state[k].length > 0;
+        h += plain(any ? sp('', `  ${k}`) + sp('p', ': [') : sp('c', `  // ${k}: [`));
+        for (const o of devTags(k)) { const t = slug(o.t); h += val(k, o.t, o.on, o.n, true, o.on ? sp('s', `    "${t}"`) + sp('p', ',') : sp('c', `    // "${t}",`), o.n === 0 && !o.on); }
+        h += plain(any ? sp('p', '  ],') : sp('c', '  // ],'));
+      }
+      h += plain(sp('p', '};'));
+      h += plain(sp('c', `// → ${n} ${n === 1 ? 'project' : 'projects'}`));
+    } else {
+      const flags = [`--type=${state.type}`, ...(['industry', 'focus'] as const).filter((k) => state[k].length).map((k) => `--${k}=${state[k].map(slug).join(',')}`)];
+      h += `<div class="ln"><span class="code" style="white-space: pre-wrap">${sp('p', '$ ')}ls work ${flags.map((f) => sp('s nw', f)).join(' ')}</span></div>`;
+      h += plain(sp('out', `${n} ${n === 1 ? 'project' : 'projects'}`));
+      h += plain('');
+      h += plain('--type');
+      for (const [v] of TYPES) h += val('type', v, state.type === v, countFor('type', v), false, sp('f', `  ${v}`));
+      for (const k of ['industry', 'focus'] as const) {
+        h += plain(`--${k}`);
+        for (const o of devTags(k)) h += val(k, o.t, o.on, o.n, true, sp('f', `  ${slug(o.t)}`), o.n === 0 && !o.on);
+      }
+      h += plain('');
+      h += plain(sp('p', '$ ') + '<span class="caret" aria-hidden="true"></span>');
+    }
+    const focused = (document.activeElement as HTMLElement | null)?.closest<HTMLElement>('button.ln');
+    const fid = focused ? `${focused.dataset.key}|${focused.dataset.val}` : '';
+    devBody.innerHTML = h; devBody.dataset.mode = devTab;
+    if (fid) { const [k, v] = fid.split('|'); devBody.querySelector<HTMLElement>(`button.ln[data-key="${k}"][data-val="${CSS.escape(v)}"]`)?.focus(); }
+    devCount.textContent = `${n} / ${DATA.length}`;
+    dev.querySelectorAll<HTMLElement>('[data-dev-tab]').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.devTab === devTab)));
+  }
+  dev.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement;
+    const tab = t.closest<HTMLElement>('[data-dev-tab]'); if (tab) { devTab = tab.dataset.devTab!; return renderDev(); }
+    const b = t.closest<HTMLButtonElement>('button.ln'); if (!b || b.disabled) return;
+    const k = b.dataset.key!, v = b.dataset.val!;
+    if (k === 'type') {
+      // Code: commenting out one type leaves the other; uncommenting brings back both. Terminal: pick one.
+      if (devTab === 'code') state.type = state.type === 'all' ? (v === 'client' ? 'experiment' : 'client') : 'all';
+      else state.type = v;
+    } else toggle(k as 'industry' | 'focus', v);
+    render();
+  });
+  const render = (grid = true) => { renderPanel(); renderActive(); renderDev(); if (grid) { renderGrid(); syncUrl(); } };
   const toggle = (k: 'industry' | 'focus', v: string) => { const s = state[k]; const i = s.indexOf(v); if (i > -1) s.splice(i, 1); else s.push(v); };
   const clearAll = () => { state.type = 'all'; state.industry = []; state.focus = []; };
 

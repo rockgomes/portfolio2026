@@ -1,12 +1,12 @@
 ---
-// Figma: Comment (44:575)
+// Figma: Comment (44:575). In the engineer view it reads as a GitHub comment: a header line ("Dev commented just now") over the text.
 interface Props { who: string; initial: string; when: string; color?: 'client' | 'pm' | 'dev' | 'rock'; style?: string; class?: string }
 const { who, initial, when, color = 'client', style, class: cls } = Astro.props;
 ---
 <div class:list={['cm', `c-${color}`, cls]} style={style} data-overlay aria-hidden="true">
   <span class="av t-mono-label">{initial}</span>
   <div class="body">
-    <p class="meta"><span class="who">{who}</span><span class="when t-mono-label">{when}</span></p>
+    <p class="meta"><span class="who">{who}</span><span class="said t-mono-label" data-engineer>commented</span><span class="when t-mono-label">{when}</span></p>
     <p class="txt t-body-small"><slot /></p>
   </div>
 </div>
@@ -19,4 +19,11 @@ const { who, initial, when, color = 'client', style, class: cls } = Astro.props;
   .who { font: var(--type-ui-button); color: var(--color-text-primary); }
   .when { color: var(--color-text-muted); }
   .txt { margin: 0; color: var(--color-text-secondary); }
+  .said { color: var(--color-text-muted); }
+  :global(html[data-view='engineer']) .cm { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0; padding: 0; background: var(--color-surface-raised); border-color: var(--color-border-subtle); border-radius: 6px; overflow: hidden; }
+  :global(html[data-view='engineer']) .cm::before { content: ''; grid-area: 1 / 1 / 2 / 3; background: var(--color-surface-sunken); border-bottom: 1px solid var(--color-border-subtle); }
+  :global(html[data-view='engineer']) .av { grid-area: 1 / 1; z-index: 1; width: 20px; height: 20px; margin: 8px 0 8px 12px; align-self: center; }
+  :global(html[data-view='engineer']) .body { display: contents; }
+  :global(html[data-view='engineer']) .meta { grid-area: 1 / 2; z-index: 1; gap: 6px; padding: 8px 12px 8px 8px; align-items: center; }
+  :global(html[data-view='engineer']) .txt { grid-area: 2 / 1 / 3 / 3; padding: 10px 12px 12px; }
 </style>

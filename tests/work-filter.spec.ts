@@ -39,9 +39,25 @@ test.describe('Projects filter', () => {
     await expect(page.locator('[data-filter-panel]')).toBeHidden();
     await page.click('[data-filter-toggle]');
     await page.click('.row[data-key="type"][data-val="experiment"]');
-    await expect(page.locator('[data-filter-show]')).toHaveText('Show 4 projects');
+    await expect(page.locator('[data-filter-panel] [data-filter-show]')).toHaveText('Show 4 projects');
     await expect(page.locator('[data-filter-toggle-count]')).toHaveText('4 / 14');
-    await page.click('[data-filter-show]');
+    await page.click('[data-filter-panel] [data-filter-show]');
     await expect(page.locator('[data-filter-panel]')).toBeHidden();
+  });
+  test('engineer view: the filter as code and as a terminal, on the same state', async ({ page, viewport }) => {
+    await page.goto('/?view=engineer#work');
+    if ((viewport?.width ?? 0) <= 1040) await page.click('[data-filter-toggle]');
+    const dev = page.locator('[data-dev-panel]');
+    await expect(page.locator('[data-filter-panel]')).toBeHidden();
+    // Code: uncommenting a value turns it on, commenting out a type leaves the other
+    await dev.locator('button.ln[data-key="industry"][data-val="Fintech"]').click();
+    await expect(dev.locator('button.ln[data-key="industry"][data-val="Fintech"]')).toHaveAttribute('aria-checked', 'true');
+    await expect(dev.locator('[data-dev-count]')).toHaveText('4 / 14');
+    await expect(page).toHaveURL(/industry=fintech/);
+    // Terminal: the command shows the same filter
+    await dev.locator('[data-dev-tab="term"]').click();
+    await expect(dev.locator('[data-dev-body]')).toContainText('ls work --type=all --industry=fintech');
+    await dev.locator('button.ln[data-key="industry"][data-val="Fintech"]').click();
+    await expect(dev.locator('[data-dev-count]')).toHaveText('14 / 14');
   });
 });

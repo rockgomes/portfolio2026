@@ -1,14 +1,15 @@
 ---
 // Figma: Section header (20:28). Number + display title + mono subtitle, optional dimension line.
 // Changed from Figma at Rock's request: the number hangs left of the title instead of pushing it right.
-// The number is optional: the engineer view does not use it.
+// The number is optional. The engineer view shows a GitHub-style "#" heading anchor instead of the number.
 import Dimension from './Dimension.astro';
 interface Props { num?: string; title: string; subtitle: string; dimension?: string; id?: string; titleId?: string }
 const { num, title, subtitle, dimension, id, titleId } = Astro.props;
 ---
 <div class="sh" id={id}>
   <div class="row">
-    {num && <span class="num">{num}</span>}
+    {num && <span class="num" data-not-engineer>{num}</span>}
+    {num && <span class="num anchor" aria-hidden="true" data-engineer>#</span>}
     <h2 class="title" id={titleId} data-title><slot name="title">{title}</slot></h2>
   </div>
   <p class="sub t-mono-label">{subtitle}</p>
@@ -22,6 +23,7 @@ const { num, title, subtitle, dimension, id, titleId } = Astro.props;
   .num { position: absolute; right: calc(100% + 14px); top: 0; font: var(--type-mono-small); line-height: 44px; color: var(--color-annotation-redline); white-space: nowrap; }
   .title { margin: 0; font: var(--type-display-row); letter-spacing: var(--tracking-display-row); color: var(--color-text-primary); text-wrap: balance; }
   .sub { margin: 0; color: var(--color-annotation-measure); }
+  .anchor { color: var(--color-text-muted); }
   @media (max-width: 1199px) { .num { position: static; display: block; line-height: 1.4; margin-bottom: var(--space-8); } }
   /* Recruiter view (sober): no number or redline, a smaller title (the recruiter headline size), grey subtitle */
   :global(html[data-view='recruiter']) .num, :global(html[data-view='recruiter']) .sh :global(.dim) { display: none; }
