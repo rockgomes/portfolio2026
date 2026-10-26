@@ -27,3 +27,12 @@ test('engineer view: the portrait does not drag, and the projects have no commen
   await expect(page.locator('#work .cm')).toHaveCount(3);
   for (const cm of await page.locator('#work .cm').all()) await expect(cm).toBeHidden();
 });
+
+test('engineer view: no cursors on the page, only the visitor\'s own in the footer', async ({ page, viewport }) => {
+  test.skip((viewport?.width ?? 0) < 1200, 'cursors are desktop only');
+  await page.goto('/?view=engineer');
+  const cursors = page.locator('#main .cursor');
+  expect(await cursors.count()).toBeGreaterThan(0);
+  for (const c of await cursors.all()) await expect(c).toBeHidden();
+  await expect(page.locator('footer .cursor.c-you')).toHaveCount(1);
+});
