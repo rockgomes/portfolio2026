@@ -1,13 +1,14 @@
 ---
 // Figma: Section header (20:28). Number + display title + mono subtitle, optional dimension line.
 // Changed from Figma at Rock's request: the number hangs left of the title instead of pushing it right.
+// The number is optional: the engineer view does not use it.
 import Dimension from './Dimension.astro';
-interface Props { num: string; title: string; subtitle: string; dimension?: string; id?: string; titleId?: string }
+interface Props { num?: string; title: string; subtitle: string; dimension?: string; id?: string; titleId?: string }
 const { num, title, subtitle, dimension, id, titleId } = Astro.props;
 ---
 <div class="sh" id={id}>
   <div class="row">
-    <span class="num">{num}</span>
+    {num && <span class="num">{num}</span>}
     <h2 class="title" id={titleId} data-title><slot name="title">{title}</slot></h2>
   </div>
   <p class="sub t-mono-label">{subtitle}</p>
