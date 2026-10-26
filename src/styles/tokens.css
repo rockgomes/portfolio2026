@@ -147,6 +147,7 @@
   --type-display-row: 600 clamp(44px, 5vw, 72px) / 0.98 var(--font-sans);
   --type-heading-section: 600 clamp(32px, 3.2vw, 44px) / 1.05 var(--font-sans);
   --type-heading-item: 600 24px / 1.2 var(--font-sans);
+  --type-heading-card: 600 28px / 1.05 var(--font-sans);
   --type-stat-value: 500 30px / 1 var(--font-sans);
   --type-body-lead: 400 18px / 1.5 var(--font-sans);
   --type-body-default: 400 15px / 1.6 var(--font-sans);
@@ -158,14 +159,28 @@
   --type-ui-button: 500 13px / 1.4 var(--font-sans);
   --type-ui-control: 400 12.5px / 18px var(--font-sans);
   --type-ui-control-compact: 400 12.5px / 16px var(--font-sans);
+  --type-ui-control-strong: 500 12.5px / 18px var(--font-sans);
+  --type-ui-table-strong: 600 13px / 1.4 var(--font-sans);
+  --type-ui-control-compact-strong: 500 12.5px / 16px var(--font-sans);
+  --type-ui-tab: 400 12px / 16px var(--font-sans);
+  --type-ui-tab-strong: 500 12px / 16px var(--font-sans);
+  --type-ui-panel: 400 12px / 17px var(--font-sans);
+  --type-ui-panel-strong: 500 12px / 17px var(--font-sans);
+  --type-ui-status: 500 11.5px / 16px var(--font-sans);
+  --type-ui-pill: 400 13px / 17px var(--font-sans);
+  --type-ui-pill-small: 500 10.5px / 14px var(--font-sans);
   --type-mono-label: 400 11px / 1.4 var(--font-mono);
   --type-mono-small: 400 12px / 1.4 var(--font-mono);
   --type-mono-body: 400 12.5px / 1.5 var(--font-mono);
+  --type-mono-date: 400 11.5px / 16px var(--font-mono);
+  --type-mono-number: 400 12.5px / 18px var(--font-mono);
+  --type-mono-count: 400 11px / 15px var(--font-mono);
 
   --tracking-display-hero: -0.028em;
   --tracking-display-row: -0.03em;
   --tracking-heading-section: -0.02em;
   --tracking-heading-item: -0.01em;
+  --tracking-heading-card: -0.02em;
   --tracking-mono-label: 0.02em;
 
   /* Effects (Figma effect styles) */
