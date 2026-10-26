@@ -32,3 +32,24 @@ test('pages without the new fields keep the old layout', async ({ page }) => {
   await expect(page.locator('[data-case-summary]')).toHaveCount(0);
   await expect(page.locator('article.article h1')).toHaveCount(1);
 });
+
+test('live page: iframe on desktop, video on phones', async ({ page, viewport }) => {
+  await page.goto(FLEX);
+  const live = page.locator('[data-live]');
+  await expect(live.locator('figcaption')).toContainText('The live page, scaled to fit');
+  if ((viewport?.width ?? 0) >= 1200) {
+    await expect(live.locator('iframe')).toBeVisible();
+    await expect(live).not.toHaveAttribute('data-phone', '');
+  } else {
+    await expect(live).toHaveAttribute('data-phone', '');
+    await expect(live.locator('video')).toBeVisible();
+  }
+});
+
+test('live page video does not play on its own with reduced motion', async ({ page }) => {
+  await page.setViewportSize({ width: 400, height: 860 });
+  await page.goto(FLEX);
+  const v = page.locator('[data-live] video');
+  await expect(v).toHaveAttribute('controls', '');
+  expect(await v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
+});

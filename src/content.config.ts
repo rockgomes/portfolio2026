@@ -40,6 +40,8 @@ const projects = defineCollection({
       decision: z.string().default(''),
       result: z.string().default(''),
       links: z.array(z.object({ label: z.string(), href: z.string().url() })).default([]),
+      // The live page in the summary (an iframe, with a screen recording on phones). Without it, the summary shows homeImage.
+      live: z.object({ src: z.string().url(), title: z.string(), video: z.string(), videoLabel: z.string(), poster: z.string(), caption: z.string() }).optional(),
       // copyToCheck = page copy written by Claude, Rock to confirm (the PR lists the sentences).
       copyToCheck: z.boolean().default(false),
       ...tagging,
