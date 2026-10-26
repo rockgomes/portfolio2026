@@ -10,18 +10,13 @@ test('audience switch sets the view and the URL', async ({ page }) => {
   await expect(page.locator('[data-view-option="recruiter"]')).toHaveAttribute('aria-checked', 'true');
 });
 
-// The switch motion (src/lib/view-switch.ts), in each version (?motion=). The other tests run with reduced motion,
-// where the switch is instant.
-for (const m of ['a', 'b', 'c', 'd', 'e']) test.describe(`view switch motion ${m}`, () => {
+// The switch motion (src/lib/view-switch.ts). The other tests run with reduced motion, where the switch is instant.
+test.describe('view switch motion', () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } });
   const blocks = '#main > section, body > footer';
   const settled = (page: import('@playwright/test').Page) => page.waitForFunction(() => { const h = document.documentElement; return !('switching' in h.dataset) && !h.classList.contains('view-fading'); });
-  // Inline styles left on the sections, the page or the footer, and the extra layers of versions c and d
-  const leftovers = (page: import('@playwright/test').Page) => page.evaluate((sel) => [
-    ...[...document.querySelectorAll(`${sel}, #main`)].filter((e) => e.getAttribute('style')).map((e) => e.className || e.id),
-    ...[...document.querySelectorAll('.view-wipe')].map(() => 'view-wipe'),
-    ...(document.documentElement.classList.contains('view-zoom') ? ['view-zoom'] : []),
-  ], blocks);
+  // Inline styles left on the sections, the page or the footer
+  const leftovers = (page: import('@playwright/test').Page) => page.evaluate((sel) => [...document.querySelectorAll(`${sel}, #main`)].filter((e) => e.getAttribute('style')).map((e) => e.className || e.id), blocks);
 
   for (const [from, to, shows, hides] of [
     ['design', 'recruiter', '[data-recruiter]', '.hero'],
@@ -29,7 +24,7 @@ for (const m of ['a', 'b', 'c', 'd', 'e']) test.describe(`view switch motion ${m
     ['recruiter', 'design', '.hero', '[data-recruiter]'],
   ] as const) {
     test(`${from} to ${to} ends in the right state, with no sideways scroll`, async ({ page }) => {
-      await page.goto(`/?view=${from}&motion=${m}`);
+      await page.goto(`/?view=${from}`);
       await page.waitForLoadState('load');
       let widest = 0;
       const watch = setInterval(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth).then((w) => { widest = Math.max(widest, w); }).catch(() => {}), 40);
@@ -45,7 +40,7 @@ for (const m of ['a', 'b', 'c', 'd', 'e']) test.describe(`view switch motion ${m
   }
 
   test('fast clicks end in the last view chosen', async ({ page }) => {
-    await page.goto(`/?motion=${m}`);
+    await page.goto('/');
     await page.waitForLoadState('load');
     for (const v of ['recruiter', 'engineer', 'design', 'recruiter']) await page.click(`[data-view-option="${v}"]`);
     await expect(page.locator('html')).toHaveAttribute('data-view', 'recruiter');
@@ -56,18 +51,18 @@ for (const m of ['a', 'b', 'c', 'd', 'e']) test.describe(`view switch motion ${m
     expect(await leftovers(page)).toEqual([]);
   });
 
-  // Design lead to Engineer at the top: the hero is in both views and does not move, so only a fade shows the switch
-  if (m === 'b' || m === 'e') test('design lead to engineer at the top is seen', async ({ page }) => {
-    await page.goto(`/?motion=${m}`);
+  test('the page fades out and back in', async ({ page }) => {
+    await page.goto('/');
     await page.waitForLoadState('load');
     await page.evaluate(() => { const w = window as unknown as { low: number }; w.low = 1; const f = () => { w.low = Math.min(w.low, +getComputedStyle(document.querySelector('#main')!).opacity); if ('switching' in document.documentElement.dataset) requestAnimationFrame(f); }; document.querySelector<HTMLElement>('[data-view-option="engineer"]')!.click(); requestAnimationFrame(f); });
     await settled(page);
     expect(await page.evaluate(() => (window as unknown as { low: number }).low)).toBeLessThan(0.5);
   });
 
-  // Version e always moves: from Engineer to Design lead at the top (and back), the hero stays in place, so it rises
-  if (m === 'e') for (const [from, to] of [['engineer', 'design'], ['design', 'engineer']]) test(`${from} to ${to} at the top moves the hero`, async ({ page }) => {
-    await page.goto(`/?view=${from}&motion=e`);
+  // Something always moves: from Engineer to Design lead at the top (and back) the hero is in both views and stays in
+  // place, so it rises
+  for (const [from, to] of [['engineer', 'design'], ['design', 'engineer']]) test(`${from} to ${to} at the top moves the hero`, async ({ page }) => {
+    await page.goto(`/?view=${from}`);
     await page.waitForLoadState('load');
     // Every style change on the hero is recorded (a frame can take longer than the rise when the machine is busy)
     await page.evaluate((to) => { const w = window as unknown as { far: number }; w.far = 0; const hero = document.querySelector<HTMLElement>('.hero')!; new MutationObserver(() => { w.far = Math.max(w.far, Math.abs(new DOMMatrix(getComputedStyle(hero).transform).m42)); }).observe(hero, { attributes: true, attributeFilter: ['style'] }); document.querySelector<HTMLElement>(`[data-view-option="${to}"]`)!.click(); }, to);
@@ -76,7 +71,7 @@ for (const m of ['a', 'b', 'c', 'd', 'e']) test.describe(`view switch motion ${m
   });
 
   test('the section being read stays in place', async ({ page }) => {
-    await page.goto(`/?motion=${m}`);
+    await page.goto('/');
     await page.waitForLoadState('load');
     const exp = page.locator('#experience');
     await exp.evaluate((e) => scrollTo(0, e.getBoundingClientRect().top + scrollY - 200));
@@ -88,7 +83,7 @@ for (const m of ['a', 'b', 'c', 'd', 'e']) test.describe(`view switch motion ${m
   });
 
   test('a section the new view does not have takes the page to the top', async ({ page }) => {
-    await page.goto(`/?motion=${m}`);
+    await page.goto('/');
     await page.waitForLoadState('load');
     await page.locator('#work').evaluate((e) => scrollTo(0, e.getBoundingClientRect().top + scrollY - 200));
     await page.click('[data-view-option="recruiter"]');
