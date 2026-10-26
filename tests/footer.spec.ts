@@ -31,6 +31,35 @@ test.describe('footer ruler', () => {
   });
 });
 
+// The About photo's selection works as the hero headline's: Rock's cursor comes in at the top-left corner, drags the
+// box to the bottom-right corner, then leaves. It never goes past the photo.
+test.describe('About photo selection', () => {
+  test.use({ contextOptions: { reducedMotion: 'no-preference' } });
+  test.skip(({ viewport }) => (viewport?.width ?? 0) < 1200, 'overlays hide below 1200px');
+  test('the cursor drags from the top-left corner to the bottom-right corner, then leaves', async ({ page }) => {
+    await page.goto('/');
+    const cursor = page.locator('#about .portrait > .cursor');
+    await expect(cursor).toBeHidden();
+    await page.evaluate(() => {
+      const por = document.querySelector('#about .portrait')!; const c = por.querySelector<HTMLElement>(':scope > .cursor')!;
+      (window as any).seen = [];
+      new MutationObserver(() => {
+        const p = por.getBoundingClientRect(), r = c.getBoundingClientRect();
+        if (getComputedStyle(c).visibility === 'visible') (window as any).seen.push({ x: (r.left - p.left) / p.width, y: (r.top - p.top) / p.height });
+      }).observe(c, { attributes: true, attributeFilter: ['style'] });
+    });
+    await page.locator('#about').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(3500);
+    const seen: { x: number; y: number }[] = await page.evaluate(() => (window as any).seen);
+    expect(seen.length).toBeGreaterThan(5);
+    expect(Math.min(...seen.map((p) => p.x))).toBeLessThan(0.05); // starts at the top-left corner
+    expect(Math.max(...seen.map((p) => p.x))).toBeGreaterThan(0.95); // reaches the right edge
+    expect(Math.max(...seen.map((p) => p.x))).toBeLessThan(1.1); // and never goes far past the photo
+    expect(Math.max(...seen.map((p) => p.y))).toBeLessThan(1.1);
+    await expect(cursor).toBeHidden(); // then it leaves
+  });
+});
+
 // Nothing may reach below the footer: the About cursor used to end its (hidden) drag below it and add space.
 test.describe('page end', () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } });
