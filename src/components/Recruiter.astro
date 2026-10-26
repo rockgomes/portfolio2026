@@ -30,9 +30,9 @@ const row = (e: (typeof projects)[number] | (typeof experiments)[number], line: 
   title: e.data.cardTitle, line, meta: [e.data.cardCompany, e.data.cardYear].filter(Boolean).join(' · '),
 });
 const work = picks.flatMap(([id, line]) => projects.filter((p) => p.id === id).map((e) => row(e, line)));
-// "See all" opens the rest below the picks, in homepage card order, with each card's own line.
+// The rest follow the picks, in homepage card order, with each card's own line.
 const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => id === e.id))
-  .sort((a, b) => a.data.cardOrder - b.data.cardOrder).map((e) => ({ ...row(e, e.data.cardLine), more: true }));
+  .sort((a, b) => a.data.cardOrder - b.data.cardOrder).map((e) => row(e, e.data.cardLine));
 ---
 <section class="rec" data-recruiter aria-labelledby="rec-title">
   <div class="wrap grid">
@@ -52,11 +52,11 @@ const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => i
     <aside class="side" aria-labelledby="rec-work">
       <div class="side-h">
         <h2 id="rec-work">Selected work</h2>
-        <button type="button" class="more" aria-expanded="false" aria-controls="rec-list" data-less="Show fewer">See all {total}</button>
+        <span class="count">{total} projects</span>
       </div>
       <ul class="work" id="rec-list">
         {[...work, ...rest].map((w) => (
-          <li hidden={'more' in w}>
+          <li>
             <a class="item" href={w.href}>
               <span class="thumb">{w.image && <Image src={w.image} alt="" widths={[88, 176]} sizes="88px" />}</span>
               <span class="txt">
@@ -93,9 +93,15 @@ const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => i
   .side { display: flex; flex-direction: column; min-width: 0; }
   .side-h { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-12); }
   .side-h h2 { margin: 0; font: 600 13px/17px var(--font-sans); color: var(--color-text-primary); }
-  .more { padding: 0; border: 0; background: none; cursor: pointer; font: 400 13px/17px var(--font-sans); color: var(--color-annotation-measure); }
-  .more:hover { text-decoration: underline; }
+  .count { font: 400 13px/17px var(--font-sans); color: var(--color-text-muted); }
   .work { list-style: none; margin: var(--space-12) 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  /* Two columns: the list scrolls in a box that shows the 5 picks and half of the 6th row, so the cut row and the fade
+     show there is more. The fade goes away at the end of the list. One column: all rows, no box. */
+  @media (min-width: 1041px) {
+    .work { max-height: 454px; overflow-y: auto; scrollbar-width: thin; mask-image: linear-gradient(to bottom, black calc(100% - 56px), transparent); }
+    .work[data-end] { mask-image: none; }
+    .item:focus-visible { outline-offset: -2px; }
+  }
   .item { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 14px; align-items: center; padding: var(--space-8); border-radius: 10px; text-decoration: none; }
   .item:hover, .item:focus-visible { background: var(--color-surface-stage); }
   .thumb { width: 88px; height: 58px; border-radius: 6px; border: 1px solid var(--color-border-subtle); overflow: hidden; background: var(--color-surface-stage); }
@@ -116,16 +122,12 @@ const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => i
 </style>
 
 <script>
-  // "See all 14" opens the rest of the work in this list, so the visitor stays in the recruiter view.
-  const more = document.querySelector<HTMLButtonElement>('[data-recruiter] .more');
-  if (more) {
-    const label = more.textContent;
-    const rest = document.querySelectorAll<HTMLLIElement>('#rec-list li[hidden]');
-    more.addEventListener('click', () => {
-      const open = more.getAttribute('aria-expanded') !== 'true';
-      rest.forEach((li) => (li.hidden = !open));
-      more.setAttribute('aria-expanded', String(open));
-      more.textContent = open ? more.dataset.less! : label;
-    });
-  }
+  // The fade at the bottom of the work list goes away once the list is scrolled to its end.
+  const list = document.getElementById('rec-list');
+  const end = () => list?.toggleAttribute('data-end', list.scrollTop + list.clientHeight >= list.scrollHeight - 2);
+  list?.addEventListener('scroll', end, { passive: true });
+  addEventListener('resize', end);
+  // The list has no size while another view shows, so measure again when the view changes (SiteHeader sends viewchange).
+  document.documentElement.addEventListener('viewchange', () => requestAnimationFrame(end));
+  end();
 </script>
