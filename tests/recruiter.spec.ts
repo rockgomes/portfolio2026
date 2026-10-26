@@ -1,18 +1,35 @@
 import { test, expect } from '@playwright/test';
 
 // The "Recruiter" view: a one-page summary instead of the homepage content.
-test('the recruiter view replaces the homepage and links back', async ({ page }) => {
+test('the recruiter view replaces the homepage', async ({ page }) => {
   await page.goto('/?view=recruiter');
   await expect(page.locator('[data-recruiter]')).toBeVisible();
   await expect(page.locator('.hero')).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Senior Product Designer.');
-  await expect(page.locator('[data-recruiter] .work li')).toHaveCount(5);
   // Below the summary: Numbers, Experience and About, without the work and design systems sections
   for (const sel of ['.numbers', '#experience', '#about']) await expect(page.locator(sel)).toBeVisible();
   for (const sel of ['#work', '#design-systems']) await expect(page.locator(sel)).toBeHidden();
-  await page.locator('[data-view-link]').click();
-  await expect(page.locator('html')).toHaveAttribute('data-view', 'design');
-  await expect(page.locator('.hero')).toBeVisible();
+});
+
+test('all the work is in the recruiter view: a scroll box on wide screens, the full list on small ones', async ({ page }) => {
+  await page.goto('/?view=recruiter');
+  const list = page.locator('#rec-list');
+  await expect(page.locator('[data-recruiter] .count')).toHaveText('14 projects');
+  await expect(list.locator('li')).toHaveCount(14);
+  // Experiments link to their own pages
+  await expect(list.locator('a[href="/experiments/fieldset"]')).toHaveCount(1);
+  const box = await list.evaluate((l) => ({ h: l.clientHeight, sh: l.scrollHeight }));
+  if ((page.viewportSize()?.width ?? 0) > 1040) {
+    // The box cuts the list, with a fade until the end
+    expect(box.sh).toBeGreaterThan(box.h);
+    await expect(list).not.toHaveAttribute('data-end');
+    await list.evaluate((l) => { l.scrollTop = l.scrollHeight; });
+    await expect(list).toHaveAttribute('data-end', '');
+    // Scrolling the list keeps the visitor in the recruiter view
+    await expect(page.locator('html')).toHaveAttribute('data-view', 'recruiter');
+  } else {
+    expect(box.sh).toBe(box.h);
+  }
 });
 
 test('the header switch opens the recruiter view', async ({ page }) => {
