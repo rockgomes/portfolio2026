@@ -48,17 +48,6 @@
       0.5);
   });
 
-  // Text selection on a title word: the highlight grows left to right, then the end caret lands.
-  document.querySelectorAll<HTMLElement>('[data-text-selection]').forEach((t) => {
-    const hl = t.querySelector('.hl'); const end = t.querySelector('.caret.e');
-    playOnce(t.parentElement,
-      () => { gsap.set(hl, { scaleX: 0, transformOrigin: '0% 50%' }); gsap.set(end, { autoAlpha: 0 }); },
-      () => gsap.timeline({ delay: 0.3 })
-        .to(hl, { scaleX: 1, duration: 0.55, ease: 'power2.inOut' })
-        .to(end, { autoAlpha: 1, duration: 0.2 }),
-      0.6);
-  });
-
   // Numbers: the rule above each stat draws left to right, one after another (the values count up in Numbers.astro).
   const rules = document.querySelectorAll<HTMLElement>('[data-stat-rule]');
   playOnce(rules[0]?.closest('section') ?? null,
@@ -91,7 +80,7 @@
       return tl;
     },
     0.4);
-  // Selected work: each collaborator moves in when their card comes into view, posts a comment, stays a moment,
+  // Projects: each collaborator moves in when their card comes into view, posts a comment, stays a moment,
   // then goes back the way they came, taking the comment along. (With reduced motion the comments just show.)
   document.querySelectorAll<HTMLElement>('[data-grid] .thumb-wrap').forEach((wrap) => {
     const cur = wrap.querySelector<HTMLElement>(':scope > .cursor'); if (!cur) return;

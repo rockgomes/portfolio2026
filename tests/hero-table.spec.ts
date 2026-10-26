@@ -71,9 +71,11 @@ test.describe('hero story', () => {
     await page.goto('/');
     await page.locator('[data-count]').click();
     const toggle = page.locator('[data-resolved]');
+    await expect(toggle).toContainText('Show');
     await expect(page.locator('[data-story-thread] [data-msg]:visible')).toHaveCount(1);
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await expect(toggle).toContainText('Hide');
     await expect(page.locator('[data-story-thread] [data-msg]:visible')).toHaveCount(4);
     await toggle.click();
     await expect(page.locator('[data-story-thread] [data-msg]:visible')).toHaveCount(1);

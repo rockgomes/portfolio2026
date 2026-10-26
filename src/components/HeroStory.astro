@@ -5,6 +5,7 @@
 // (they fade in to act and fade out at the end), and one resolved comment that opens to show the whole conversation.
 // Plays once per browser tab on wide screens, never with reduced motion. A visitor's own table state is put back after it.
 // Copy is a first draft (Rock to confirm), taken from the Dynamic Lists case study.
+import ResolvedLabel from './ResolvedLabel.astro';
 const messages = [
   { who: 'PM', initial: 'P', color: 'pm', text: 'Users duplicate a list just to filter it in different ways. Then the copies stop matching.', keep: true },
   { who: 'Rock', initial: 'R', color: 'rock', text: "Let's keep one list and save the filter as a view on top of it. Like this." },
@@ -22,7 +23,7 @@ const messages = [
       </div>
     </div>
   ))}
-  <button type="button" class="resolved t-mono-label" data-resolved aria-expanded="false">✓ Resolved<span class="replies" data-replies> · 3 replies</span></button>
+  <button type="button" class="resolved" data-resolved aria-expanded="false"><ResolvedLabel><span class="replies"> · 3 replies<span class="act" data-replies>Show</span></span></ResolvedLabel></button>
 </div>
 
 <style>
@@ -39,8 +40,11 @@ const messages = [
   .meta { margin: 0; display: flex; gap: 8px; align-items: baseline; white-space: nowrap; }
   .who { font: var(--type-ui-button); color: var(--color-text-primary); }
   .txt { margin: 0; color: var(--color-text-secondary); }
-  .resolved { align-self: flex-start; margin: 0 0 0 36px; padding: 2px 4px; border: 0; border-radius: 3px; background: none; cursor: pointer; font: inherit; color: var(--color-status-positive); text-align: left; }
-  .resolved:hover { background: var(--color-status-positive-soft); }
+  .resolved { align-self: flex-start; margin: 0 0 0 36px; padding: 2px 4px; border: 0; border-radius: 3px; background: none; cursor: pointer; text-align: left; }
+  .resolved:hover :global(.rl) { color: var(--color-text-primary); }
+  /* "Show" / "Hide": tells the visitor the resolved comment opens. */
+  .act { margin-left: 6px; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: var(--color-border-strong); text-underline-offset: 3px; }
+  .resolved:hover .act { text-decoration-color: currentColor; }
   .resolved:disabled { cursor: default; background: none; }
   .c-pm { --c: var(--color-cursor-pm); }
   .c-dev { --c: var(--color-annotation-measure); }
@@ -64,7 +68,7 @@ const messages = [
     if (!thread || !toggle || !replies) return;
     thread.dataset.state = open ? 'open' : 'end';
     toggle.setAttribute('aria-expanded', String(open));
-    replies.textContent = open ? ' · hide replies' : ' · 3 replies';
+    replies.textContent = open ? 'Hide' : 'Show';
     if (open && !reduceMotion()) others.forEach((m) => grow(m));
   }
   toggle?.addEventListener('click', () => { if (thread?.dataset.state !== 'story') setOpen(thread?.dataset.state !== 'open'); });
