@@ -58,6 +58,18 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .utabs { display: flex; align-items: flex-end; gap: var(--space-16); padding: 0 14px; border-bottom: 1px solid var(--color-border-subtle); }
 .utab { padding: 0 0 7px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; font: var(--type-ui-tab); color: var(--color-text-muted); }
 .utab:hover { color: var(--color-text-primary); }
+/* Segmented control (Figma: Segmented control 193:119): one choice out of a few, in a framed row. The header view
+   switch, the Storybook theme switch and case study proof use it. role="radiogroup" with role="radio" buttons. */
+.ui-seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
+.ui-seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: var(--type-ui-control-compact); color: var(--color-text-secondary); white-space: nowrap; }
+.ui-seg button:hover { color: var(--color-text-primary); }
+.ui-seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font: var(--type-ui-control-compact-strong); }
+/* Tab (Figma: Tab 195:113): bordered tabs that wrap, same frame as .btn. The Experience client tabs and case study
+   proof use it. role="tablist" with role="tab" buttons. */
+.ui-tabs { display: flex; gap: var(--space-8); flex-wrap: wrap; }
+.ui-tab { padding: 5px 10px; border-radius: var(--radius-control); border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+.ui-tab:hover { color: var(--color-text-primary); }
+.ui-tab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
 .utab[aria-selected='true'] { border-bottom-color: var(--color-annotation-measure); color: var(--color-text-primary); font: var(--type-ui-tab-strong); }
 /* Pill (Figma: Pill): fully round. Default size for facts (recruiter), Small for badges ("Public", "Ready for dev").
    Not called .pill because the hero table already uses that name. */

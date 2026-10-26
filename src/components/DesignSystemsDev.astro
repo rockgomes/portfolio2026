@@ -94,7 +94,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
               <div class="story">
                 <h4>Modes</h4>
                 <div class="canvas">
-                  <div class="render"><div class="seg" role="radiogroup" aria-label="Theme of this page" data-sb-theme-seg><button type="button" role="radio" aria-checked="true" data-sb-set-theme="light">Light - Dev</button><button type="button" role="radio" aria-checked="false" data-sb-set-theme="dark">Dark - Dev</button></div></div>
+                  <div class="render"><div class="ui-seg" role="radiogroup" aria-label="Theme of this page" data-sb-theme-seg><button type="button" role="radio" aria-checked="true" data-sb-set-theme="light">Light - Dev</button><button type="button" role="radio" aria-checked="false" data-sb-set-theme="dark">Dark - Dev</button></div></div>
                   <details class="code"><summary>Show code</summary><pre><code>{`<html data-view="engineer" data-theme="dark">`}</code></pre></details>
                 </div>
                 <p class="cap">This switch changes the theme of this page. The components do not change, only the token values do.</p>
@@ -180,7 +180,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
         <div class="page" data-sb-page="segmented" hidden>
           <div class="cv" data-sb-panel="canvas" role="tabpanel" aria-labelledby="sb-tab-canvas">
             <div class="stage">
-              <div class="seg" role="radiogroup" aria-label="Demo options" data-sb-demo-seg>
+              <div class="ui-seg" role="radiogroup" aria-label="Demo options" data-sb-demo-seg>
                 <button type="button" role="radio" aria-checked="true" tabindex="0">Option</button><button type="button" role="radio" aria-checked="false" tabindex="-1">Option</button><button type="button" role="radio" aria-checked="false" tabindex="-1">Option</button>
               </div>
             </div>
@@ -198,7 +198,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
               </tbody>
             </table>
             <h4>Markup</h4>
-            <pre class="block"><code>{`<div class="seg">\n  <button type="button" role="radio" aria-checked="true">Option</button>\n  <button type="button" role="radio" aria-checked="false">Option</button>\n</div>`}</code></pre>
+            <pre class="block"><code>{`<div class="ui-seg">\n  <button type="button" role="radio" aria-checked="true">Option</button>\n  <button type="button" role="radio" aria-checked="false">Option</button>\n</div>`}</code></pre>
           </div>
         </div>
 
@@ -316,10 +316,6 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .cgrp { display: flex; flex-direction: column; gap: 10px; }
 
   /* Same look as the view switch in SiteHeader.astro */
-  .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
-  .seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: var(--type-ui-control-compact); color: var(--color-text-secondary); white-space: nowrap; }
-  .seg button:hover { color: var(--color-text-primary); }
-  .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font: var(--type-ui-control-compact-strong); }
 
   /* The pill colours are the global .pill-* classes from HeroTable.astro */
   .pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 7px; border-radius: var(--radius-pill); font: var(--type-ui-status); }

@@ -18,7 +18,7 @@ const links = [
     {showSwitch && (
       <div class="switch" role="radiogroup" aria-label="Show this page for">
         <span class="lab">I'm a</span>
-        <div class="seg">
+        <div class="ui-seg">
           {views.map(([v, label]) => (
             <button type="button" role="radio" aria-checked={v === 'design' ? 'true' : 'false'} data-view-option={v}>{label}</button>
           ))}
@@ -53,10 +53,6 @@ const links = [
   .name { font: var(--type-ui-brand); color: var(--color-text-primary); }
   .switch { grid-column: 2; display: flex; align-items: center; gap: 10px; }
   .lab { font: 400 11.5px/1 var(--font-mono); color: var(--color-text-muted); white-space: nowrap; }
-  .seg { display: flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
-  .seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: var(--type-ui-control-compact); color: var(--color-text-secondary); white-space: nowrap; }
-  .seg button:hover { color: var(--color-text-primary); }
-  .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font: var(--type-ui-control-compact-strong); }
   .nav { display: flex; align-items: center; gap: var(--space-24); white-space: nowrap; }
   .nav a:not(.btn) { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
   .nav a:not(.btn):hover { color: var(--color-text-primary); }
@@ -98,7 +94,7 @@ const links = [
     .mpanel { width: calc(100vw - 2 * max(var(--gutter), env(safe-area-inset-left, 0px))); }
     .mpanel a { padding: 14px 12px; font-size: 17px; }
   }
-  @media (max-width: 420px) { .lab { display: none; } .seg button { padding: var(--space-4) var(--space-8); } }
+  @media (max-width: 420px) { .lab { display: none; } .ui-seg button { padding: var(--space-4) var(--space-8); } }
   /* Just above the two breakpoints the centred switch comes close to the buttons on the right: "I'm a" makes way */
   @media (min-width: 721px) and (max-width: 820px), (min-width: 1041px) and (max-width: 1100px) { .lab { display: none; } }
 </style>
@@ -120,7 +116,7 @@ const links = [
     }
     switchView(v, push);
   };
-  const group = document.querySelector('.switch .seg');
+  const group = document.querySelector('.switch .ui-seg');
   // Only pages with the switch (the homepage) take the chosen view. Case study pages are the same for every visitor,
   // so a view chosen on the homepage does not follow the visitor there (it stays stored for the way back).
   if (group) {

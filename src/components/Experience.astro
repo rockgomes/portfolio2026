@@ -33,8 +33,8 @@ const items: Item[] = [
             {it.text && <p class="text">{it.text}</p>}
             {it.clients && (
               <div class="clients" data-clients>
-                <div class="ctabs" role="tablist" aria-label="Clients">
-                  {it.clients.map((c, i) => <button type="button" class="ctab" role="tab" id={`client-tab-${c.id}`} aria-controls={`client-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}><IconGitBranch data-engineer /><span data-not-engineer>{c.name}</span><span data-engineer>{c.name.toLowerCase()}</span></button>)}
+                <div class="ctabs ui-tabs" role="tablist" aria-label="Clients">
+                  {it.clients.map((c, i) => <button type="button" class="ctab ui-tab" role="tab" id={`client-tab-${c.id}`} aria-controls={`client-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}><IconGitBranch data-engineer /><span data-not-engineer>{c.name}</span><span data-engineer>{c.name.toLowerCase()}</span></button>)}
                 </div>
                 {it.clients.map((c, i) => (
                   <div class:list={['cpanel', c.todo && 'todo']} role="tabpanel" id={`client-${c.id}`} aria-labelledby={`client-tab-${c.id}`} hidden={i !== 0}>
@@ -66,10 +66,6 @@ const items: Item[] = [
   .text { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
   /* Independent: one tab per client (same tab style as the hero table) */
   .clients { display: flex; flex-direction: column; gap: var(--space-12); padding-top: 6px; }
-  .ctabs { display: flex; gap: var(--space-8); flex-wrap: wrap; }
-  .ctab { padding: 5px 10px; border-radius: var(--radius-control); border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
-  .ctab:hover { color: var(--color-text-primary); }
-  .ctab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
   .cpanel { display: flex; flex-direction: column; gap: 6px; }
   .cpanel[hidden] { display: none; }
   .cmeta { margin: 0; color: var(--color-text-muted); }
