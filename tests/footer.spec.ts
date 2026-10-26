@@ -43,3 +43,32 @@ test.describe('page end', () => {
     expect(gap).toBeLessThanOrEqual(0);
   });
 });
+
+test('engineer view: the footer shows the build line instead of "Updated"', async ({ page }) => {
+  await page.goto('/?view=engineer');
+  const build = page.locator('footer [data-build]');
+  await expect(build).toBeVisible();
+  await expect(build).toHaveText(/^\S+ @ [0-9a-f]{7} · built \d{4}-\d{2}-\d{2} · Astro · Netlify$/);
+  await expect(page.locator('footer .colophon').getByText('Updated')).toBeHidden();
+  await page.goto('/?view=design');
+  await expect(build).toBeHidden();
+  await expect(page.locator('footer .colophon').getByText('Updated')).toBeVisible();
+});
+
+test.describe('engineer footer', () => {
+  test.use({ contextOptions: { reducedMotion: 'no-preference' }, permissions: ['clipboard-read', 'clipboard-write'] });
+  test('<footer> tags instead of the ruler, no "You" cursor, and copying prints a status line', async ({ page }) => {
+    await page.goto('/?view=engineer');
+    const footer = page.locator('footer.ftr'); await footer.scrollIntoViewIfNeeded();
+    await expect(footer.locator('.ftag').first()).toHaveText('<footer>');
+    await expect(footer.locator('.ftag-close')).toHaveText('</footer>');
+    await expect(footer.locator('[data-ruler]')).toBeHidden();
+    const f = (await footer.boundingBox())!;
+    await page.mouse.move(f.x + 300, f.y + 40); await page.mouse.move(f.x + 320, f.y + 90, { steps: 3 });
+    await expect(footer).not.toHaveClass(/you-here/);
+    await footer.locator('[data-copy]').click();
+    await expect(footer.locator('[data-copied-dev]')).toHaveText('✓ copied to clipboard');
+    await expect(page.locator('[data-copied]')).toBeHidden();
+    await expect(footer.locator('[data-copied-dev]')).toBeHidden({ timeout: 4000 });
+  });
+});

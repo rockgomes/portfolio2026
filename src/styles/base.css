@@ -104,9 +104,13 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 html[data-view='recruiter'] #main > :not([data-recruiter]):not([data-recruiter-also]) { display: none !important; }
 /* The recruiter view is sober: no cursors, selections or dragging in those sections */
 html[data-view='recruiter'] #main [data-overlay] { display: none !important; }
-html[data-view='recruiter'] #main [data-draggable] { cursor: auto; transform: none !important; }
+html:is([data-view='recruiter'], [data-view='engineer']) #main [data-draggable] { cursor: auto; transform: none !important; }
 html:not([data-view='recruiter']) [data-recruiter] { display: none !important; }
 html:not([data-view='engineer']) [data-engineer] { display: none !important; }
+/* The designer pieces the engineer view swaps for developer ones (code tags, file names) */
+html[data-view='engineer'] [data-not-engineer] { display: none !important; }
+/* The engineer view has no Figma multiplayer: no cursors anywhere, the footer "You" cursor too */
+html[data-view='engineer'] .cursor { display: none !important; }
 /* While the view switches (src/lib/view-switch.ts), the colours of the new view fade in instead of jumping */
 html.view-fading, html.view-fading *, html.view-fading *::before, html.view-fading *::after {
   transition: color 0.3s, background-color 0.3s, border-color 0.3s, fill 0.3s, stroke 0.3s, box-shadow 0.3s !important;
