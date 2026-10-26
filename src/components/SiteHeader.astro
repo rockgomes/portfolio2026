@@ -4,7 +4,7 @@ import CopyEmail from './CopyEmail.astro';
 interface Props { showSwitch?: boolean }
 const { showSwitch = true } = Astro.props;
 const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer', 'Engineer']];
-const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['/#experience', 'Experience'], ['/#about', 'About']];
+const links = [['/#work', 'Projects'], ['/#experience', 'Experience'], ['/#about', 'About']]; // Projects: client work and experiments in one list
 ---
 <header class="hdr">
   <div class="wrap inner">
@@ -19,6 +19,7 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
         </div>
       </div>
     )}
+    <div class="end">
     <nav class="nav" aria-label="Main">
       {links.map(([href, label]) => <a href={href}>{label}</a>)}
       <CopyEmail variant="short" /> <!-- short: the full address is in the footer -->
@@ -32,16 +33,19 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
         <div class="mcopy"><span class="t-mono-label lab2">rock@rockgomes.com</span><CopyEmail variant="short" /></div>
       </nav>
     </div>
+    </div>
   </div>
   <div class="mbackdrop" data-menu-backdrop hidden></div>
 </header>
 <style>
   /* Sticky: stays at the top while the page scrolls (above the overlays, which go up to z-index 12) */
   .hdr { position: sticky; top: 0; z-index: 40; background: var(--color-surface-page); border-bottom: 1px solid var(--color-border-strong); }
-  .inner { display: flex; align-items: center; gap: var(--space-24); padding-block: var(--space-16); min-height: 67px; }
-  .brand { display: flex; gap: var(--space-8); align-items: baseline; text-decoration: none; white-space: nowrap; min-width: 0; }
+  /* Three columns with equal sides, so the switch sits in the middle in every view, whatever the nav holds */
+  .inner { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-24); padding-block: var(--space-16); min-height: 67px; }
+  .brand { justify-self: start; display: flex; gap: var(--space-8); align-items: center; text-decoration: none; white-space: nowrap; min-width: 0; }
+  .end { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: var(--space-24); }
   .name { font: var(--type-ui-brand); color: var(--color-text-primary); }
-  .switch { display: flex; align-items: center; gap: 10px; margin-inline: auto; }
+  .switch { grid-column: 2; display: flex; align-items: center; gap: 10px; }
   .lab { font: 400 11.5px/1 var(--font-mono); color: var(--color-text-muted); white-space: nowrap; }
   .seg { display: flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
   .seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: var(--type-ui-control-compact); color: var(--color-text-secondary); white-space: nowrap; }
@@ -71,12 +75,17 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
   @media (prefers-reduced-motion: reduce) { .menu-btn svg { transition: none; } }
   @media (max-width: 1040px) { .nav a { display: none; } .menu-wrap { display: block; } .menu-btn { display: inline-flex; } }
   @media (max-width: 720px) {
-    .nav { display: none; } .inner { flex-wrap: wrap; row-gap: var(--space-12); } .menu-wrap { margin-left: auto; } .switch { order: 3; flex-basis: 100%; margin-inline: 0; }
+    /* Phones: the switch gets its own row. The first row keeps the Menu button's height in every view, so the switch
+       does not move up in the recruiter view (which has no Menu button). */
+    .nav { display: none; } .inner { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(30px, auto) auto; row-gap: var(--space-12); }
+    .end { grid-column: 2; } .switch { grid-column: 1 / -1; grid-row: 2; }
     /* Phones: the panel spans the content width (gutter to gutter), with bigger tap targets */
     .mpanel { width: calc(100vw - 2 * max(var(--gutter), env(safe-area-inset-left, 0px))); }
     .mpanel a { padding: 14px 12px; font-size: 17px; }
   }
   @media (max-width: 420px) { .lab { display: none; } .seg button { padding: var(--space-4) var(--space-8); } }
+  /* Just above the two breakpoints the centred switch comes close to the buttons on the right: "I'm a" makes way */
+  @media (min-width: 721px) and (max-width: 820px), (min-width: 1041px) and (max-width: 1100px) { .lab { display: none; } }
 </style>
 <script>
   // View switch: sets <html data-view>, keeps it in the URL (?view=) and in localStorage.
