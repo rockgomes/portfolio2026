@@ -184,11 +184,18 @@ const messages = [
     // In the recruiter view the hero is hidden, and in the engineer view the inspect panel takes its place (Figma 187:1648),
     // so the story waits until the visitor switches to the design lead view.
     const html = document.documentElement;
+    const waits = (v?: string) => v === 'recruiter' || v === 'engineer';
     if (wide() && !seen) {
-      const waits = (v?: string) => v === 'recruiter' || v === 'engineer';
       if (!waits(html.dataset.view)) startWhenReady();
       else html.addEventListener('viewchange', function onView(e) { if (!waits((e as CustomEvent).detail)) { html.removeEventListener('viewchange', onView); startWhenReady(); } });
     }
+    // Leaving the design lead view ends the story at once, as a click on the table does. Otherwise the cursors go on
+    // working on the table in the engineer view. A story that has not started yet is cancelled.
+    html.addEventListener('viewchange', (e) => {
+      if (!waits((e as CustomEvent).detail)) return;
+      if (tl) finish();
+      else if (prepared) { cancelled = true; unprepare(); }
+    });
     if (replay) { replay.hidden = !wide(); replay.addEventListener('click', (e) => { e.stopPropagation(); play(); }); }
   }
 </script>

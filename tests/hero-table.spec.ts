@@ -67,6 +67,23 @@ test.describe('hero story', () => {
     expect(await page.evaluate(() => localStorage.getItem('rg-hero-table'))).toBeNull();
   });
 
+  test('leaving the design lead view ends the story', async ({ page }) => {
+    await page.goto('/');
+    const thread = page.locator('[data-story-thread]');
+    await expect(thread).toHaveAttribute('data-state', 'story', { timeout: 10_000 });
+    await page.waitForTimeout(2500); // the PM is on the table
+    await page.click('[data-view-option="engineer"]');
+    // The story jumps to its end, as a click on the table does: the condition is added and the view is saved
+    await expect(thread).toHaveAttribute('data-state', 'end');
+    await expect(page.locator('[data-count]')).toHaveText('28');
+    await expect(page.getByRole('tab', { name: 'ICP · Not churned' })).toHaveAttribute('aria-selected', 'true');
+    // ...and nothing goes on moving
+    await page.waitForTimeout(3000);
+    await expect(thread).toHaveAttribute('data-state', 'end');
+    const cursors = await page.locator('.hero .cursor').evaluateAll((els) => els.filter((c) => getComputedStyle(c).visibility !== 'hidden' && +getComputedStyle(c).opacity > 0).length);
+    expect(cursors).toBe(0);
+  });
+
   test('the resolved comment opens and folds the conversation', async ({ page }) => {
     await page.goto('/');
     await page.locator('[data-count]').click();
