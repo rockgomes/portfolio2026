@@ -99,7 +99,11 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .prose ul, .prose ol { padding-left: 1.2em; }
 .list-title { font-size: clamp(32px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1; margin: 0 0 var(--space-32); }
 
-/* Audience views (header switch, ?view=): "Recruiter" swaps the homepage content for the one-page summary */
-html[data-view='recruiter'] #main > :not([data-recruiter]) { display: none !important; }
+/* Audience views (header switch, ?view=): "Recruiter" swaps the homepage content for the one-page summary,
+   followed by the sections marked data-recruiter-also (Numbers, Experience, About; Figma 94:6774) */
+html[data-view='recruiter'] #main > :not([data-recruiter]):not([data-recruiter-also]) { display: none !important; }
+/* The recruiter view is sober: no cursors, selections or dragging in those sections */
+html[data-view='recruiter'] #main [data-overlay] { display: none !important; }
+html[data-view='recruiter'] #main [data-draggable] { cursor: auto; transform: none !important; }
 html:not([data-view='recruiter']) [data-recruiter] { display: none !important; }
 html:not([data-view='engineer']) [data-engineer] { display: none !important; }

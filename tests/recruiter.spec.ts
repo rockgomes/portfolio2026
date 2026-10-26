@@ -7,6 +7,9 @@ test('the recruiter view replaces the homepage and links back', async ({ page })
   await expect(page.locator('.hero')).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Senior Product Designer.');
   await expect(page.locator('[data-recruiter] .work li')).toHaveCount(5);
+  // Below the summary: Numbers, Experience and About, without the work and design systems sections
+  for (const sel of ['.numbers', '#experience', '#about']) await expect(page.locator(sel)).toBeVisible();
+  for (const sel of ['#work', '#design-systems']) await expect(page.locator(sel)).toBeHidden();
   await page.locator('[data-view-link]').click();
   await expect(page.locator('html')).toHaveAttribute('data-view', 'design');
   await expect(page.locator('.hero')).toBeVisible();
@@ -47,4 +50,16 @@ test('each view has its own accent in dark mode', async ({ page }) => {
     await page.goto(`/?view=${view}`);
     expect(await accent()).toBe(colour);
   }
+});
+
+// The recruiter view is sober: the shared sections lose their designer layer there (Figma 94:6774).
+test('the recruiter view has no designer layer', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/?view=recruiter');
+  const hidden = ['#experience .num', '#experience .dim', '#experience .exp-thread', '#about .num', '#about .dim', '#about .sh .sub', '#about .tag', '#about .facts', '#about [data-overlay]'];
+  for (const sel of hidden) for (const el of await page.locator(sel).all()) await expect(el, sel).toBeHidden();
+  await expect(page.locator('#experience h2')).toHaveCSS('font-size', '44px');
+  await page.goto('/?view=design');
+  await expect(page.locator('#experience .exp-thread')).toBeVisible();
+  await expect(page.locator('#about .facts')).toBeVisible();
 });
