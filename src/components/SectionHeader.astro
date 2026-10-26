@@ -3,10 +3,12 @@
 // Changed from Figma at Rock's request: the number hangs left of the title instead of pushing it right.
 // The number is optional. The engineer view shows a GitHub-style "#" heading anchor instead of the number.
 // command (optional): in the engineer view, a shell command takes the place of the dimension line.
+// output (optional): one line the command prints, under it.
 import Dimension from './Dimension.astro';
-interface Props { num?: string; title: string; subtitle: string; dimension?: string; command?: string; id?: string; titleId?: string }
-const { num, title, subtitle, dimension, command, id, titleId } = Astro.props;
-const [cmdName, cmdFlags] = command ? [command.slice(0, command.indexOf(' --')), command.slice(command.indexOf(' --') + 1)] : ['', ''];
+interface Props { num?: string; title: string; subtitle: string; dimension?: string; command?: string; output?: string; id?: string; titleId?: string }
+const { num, title, subtitle, dimension, command, output, id, titleId } = Astro.props;
+const cut = command ? command.indexOf(' --') : -1;
+const [cmdName, cmdFlags] = !command ? ['', ''] : cut < 0 ? [command, ''] : [command.slice(0, cut), command.slice(cut + 1)];
 ---
 <div class="sh" id={id}>
   <div class="row">
@@ -16,7 +18,8 @@ const [cmdName, cmdFlags] = command ? [command.slice(0, command.indexOf(' --')),
   </div>
   <p class="sub t-mono-label">{subtitle}</p>
   {dimension && (command ? <div data-not-engineer><Dimension label={dimension} /></div> : <Dimension label={dimension} />)}
-  {command && <p class="cmd t-mono-label" data-engineer><span class="prompt" aria-hidden="true">$ </span>{cmdName} <span class="flags">{cmdFlags}</span></p>}
+  {command && <p class="cmd t-mono-label" data-engineer><span class="prompt" aria-hidden="true">$ </span>{cmdName}{cmdFlags && <> <span class="flags">{cmdFlags}</span></>}</p>}
+  {command && output && <p class="out t-mono-label" data-engineer>{output}</p>}
 </div>
 <style>
   .sh { display: flex; flex-direction: column; gap: var(--space-12); position: relative; }
@@ -29,6 +32,7 @@ const [cmdName, cmdFlags] = command ? [command.slice(0, command.indexOf(' --')),
   .anchor { color: var(--color-text-muted); }
   .cmd { margin: 0; color: var(--color-text-primary); }
   .prompt { color: var(--color-text-muted); }
+  .out { margin: calc(var(--space-12) * -1 + 2px) 0 0; color: var(--color-text-secondary); }
   .flags { color: var(--color-annotation-measure); }
   @media (max-width: 1199px) { .num { position: static; display: block; line-height: 1.4; margin-bottom: var(--space-8); } }
   /* Recruiter view (sober): no number or redline, a smaller title (the recruiter headline size), grey subtitle */
