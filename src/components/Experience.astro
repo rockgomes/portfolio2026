@@ -1,7 +1,6 @@
 ---
 // Figma: Experience (96:6929), Timeline item 21:111
 import SectionHeader from './SectionHeader.astro';
-import ResolvedThread from './ResolvedThread.astro';
 import IconGitBranch from './IconGitBranch.astro';
 // Independent work (from 2025) is one entry with a tab per client. Facts from Rock's CV (Oct 2026).
 type Client = { id: string; name: string; about: string; text: string; todo?: boolean }; // about: one line on the business (no dates: projects run about 6 months)
@@ -20,11 +19,6 @@ const items: Item[] = [
 <section class="exp" id="experience" aria-labelledby="exp-title" data-recruiter-also>
   <div class="wrap inner">
     <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle={`2016 → ${new Date().getFullYear()}`} dimension={`timeline.span = ${new Date().getFullYear() - 2016} yrs · roles = ${items.length}`} command="git log --graph --since=2016" />
-    <div class="tl">
-    <ResolvedThread class="exp-thread" messages={[
-      { who: 'PM', initial: 'P', color: 'pm', text: 'Should the older roles go into accordions?' },
-      { who: 'Rock', initial: 'R', color: 'rock', text: 'No accordions. Four roles fit on one screen, so they all stay open.' },
-    ]} />
     <ol class="timeline" data-timeline>
       {items.map((it, i) => (
         <li class="item">
@@ -54,16 +48,10 @@ const items: Item[] = [
         </li>
       ))}
     </ol>
-    </div>
   </div>
 </section>
 <style>
   .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-top: var(--space-120); }
-  .tl { position: relative; }
-  /* Wide screens: the thread sits in the empty column right of the roles. Narrow: hidden. */
-  .tl :global(.exp-thread) { position: absolute; top: 28px; right: 0; width: 300px; z-index: 1; } /* above the timeline layer */
-  @media (max-width: 1199px) { .tl :global(.exp-thread) { display: none; } } /* on small screens it only pushes the roles down */
-  :global(html[data-view='recruiter']) .tl :global(.exp-thread) { display: none; } /* the recruiter view is sober */
   /* The red line is a pseudo-element (not a border), so it can draw itself as you scroll (--draw, Motion.astro). Same place as the old 1px border. */
   .timeline { position: relative; list-style: none; margin: 0; padding: 0 0 0 5px; }
   .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--color-annotation-redline); transform-origin: 50% 0%; transform: scaleY(var(--draw, 1)); }
@@ -93,9 +81,7 @@ const items: Item[] = [
   :global(html[data-view='recruiter']) .marker i { left: -9px; top: 4px; width: 9px; height: 9px; border: 1.5px solid var(--color-annotation-measure); border-radius: 50%; }
   :global(html[data-view='recruiter']) .item:first-child .marker i { background: var(--color-annotation-measure); }
   /* Engineer view (Figma: Experience A - git log graph): the red timeline becomes a git log graph. One green branch line
-     from the current role down, round commits (filled = HEAD), client tabs as branches with the Lucide git-branch icon.
-     No resolved thread here. */
-  :global(html[data-view='engineer']) .tl :global(.exp-thread) { display: none; }
+     from the current role down, round commits (filled = HEAD), client tabs as branches with the Lucide git-branch icon. */
   :global(html[data-view='engineer']) .timeline::before { width: 2px; top: calc(var(--space-32) + 8px); background: var(--color-annotation-measure); }
   :global(html[data-view='engineer']) .marker i { left: -9.5px; top: 3px; width: 11px; height: 11px; border: 2px solid var(--color-annotation-measure); border-radius: 50%; }
   :global(html[data-view='engineer']) .item:first-child .marker i { background: var(--color-annotation-measure); }
