@@ -5,23 +5,28 @@ import SectionHeader from './SectionHeader.astro';
 import SelectionBox from './SelectionBox.astro';
 import Cursor from './Cursor.astro';
 import portrait from '../assets/home/portrait.png';
+const alt = 'Rock standing on a rock by a mountain lake, in black and white';
+// The engineer view writes each label as a data-* attribute of the photo, on a dark chip.
 const tags = [
-  { t: 'scene: mountain lake, morning haze', top: 75 },
-  { t: 'subject: Rock', top: 261 },
-  { t: 'prop: one rock (fitting)', top: 367 },
-  { t: 'mode: monochrome', top: 479 },
+  { k: 'scene', v: 'mountain lake, morning haze', top: 75 },
+  { k: 'subject', v: 'Rock', top: 261 },
+  { k: 'prop', v: 'one rock (fitting)', top: 367 },
+  { k: 'mode', v: 'monochrome', top: 479 },
 ];
 ---
 <section class="about" id="about" aria-labelledby="about-title" data-recruiter-also>
   <div class="wrap inner">
-    <SectionHeader num="05" title="About" titleId="about-title" subtitle="subject annotated for completeness" dimension={`portrait.w = ${portrait.width} · portrait.h = ${portrait.height}`} />
+    <SectionHeader num="05" title="About" titleId="about-title" subtitle="subject annotated for completeness" dimension={`portrait.w = ${portrait.width} · portrait.h = ${portrait.height}`} command="file portrait.png" />
     <div class="body">
+      <div class="pcol">
       <div class="portrait" data-draggable>
-        <Image src={portrait} alt="Rock standing on a rock by a mountain lake, in black and white" widths={[440, 880]} sizes="440px" class="img" />
-        {tags.map((g) => <span class="tag ui-tag ui-tag-outline" style={`top:${(g.top / 544 * 100).toFixed(2)}%`}>{g.t}</span>)}
+        <Image src={portrait} alt={alt} widths={[440, 880]} sizes="440px" class="img" />
+        {tags.map((g) => <span class="tag ui-tag ui-tag-outline" style={`top:${(g.top / 544 * 100).toFixed(2)}%`}><span data-not-engineer>{g.k}: {g.v}</span><span data-engineer><span class="k">data-{g.k}="</span>{g.v}<span class="k">"</span></span></span>)}
         <i class="leader" aria-hidden="true"></i>
         <SelectionBox label="440 × 544" live />
         <Cursor name="Rock" color="rock" style="left: 434px; top: 538px;" />
+      </div>
+      <p class="alt t-mono-label" data-engineer aria-hidden="true"><span class="k">alt</span>="{alt}"</p>
       </div>
       <div class="text">
         <p><strong>I am Rock. Senior product designer in Tallinn, Estonia.</strong> I have spent ten years on the kind of software people use all day at work: loan back-offices, support tools, CRM lists with 29,000 rows, checkouts that have to work in four countries.</p>
@@ -42,10 +47,17 @@ const tags = [
 <style>
   .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-block: var(--space-120); }
   .body { display: flex; gap: var(--space-80); align-items: flex-start; }
-  .portrait { position: relative; width: 440px; max-width: 100%; aspect-ratio: 440 / 544; border: 1px solid var(--color-border-strong); flex: none; touch-action: none; }
+  .pcol { display: flex; flex-direction: column; gap: var(--space-12); width: 440px; max-width: 100%; flex: none; }
+  .portrait { position: relative; width: 100%; aspect-ratio: 440 / 544; border: 1px solid var(--color-border-strong); flex: none; touch-action: none; }
   .portrait :global(.img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .tag { position: absolute; left: 39px; } /* the shared Tag, outline tone */
   .leader { position: absolute; left: 33.86%; top: 50%; width: 36px; height: 1px; background: var(--color-annotation-measure); }
+  .alt { margin: 0; color: var(--color-text-secondary); }
+  .alt .k { color: var(--color-annotation-measure); }
+  /* Engineer view: dark chips (the inverse of the page), no ratio leader, no selection */
+  :global(html[data-view='engineer']) .tag { border-color: transparent; background: var(--color-text-primary); color: var(--color-surface-page); white-space: normal; max-width: calc(100% - 78px); }
+  .tag .k { opacity: 0.6; }
+  :global(html[data-view='engineer']) .leader, :global(html[data-view='engineer'] .about .portrait .sel) { display: none; }
   .text { width: min(500px, 100%); display: flex; flex-direction: column; gap: var(--space-16); min-width: 0; }
   .text > p:not(.links) { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
   .text strong { font-weight: 600; color: var(--color-text-primary); }
@@ -59,5 +71,5 @@ const tags = [
   /* Recruiter view (sober): no photo labels or their subtitle; no facts list, the summary at the top has them */
   :global(html[data-view='recruiter']) .about :is(.tag, .leader, .facts), :global(html[data-view='recruiter']) .about :global(.sh .sub) { display: none; }
   @media (max-width: 1040px) { .body { flex-direction: column; gap: var(--space-48); } }
-  @media (max-width: 640px) { .inner { padding-block: var(--space-80); } .tag { left: 16px; } .leader { display: none; } }
+  @media (max-width: 640px) { .inner { padding-block: var(--space-80); } .tag { left: 16px; } :global(html[data-view='engineer']) .tag { max-width: calc(100% - 32px); } .leader { display: none; } }
 </style>

@@ -28,3 +28,18 @@ test.describe('timeline after a view switch', () => {
     await expect.poll(() => last.evaluate((e) => getComputedStyle(e).opacity)).toBe('1');
   });
 });
+
+// Engineer view: the timeline reads as a git log (Figma: Experience A - git log graph).
+test('engineer view: git log graph and branches', async ({ page }) => {
+  await page.goto('/?view=engineer');
+  const exp = page.locator('#experience');
+  await expect(exp.locator('.cmd')).toHaveText('$ git log --graph --since=2016');
+  await expect(exp.locator('.dim')).toBeHidden();
+  await expect(exp.locator('.ref')).toHaveText('HEAD -> main');
+  await expect(exp.locator('#client-tab-well')).toHaveText('well', { useInnerText: true });
+  // The design lead view keeps the redline
+  await page.goto('/?view=design');
+  await expect(exp.locator('.cmd')).toBeHidden();
+  await expect(exp.locator('.ref')).toBeHidden();
+  await expect(exp.locator('#client-tab-well')).toHaveText('Well', { useInnerText: true });
+});

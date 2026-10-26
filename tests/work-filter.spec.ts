@@ -39,9 +39,34 @@ test.describe('Projects filter', () => {
     await expect(page.locator('[data-filter-panel]')).toBeHidden();
     await page.click('[data-filter-toggle]');
     await page.click('.row[data-key="type"][data-val="experiment"]');
-    await expect(page.locator('[data-filter-show]')).toHaveText('Show 4 projects');
+    await expect(page.locator('[data-filter-panel] [data-filter-show]')).toHaveText('Show 4 projects');
     await expect(page.locator('[data-filter-toggle-count]')).toHaveText('4 / 14');
-    await page.click('[data-filter-show]');
+    await page.click('[data-filter-panel] [data-filter-show]');
     await expect(page.locator('[data-filter-panel]')).toBeHidden();
+  });
+  test('engineer view: the filter as a terminal, with a prompt that finds a tag', async ({ page, viewport }) => {
+    await page.goto('/?view=engineer#work');
+    if ((viewport?.width ?? 0) <= 1040) await page.click('[data-filter-toggle]');
+    const dev = page.locator('[data-dev-panel]');
+    await expect(page.locator('[data-filter-panel]')).toBeHidden();
+    // A flag value is a switch; the command line shows it
+    const fintech = dev.locator('button.ln[data-key="industry"][data-val="Fintech"]');
+    await fintech.click();
+    await expect(fintech).toHaveAttribute('aria-checked', 'true');
+    await expect(dev.locator('[data-dev-count]')).toHaveText('4 / 14');
+    await expect(page).toHaveURL(/industry=fintech/);
+    await expect(dev.locator('[data-dev-body]')).toContainText('ls work --type=all --industry=fintech');
+    // The prompt is a real input: typing hides the values that do not match, Escape clears it
+    const search = dev.getByRole('textbox', { name: 'Find a tag' });
+    await search.fill('fin');
+    await expect(fintech).toBeVisible();
+    await expect(dev.locator('button.ln[data-key="type"]')).toHaveCount(0);
+    await search.fill('zzz');
+    await expect(dev.locator('[data-dev-body]')).toContainText('no tag matches "zzz"');
+    await search.press('Escape');
+    await expect(search).toHaveValue('');
+    await expect(dev.locator('button.ln[data-key="type"]')).toHaveCount(3);
+    await fintech.click();
+    await expect(dev.locator('[data-dev-count]')).toHaveText('14 / 14');
   });
 });

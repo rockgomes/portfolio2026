@@ -1,5 +1,5 @@
 ---
-// Figma: Comment (44:575)
+// Figma: Comment (44:575). Not shown in the engineer view.
 interface Props { who: string; initial: string; when: string; color?: 'client' | 'pm' | 'dev' | 'rock'; style?: string; class?: string }
 const { who, initial, when, color = 'client', style, class: cls } = Astro.props;
 ---
@@ -19,4 +19,5 @@ const { who, initial, when, color = 'client', style, class: cls } = Astro.props;
   .who { font: var(--type-ui-button); color: var(--color-text-primary); }
   .when { color: var(--color-text-muted); }
   .txt { margin: 0; color: var(--color-text-secondary); }
+  :global(html[data-view='engineer']) .cm { display: none; }
 </style>
