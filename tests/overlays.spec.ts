@@ -4,20 +4,6 @@ import { test, expect } from '@playwright/test';
 test.describe('overlays stay on their targets', () => {
   test.skip(({ viewport }) => (viewport?.width ?? 0) < 1200, 'overlays are hidden below 1200px');
 
-  test('text selection covers the word "work"', async ({ page }) => {
-    await page.goto('/');
-    await page.evaluate(() => document.fonts.ready);
-    const sel = page.locator('[data-text-selection]');
-    await expect(sel).toHaveClass(/on/);
-    const word = await page.evaluate(() => {
-      const t = document.querySelector('#work [data-title]')!; const n = t.firstChild as Text; const i = n.data.lastIndexOf('work');
-      const r = document.createRange(); r.setStart(n, i); r.setEnd(n, i + 4); const b = r.getBoundingClientRect(); return { x: b.left, w: b.width, y: b.top };
-    });
-    const box = (await sel.boundingBox())!;
-    expect(Math.abs(box.x - (word.x - 2))).toBeLessThan(3);
-    expect(Math.abs(box.width - (word.w + 5))).toBeLessThan(3);
-  });
-
   test('a dragged selection stays, shows its offset, and goes back on double-click', async ({ page }) => {
     await page.goto('/');
     const box = page.locator('.h1-box'); const label = box.locator('[data-size]');
@@ -59,7 +45,7 @@ test.describe('overlays stay on their targets', () => {
     expect(cur.x).toBeGreaterThan(card.x); expect(cur.x).toBeLessThan(card.x + card.w); expect(cur.y).toBeGreaterThan(card.y);
   });
 
-  test('with reduced motion, Selected work shows the comments without cursors', async ({ page }) => {
+  test('with reduced motion, Projects shows the comments without cursors', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('[data-grid] .thumb-wrap > .cursor').first()).toBeHidden();
     await expect(page.locator('.card[data-id="inbank---hire-purchase"] .cm')).toContainText('Great job!');

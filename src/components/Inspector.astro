@@ -170,9 +170,10 @@
 
     function layout() {
       const w = win.getBoundingClientRect(), s = spec.getBoundingClientRect();
-      // Figma: the panel's right edge is 40px past the table, its top 120px below the table's top
+      // Figma: the panel's right edge is 40px past the table. Its bottom sits on the same line as the
+      // design view's comment thread (HeroStory.astro .thread, top: 608px), so it grows upwards like the thread.
       panel.style.left = `${w.right - s.left + 40 - panel.offsetWidth}px`;
-      panel.style.top = `${w.top - s.top + 120}px`;
+      panel.style.top = `${608 - panel.offsetHeight}px`;
       if (collapsed) { [box, hov, lh, lv].forEach((n) => n.classList.remove('on')); return; } // collapsed: the table shows clean
       const el = sel && find(sel);
       const b = place(box, el, sel?.part.name);
@@ -226,7 +227,7 @@
     win.addEventListener('click', (e) => { const p = partOf(e.target); if (p) select(p.part, p.el); }, true);
     win.addEventListener('focusin', (e) => { const p = partOf(e.target); if (p) select(p.part, p.el); });
     win.addEventListener('table:draw', () => setTimeout(fill)); // after the table's own click handler
-    new ResizeObserver(() => layout()).observe(spec);
+    const ro = new ResizeObserver(() => layout()); ro.observe(spec); ro.observe(panel); // the panel grows upwards, so its height moves it
 
     // Collapse to a small "Inspect" tab and back. Remembered in this browser (a convenience; it works without storage).
     const FOLD = 'rg-inspect-collapsed';

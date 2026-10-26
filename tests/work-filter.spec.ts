@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 // On small screens the panel is folded into a "Filter projects" button; open it first.
 const openFilters = async (page: any) => { const t = page.locator('[data-filter-toggle]'); if (await t.isVisible()) await t.click(); };
 
-test.describe('Selected work filter', () => {
+test.describe('Projects filter', () => {
   const cards = (page: any) => page.locator('[data-grid] > .card:not([hidden])');
   test('starts with everything, nothing selected', async ({ page }) => {
     await page.goto('/');

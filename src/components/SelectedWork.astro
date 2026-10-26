@@ -1,5 +1,5 @@
 ---
-// Figma: Selected work (96:6873) = Section header + Filter panel (B, 96:6877) + Work card grid (52:2051).
+// Figma: Projects (96:6873) = Section header + Filter panel (B, 96:6877) + Work card grid (52:2051).
 // Filter rules (from the prototype): nothing selected = everything. Type is single choice.
 // Same group = OR, different groups = AND. Counts show what you would get. Zero-result tags are disabled.
 import { getCollection } from 'astro:content';
@@ -18,13 +18,11 @@ const experiments = (await getCollection('experiments')).filter((e) => !isPrivat
 const items = [...projects, ...experiments].sort((a, b) => a.d.cardOrder - b.d.cardOrder);
 const cardTag = (d: (typeof items)[number]['d']) => [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Experiment' : '');
 const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.industry, focus: i.d.focus }));
-import ResolvedThread from './ResolvedThread.astro';
 ---
 <section class="work" id="work" aria-labelledby="work-title">
   <div class="wrap inner">
-    <div class="sh-wrap" data-text-selection-host>
-      <SectionHeader num="02" title="Selected work" titleId="work-title" subtitle="client work and experiments in one list · filter with the tags on the left" />
-      <span class="tsel" data-text-selection data-overlay aria-hidden="true"><i class="hl"></i><i class="caret s"><b></b></i><i class="caret e"><b></b></i></span>
+    <div class="sh-wrap">
+      <SectionHeader num="02" title="Projects" titleId="work-title" subtitle="client work and experiments in one list · filter with the tags on the left" />
     </div>
 
     <div class="layout">
@@ -48,10 +46,6 @@ import ResolvedThread from './ResolvedThread.astro';
           <div data-filter-groups></div>
           <button type="button" class="fshow btn btn-primary" data-filter-show>Show {items.length} projects</button>
         </div>
-        <ResolvedThread class="side-thread" messages={[
-          { who: 'Client', initial: 'C', color: 'client', text: 'Can the filters stay on screen while I scroll the projects?' },
-          { who: 'Rock', initial: 'R', color: 'rock', text: 'Done. The panel now stays fixed while the projects scroll.' },
-        ]} />
       </aside>
 
       <div class="main">
@@ -162,13 +156,6 @@ import ResolvedThread from './ResolvedThread.astro';
   .empty { border: 1px dashed var(--color-border-strong); padding: var(--space-32) var(--space-24); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
   .empty p { margin: 0; } .empty-t { font: var(--type-heading-item); }
   .empty-s { color: var(--color-text-muted); }
-  .tsel { position: absolute; pointer-events: none; display: none; }
-  .tsel.on { display: block; }
-  .tsel .hl { position: absolute; inset: 0; background: var(--color-annotation-measure-soft); }
-  .tsel .caret { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--color-annotation-measure); }
-  .tsel .caret.s { left: -1px; } .tsel .caret.e { right: -1px; }
-  .tsel .caret b { position: absolute; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--color-annotation-measure); }
-  .tsel .caret.s b { top: -6px; } .tsel .caret.e b { bottom: -6px; }
   .ftoggle, .fshow { display: none; }
   @media (max-width: 1040px) {
     .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; }
@@ -180,7 +167,6 @@ import ResolvedThread from './ResolvedThread.astro';
     .side:not([data-open]) > .panel { display: none; }
     .fshow { display: flex; justify-content: center; margin: 8px 10px 4px; } /* the shared Button, Primary */
     /* The comment describes the sticky panel, which only exists on wide screens */
-    .side :global(.side-thread) { display: none; }
   }
   @media (prefers-reduced-motion: reduce) { .ftoggle svg { transition: none; } }
   @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } .inner { padding-top: var(--space-80); } .title { font-size: 24px; } }

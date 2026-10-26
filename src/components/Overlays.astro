@@ -1,25 +1,8 @@
 ---
-// Behaviour for the multiplayer overlays: text selection on a title word, live size labels, draggable boxes that stay where dropped.
+// Behaviour for the multiplayer overlays: live size labels, draggable boxes that stay where dropped.
 ---
 <script>
-  // 1. Text selection over the word "work" in the Selected work title (glyph-accurate, re-measured on resize).
-  function placeTextSelection() {
-    document.querySelectorAll<HTMLElement>('[data-text-selection-host]').forEach((host) => {
-      const sel = host.querySelector<HTMLElement>('[data-text-selection]'); const title = host.querySelector<HTMLElement>('[data-title]');
-      if (!sel || !title) return;
-      const walker = document.createTreeWalker(title, NodeFilter.SHOW_TEXT); let node: Text | null = null; let idx = -1;
-      while (walker.nextNode()) { const n = walker.currentNode as Text; const i = n.data.lastIndexOf('work'); if (i > -1) { node = n; idx = i; } }
-      if (!node) return;
-      const range = document.createRange(); range.setStart(node, idx); range.setEnd(node, idx + 4);
-      const r = range.getBoundingClientRect(); const h = host.getBoundingClientRect();
-      if (!r.width) { sel.classList.remove('on'); return; }
-      // A range is as tall as the font (ascent + descent), taller than the line; trim it to the line so it does not reach the subtitle.
-      const lh = parseFloat(getComputedStyle(title).lineHeight) || r.height; const top = r.top + (r.height - lh) / 2;
-      Object.assign(sel.style, { left: `${r.left - h.left - 2}px`, top: `${top - h.top}px`, width: `${r.width + 5}px`, height: `${lh}px` });
-      sel.classList.add('on');
-    });
-  }
-  // 2. Live size labels: every selection box marked live shows the real size of the element it selects.
+  // 1. Live size labels: every selection box marked live shows the real size of the element it selects.
   // Boxes marked data-fit="text" wrap the text lines of their parent (descenders and overhangs included), and
   // their label shows the size of that box. The parent's waiting cursor (headline) starts at the box's corner.
   function fitToText(s: HTMLElement) {
@@ -41,13 +24,13 @@
       if (lab) lab.textContent = `${Math.round(el.offsetWidth)} × ${Math.round(el.offsetHeight)}`;
     });
   }
-  const all = () => { placeTextSelection(); placeSizes(); };
+  const all = () => { placeSizes(); };
   const ro = new ResizeObserver(all);
   document.querySelectorAll<HTMLElement>('[data-selection="live"]').forEach((s) => ro.observe(s.parentElement!));
   addEventListener('resize', all); document.addEventListener('work:filtered', () => setTimeout(all, 420));
   (document as any).fonts?.ready.then(all); all();
 
-  // 3. Draggable: boxes with a selection can be dragged and stay where they are dropped (inside their section,
+  // 2. Draggable: boxes with a selection can be dragged and stay where they are dropped (inside their section,
   // or inside the closest [data-drag-bounds]).
   // While dragging, the size label shows the offset; double-click puts the box back.
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;

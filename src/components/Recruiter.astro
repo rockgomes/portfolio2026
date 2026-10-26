@@ -42,7 +42,7 @@ const work = picks.map(([id, line]) => ({ e: projects.find((p) => p.id === id)!,
     </div>
 
     <aside class="side" aria-labelledby="rec-work">
-      <div class="side-h"><h2 id="rec-work">Selected work</h2><a href="/?view=design#work" data-view-link="design">See all {total}</a></div>
+      <div class="side-h"><h2 id="rec-work">Projects</h2><a href="/?view=design#work" data-view-link="design">See all {total}</a></div>
       <ul class="work">
         {work.map(({ e, line }) => (
           <li>

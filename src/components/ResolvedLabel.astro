@@ -1,0 +1,14 @@
+---
+// The "Resolved" label: check icon and mono label in muted text (Figma: Resolved label).
+// One look for every resolved comment: ResolvedThread.astro and the hero thread in HeroStory.astro.
+// Anything in the slot follows the word, for example " · 3 replies".
+interface Props { class?: string }
+const { class: cls } = Astro.props;
+---
+<span class:list={['rl', 't-mono-label', cls]}>
+  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l2.6 2.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+  <span>Resolved<slot /></span>
+</span>
+<style>
+  .rl { display: inline-flex; gap: 6px; align-items: center; color: var(--color-text-muted); }
+</style>

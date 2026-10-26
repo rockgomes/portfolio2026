@@ -16,7 +16,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 6. **Motion** (#8 to #12, #14), all with GSAP 3.15 and one helper, `src/lib/motion.ts` (`playOnce`: play once when in view; nothing with reduced motion; the page renders finished without JS):
    - Redlines draw out from their label; selection boxes draw like a drag; number rules draw; the timeline line follows the scroll (`Motion.astro`).
    - Hero story (`HeroStory.astro`): after the headline animation, the PM, Rock and the Dev act out a Dynamic Lists session on the live table; ends with a resolved comment that opens on click. Once per browser tab; "↻ replay the session" under the table.
-   - Selected work: cards rise in; filters move cards with GSAP Flip; the Client, Dev and PM come in on three cards, comment, and leave.
+   - Projects: cards rise in; filters move cards with GSAP Flip; the Client, Dev and PM come in on three cards, comment, and leave.
    - Design system cards work (`DesignSystems.astro`): pick a variant, change properties, rebrand the Primary token, switch the page mode.
    - About labels appear one by one; in the footer the visitor's pointer becomes "You".
    - Draggable selections (headline, portrait, design system instance) stay where dropped; double-click resets.
@@ -48,11 +48,11 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 4. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
 
 ## Open questions for Rock (do not guess)
-- **Draft copy he has not confirmed:** the hero story comments (PM, Rock, Dev); the Dev and PM comments in Selected work; the footer line ("© year Rock Gomes · Tallinn, Estonia" / "Updated month year"); "as of October 2026" in Numbers; the Experience comment "Four roles fit on one screen" (the client tabs now hide some details).
+- **Draft copy he has not confirmed:** the hero story comments (PM, Rock, Dev); the Dev and PM comments in Projects; the footer line ("© year Rock Gomes · Tallinn, Estonia" / "Updated month year"); "as of October 2026" in Numbers; the Experience comment "Four roles fit on one screen" (the client tabs now hide some details).
 - **Romeo** (Independent client tab): business line, text, whether to name the work.
 - Final filter tags per project (`tagsToCheck: true`).
 - Card copy and years for Flex Academy and the 3 Pipedrive projects (`cardToCheck: true`).
-- Project order in Selected work (currently as in Figma, newest client work first).
+- Project order in Projects (currently as in Figma, newest client work first).
 - Design systems cards use long-dash bullets as in Figma. Keep or change to "-"?
 - **Engineer view vs Figma `187:1648`:** the panel uses the real names from the repo (`ConditionRow` with `cond`, `isFirst`, `joinerOp`, `dispatch`), not Figma's `FilterCondition` sample; the code box scrolls at Figma's height because real call sites are longer; the Numbers section stays (Figma's frame has none). The panel covers the last two table columns, as in Figma; it collapses to a small "Inspect" tab (remembered in the browser).
 - Figma is behind the site in a few places Rock chose: section numbers hang in the margin, token row 1 is grey.900, hero cursors are hidden at rest, the footer is a grey zone. Update Figma or not.
