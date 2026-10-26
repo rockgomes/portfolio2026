@@ -79,12 +79,14 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
   @media (max-width: 420px) { .lab { display: none; } .seg button { padding: var(--space-4) var(--space-8); } }
 </style>
 <script>
-  // View switch: sets <html data-view>, keeps it in the URL (?view=) and in localStorage.
+  import { switchView } from '../lib/view-switch';
+
+  // View switch: sets <html data-view> (with the switch motion, src/lib/view-switch.ts), keeps it in the URL (?view=)
+  // and in localStorage. The switch itself shows the new choice at once.
   const VIEWS = ['design', 'recruiter', 'engineer'];
   const root = document.documentElement;
   const apply = (v: string, push: boolean) => {
     if (!VIEWS.includes(v)) v = 'design';
-    root.dataset.view = v;
     document.querySelectorAll<HTMLButtonElement>('[data-view-option]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.viewOption === v)));
     try { localStorage.setItem('rg-view', v); } catch {}
     if (push) {
@@ -92,7 +94,7 @@ const links = [['/#work', 'Work'], ['/?type=experiment#work', 'Experiments'], ['
       if (v === 'design') u.searchParams.delete('view'); else u.searchParams.set('view', v);
       history.replaceState(null, '', u);
     }
-    root.dispatchEvent(new CustomEvent('viewchange', { detail: v }));
+    switchView(v, push);
   };
   const fromUrl = new URL(location.href).searchParams.get('view');
   let stored: string | null = null; try { stored = localStorage.getItem('rg-view'); } catch {}
