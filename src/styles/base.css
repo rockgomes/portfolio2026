@@ -104,7 +104,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 html[data-view='recruiter'] #main > :not([data-recruiter]):not([data-recruiter-also]) { display: none !important; }
 /* The recruiter view is sober: no cursors, selections or dragging in those sections */
 html[data-view='recruiter'] #main [data-overlay] { display: none !important; }
-html[data-view='recruiter'] #main [data-draggable] { cursor: auto; transform: none !important; }
+html:is([data-view='recruiter'], [data-view='engineer']) #main [data-draggable] { cursor: auto; transform: none !important; }
 html:not([data-view='recruiter']) [data-recruiter] { display: none !important; }
 html:not([data-view='engineer']) [data-engineer] { display: none !important; }
 /* The designer pieces the engineer view swaps for developer ones (code tags, file names, GitHub comments) */
