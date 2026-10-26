@@ -55,9 +55,9 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
       </nav>
 
       <div class="bar">
-        <div class="tabs" role="tablist" aria-label="Show">
-          <button type="button" role="tab" class="tab" id="sb-tab-canvas" aria-selected="false" aria-disabled="true" data-sb-tab="canvas">Canvas</button>
-          <button type="button" role="tab" class="tab" id="sb-tab-docs" aria-selected="true" data-sb-tab="docs">Docs</button>
+        <div class="tabs utabs" role="tablist" aria-label="Show">
+          <button type="button" role="tab" class="utab" id="sb-tab-canvas" aria-selected="false" aria-disabled="true" data-sb-tab="canvas">Canvas</button>
+          <button type="button" role="tab" class="utab" id="sb-tab-docs" aria-selected="true" data-sb-tab="docs">Docs</button>
         </div>
         <SbDropdown name="theme" label="Theme" options={['Light - Dev', 'Dark - Dev']} value="Light - Dev" />
       </div>
@@ -249,19 +249,20 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .search:focus-within { outline: 2px solid var(--color-annotation-measure); outline-offset: 2px; }
   .search input { flex: 1; min-width: 0; padding: 6px 0; border: 0; background: transparent; font: var(--type-ui-control); color: var(--color-text-primary); outline: 0; }
   .search input::placeholder { color: var(--color-text-muted); }
-  kbd { padding: 0 5px; border: 1px solid var(--color-border-strong); border-radius: 4px; font: 11px/16px var(--font-mono); color: var(--color-text-muted); }
+  kbd { padding: 0 5px; border: 1px solid var(--color-border-strong); border-radius: 4px; font: var(--type-mono-label); color: var(--color-text-muted); }
   .grp ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
-  .gh { margin: var(--space-16) 0 var(--space-4); padding-left: var(--space-8); font: 500 10.5px/14px var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-muted); }
+  .gh { margin: var(--space-16) 0 var(--space-4); padding-left: var(--space-8); font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); text-transform: uppercase; color: var(--color-text-muted); }
   .item { width: 100%; text-align: left; padding: 5px var(--space-8) 5px 20px; border: 0; border-radius: 4px; background: transparent; font: var(--type-ui-control); color: var(--color-text-secondary); cursor: pointer; }
   .item:hover { color: var(--color-text-primary); }
   .item[aria-current='page'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; }
   .none { margin: var(--space-16) 0 0; padding-left: var(--space-8); font: var(--type-ui-control); color: var(--color-text-muted); }
 
-  .bar { grid-area: bar; display: flex; align-items: center; gap: var(--space-16); padding: 6px var(--space-16) 0; border-bottom: 1px solid var(--color-border-subtle); }
-  .tabs { display: flex; gap: var(--space-24); margin-right: auto; }
-  .tab { padding: 5px 0 9px; border: 0; border-bottom: 2px solid transparent; background: transparent; font: var(--type-ui-control); color: var(--color-text-muted); cursor: pointer; }
-  .tab[aria-selected='true'] { color: var(--color-text-primary); font-weight: 500; border-bottom-color: var(--color-annotation-measure); }
-  .tab[aria-disabled='true'] { cursor: default; opacity: 0.5; }
+  /* Toolbar: the shared underline tabs (.utabs/.utab in base.css) and the theme dropdown */
+  .bar { grid-area: bar; display: flex; align-items: flex-end; gap: var(--space-16); padding: 6px var(--space-16) 0; border-bottom: 1px solid var(--color-border-subtle); }
+  .bar .utabs { flex: 1; padding: 0; border-bottom: 0; margin-bottom: -1px; }
+  .bar :global(.dd) { margin-bottom: 6px; }
+  .utab[aria-disabled='true'] { cursor: default; opacity: 0.5; }
+  .utab[aria-disabled='true']:hover { color: var(--color-text-muted); }
 
   .scroll { grid-area: scroll; overflow-y: auto; overscroll-behavior: auto; }
   .scroll:focus-visible { outline-offset: -2px; } /* the window clips anything outside it */
@@ -277,10 +278,10 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
 
   .tbl { width: 100%; border-collapse: collapse; font: var(--type-ui-table); color: var(--color-text-secondary); }
   .tbl th, .tbl td { padding: 9px var(--space-16) 9px 0; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--color-border-subtle); }
-  .tbl thead th { padding-block: 6px; font: 500 10.5px/14px var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-muted); border-bottom-color: var(--color-border-strong); }
+  .tbl thead th { padding-block: 6px; font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); text-transform: uppercase; color: var(--color-text-muted); border-bottom-color: var(--color-border-strong); }
   .tbl tbody th { font-weight: 600; color: var(--color-text-primary); }
-  .tbl tbody th.mono { font: 12.5px/18px var(--font-mono); }
-  .tbl td.mono { font: 12px/18px var(--font-mono); color: var(--color-text-primary); }
+  .tbl tbody th.mono { font: var(--type-mono-small); }
+  .tbl td.mono { font: var(--type-mono-small); color: var(--color-text-primary); }
   .sys td.mono { white-space: nowrap; color: var(--color-text-muted); }
   .modes-t .here th, .modes-t .here td { background: var(--color-annotation-measure-soft); }
   .modes-t [data-sb-active]::after { content: ' · this page'; color: var(--color-annotation-measure); }
@@ -297,7 +298,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .code summary::-webkit-details-marker { display: none; }
   .code summary:hover { color: var(--color-text-primary); }
   .code[open] summary { border-bottom: 1px solid var(--color-border-subtle); }
-  .code pre, .block { margin: 0; padding: 14px var(--space-16); background: var(--color-surface-stage); font-size: 12px; line-height: 19px; color: var(--color-text-primary); overflow-x: auto; }
+  .code pre, .block { margin: 0; padding: 14px var(--space-16); background: var(--color-surface-stage); font: var(--type-mono-small); color: var(--color-text-primary); overflow-x: auto; }
   .block { border-radius: 6px; }
 
   /* Static Hover and Focus copies of the real .btn rules in base.css */
@@ -309,14 +310,14 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .swatches { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; width: 100%; }
   .render.swatches { align-items: stretch; justify-content: flex-start; }
   .swatches li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: var(--space-12); align-items: center; }
-  .swatches code { font-size: 12px; color: var(--color-text-primary); overflow-wrap: anywhere; }
+  .swatches code { font: var(--type-mono-small); color: var(--color-text-primary); overflow-wrap: anywhere; }
   .sw { width: 44px; height: 24px; border-radius: 4px; border: 1px solid var(--color-border-strong); }
-  .val { font: 11.5px/16px var(--font-mono); color: var(--color-text-muted); white-space: nowrap; }
+  .val { font: var(--type-mono-label); color: var(--color-text-muted); white-space: nowrap; }
   .cgrp { display: flex; flex-direction: column; gap: 10px; }
 
   /* Same look as the view switch in SiteHeader.astro */
   .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
-  .seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: 400 12.5px/16px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
+  .seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: var(--type-ui-control-compact); color: var(--color-text-secondary); white-space: nowrap; }
   .seg button:hover { color: var(--color-text-primary); }
   .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; }
 
@@ -329,8 +330,8 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .stage { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 220px; padding: var(--space-48) var(--space-24); }
   .hint { margin: 0; padding: 0 var(--space-24) var(--space-24); text-align: center; font: var(--type-body-small); color: var(--color-text-muted); }
   .controls { border-top: 1px solid var(--color-border-strong); padding: 0 var(--space-16) var(--space-16); }
-  .ct { margin: 0 0 var(--space-4); padding: 10px 0 8px; font: 500 12.5px/18px var(--font-sans); color: var(--color-text-primary); }
-  .ctl { padding: 5px 10px; border: 1px solid var(--color-border-strong); border-radius: 7px; background: transparent; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-primary); max-width: 100%; }
+  .ct { margin: 0 0 var(--space-4); padding: 10px 0 8px; font: var(--type-ui-control); font-weight: 500; color: var(--color-text-primary); }
+  .ctl { padding: 5px 10px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-control); background: var(--color-surface-page); font: var(--type-ui-control); color: var(--color-text-primary); max-width: 100%; }
   .radios { display: inline-flex; gap: var(--space-16); flex-wrap: wrap; }
   .radios label { display: inline-flex; gap: 6px; align-items: center; font: var(--type-ui-control); color: var(--color-text-primary); cursor: pointer; }
   .radios input { accent-color: var(--color-annotation-measure); margin: 0; }
@@ -344,12 +345,12 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     .win { height: auto; grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: 'menu' 'side' 'bar' 'scroll'; }
     .navbar { grid-area: menu; display: block; padding: 10px var(--space-12); background: var(--color-surface-stage); border-bottom: 1px solid var(--color-border-subtle); }
     /* Same look as the Columns button in HeroTable.astro */
-    .menu { display: flex; width: 100%; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid var(--color-border-strong); border-radius: 7px; background: var(--color-surface-page); font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); text-align: left; cursor: pointer; }
+    .menu { display: flex; width: 100%; align-items: center; gap: 6px; padding: 5px 10px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-control); background: var(--color-surface-page); font: var(--type-ui-control); color: var(--color-text-secondary); text-align: left; cursor: pointer; }
     .menu:hover, .menu[aria-expanded='true'] { color: var(--color-text-primary); }
     .caret { display: inline-flex; transition: transform 0.2s; }
     .menu[aria-expanded='true'] .caret { transform: rotate(180deg); }
     .crumb { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .cur { font-weight: 500; }
+    .cur { font-weight: 500; color: var(--color-text-primary); }
     .side { display: none; border-right: 0; border-bottom: 1px solid var(--color-border-strong); overflow: visible; padding: var(--space-12); }
     .win[data-sb-open] .side { display: flex; }
     .brand { display: none; }
@@ -357,7 +358,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     .bar { padding: 0 var(--space-12); }
     .scroll { overflow: visible; }
     .docs { padding: var(--space-24) var(--space-16) 28px; }
-    .ph { font-size: 30px; line-height: 34px; }
+    .ph { font: var(--type-heading-item); letter-spacing: var(--tracking-heading-item); }
     .sys thead { display: none; }
     .sys tr { display: grid; grid-template-columns: 1fr auto; padding: 12px 0; border-bottom: 1px solid var(--color-border-subtle); }
     .sys th, .sys td { border: 0; padding: 0; }
