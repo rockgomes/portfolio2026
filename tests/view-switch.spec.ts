@@ -12,7 +12,7 @@ test('audience switch sets the view and the URL', async ({ page }) => {
 
 // The switch motion (src/lib/view-switch.ts), in each version (?motion=). The other tests run with reduced motion,
 // where the switch is instant.
-for (const m of ['a', 'b', 'c', 'd']) test.describe(`view switch motion ${m}`, () => {
+for (const m of ['a', 'b', 'c', 'd', 'e']) test.describe(`view switch motion ${m}`, () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } });
   const blocks = '#main > section, body > footer';
   const settled = (page: import('@playwright/test').Page) => page.waitForFunction(() => { const h = document.documentElement; return !('switching' in h.dataset) && !h.classList.contains('view-fading'); });
@@ -54,6 +54,15 @@ for (const m of ['a', 'b', 'c', 'd']) test.describe(`view switch motion ${m}`, (
     await expect(page.locator('[data-recruiter]')).toBeVisible();
     await expect(page.locator('.hero')).toBeHidden();
     expect(await leftovers(page)).toEqual([]);
+  });
+
+  // Design lead to Engineer at the top: the hero is in both views and does not move, so only a fade shows the switch
+  if (m === 'b' || m === 'e') test('design lead to engineer at the top is seen', async ({ page }) => {
+    await page.goto(`/?motion=${m}`);
+    await page.waitForLoadState('load');
+    await page.evaluate(() => { const w = window as unknown as { low: number }; w.low = 1; const f = () => { w.low = Math.min(w.low, +getComputedStyle(document.querySelector('#main')!).opacity); if ('switching' in document.documentElement.dataset) requestAnimationFrame(f); }; document.querySelector<HTMLElement>('[data-view-option="engineer"]')!.click(); requestAnimationFrame(f); });
+    await settled(page);
+    expect(await page.evaluate(() => (window as unknown as { low: number }).low)).toBeLessThan(0.5);
   });
 
   test('the section being read stays in place', async ({ page }) => {

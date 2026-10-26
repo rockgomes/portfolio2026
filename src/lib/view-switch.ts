@@ -1,8 +1,11 @@
-// View switch motion (motion plan, moment 04, "on view switch"). There are four versions to compare on the preview,
+// View switch motion (motion plan, moment 04, "on view switch"). There are five versions to compare on the preview,
 // chosen with ?motion= in the URL (Rock picks one, the others are then removed):
 //   a (default) slide: the same move as the Selected work filter (0.55s, power3.inOut). Sections that leave fade out,
-//     sections in both views slide to their new place, sections that arrive fade in.
+//     sections in both views slide to their new place, sections that arrive fade in. When nothing on screen changes
+//     place (Design lead to Engineer at the top: the hero is in both), almost nothing moves.
 //   b fade: the page fades out and fades back in with the new view.
+//   e slide on a fade: a and b together. The page fades out as in b, and while it fades back in, sections slide and
+//     arrive as in a. So the switch is always seen.
 //   c wipe: a band in the new view's page colour moves across the screen, the view changes under it. It moves in the
 //     direction of the switch (to the right for an option to the right).
 //   d zoom: the page gets smaller on the stage colour, like zooming out of a Figma frame, changes, and zooms back in.
@@ -39,7 +42,7 @@ export function switchView(v: string, animate = true) {
   if (!animate || reduceMotion() || root.dataset.view === v) { setView(v); settle(); return; }
   const m = new URL(location.href).searchParams.get('motion') ?? 'a';
   if (m === 'b' || m === 'c' || m === 'd') cover(v, m);
-  else slide(v);
+  else slide(v, m === 'e');
 }
 
 /** Remembers the section being read: the one across a line a third of the way down the screen, under the sticky
@@ -67,9 +70,10 @@ function keepPlace() {
 const startColours = () => { clearTimeout(colourTimer); root.classList.add('view-fading'); };
 const endColours = () => { colourTimer = window.setTimeout(() => root.classList.remove('view-fading'), 350); };
 
-/** Version a. Only sections on screen animate. */
-function slide(v: string) {
+/** Versions a and e (`withFade`). Only sections on screen slide. */
+function slide(v: string, withFade = false) {
   const all = blocks();
+  const frames = [...document.querySelectorAll<HTMLElement>('#main, body > footer')];
   const before = new Map(all.filter((el) => shown(el) && onScreen(el)).map((el) => [el, top(el)]));
   const place = keepPlace();
   const leaving = peek(v, () => [...before.keys()].filter((el) => !shown(el)));
@@ -89,8 +93,9 @@ function slide(v: string) {
     const now = all.filter((el) => shown(el) && onScreen(el));
     const staying = jumped ? [] : now.filter((el) => before.has(el) && Math.abs(before.get(el)! - top(el)) > 1);
     const entering = now.filter((el) => jumped || !before.has(el));
-    if (!staying.length && !entering.length) { end(); return; }
+    if (!withFade && !staying.length && !entering.length) { end(); return; }
     const tl = gsap.timeline({ onComplete: end });
+    if (withFade) tl.to(frames, { opacity: 1, duration: 0.3, ease: 'power1.out' }, 0);
     staying.forEach((el) => tl.fromTo(el, { y: before.get(el)! - top(el) }, { y: 0, duration: 0.55, ease: 'power3.inOut' }, 0));
     if (entering.length) tl.fromTo(entering, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 0.15);
   };
@@ -98,14 +103,16 @@ function slide(v: string) {
     if (done) return;
     done = true; finish = null;
     delete root.dataset.switching;
-    gsap.killTweensOf(all);
+    gsap.killTweensOf([...all, ...frames]);
     gsap.set(all, { clearProps: 'opacity,visibility,transform' });
+    gsap.set(frames, { clearProps: 'opacity' });
     endColours();
     settle();
   };
   finish = () => { if (!swapped) { fade?.kill(); swap(); } end(); };
 
-  if (leaving.length) fade = gsap.to(leaving, { autoAlpha: 0, duration: 0.2, ease: 'power2.in', onComplete: swap });
+  if (withFade) fade = gsap.to(frames, { opacity: 0, duration: 0.18, ease: 'power1.in', onComplete: swap });
+  else if (leaving.length) fade = gsap.to(leaving, { autoAlpha: 0, duration: 0.2, ease: 'power2.in', onComplete: swap });
   else swap();
 }
 
