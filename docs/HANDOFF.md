@@ -1,4 +1,4 @@
-# Handoff - October 26, 2026 (updated after the foundations work)
+# Handoff - October 26, 2026 (updated after the view switch motion)
 
 Where the rockgomes.com rebuild stands, and what comes next. Written for a new Claude Code session working on this repo. Read `CLAUDE.md` first.
 
@@ -26,13 +26,14 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 10. **One `h1` per page** on every case study and experiment page (#16); a smoke test keeps it that way.
 11. **Columns menu** on the hero table (#17): show and hide columns, remembered.
 12. **Small screens** (#18): a Menu button and panel below 1040px; the filter panel folds into a "Filter projects" button; side comments are hidden; section links stop with the title under the header.
-13. **Recruiter view** (#19, Figma `94:6774`): the header switch on "Recruiter" (or `/?view=recruiter`) swaps the homepage for a one-page summary (`Recruiter.astro`): role, pills, facts, five projects, contact card. Facts follow the CV (10+ years; Well named). The hero story waits while it is open. "Download CV (PDF)" (header, and the contact card on phones) serves `public/Rock_Gomes_CV.pdf`, a copy of Rock's CV published with his OK; replace that file when the CV changes.
+13. **Recruiter view** (#19, Figma `94:6774`): the header switch on "Recruiter" (or `/?view=recruiter`) swaps the homepage for a one-page summary (`Recruiter.astro`): role, pills, facts, all 14 projects in a scroll box (5 picks first, a half row and a fade show there is more; the full list on small screens), contact card. Below it: Numbers, Experience and About, without the designer layer (no cursors, selections, comments or index numbers). The recruiter view stays sober. Facts follow the CV (10+ years; Well named). The hero story waits while it is open. "Download CV (PDF)" (header, and the contact card on phones) serves `public/Rock_Gomes_CV.pdf`, a copy of Rock's CV published with his OK; replace that file when the CV changes.
 14. **Engineer view** (Figma `187:1648`): the switch on "Engineer" (or `/?view=engineer`) keeps the homepage and adds two things. (a) A Dev Mode inspect panel on the hero table (`Inspector.astro`): point at or click any part (condition, saved views, Columns, match count, column header, row) to see the matching `rockgomes/filter-builder` component, its real call site (linked to the lines at a fixed commit), the props this table has right now, and live layout and tokens. The story and its comment wait in this view. Hidden below 1200px. (b) "Shipped, with source" (`Repos.astro`): four repo cards; links and stack come from the experiment files (`liveDemoUrl`, `sourceCodeUrl`, `tools`).
 15. **No sideways scroll at 1200-1300px** (#21, and the PM cursor fix after it). The comments move with their table or card. In the hero story the PM stops on the "Churned" pill, not beside it: at 1200px the table hides the Status column, and a PM beside the pill stuck out past the screen edge.
 16. **Foundations** (#29, #30, #31, #32, #33):
    - **Tokens from Figma, checked by CI.** `src/styles/tokens.json` is exported from the Figma variables with `scripts/figma/export-tokens.js`. `npm run tokens` builds `tokens.css` from it; `npm run tokens:check` (in CI) fails when the two do not match. Never edit `tokens.css` by hand.
    - **Spacing and radius on a scale.** Space 4, 8, 12, 16, 24, 32, 40, 48, 64, 80, 96, 120; radius tag 2, control 7, pill 999. Components use `var(--space-N)` and `var(--radius-*)`.
    - **Shared components** (global classes in `base.css`, matching Figma components): Button (`.btn`, `.btn-primary`), Underline tab (`.utabs`, `.utab`), Pill (`.ui-pill`, sizes and tones), Tag (`.ui-tag`, tones). The boxed Tab and the Segmented control are unchanged. The Design systems demo buttons stay separate on purpose.
+17. **View switch motion** (`src/lib/view-switch.ts`): the page fades out, the view changes, and while it fades back in, sections that change place slide to their new place (same 0.55s and easing as the filter) and every other section on screen rises 16px into place, so something always moves. The colours fade too. The section being read stays in place on the screen; if the new view does not have it, the page goes to the top. Only sections on screen animate; a second click ends the running switch. Instant with reduced motion. The motion after the change starts one frame late, because laying out the new view takes the browser about 150ms. It sends `viewchange` when the view changes and `viewsettled` when the motion ends (scroll animations measure the page again then). While it runs, `<html data-switching>` is set; tests wait for it to go.
 
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
@@ -42,10 +43,9 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 - Before you pick the next task from this file, check `git log` and the merged PRs: this list can be behind.
 
 ## Next, in this order
-1. **View switch animation** with GSAP Flip (the filter already uses Flip; reuse that).
-2. **Case study and experiment pages: a full pass.** Rock: "we have freedom to make it the way we want/need". Not a restyle only: rethink the layout and structure in the new design. Keep all embeds working and keep one `h1` per page (a smoke test checks it).
-3. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
-4. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
+1. **Case study and experiment pages: a full pass.** Rock: "we have freedom to make it the way we want/need". Not a restyle only: rethink the layout and structure in the new design. Keep all embeds working and keep one `h1` per page (a smoke test checks it).
+2. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
+3. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
 
 ## Open questions for Rock (do not guess)
 - **Draft copy he has not confirmed:** the hero story comments (PM, Rock, Dev); the Dev and PM comments in Projects; the footer line ("© year Rock Gomes · Tallinn, Estonia" / "Updated month year"); "as of October 2026" in Numbers; the Experience comment "Four roles fit on one screen" (the client tabs now hide some details).

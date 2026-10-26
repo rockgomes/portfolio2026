@@ -107,3 +107,7 @@ html[data-view='recruiter'] #main [data-overlay] { display: none !important; }
 html[data-view='recruiter'] #main [data-draggable] { cursor: auto; transform: none !important; }
 html:not([data-view='recruiter']) [data-recruiter] { display: none !important; }
 html:not([data-view='engineer']) [data-engineer] { display: none !important; }
+/* While the view switches (src/lib/view-switch.ts), the colours of the new view fade in instead of jumping */
+html.view-fading, html.view-fading *, html.view-fading *::before, html.view-fading *::after {
+  transition: color 0.3s, background-color 0.3s, border-color 0.3s, fill 0.3s, stroke 0.3s, box-shadow 0.3s !important;
+}
