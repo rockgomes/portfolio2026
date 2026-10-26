@@ -30,7 +30,7 @@ What the research (posts by hiring managers and recruiters) says, in short:
 
 - One page structure for every case study (section 4).
 - In the first 30 seconds a reader knows: what the project was, what Rock did, the main decision, and the result.
-- Decisions come before process.
+- Decisions come before process, when a project has them (section 4).
 - Where a project has interactive proof (a live page, videos, a before/after), the page lets the reader try it.
 - The same page for every visitor. Recruiters, design leads and engineers all see it.
 - Flex Academy is the first page built this way.
@@ -73,7 +73,7 @@ From top to bottom. A part only shows when the case study has content for it.
    - Three short blocks side by side: problem, decision, result.
    - Buttons to the real thing (live page, prototype, source code). Only the ones that have a URL. The first one is Primary.
    - The main picture, video or live page, with a one-line caption.
-3. **Decisions.** Title "Three decisions I would defend" (the number follows the count). Each decision has: a small label ("decision 1 of 3"), a title, a short text, and one piece of proof (picture, video or interactive) with a caption. A decision can have a tab or segmented control that changes its proof.
+3. **Decisions (optional).** Rule of thumb: 2 to 4 decisions. A case study can also have none: then the whole section is left out, and the page goes from the summary to "How I got there". The title uses the real count, for example "Two decisions I would defend" (Flex Academy has three). Each decision has: a small label ("decision 1 of 3"), a title, a short text, and one piece of proof (picture, video or interactive) with a caption. A decision can have a tab or segmented control that changes its proof.
 4. **How I got there.** The process, short. Each block has a small label, a title, a short text and one piece of proof.
 5. **Project sections.** Parts only one project has, for example "The design system behind it" in Flex Academy.
 6. **Result.** Two columns. For a project with real results: "Outcome" (what changed) and "What I learned". For a project without them, like Flex Academy: "If it shipped" with "How I would measure it" and "What I learned".
