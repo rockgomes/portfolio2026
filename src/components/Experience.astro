@@ -16,7 +16,7 @@ const items: Item[] = [
   { years: '2016 - 2020', company: 'Bigbank', role: 'Product Designer', text: 'Loan application flow, the financial back-office, and a design system with a coded component library. We visited every country the bank worked in to watch people use the old tools.' },
 ];
 ---
-<section class="exp" id="experience" aria-labelledby="exp-title">
+<section class="exp" id="experience" aria-labelledby="exp-title" data-recruiter-also>
   <div class="wrap inner">
     <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle={`2016 → ${new Date().getFullYear()}`} dimension={`timeline.span = ${new Date().getFullYear() - 2016} yrs · roles = ${items.length}`} />
     <div class="tl">
@@ -59,6 +59,7 @@ const items: Item[] = [
   /* Wide screens: the thread sits in the empty column right of the roles. Narrow: hidden. */
   .tl :global(.exp-thread) { position: absolute; top: 28px; right: 0; width: 300px; z-index: 1; } /* above the timeline layer */
   @media (max-width: 1199px) { .tl :global(.exp-thread) { display: none; } } /* on small screens it only pushes the roles down */
+  :global(html[data-view='recruiter']) .tl :global(.exp-thread) { display: none; } /* the recruiter view is sober */
   /* The red line is a pseudo-element (not a border), so it can draw itself as you scroll (--draw, Motion.astro). Same place as the old 1px border. */
   .timeline { position: relative; list-style: none; margin: 0; padding: 0 0 0 5px; }
   .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--color-annotation-redline); transform-origin: 50% 0%; transform: scaleY(var(--draw, 1)); }
