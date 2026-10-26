@@ -22,7 +22,7 @@ cardToCheck: true
 demoUrl: ""
 ---
 
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-live"></div><script src="/embeds/flex-academy-embeds.js"></script></div> <div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-facts"></div><script src="/embeds/flex-academy-embeds.js"></script></div>
+<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-live"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div> <div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-facts"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 ## The brief
 
@@ -52,7 +52,7 @@ Then I set four principles. They were the review criteria for every direction an
 
 Below is what I did alone in the timebox. Switch to the team view to see how I would run the same steps as a lead, with a PM, an engineer and a researcher.
 
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-method"></div><script src="/embeds/flex-academy-embeds.js"></script></div>
+<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-method"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 ## Research: real facts, real references
 
@@ -69,11 +69,11 @@ I wireframed the full page first: ten sections, each with one job, and both book
 
 So I explored art directions side by side, with the same content in each, so only the idea changed. I judged them against the brief's three tests and the four principles.
 
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-dirs"></div><script src="/embeds/flex-academy-embeds.js"></script></div>
+<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-dirs"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 The winning idea came from the audience. Operators live in a calendar all day: bookings, check-ins, cleanings. So the hero *is* a calendar. The first row is your first unit. The rows below are the units you add next. One picture shows the whole path from Launch to Scale, in a tool the reader already knows.
 
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-cmp"></div><script src="/embeds/flex-academy-embeds.js"></script></div>
+<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-cmp"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 ## Three decisions I would defend
 
@@ -89,13 +89,13 @@ The free webinar sits on that calendar as an event, with a date, a length and th
 
 Only sourced facts: since 2019, seven cities, more than 150 corporate partners, more than 130 booking channels through Base360. Instead of income claims, "The hard truth" shows one real day across three units, first without a system and then with one.
 
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-truth"></div><script src="/embeds/flex-academy-embeds.js"></script></div>
+<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-truth"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 ## The moment of commitment
 
 Each path has its own flow. The webinar needs a name, an email and a country. The strategy call asks four short questions first, so the team can prepare: units today, the 12-month target, the city and a budget band. If someone answers "no units yet", the flow does not reject them. It offers the free webinar instead. Nobody hits a dead end.
 
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-flows"></div><script src="/embeds/flex-academy-embeds.js"></script></div>
+<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-flows"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 ## The design system behind it
 
@@ -111,11 +111,11 @@ Green belongs to Launch and periwinkle to Scale, so each path takes the colour o
 
 Claiming "everything uses tokens" is easy. So here is the hero with its layers exposed. Turn on Inspect and click a numbered layer to see the tokens and text styles behind it. Then switch to Dark: same layers, same tokens, new values. The row at the bottom is measured with a script over all 785 layers of the full desktop page.
 
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-ins"></div><script src="/embeds/flex-academy-embeds.js"></script></div>
+<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-ins"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 ### Components
 
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-stats"></div><script src="/embeds/flex-academy-embeds.js"></script></div>
+<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-stats"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 Every component uses auto layout and named properties. The button has Kind (Launch, Scale, Neutral) and State (Default, Hover, Focus, Pressed, Loading, Disabled), plus a Label text property and a Show arrow toggle, so nobody needs to detach it to change the words. Path-aware parts, like the header, the sticky bar and the programme card, switch between Launch and Scale with one property.
 

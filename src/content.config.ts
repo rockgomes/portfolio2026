@@ -22,7 +22,7 @@ const tagging = {
 };
 
 const projects = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/projects' }),
+  loader: glob({ pattern: '*.{md,mdx}', base: './src/content/projects' }),
   schema: ({ image }) =>
     z.object({
       name: z.string(),
@@ -33,6 +33,15 @@ const projects = defineCollection({
       tag1: z.string().default(''),
       tag2: z.string().default(''),
       demoUrl: z.string().default(''),
+      // Case study summary (docs/superpowers/specs/2026-10-27-case-study-design.md). A page with `problem` uses the new layout.
+      subtitle: z.string().default(''),
+      facts: z.object({ role: z.string(), context: z.string(), made: z.string(), tools: z.string() }).optional(),
+      problem: z.string().default(''),
+      decision: z.string().default(''),
+      result: z.string().default(''),
+      links: z.array(z.object({ label: z.string(), href: z.string().url() })).default([]),
+      // copyToCheck = page copy written by Claude, Rock to confirm (the PR lists the sentences).
+      copyToCheck: z.boolean().default(false),
       ...tagging,
     }),
 });
