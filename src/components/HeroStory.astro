@@ -23,7 +23,7 @@ const messages = [
       </div>
     </div>
   ))}
-  <button type="button" class="resolved" data-resolved aria-expanded="false"><ResolvedLabel><span class="replies" data-replies> · 3 replies</span></ResolvedLabel></button>
+  <button type="button" class="resolved" data-resolved aria-expanded="false"><ResolvedLabel><span class="replies"> · 3 replies<span class="act" data-replies>Show</span></span></ResolvedLabel></button>
 </div>
 
 <style>
@@ -42,6 +42,9 @@ const messages = [
   .txt { margin: 0; color: var(--color-text-secondary); }
   .resolved { align-self: flex-start; margin: 0 0 0 36px; padding: 2px 4px; border: 0; border-radius: 3px; background: none; cursor: pointer; text-align: left; }
   .resolved:hover :global(.rl) { color: var(--color-text-primary); }
+  /* "Show" / "Hide": tells the visitor the resolved comment opens. */
+  .act { margin-left: 6px; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: var(--color-border-strong); text-underline-offset: 3px; }
+  .resolved:hover .act { text-decoration-color: currentColor; }
   .resolved:disabled { cursor: default; background: none; }
   .c-pm { --c: var(--color-cursor-pm); }
   .c-dev { --c: var(--color-annotation-measure); }
@@ -65,7 +68,7 @@ const messages = [
     if (!thread || !toggle || !replies) return;
     thread.dataset.state = open ? 'open' : 'end';
     toggle.setAttribute('aria-expanded', String(open));
-    replies.textContent = open ? ' · hide replies' : ' · 3 replies';
+    replies.textContent = open ? 'Hide' : 'Show';
     if (open && !reduceMotion()) others.forEach((m) => grow(m));
   }
   toggle?.addEventListener('click', () => { if (thread?.dataset.state !== 'story') setOpen(thread?.dataset.state !== 'open'); });
