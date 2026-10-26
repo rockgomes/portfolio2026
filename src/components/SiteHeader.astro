@@ -4,13 +4,12 @@ import CopyEmail from './CopyEmail.astro';
 interface Props { showSwitch?: boolean }
 const { showSwitch = true } = Astro.props;
 const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer', 'Engineer']];
-// Projects: client work and experiments in one list. The recruiter view has Projects (the list in its hero) and
-// Experience only. `in`: the views that show the link. `n`: its number in the phone menu.
+// Projects: client work and experiments in one list. The recruiter view has no Projects section, so no Projects link.
+// `in`: the views that show the link.
 const links = [
-  { href: '/#work', label: 'Projects', in: 'others', n: '01' },
-  { href: '/#rec-work', label: 'Projects', in: 'recruiter', n: '01' },
-  { href: '/#experience', label: 'Experience', in: 'all', n: '02' },
-  { href: '/#about', label: 'About', in: 'others', n: '03' },
+  { href: '/#work', label: 'Projects', in: 'others' },
+  { href: '/#experience', label: 'Experience', in: 'all' },
+  { href: '/#about', label: 'About', in: 'all' },
 ];
 ---
 <header class="hdr">
@@ -36,7 +35,7 @@ const links = [
       <button type="button" class="menu-btn btn" aria-expanded="false" aria-controls="site-menu" data-menu-btn>Menu <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>
       <!-- Below 1040px the nav links move into this panel, right under the button (same style as the filter panel) -->
       <nav class="mpanel" id="site-menu" aria-label="Main" data-menu hidden>
-        {links.map((l) => <a href={l.href} data-in={l.in} data-menu-link><span class="n t-mono-label">{l.n}</span>{l.label}</a>)}
+        {links.map((l) => <a href={l.href} data-in={l.in} data-menu-link><span class="n t-mono-label" aria-hidden="true"></span>{l.label}</a>)}
         <div class="mcopy"><span class="t-mono-label lab2">rock@rockgomes.com</span><CopyEmail variant="short" /></div>
       </nav>
     </div>
@@ -72,6 +71,8 @@ const links = [
   .mpanel a { display: flex; align-items: baseline; gap: var(--space-12); padding: 10px 12px; border-radius: 6px; font: var(--type-ui-nav); color: var(--color-text-primary); text-decoration: none; }
   .mpanel a:hover, .mpanel a:focus-visible { background: var(--color-annotation-measure-soft); }
   .mpanel .n { color: var(--color-annotation-redline); }
+  /* 01, 02...: counts only the links this view shows (a hidden link does not count) */
+  .mpanel { counter-reset: link; } .mpanel a { counter-increment: link; } .mpanel .n::before { content: counter(link, decimal-leading-zero); }
   .mcopy { display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); margin-top: 6px; padding: 10px 12px 6px; border-top: 1px solid var(--color-border-subtle); }
   .lab2 { color: var(--color-text-secondary); }
   @media (min-width: 1041px) { :global(html:not([data-view='recruiter'])) .mpanel, :global(html:not([data-view='recruiter'])) .mbackdrop { display: none !important; } }
@@ -79,7 +80,7 @@ const links = [
   .nav .cv-btn { display: none; margin-left: -16px; } /* Figma: 8px from copy email (nav gap is 24px) */
   @media (min-width: 1041px) { :global(html[data-view='recruiter']) .nav .cv-btn { display: inline-flex; } } /* phones: the contact card has it */
   /* Links for some views only (see `links`) */
-  :global(html[data-view='recruiter']) [data-in='others'], :global(html:not([data-view='recruiter'])) [data-in='recruiter'] { display: none !important; }
+  :global(html[data-view='recruiter']) [data-in='others'] { display: none !important; }
   /* The recruiter header also has the CV button, so its links and copy email need more room: from 1041px to 1279px
      they go into the Menu, as on smaller screens, and the CV button stays */
   @media (min-width: 1041px) and (max-width: 1279px) {

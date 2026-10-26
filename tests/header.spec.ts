@@ -19,12 +19,13 @@ test('the view switch stays in the same place in every view', async ({ page }) =
   for (const s of spots) { expect(Math.abs(s.x - spots[0].x)).toBeLessThanOrEqual(1); expect(Math.abs(s.y - spots[0].y)).toBeLessThanOrEqual(1); }
 });
 
-// The recruiter view shows Projects (the list in its hero) and Experience; the other views also show About.
+// The recruiter view shows Experience and About; the other views also show Projects (the recruiter view has no
+// Projects section).
 // Wide screens show them in the header, small screens in the menu.
 for (const [view, want] of [
   ['design', [['Projects', '/#work'], ['Experience', '/#experience'], ['About', '/#about']]],
   ['engineer', [['Projects', '/#work'], ['Experience', '/#experience'], ['About', '/#about']]],
-  ['recruiter', [['Projects', '/#rec-work'], ['Experience', '/#experience']]],
+  ['recruiter', [['Experience', '/#experience'], ['About', '/#about']]],
 ] as const) {
   test(`the ${view} view shows its links`, async ({ page, viewport }) => {
     await page.goto(`/?view=${view}`);
@@ -49,7 +50,7 @@ test('the recruiter header at 1100px: CV button and Menu', async ({ page }) => {
   await expect(page.locator('header .nav .copy')).toBeHidden();
   await expect(page.locator('header .nav a:not(.btn):visible')).toHaveCount(0);
   await page.locator('[data-menu-btn]').click();
-  await expect(page.locator('[data-menu-link]:visible')).toHaveText([/Projects/, /Experience/]);
+  await expect(page.locator('[data-menu-link]:visible')).toHaveText([/Experience/, /About/]);
 });
 
 // Nothing on either side touches the centred switch, in any view, at the widths where the header is tightest
