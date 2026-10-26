@@ -48,16 +48,12 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
           <div data-filter-groups></div>
           <button type="button" class="fshow btn btn-primary" data-filter-show>Show {items.length} projects</button>
         </div>
-        <!-- Engineer view (Figma: Projects B and C, sketches): the same filter, written as code or as a terminal command.
-             Both are here for Rock to compare; the tabs switch between them. -->
+        <!-- Engineer view (Figma: Projects C, terminal): the same filter as a shell command. Click a flag value to
+             switch it; the prompt at the bottom is a real input that finds a tag, like "Find a tag" above. -->
         <div class="panel dpanel" data-dev-panel data-engineer>
-          <div class="tabs utabs" role="tablist" aria-label="Filter style">
-            <button type="button" class="utab" role="tab" aria-selected="true" data-dev-tab="code">Code</button>
-            <button type="button" class="utab" role="tab" aria-selected="false" data-dev-tab="term">Terminal</button>
-            <span class="sp"></span>
-            <span class="cnt t-mono-label" aria-live="polite" data-dev-count>{items.length} / {items.length}</span>
-          </div>
+          <div class="dhead"><span class="t-mono-label">zsh</span><span class="sp"></span><span class="cnt t-mono-label" aria-live="polite" data-dev-count>{items.length} / {items.length}</span></div>
           <div class="dbody t-mono-body" data-dev-body></div>
+          <label class="prompt t-mono-body"><span class="p" aria-hidden="true">$ </span><span class="sr-only">Find a tag</span><input type="text" spellcheck="false" autocomplete="off" placeholder="find a tag" data-dev-search /><span class="caret" aria-hidden="true"></span></label>
           <button type="button" class="fshow btn btn-primary" data-filter-show>Show {items.length} projects</button>
         </div>
       </aside>
@@ -180,9 +176,9 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   .demo-dev { position: relative; z-index: 2; margin-left: var(--space-8); font: var(--type-ui-pill-small); color: var(--color-text-primary); text-decoration: none; white-space: nowrap; }
   .demo-dev:hover { text-decoration: underline; }
   :global(html[data-view='engineer']) .thumb-wrap :global(.cursor) { display: none; }
-  /* The filter as code (B) or as a terminal (C). Each value is a real button: off values are commented out (B)
-     or plain (C); on values are green. */
-  .dbody { padding: 10px 0 12px; white-space: pre; color: var(--color-text-primary); overflow-x: auto; }
+  /* The filter as a terminal. Each flag value is a real button; on values are green. */
+  .dhead { display: flex; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-primary); }
+  .dbody { padding: 10px 0 4px; white-space: pre; color: var(--color-text-primary); overflow-x: auto; }
   .dpanel :global(.ln) { display: flex; gap: var(--space-8); width: 100%; min-height: 19px; padding: 0 14px; border: 0; background: transparent; font: inherit; color: inherit; text-align: left; }
   .dpanel :global(.ln > .code) { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
   .dpanel :global(button.ln) { cursor: pointer; }
@@ -190,15 +186,24 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   .dpanel :global(button.ln:focus-visible) { outline: 2px solid var(--color-annotation-measure); outline-offset: -2px; }
   .dpanel :global(button.ln:disabled) { cursor: default; opacity: 0.4; }
   .dpanel :global(button.ln:disabled:hover) { background: transparent; }
-  .dpanel :global(.p), .dpanel :global(.c), .dpanel :global(.num), .dpanel :global(.out) { color: var(--color-text-muted); }
+  .dpanel :global(.p), .dpanel :global(.num), .dpanel :global(.out) { color: var(--color-text-muted); }
   .dpanel :global(.s) { color: var(--color-status-positive); }
   .dpanel :global(.nw) { white-space: nowrap; }
   .dpanel :global(.f) { color: var(--color-text-secondary); }
-  .dpanel :global([data-mode='term'] button.ln[aria-checked='true']) { background: var(--color-annotation-measure-soft); }
+  .dpanel :global(button.ln[aria-checked='true']) { background: var(--color-annotation-measure-soft); }
   .dpanel :global(button.ln[aria-checked='true'] .f), .dpanel :global(button.ln[aria-checked='true'] .num) { color: var(--color-annotation-measure); }
-  .dpanel :global(.caret) { display: inline-block; width: 7px; height: 14px; vertical-align: -2px; background: var(--color-text-primary); animation: blink 1.1s steps(1) infinite; }
+  .dpanel :global(mark) { background: var(--color-annotation-measure-soft); color: inherit; border-radius: var(--radius-tag); }
+  /* The prompt: a real input. The block caret blinks while it is empty and not in use; typing shows the normal caret. */
+  .prompt { display: flex; align-items: center; padding: 4px 14px 2px; cursor: text; }
+  .prompt input { flex: 1 1 0; min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; font: inherit; color: var(--color-text-primary); caret-color: var(--color-annotation-measure); }
+  .prompt input::placeholder { color: var(--color-text-muted); opacity: 0; }
+  .prompt:focus-within input::placeholder { opacity: 1; }
+  .prompt:focus-within { box-shadow: inset 2px 0 0 var(--color-annotation-measure); }
+  .caret { order: -1; display: inline-block; width: 7px; height: 14px; margin-right: -7px; background: var(--color-text-primary); animation: blink 1.1s steps(1) infinite; pointer-events: none; }
+  .prompt:focus-within .caret, .prompt:has(input:not(:placeholder-shown)) .caret { visibility: hidden; }
+  .prompt .p { order: -2; white-space: pre; }
   @keyframes blink { 50% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .dpanel :global(.caret) { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
   @media (max-width: 1040px) {
     .layout { grid-template-columns: minmax(0, 1fr); } .side { position: static; max-height: none; } .panel { max-width: 420px; }
     /* The panel folds into a button; it opens in place, and "Show N projects" closes it and scrolls to the cards */
@@ -337,66 +342,45 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
     for (const k of ['industry', 'focus'] as const) { if (state[k].length) u.searchParams.set(k, state[k].map(slug).join(',')); else u.searchParams.delete(k); }
     history.replaceState(null, '', u);
   }
-  // Engineer view: the same state, drawn as code (B) or as a terminal command (C)
+  // Engineer view: the same state, drawn as a terminal command. The prompt finds a tag (state.q, shared with "Find a tag").
   const dev = document.querySelector<HTMLElement>('[data-dev-panel]')!;
   const devBody = dev.querySelector<HTMLElement>('[data-dev-body]')!;
   const devCount = dev.querySelector<HTMLElement>('[data-dev-count]')!;
-  let devTab = 'code';
+  const devSearch = dev.querySelector<HTMLInputElement>('[data-dev-search]')!;
   const sp = (cls: string, t: string) => `<span class="${cls}">${esc(t)}</span>`;
   const plain = (html: string) => `<div class="ln"><span class="code">${html}</span></div>`;
-  const val = (key: string, v: string, on: boolean, n: number, multi: boolean, html: string, off = false) =>
-    `<button type="button" class="ln" role="${multi ? 'checkbox' : 'radio'}" aria-checked="${on}" aria-label="${esc(v)}, ${n} projects" data-key="${key}" data-val="${esc(v)}"${off ? ' disabled' : ''}><span class="code">${html}</span><span class="num">${n}</span></button>`;
-  const devTags = (k: 'industry' | 'focus') => tagRows(k);
+  const val = (key: string, v: string, label: string, on: boolean, n: number, multi: boolean, off = false) =>
+    `<button type="button" class="ln" role="${multi ? 'checkbox' : 'radio'}" aria-checked="${on}" aria-label="${esc(v)}, ${n} projects" data-key="${key}" data-val="${esc(v)}"${off ? ' disabled' : ''}><span class="code"><span class="f">  ${label}</span></span><span class="num">${n}</span></button>`;
   function renderDev() {
-    const n = visible().length; let h = '';
-    if (devTab === 'code') {
-      h += plain(sp('', 'getCollection') + sp('p', '("work")'));
-      h += plain(sp('', 'where') + sp('p', ' = {'));
-      const typeOn = (v: string) => state.type === 'all' || state.type === v;
-      h += plain(sp('', '  type') + sp('p', ': ['));
-      for (const [v] of TYPES.slice(1)) { const on = typeOn(v); h += val('type', v, on, countFor('type', v), false, on ? sp('s', `    "${v}"`) + sp('p', ',') : sp('c', `    // "${v}",`), on && state.type !== 'all'); }
-      h += plain(sp('p', '  ],'));
-      for (const k of ['industry', 'focus'] as const) {
-        const any = state[k].length > 0;
-        h += plain(any ? sp('', `  ${k}`) + sp('p', ': [') : sp('c', `  // ${k}: [`));
-        for (const o of devTags(k)) { const t = slug(o.t); h += val(k, o.t, o.on, o.n, true, o.on ? sp('s', `    "${t}"`) + sp('p', ',') : sp('c', `    // "${t}",`), o.n === 0 && !o.on); }
-        h += plain(any ? sp('p', '  ],') : sp('c', '  // ],'));
-      }
-      h += plain(sp('p', '};'));
-      h += plain(sp('c', `// → ${n} ${n === 1 ? 'project' : 'projects'}`));
-    } else {
-      const flags = [`--type=${state.type}`, ...(['industry', 'focus'] as const).filter((k) => state[k].length).map((k) => `--${k}=${state[k].map(slug).join(',')}`)];
-      h += `<div class="ln"><span class="code" style="white-space: pre-wrap">${sp('p', '$ ')}ls work ${flags.map((f) => sp('s nw', f)).join(' ')}</span></div>`;
-      h += plain(sp('out', `${n} ${n === 1 ? 'project' : 'projects'}`));
-      h += plain('');
-      h += plain('--type');
-      for (const [v] of TYPES) h += val('type', v, state.type === v, countFor('type', v), false, sp('f', `  ${v}`));
-      for (const k of ['industry', 'focus'] as const) {
-        h += plain(`--${k}`);
-        for (const o of devTags(k)) h += val(k, o.t, o.on, o.n, true, sp('f', `  ${slug(o.t)}`), o.n === 0 && !o.on);
-      }
-      h += plain('');
-      h += plain(sp('p', '$ ') + '<span class="caret" aria-hidden="true"></span>');
+    const n = visible().length; const q = state.q.toLowerCase(); let h = '';
+    const flags = [`--type=${state.type}`, ...(['industry', 'focus'] as const).filter((k) => state[k].length).map((k) => `--${k}=${state[k].map(slug).join(',')}`)];
+    h += `<div class="ln"><span class="code" style="white-space: pre-wrap">${sp('p', '$ ')}ls work ${flags.map((f) => sp('s nw', f)).join(' ')}</span></div>`;
+    h += plain(sp('out', `${n} ${n === 1 ? 'project' : 'projects'}`));
+    h += plain('');
+    if (!q) { h += plain('--type'); for (const [v] of TYPES) h += val('type', v, v, state.type === v, countFor('type', v), false); }
+    let found = 0;
+    for (const k of ['industry', 'focus'] as const) {
+      const rows = tagRows(k).filter((o) => !q || o.t.toLowerCase().includes(q)); found += rows.length;
+      if (!rows.length) continue;
+      h += plain(`--${k}`);
+      for (const o of rows) h += val(k, o.t, hl(slug(o.t)), o.on, o.n, true, o.n === 0 && !o.on);
     }
+    if (q && !found) h += plain(sp('out', `zsh: no tag matches "${state.q}"`));
+    h += plain('');
     const focused = (document.activeElement as HTMLElement | null)?.closest<HTMLElement>('button.ln');
     const fid = focused ? `${focused.dataset.key}|${focused.dataset.val}` : '';
-    devBody.innerHTML = h; devBody.dataset.mode = devTab;
+    devBody.innerHTML = h;
     if (fid) { const [k, v] = fid.split('|'); devBody.querySelector<HTMLElement>(`button.ln[data-key="${k}"][data-val="${CSS.escape(v)}"]`)?.focus(); }
     devCount.textContent = `${n} / ${DATA.length}`;
-    dev.querySelectorAll<HTMLElement>('[data-dev-tab]').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.devTab === devTab)));
   }
   dev.addEventListener('click', (e) => {
-    const t = e.target as HTMLElement;
-    const tab = t.closest<HTMLElement>('[data-dev-tab]'); if (tab) { devTab = tab.dataset.devTab!; return renderDev(); }
-    const b = t.closest<HTMLButtonElement>('button.ln'); if (!b || b.disabled) return;
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button.ln'); if (!b || b.disabled) return;
     const k = b.dataset.key!, v = b.dataset.val!;
-    if (k === 'type') {
-      // Code: commenting out one type leaves the other; uncommenting brings back both. Terminal: pick one.
-      if (devTab === 'code') state.type = state.type === 'all' ? (v === 'client' ? 'experiment' : 'client') : 'all';
-      else state.type = v;
-    } else toggle(k as 'industry' | 'focus', v);
+    if (k === 'type') state.type = v; else toggle(k as 'industry' | 'focus', v);
     render();
   });
+  devSearch.addEventListener('input', () => { state.q = devSearch.value.trim(); searchEl.value = devSearch.value; renderPanel(); renderDev(); });
+  devSearch.addEventListener('keydown', (e) => { if (e.key === 'Escape') { devSearch.value = ''; devSearch.dispatchEvent(new Event('input')); } });
   const render = (grid = true) => { renderPanel(); renderActive(); renderDev(); if (grid) { renderGrid(); syncUrl(); } };
   const toggle = (k: 'industry' | 'focus', v: string) => { const s = state[k]; const i = s.indexOf(v); if (i > -1) s.splice(i, 1); else s.push(v); };
   const clearAll = () => { state.type = 'all'; state.industry = []; state.focus = []; };
@@ -409,7 +393,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
     const cl = t.closest<HTMLElement>('[data-clear]'); if (cl) { (state as any)[cl.dataset.clear!] = []; return render(); }
     const m = t.closest<HTMLElement>('[data-more]'); if (m) { state.more = m.dataset.more === '1'; return render(false); }
   });
-  searchEl.addEventListener('input', () => { state.q = searchEl.value.trim(); renderPanel(); });
+  searchEl.addEventListener('input', () => { state.q = searchEl.value.trim(); renderPanel(); renderDev(); });
   const onPill = (e: Event) => { const t = e.target as HTMLElement; const p = t.closest<HTMLElement>('[data-pill]'); if (p) { if (p.dataset.pill === 'type') state.type = 'all'; else (state as any)[p.dataset.pill!] = []; return render(); } if (t.closest('[data-clear-all]')) { clearAll(); render(); } };
   activeEl.addEventListener('click', onPill); empty.addEventListener('click', onPill);
   render();

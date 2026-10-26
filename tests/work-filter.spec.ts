@@ -44,20 +44,29 @@ test.describe('Projects filter', () => {
     await page.click('[data-filter-panel] [data-filter-show]');
     await expect(page.locator('[data-filter-panel]')).toBeHidden();
   });
-  test('engineer view: the filter as code and as a terminal, on the same state', async ({ page, viewport }) => {
+  test('engineer view: the filter as a terminal, with a prompt that finds a tag', async ({ page, viewport }) => {
     await page.goto('/?view=engineer#work');
     if ((viewport?.width ?? 0) <= 1040) await page.click('[data-filter-toggle]');
     const dev = page.locator('[data-dev-panel]');
     await expect(page.locator('[data-filter-panel]')).toBeHidden();
-    // Code: uncommenting a value turns it on, commenting out a type leaves the other
-    await dev.locator('button.ln[data-key="industry"][data-val="Fintech"]').click();
-    await expect(dev.locator('button.ln[data-key="industry"][data-val="Fintech"]')).toHaveAttribute('aria-checked', 'true');
+    // A flag value is a switch; the command line shows it
+    const fintech = dev.locator('button.ln[data-key="industry"][data-val="Fintech"]');
+    await fintech.click();
+    await expect(fintech).toHaveAttribute('aria-checked', 'true');
     await expect(dev.locator('[data-dev-count]')).toHaveText('4 / 14');
     await expect(page).toHaveURL(/industry=fintech/);
-    // Terminal: the command shows the same filter
-    await dev.locator('[data-dev-tab="term"]').click();
     await expect(dev.locator('[data-dev-body]')).toContainText('ls work --type=all --industry=fintech');
-    await dev.locator('button.ln[data-key="industry"][data-val="Fintech"]').click();
+    // The prompt is a real input: typing hides the values that do not match, Escape clears it
+    const search = dev.getByRole('textbox', { name: 'Find a tag' });
+    await search.fill('fin');
+    await expect(fintech).toBeVisible();
+    await expect(dev.locator('button.ln[data-key="type"]')).toHaveCount(0);
+    await search.fill('zzz');
+    await expect(dev.locator('[data-dev-body]')).toContainText('no tag matches "zzz"');
+    await search.press('Escape');
+    await expect(search).toHaveValue('');
+    await expect(dev.locator('button.ln[data-key="type"]')).toHaveCount(3);
+    await fintech.click();
     await expect(dev.locator('[data-dev-count]')).toHaveText('14 / 14');
   });
 });
