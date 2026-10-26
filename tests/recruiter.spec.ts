@@ -1,18 +1,36 @@
 import { test, expect } from '@playwright/test';
 
 // The "Recruiter" view: a one-page summary instead of the homepage content.
-test('the recruiter view replaces the homepage and links back', async ({ page }) => {
+test('the recruiter view replaces the homepage', async ({ page }) => {
   await page.goto('/?view=recruiter');
   await expect(page.locator('[data-recruiter]')).toBeVisible();
   await expect(page.locator('.hero')).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Senior Product Designer.');
-  await expect(page.locator('[data-recruiter] .work li')).toHaveCount(5);
+  await expect(page.locator('[data-recruiter] .work li:visible')).toHaveCount(5);
   // Below the summary: Numbers, Experience and About, without the work and design systems sections
   for (const sel of ['.numbers', '#experience', '#about']) await expect(page.locator(sel)).toBeVisible();
   for (const sel of ['#work', '#design-systems']) await expect(page.locator(sel)).toBeHidden();
-  await page.locator('[data-view-link]').click();
-  await expect(page.locator('html')).toHaveAttribute('data-view', 'design');
-  await expect(page.locator('.hero')).toBeVisible();
+});
+
+test('"See all" opens every project in the recruiter view, and closes again', async ({ page }) => {
+  await page.goto('/?view=recruiter');
+  const rows = page.locator('[data-recruiter] .work li:visible');
+  const more = page.locator('[data-recruiter] .more');
+  await expect(more).toHaveText('See all 14');
+  await expect(more).toHaveAttribute('aria-expanded', 'false');
+  await more.click();
+  await expect(rows).toHaveCount(14);
+  await expect(more).toHaveAttribute('aria-expanded', 'true');
+  await expect(more).toHaveText('Show fewer');
+  // The visitor stays in the recruiter view
+  await expect(page.locator('html')).toHaveAttribute('data-view', 'recruiter');
+  await expect(page).toHaveURL(/view=recruiter/);
+  await expect(page.locator('.hero')).toBeHidden();
+  // Experiments link to their own pages
+  await expect(page.locator('[data-recruiter] .work a[href="/experiments/fieldset"]')).toBeVisible();
+  await more.click();
+  await expect(rows).toHaveCount(5);
+  await expect(more).toHaveText('See all 14');
 });
 
 test('the header switch opens the recruiter view', async ({ page }) => {

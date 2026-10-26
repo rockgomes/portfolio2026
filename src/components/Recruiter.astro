@@ -24,7 +24,15 @@ const picks: [string, string][] = [
 const projects = await getCollection('projects');
 const experiments = await getCollection('experiments');
 const total = projects.length + experiments.length;
-const work = picks.map(([id, line]) => ({ e: projects.find((p) => p.id === id)!, line })).filter((w) => w.e);
+const row = (e: (typeof projects)[number] | (typeof experiments)[number], line: string) => ({
+  href: e.collection === 'projects' ? `/project/${e.id}` : `/experiments/${e.id}`,
+  image: e.collection === 'projects' ? e.data.homeImage : e.data.cardImage,
+  title: e.data.cardTitle, line, meta: [e.data.cardCompany, e.data.cardYear].filter(Boolean).join(' · '),
+});
+const work = picks.flatMap(([id, line]) => projects.filter((p) => p.id === id).map((e) => row(e, line)));
+// "See all" opens the rest below the picks, in homepage card order, with each card's own line.
+const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => id === e.id))
+  .sort((a, b) => a.data.cardOrder - b.data.cardOrder).map((e) => ({ ...row(e, e.data.cardLine), more: true }));
 ---
 <section class="rec" data-recruiter aria-labelledby="rec-title">
   <div class="wrap grid">
@@ -42,16 +50,19 @@ const work = picks.map(([id, line]) => ({ e: projects.find((p) => p.id === id)!,
     </div>
 
     <aside class="side" aria-labelledby="rec-work">
-      <div class="side-h"><h2 id="rec-work">Selected work</h2><a href="/?view=design#work" data-view-link="design">See all {total}</a></div>
-      <ul class="work">
-        {work.map(({ e, line }) => (
-          <li>
-            <a class="item" href={`/project/${e.id}`}>
-              <span class="thumb">{e.data.homeImage && <Image src={e.data.homeImage} alt="" widths={[88, 176]} sizes="88px" />}</span>
+      <div class="side-h">
+        <h2 id="rec-work">Selected work</h2>
+        <button type="button" class="more" aria-expanded="false" aria-controls="rec-list" data-less="Show fewer">See all {total}</button>
+      </div>
+      <ul class="work" id="rec-list">
+        {[...work, ...rest].map((w) => (
+          <li hidden={'more' in w}>
+            <a class="item" href={w.href}>
+              <span class="thumb">{w.image && <Image src={w.image} alt="" widths={[88, 176]} sizes="88px" />}</span>
               <span class="txt">
-                <span class="t">{e.data.cardTitle}</span>
-                <span class="l">{line}</span>
-                <span class="m">{[e.data.cardCompany, e.data.cardYear].filter(Boolean).join(' · ')}</span>
+                <span class="t">{w.title}</span>
+                <span class="l">{w.line}</span>
+                <span class="m">{w.meta}</span>
               </span>
             </a>
           </li>
@@ -82,8 +93,8 @@ const work = picks.map(([id, line]) => ({ e: projects.find((p) => p.id === id)!,
   .side { display: flex; flex-direction: column; min-width: 0; }
   .side-h { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-12); }
   .side-h h2 { margin: 0; font: 600 13px/17px var(--font-sans); color: var(--color-text-primary); }
-  .side-h a { font: 400 13px/17px var(--font-sans); color: var(--color-annotation-measure); text-decoration: none; }
-  .side-h a:hover { text-decoration: underline; }
+  .more { padding: 0; border: 0; background: none; cursor: pointer; font: 400 13px/17px var(--font-sans); color: var(--color-annotation-measure); }
+  .more:hover { text-decoration: underline; }
   .work { list-style: none; margin: var(--space-12) 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
   .item { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 14px; align-items: center; padding: var(--space-8); border-radius: 10px; text-decoration: none; }
   .item:hover, .item:focus-visible { background: var(--color-surface-stage); }
@@ -105,10 +116,16 @@ const work = picks.map(([id, line]) => ({ e: projects.find((p) => p.id === id)!,
 </style>
 
 <script>
-  // "See all 14" switches back to the design lead view (the header switch listens for viewchange).
-  document.querySelectorAll<HTMLAnchorElement>('[data-view-link]').forEach((a) => a.addEventListener('click', (e) => {
-    e.preventDefault();
-    document.querySelector<HTMLButtonElement>(`[data-view-option="${a.dataset.viewLink}"]`)?.click();
-    requestAnimationFrame(() => document.getElementById('work')?.scrollIntoView());
-  }));
+  // "See all 14" opens the rest of the work in this list, so the visitor stays in the recruiter view.
+  const more = document.querySelector<HTMLButtonElement>('[data-recruiter] .more');
+  if (more) {
+    const label = more.textContent;
+    const rest = document.querySelectorAll<HTMLLIElement>('#rec-list li[hidden]');
+    more.addEventListener('click', () => {
+      const open = more.getAttribute('aria-expanded') !== 'true';
+      rest.forEach((li) => (li.hidden = !open));
+      more.setAttribute('aria-expanded', String(open));
+      more.textContent = open ? more.dataset.less! : label;
+    });
+  }
 </script>
