@@ -319,10 +319,10 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   .seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
   .seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: var(--type-ui-control-compact); color: var(--color-text-secondary); white-space: nowrap; }
   .seg button:hover { color: var(--color-text-primary); }
-  .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font-weight: 500; }
+  .seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font: var(--type-ui-control-compact-strong); }
 
   /* The pill colours are the global .pill-* classes from HeroTable.astro */
-  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 7px; border-radius: var(--radius-pill); font: 500 11.5px/16px var(--font-sans); }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px 2px 7px; border-radius: var(--radius-pill); font: var(--type-ui-status); }
   .pill i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
   .pill.big { font-size: 14px; line-height: 20px; padding: 4px 12px 4px 10px; }
 
