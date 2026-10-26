@@ -111,3 +111,9 @@ html:not([data-view='engineer']) [data-engineer] { display: none !important; }
 html.view-fading, html.view-fading *, html.view-fading *::before, html.view-fading *::after {
   transition: color 0.3s, background-color 0.3s, border-color 0.3s, fill 0.3s, stroke 0.3s, box-shadow 0.3s !important;
 }
+/* Switch motion versions to compare (?motion=c and ?motion=d). c: the band that wipes across the page, under the
+   header (above the overlays, which go up to z-index 12); its edge colour is set by the script. d: the page shrinks
+   onto the stage colour. */
+.view-wipe { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; pointer-events: none; background: var(--color-surface-page); border-inline: 4px solid; }
+html.view-zoom body { background: var(--color-surface-stage); }
+html.view-zoom #main { background: var(--color-surface-page); }

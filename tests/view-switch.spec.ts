@@ -10,12 +10,18 @@ test('audience switch sets the view and the URL', async ({ page }) => {
   await expect(page.locator('[data-view-option="recruiter"]')).toHaveAttribute('aria-checked', 'true');
 });
 
-// The switch motion (src/lib/view-switch.ts). The other tests run with reduced motion, where the switch is instant.
-test.describe('view switch motion', () => {
+// The switch motion (src/lib/view-switch.ts), in each version (?motion=). The other tests run with reduced motion,
+// where the switch is instant.
+for (const m of ['a', 'b', 'c', 'd']) test.describe(`view switch motion ${m}`, () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } });
   const blocks = '#main > section, body > footer';
   const settled = (page: import('@playwright/test').Page) => page.waitForFunction(() => { const h = document.documentElement; return !('switching' in h.dataset) && !h.classList.contains('view-fading'); });
-  const leftovers = (page: import('@playwright/test').Page) => page.evaluate((sel) => [...document.querySelectorAll(sel)].filter((e) => e.getAttribute('style')).map((e) => e.className), blocks);
+  // Inline styles left on the sections, the page or the footer, and the extra layers of versions c and d
+  const leftovers = (page: import('@playwright/test').Page) => page.evaluate((sel) => [
+    ...[...document.querySelectorAll(`${sel}, #main`)].filter((e) => e.getAttribute('style')).map((e) => e.className || e.id),
+    ...[...document.querySelectorAll('.view-wipe')].map(() => 'view-wipe'),
+    ...(document.documentElement.classList.contains('view-zoom') ? ['view-zoom'] : []),
+  ], blocks);
 
   for (const [from, to, shows, hides] of [
     ['design', 'recruiter', '[data-recruiter]', '.hero'],
@@ -23,7 +29,7 @@ test.describe('view switch motion', () => {
     ['recruiter', 'design', '.hero', '[data-recruiter]'],
   ] as const) {
     test(`${from} to ${to} ends in the right state, with no sideways scroll`, async ({ page }) => {
-      await page.goto(`/?view=${from}`);
+      await page.goto(`/?view=${from}&motion=${m}`);
       await page.waitForLoadState('load');
       let widest = 0;
       const watch = setInterval(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth).then((w) => { widest = Math.max(widest, w); }).catch(() => {}), 40);
@@ -39,7 +45,7 @@ test.describe('view switch motion', () => {
   }
 
   test('fast clicks end in the last view chosen', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(`/?motion=${m}`);
     await page.waitForLoadState('load');
     for (const v of ['recruiter', 'engineer', 'design', 'recruiter']) await page.click(`[data-view-option="${v}"]`);
     await expect(page.locator('html')).toHaveAttribute('data-view', 'recruiter');
@@ -51,7 +57,7 @@ test.describe('view switch motion', () => {
   });
 
   test('the section being read stays in place', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(`/?motion=${m}`);
     await page.waitForLoadState('load');
     const exp = page.locator('#experience');
     await exp.evaluate((e) => scrollTo(0, e.getBoundingClientRect().top + scrollY - 200));
@@ -63,7 +69,7 @@ test.describe('view switch motion', () => {
   });
 
   test('a section the new view does not have takes the page to the top', async ({ page }) => {
-    await page.goto('/');
+    await page.goto(`/?motion=${m}`);
     await page.waitForLoadState('load');
     await page.locator('#work').evaluate((e) => scrollTo(0, e.getBoundingClientRect().top + scrollY - 200));
     await page.click('[data-view-option="recruiter"]');
