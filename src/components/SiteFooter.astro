@@ -2,6 +2,13 @@
 // Figma: Footer (96:6970). The "You" cursor becomes the visitor's own pointer inside the footer (motion plan, moment 07).
 import CopyEmail from './CopyEmail.astro';
 import Cursor from './Cursor.astro';
+import IconGitBranch from './IconGitBranch.astro';
+import { execSync } from 'node:child_process';
+// Engineer view: the build line. Netlify gives the branch (HEAD) and commit (COMMIT_REF); locally, ask git.
+const git = (cmd: string) => { try { return execSync(`git ${cmd}`, { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch { return ''; } };
+const branch = process.env.HEAD || git('branch --show-current') || 'main';
+const commit = (process.env.COMMIT_REF || git('rev-parse HEAD')).slice(0, 7);
+const built = new Date().toISOString().slice(0, 10);
 ---
 <footer class="ftr">
   <div class="wrap">
@@ -28,7 +35,8 @@ import Cursor from './Cursor.astro';
     </div>
     <div class="colophon t-mono-label">
       <p>© {new Date().getFullYear()} Rock Gomes · Tallinn, Estonia</p>
-      <p>Updated {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>
+      <p data-not-engineer>Updated {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>
+      <p class="build" data-engineer data-build><IconGitBranch /><span class="br">{branch}</span>{commit && <> @ <span class="sha">{commit}</span></>} · built <time datetime={built}>{built}</time> · Astro · Netlify</p>
     </div>
   </div>
 </footer>
@@ -58,6 +66,9 @@ import Cursor from './Cursor.astro';
   .links a:hover { color: var(--color-text-primary); }
   .colophon { border-top: 1px solid var(--color-border-subtle); padding-top: var(--space-16); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; color: var(--color-text-muted); }
   .colophon p { margin: 0; }
+  .build .br { color: var(--color-annotation-measure); }
+  .build :global(.gb) { color: var(--color-annotation-measure); vertical-align: -2px; margin-right: 6px; }
+  .build .sha { color: var(--color-text-secondary); }
   /* While the pointer is in the footer, the "You" cursor replaces the system arrow (script below) */
   :global(.ftr.you-here), :global(.ftr.you-here *) { cursor: none !important; }
   .copied { position: absolute; z-index: 7; display: flex; gap: var(--space-8); align-items: center; padding: 6px 12px 7px 6px; white-space: nowrap; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }

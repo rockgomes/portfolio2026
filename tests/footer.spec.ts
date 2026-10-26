@@ -43,3 +43,14 @@ test.describe('page end', () => {
     expect(gap).toBeLessThanOrEqual(0);
   });
 });
+
+test('engineer view: the footer shows the build line instead of "Updated"', async ({ page }) => {
+  await page.goto('/?view=engineer');
+  const build = page.locator('footer [data-build]');
+  await expect(build).toBeVisible();
+  await expect(build).toHaveText(/^\S+ @ [0-9a-f]{7} · built \d{4}-\d{2}-\d{2} · Astro · Netlify$/);
+  await expect(page.locator('footer .colophon').getByText('Updated')).toBeHidden();
+  await page.goto('/?view=design');
+  await expect(build).toBeHidden();
+  await expect(page.locator('footer .colophon').getByText('Updated')).toBeVisible();
+});
