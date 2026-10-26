@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import CaseSummary from '../../components/case/CaseSummary.astro';
 import LivePage from '../../components/case/LivePage.astro';
+import NextCase from '../../components/case/NextCase.astro';
 import { isPrivate } from '../../lib/private';
 
 export async function getStaticPaths() {
@@ -24,6 +25,7 @@ const isCase = !!d.problem;
         {d.live ? <LivePage {...d.live} /> : d.homeImage && <Image class="case-hero" src={d.homeImage} alt={d.homeImageAlt} widths={[768, 1536]} sizes="(min-width: 1440px) 1280px, 100vw" loading="eager" />}
       </CaseSummary>
       <div class="case-body"><Content /></div>
+      <NextCase currentId={entry.id} />
     </>
   ) : (
     <article class="article">

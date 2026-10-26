@@ -53,3 +53,26 @@ test('live page video does not play on its own with reduced motion', async ({ pa
   await expect(v).toHaveAttribute('controls', '');
   expect(await v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
 });
+
+test('next case study is the next project by card order', async ({ page }) => {
+  await page.goto(FLEX);
+  const next = page.locator('[data-next-case]');
+  await expect(next.locator('.title a')).toHaveAttribute('href', '/project/inbank---customer-service-backoffice');
+  await expect(next.locator('.meta .n')).toHaveCount(0);
+});
+
+test('no Figma layer on the case study page', async ({ page }) => {
+  await page.goto(FLEX);
+  // Cursors, selections, comments, resolved threads and labels, dimension lines, notes, and the view switch.
+  // The footer is left out on purpose: it stays as it is on every page, with its "You" cursor (Rock, Oct 2026).
+  for (const sel of ['[data-overlay]', '.cursor', '.sel', '.cm', '.thread', '.rl', '.dim', '.note', '[data-view-option]'])
+    await expect(page.locator(`main ${sel}, header.hdr ${sel}`), sel).toHaveCount(0);
+});
+
+for (const width of [320, 400]) {
+  test(`no sideways scroll on the Flex page at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 860 });
+    await page.goto(FLEX);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
+  });
+}
