@@ -12,7 +12,7 @@ const tags = [
   { t: 'mode: monochrome', top: 479 },
 ];
 ---
-<section class="about" id="about" aria-labelledby="about-title">
+<section class="about" id="about" aria-labelledby="about-title" data-recruiter-also>
   <div class="wrap inner">
     <SectionHeader num="05" title="About" titleId="about-title" subtitle="subject annotated for completeness" dimension={`portrait.w = ${portrait.width} · portrait.h = ${portrait.height}`} />
     <div class="body">
@@ -56,6 +56,8 @@ const tags = [
   .links { margin: 0; padding-top: var(--space-8); display: flex; flex-wrap: wrap; gap: var(--space-16); }
   .links a { color: var(--color-annotation-measure); text-decoration: none; }
   .links a:hover { text-decoration: underline; }
+  /* Recruiter view (sober): no photo labels or their subtitle; no facts list, the summary at the top has them */
+  :global(html[data-view='recruiter']) .about :is(.tag, .leader, .facts), :global(html[data-view='recruiter']) .about :global(.sh .sub) { display: none; }
   @media (max-width: 1040px) { .body { flex-direction: column; gap: var(--space-48); } }
   @media (max-width: 640px) { .inner { padding-block: var(--space-80); } .tag { left: 16px; } .leader { display: none; } }
 </style>

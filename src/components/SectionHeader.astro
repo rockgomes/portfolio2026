@@ -23,4 +23,8 @@ const { num, title, subtitle, dimension, id, titleId } = Astro.props;
   .title { margin: 0; font: var(--type-display-row); letter-spacing: var(--tracking-display-row); color: var(--color-text-primary); text-wrap: balance; }
   .sub { margin: 0; color: var(--color-annotation-measure); }
   @media (max-width: 1199px) { .num { position: static; display: block; line-height: 1.4; margin-bottom: var(--space-8); } }
+  /* Recruiter view (sober): no number or redline, a smaller title (the recruiter headline size), grey subtitle */
+  :global(html[data-view='recruiter']) .num, :global(html[data-view='recruiter']) .sh :global(.dim) { display: none; }
+  :global(html[data-view='recruiter']) .title { font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); }
+  :global(html[data-view='recruiter']) .sub { color: var(--color-text-muted); }
 </style>
