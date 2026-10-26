@@ -4,8 +4,9 @@
 //     sections in both views slide to their new place, sections that arrive fade in. When nothing on screen changes
 //     place (Design lead to Engineer at the top: the hero is in both), almost nothing moves.
 //   b fade: the page fades out and fades back in with the new view.
-//   e slide on a fade: a and b together. The page fades out as in b, and while it fades back in, sections slide and
-//     arrive as in a. So the switch is always seen.
+//   e slide on a fade: a and b together. The page fades out as in b. While it fades back in, sections that change
+//     place slide as in a, and every other section on screen does a's arrive move (rises 16px into place), also the
+//     ones that stay where they were. So something always moves, also from Design lead to Engineer at the top.
 //   c wipe: a band in the new view's page colour moves across the screen, the view changes under it. It moves in the
 //     direction of the switch (to the right for an option to the right).
 //   d zoom: the page gets smaller on the stage colour, like zooming out of a Figma frame, changes, and zooms back in.
@@ -94,10 +95,16 @@ function slide(v: string, withFade = false) {
     const staying = jumped ? [] : now.filter((el) => before.has(el) && Math.abs(before.get(el)! - top(el)) > 1);
     const entering = now.filter((el) => jumped || !before.has(el));
     if (!withFade && !staying.length && !entering.length) { end(); return; }
-    const tl = gsap.timeline({ onComplete: end });
-    if (withFade) tl.to(frames, { opacity: 1, duration: 0.3, ease: 'power1.out' }, 0);
+    // The new view takes the browser a long frame (about 150ms) to lay out. The motion starts on the next frame, so
+    // that time is not taken from it (otherwise the first half of the rise is never seen).
+    const tl = gsap.timeline({ paused: true, onComplete: end });
+    gsap.delayedCall(0, () => { if (!done) tl.play(); });
     staying.forEach((el) => tl.fromTo(el, { y: before.get(el)! - top(el) }, { y: 0, duration: 0.55, ease: 'power3.inOut' }, 0));
-    if (entering.length) tl.fromTo(entering, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 0.15);
+    if (withFade) {
+      tl.to(frames, { opacity: 1, duration: 0.3, ease: 'power1.out' }, 0);
+      const rising = now.filter((el) => !staying.includes(el));
+      if (rising.length) tl.fromTo(rising, { y: 16 }, { y: 0, duration: 0.35, ease: 'power2.out' }, 0);
+    } else if (entering.length) tl.fromTo(entering, { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.35, ease: 'power2.out' }, 0.15);
   };
   const end = () => {
     if (done) return;
@@ -130,6 +137,9 @@ function cover(v: string, m: 'b' | 'c' | 'd') {
     startColours();
     setView(v);
     place();
+    // Wait for the next frame after the long layout of the new view, as in slide()
+    tl.pause();
+    gsap.delayedCall(0, () => { if (!done) tl.resume(); });
   };
   const end = () => {
     if (done) return;

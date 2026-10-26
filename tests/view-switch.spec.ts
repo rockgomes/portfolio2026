@@ -65,6 +65,16 @@ for (const m of ['a', 'b', 'c', 'd', 'e']) test.describe(`view switch motion ${m
     expect(await page.evaluate(() => (window as unknown as { low: number }).low)).toBeLessThan(0.5);
   });
 
+  // Version e always moves: from Engineer to Design lead at the top (and back), the hero stays in place, so it rises
+  if (m === 'e') for (const [from, to] of [['engineer', 'design'], ['design', 'engineer']]) test(`${from} to ${to} at the top moves the hero`, async ({ page }) => {
+    await page.goto(`/?view=${from}&motion=e`);
+    await page.waitForLoadState('load');
+    // Every style change on the hero is recorded (a frame can take longer than the rise when the machine is busy)
+    await page.evaluate((to) => { const w = window as unknown as { far: number }; w.far = 0; const hero = document.querySelector<HTMLElement>('.hero')!; new MutationObserver(() => { w.far = Math.max(w.far, Math.abs(new DOMMatrix(getComputedStyle(hero).transform).m42)); }).observe(hero, { attributes: true, attributeFilter: ['style'] }); document.querySelector<HTMLElement>(`[data-view-option="${to}"]`)!.click(); }, to);
+    await settled(page);
+    expect(await page.evaluate(() => (window as unknown as { far: number }).far)).toBeGreaterThan(8);
+  });
+
   test('the section being read stays in place', async ({ page }) => {
     await page.goto(`/?motion=${m}`);
     await page.waitForLoadState('load');
