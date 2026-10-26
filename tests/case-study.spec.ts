@@ -90,7 +90,7 @@ test('a stored recruiter or engineer view does not change the case page', async 
 
 test('the old body under the summary keeps the article styles', async ({ page }) => {
   await page.goto(FLEX);
-  expect(await page.locator('.case-body h2').first().evaluate((e) => getComputedStyle(e).fontSize)).toBe('28px');
+  expect(await page.locator('.case-old h2').first().evaluate((e) => getComputedStyle(e).fontSize)).toBe('28px');
 });
 
 test.describe('live page with motion', () => {

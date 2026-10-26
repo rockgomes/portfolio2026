@@ -1,0 +1,27 @@
+---
+// One decision in "Three decisions I would defend" (sketch C 376:10124): a 400px text column (label, title, text,
+// optional fact pills) and the proof next to it. Stacked below 1040px.
+interface Props { n: number; of: number; title: string; pills?: string[] }
+const { n, of, title, pills = [] } = Astro.props;
+---
+<article class="decision" data-decision={n}>
+  <div class="text">
+    <p class="label t-mono-label">decision {n} of {of}</p>
+    <h3 class="title">{title}</h3>
+    <div class="body"><slot /></div>
+    {pills.length > 0 && <ul class="pills">{pills.map((p) => <li class="ui-pill ui-pill-sm">{p}</li>)}</ul>}
+  </div>
+  <div class="proof"><slot name="proof" /></div>
+</article>
+<style>
+  .decision { display: flex; gap: var(--space-80); align-items: flex-start; }
+  .text { flex: 0 0 400px; display: flex; flex-direction: column; gap: var(--space-16); }
+  .label { margin: 0; color: var(--color-annotation-measure); }
+  .title { margin: 0; font: var(--type-heading-item); letter-spacing: var(--tracking-heading-item); color: var(--color-text-primary); }
+  .body { font: var(--type-body-default); color: var(--color-text-secondary); }
+  .body :global(p) { margin: 0; }
+  .body :global(p + p) { margin-top: var(--space-12); }
+  .pills { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .proof { flex: 1 1 0; min-width: 0; }
+  @media (max-width: 1040px) { .decision { flex-direction: column; gap: var(--space-24); } .text { flex-basis: auto; max-width: 560px; } .proof { width: 100%; } }
+</style>

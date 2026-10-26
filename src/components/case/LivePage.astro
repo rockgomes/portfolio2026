@@ -1,33 +1,32 @@
 ---
-// The live page of a project, scaled to fit (from the old Webflow embed fa-live). The iframe is drawn at 1440x900 and
-// scaled to the box width. Below half size (phones) the iframe is too small to use, so a screen recording shows instead.
-// Without JS, or before JS runs, the recording shows with its controls: nothing is ever blank or wider than the page.
+// The live page of a project, scaled to fit (from the old Webflow embed fa-live), in the same framed box as Proof.
+// The iframe is drawn at 1440x900 and scaled to the box width. Below half size (phones) the iframe is too small to
+// use, so a screen recording shows instead. Without JS, or before JS runs, the recording shows with its controls:
+// nothing is ever blank or wider than the page.
+import Proof from './Proof.astro';
 interface Props { src: string; video: string; poster: string; caption: string; title: string; videoLabel: string }
 const { src, video, poster, caption, title, videoLabel } = Astro.props;
 ---
-<figure class="live" data-live data-phone>
-  <div class="box" data-live-box>
+<div class="live" data-live data-phone>
+  <Proof caption={caption}>
     <iframe src={src} title={title} loading="lazy"></iframe>
     <video muted loop playsinline controls preload="none" poster={poster} aria-label={videoLabel}><source src={video} type="video/mp4" /></video>
-  </div>
-  <figcaption>{caption}</figcaption>
-</figure>
+  </Proof>
+</div>
 <style>
-  .live { margin: 0; display: flex; flex-direction: column; gap: var(--space-12); }
-  .box { position: relative; overflow: hidden; border: 1px solid var(--color-border-strong); background: var(--color-surface-stage); }
+  .live :global([data-proof-box]) { position: relative; }
   iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; }
   video { display: none; width: 100%; height: auto; }
   .live[data-phone] iframe { display: none; }
   .live[data-phone] video { display: block; }
-  .live[data-phone] .box { height: auto !important; }
-  figcaption { font: var(--type-body-small); color: var(--color-text-muted); }
+  .live[data-phone] :global([data-proof-box]) { height: auto !important; }
 </style>
 <script>
   import { reduceMotion } from '../../lib/motion';
 
   const W = 1440, H = 900;
   document.querySelectorAll<HTMLElement>('[data-live]').forEach((fig) => {
-    const box = fig.querySelector<HTMLElement>('[data-live-box]')!;
+    const box = fig.querySelector<HTMLElement>('[data-proof-box]')!;
     const frame = fig.querySelector('iframe')!;
     const video = fig.querySelector('video')!;
     const fit = () => {

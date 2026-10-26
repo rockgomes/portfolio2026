@@ -1,0 +1,23 @@
+---
+// One piece of proof in a case study: a picture or a screen recording in a framed box, with a caption below
+// (sketch C 376:10124: media box with a 1px strong border, caption in Body/Small, muted). Without `media`, the box
+// holds the default slot instead (LivePage puts its scaled iframe there).
+import ProofVideo from './ProofVideo.astro';
+import type { ProofMedia } from './proof';
+interface Props { media?: ProofMedia; caption?: string }
+const { media, caption } = Astro.props;
+---
+<figure class="proof" data-proof>
+  <div class="box" data-proof-box>
+    {!media ? <slot /> : media.kind === 'image'
+      ? <img src={media.src} alt={media.alt} width={media.width} height={media.height} loading="lazy" decoding="async" />
+      : <ProofVideo src={media.src} poster={media.poster} label={media.label} width={media.width} height={media.height} />}
+  </div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+<style>
+  .proof { margin: 0; display: flex; flex-direction: column; gap: var(--space-12); }
+  .box { overflow: hidden; border: 1px solid var(--color-border-strong); background: var(--color-surface-stage); }
+  img { display: block; width: 100%; height: auto; }
+  figcaption { font: var(--type-body-small); color: var(--color-text-muted); }
+</style>

@@ -1,0 +1,4 @@
+// The media a piece of case study proof can hold (used by Proof.astro and ProofSwitch.astro).
+export type ProofMedia =
+  | { kind: 'image'; src: string; alt: string; width: number; height: number }
+  | { kind: 'video'; src: string; poster: string; label: string; width: number; height: number };

@@ -24,7 +24,7 @@ const isCase = !!d.problem;
       <CaseSummary title={d.cardTitle || d.name} subtitle={d.subtitle} lead={d.heroDescription} facts={d.facts} problem={d.problem} decision={d.decision} result={d.result} links={d.links}>
         {d.live ? <LivePage {...d.live} /> : d.homeImage && <Image class="case-hero" src={d.homeImage} alt={d.homeImageAlt} widths={[768, 1536]} sizes="(min-width: 1440px) 1280px, 100vw" loading="eager" />}
       </CaseSummary>
-      <div class="case-body prose"><Content /></div>
+      <div class="case-body"><Content /></div>
       <NextCase currentId={entry.id} />
     </>
   ) : (
@@ -40,5 +40,7 @@ const isCase = !!d.problem;
 <style>
   .case-hero { width: 100%; height: auto; display: block; border: 1px solid var(--color-border-strong); }
   /* Until each part moves to its own component (phases 2 and 3), the rest of the old body reads like the old page */
-  .case-body { max-width: 768px; margin: 0 auto; padding: var(--space-48) var(--gutter) var(--space-96); }
+  .case-body :global(.case-old) { max-width: 768px; margin: 0 auto; padding: var(--space-48) var(--gutter) var(--space-96); }
+  .case-body :global(.decisions) { display: flex; flex-direction: column; gap: var(--space-96); }
+  @media (max-width: 720px) { .case-body :global(.decisions) { gap: var(--space-64); } }
 </style>

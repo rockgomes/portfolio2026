@@ -1,0 +1,64 @@
+---
+// A control that swaps the proof below it: kind="segmented" is the Segmented control (.ui-seg, Figma 193:119),
+// kind="tabs" the Tab (.ui-tab, Figma 195:113), the same ones as the header and the Experience client tabs.
+// Every panel is in the HTML and only the selected one shows, so without JS the first choice (or `selected`) is
+// still there. Arrow keys stay inside this group. Motion as in Experience.astro: the new panel fades in and the height eases.
+import Proof from './Proof.astro';
+import type { ProofMedia } from './proof';
+interface Item { label: string; caption: string; media: ProofMedia }
+interface Props { kind: 'tabs' | 'segmented'; label: string; id: string; items: Item[]; selected?: number }
+const { kind, label, id, items, selected = 0 } = Astro.props;
+const tabs = kind === 'tabs';
+const on = (i: number) => (i === selected ? 'true' : 'false');
+---
+<div class="proof-switch" data-switch={id}>
+  <div class:list={['ctrl', tabs ? 'ui-tabs' : 'ui-seg']} role={tabs ? 'tablist' : 'radiogroup'} aria-label={label}>
+    {items.map((it, i) => (
+      <button type="button" id={`${id}-opt-${i}`} role={tabs ? 'tab' : 'radio'}
+        aria-selected={tabs ? on(i) : undefined} aria-checked={tabs ? undefined : on(i)}
+        class:list={[tabs && 'ui-tab']} aria-controls={`${id}-panel-${i}`} tabindex={i === selected ? 0 : -1}>{it.label}</button>
+    ))}
+  </div>
+  <div class="panels">
+    {items.map((it, i) => (
+      <div data-proof-panel id={`${id}-panel-${i}`} role={tabs ? 'tabpanel' : undefined} aria-labelledby={`${id}-opt-${i}`} hidden={i !== selected}>
+        <Proof media={it.media} caption={it.caption} />
+      </div>
+    ))}
+  </div>
+</div>
+<style>
+  .proof-switch { display: flex; flex-direction: column; gap: var(--space-12); min-width: 0; }
+  .ctrl { flex-wrap: wrap; align-self: flex-start; max-width: 100%; }
+  .ctrl button:focus-visible { outline: 2px solid var(--color-annotation-measure); outline-offset: 2px; }
+  [data-proof-panel][hidden] { display: none; }
+</style>
+<script>
+  import { gsap, reduceMotion } from '../../lib/motion';
+
+  document.querySelectorAll<HTMLElement>('[data-switch]').forEach((sw) => {
+    const opts = [...sw.querySelectorAll<HTMLButtonElement>('.ctrl button')];
+    const panels = opts.map((o) => sw.querySelector<HTMLElement>(`#${o.getAttribute('aria-controls')}`)!);
+    const box = sw.querySelector<HTMLElement>('.panels')!;
+    const attr = opts[0].getAttribute('role') === 'tab' ? 'aria-selected' : 'aria-checked';
+    const select = (i: number, focus = false) => {
+      const from = box.offsetHeight;
+      opts.forEach((o, j) => { o.setAttribute(attr, String(j === i)); o.tabIndex = j === i ? 0 : -1; });
+      panels.forEach((p, j) => {
+        if (j !== i) p.querySelectorAll('video').forEach((v) => v.pause());
+        p.hidden = j !== i;
+      });
+      if (focus) opts[i].focus();
+      if (reduceMotion()) return;
+      gsap.fromTo(box, { height: from }, { height: box.scrollHeight, duration: 0.35, ease: 'power2.out', clearProps: 'height' });
+      gsap.fromTo(panels[i], { autoAlpha: 0, y: 4 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.out', clearProps: 'transform,opacity,visibility' });
+    };
+    opts.forEach((o, i) => {
+      o.addEventListener('click', () => select(i));
+      o.addEventListener('keydown', (e) => {
+        const n = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+        if (n) { e.preventDefault(); select((i + n + opts.length) % opts.length, true); }
+      });
+    });
+  });
+</script>

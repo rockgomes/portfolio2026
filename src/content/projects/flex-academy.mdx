@@ -45,7 +45,35 @@ live:
   caption: "The live page, scaled to fit. Try the switch, the calendar and the theme toggle."
 copyToCheck: true
 ---
+import CaseSection from '../../components/case/CaseSection.astro';
+import Decision from '../../components/case/Decision.astro';
+import Proof from '../../components/case/Proof.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
 
+<CaseSection title="Three decisions I would defend" subtitle="the ideas that made the page work" id="decisions">
+  <div class="decisions">
+    <Decision n={1} of={3} title="The calendar is the main idea">
+      Operators live in a calendar all day: bookings, check-ins, cleanings. So the hero is a calendar. It passes the 5-second test without a slogan: the visitor sees their own first unit and the units after it. The "You are here" marker moves when the reader switches path.
+      <ProofSwitch slot="proof" kind="segmented" id="d1" label="Reader path" selected={1} items={[
+        { label: 'Starting out', caption: 'The hero for someone starting out: the headline, the button and the calendar lead to the free webinar and the first unit.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-hero-launch.jpg', alt: 'The Flex Academy hero for someone starting out: "Learn the business behind every booking", a webinar button and a calendar with the first unit.', width: 1440, height: 900 } },
+        { label: 'I run units', caption: 'The same hero for an operator: "I run units" changes the headline, the button and the calendar, and moves the "You are here" marker.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-hero-operator.jpg', alt: 'The Flex Academy hero for an operator: "Run the company behind every booking", a strategy call button and a calendar with several units.', width: 1440, height: 900 } },
+      ]} />
+    </Decision>
+    <Decision n={2} of={3} title="The call to action is a booking">
+      The free webinar sits on the calendar as an event, with a date, a length and the hosts. Signing up feels like booking one hour, not joining a funnel. The strategy call asks four short questions first. Answer "no units yet" and it offers the free webinar instead: nobody hits a dead end.
+      <ProofSwitch slot="proof" kind="tabs" id="d2" label="Booking flow" items={[
+        { label: 'Launch · webinar', caption: 'Launch: name and email, then the seat is booked. 18 seconds.', media: { kind: 'video', src: '/embeds/flex-academy/flex-academy-booking-launch.mp4', poster: '/embeds/flex-academy/flex-academy-booking-launch.jpg', label: 'Screen recording of the webinar sign-up: name and email, then the confirmation.', width: 1440, height: 900 } },
+        { label: 'Scale · strategy call', caption: 'Scale: four questions, a day and a time, then the confirmation. 27 seconds.', media: { kind: 'video', src: '/embeds/flex-academy/flex-academy-booking-scale.mp4', poster: '/embeds/flex-academy/flex-academy-booking-scale.jpg', label: 'Screen recording of the strategy call booking: four questions, a day and a time, then the confirmation.', width: 1440, height: 900 } },
+      ]} />
+    </Decision>
+    <Decision n={3} of={3} title="Proof without promises" pills={['since 2019', '7 cities', '150+ corporate partners', '130+ booking channels']}>
+      No income claims, no countdowns, no fake testimonials: only facts I can source. Instead of promises, "The hard truth" shows one real day across three units, first without a system and then with one.
+      <Proof slot="proof" caption="Scrolling turns the same day from chaos into order." media={{ kind: 'video', src: '/embeds/flex-academy/flex-academy-hard-truth.mp4', poster: '/embeds/flex-academy/flex-academy-hard-truth.jpg', label: 'Screen recording: scrolling through The hard truth. Twelve tasks pile up on one day, then the same day with a system falls into order.', width: 1440, height: 900 }} />
+    </Decision>
+  </div>
+</CaseSection>
+
+<div class="case-old prose">
 
 ## The brief
 
@@ -97,28 +125,6 @@ So I explored art directions side by side, with the same content in each, so onl
 The winning idea came from the audience. Operators live in a calendar all day: bookings, check-ins, cleanings. So the hero *is* a calendar. The first row is your first unit. The rows below are the units you add next. One picture shows the whole path from Launch to Scale, in a tool the reader already knows.
 
 <div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-cmp"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
-
-## Three decisions I would defend
-
-### 1\. The calendar is the main idea
-
-It passes the 5-second test without a slogan. The visitor sees their own first unit and the units after it. The "You are here" marker moves when the reader switches path, so the page always shows where they stand.
-
-### 2\. The call to action is a booking
-
-The free webinar sits on that calendar as an event, with a date, a length and the hosts. Signing up feels like booking one hour, not joining a funnel. Three fields. The confirmation puts the hour on the visitor's own calendar.
-
-### 3\. Proof without promises
-
-Only sourced facts: since 2019, seven cities, more than 150 corporate partners, more than 130 booking channels through Base360. Instead of income claims, "The hard truth" shows one real day across three units, first without a system and then with one.
-
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-truth"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
-
-## The moment of commitment
-
-Each path has its own flow. The webinar needs a name, an email and a country. The strategy call asks four short questions first, so the team can prepare: units today, the 12-month target, the city and a budget band. If someone answers "no units yet", the flow does not reject them. It offers the free webinar instead. Nobody hits a dead end.
-
-<div data-rt-embed-type='true'><div class="fa-mount" data-fa="fa-flows"></div><script is:inline src="/embeds/flex-academy-embeds.js"></script></div>
 
 ## The design system behind it
 
@@ -176,3 +182,5 @@ The first test: the page opens for beginners, because they are the bigger group.
 -   **Structure first, look second, but not for long.** The wireframe was right and still felt wrong. Comparing directions with identical content made the choice about the idea, not the polish.
 -   **Constraints build trust.** Saying no to fake proof forced a better idea: show the work instead of the promise.
 -   **A system pays off at the edges.** Dark mode on every page, in Figma and in code, took tokens and one toggle, because every layer was already bound.
+
+</div>
