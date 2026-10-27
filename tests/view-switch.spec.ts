@@ -51,6 +51,23 @@ test.describe('view switch motion', () => {
     expect(await leftovers(page)).toEqual([]);
   });
 
+  // The chosen option takes its view's colour on the click, not when the page has changed (tokens color/view/*)
+  for (const [from, to] of [['design', 'recruiter'], ['recruiter', 'engineer'], ['engineer', 'design']]) test(`${from} to ${to}: the switch shows the new colour at once`, async ({ page }) => {
+    await page.goto(`/?view=${from}`);
+    await page.waitForLoadState('load');
+    await page.evaluate((v) => {
+      const w = window as unknown as { seen: string[] };
+      const b = document.querySelector<HTMLElement>(`[data-view-option="${v}"]`)!;
+      w.seen = [];
+      const f = () => { w.seen.push(getComputedStyle(b).color + ' / ' + getComputedStyle(b).backgroundColor); if ('switching' in document.documentElement.dataset || document.documentElement.classList.contains('view-fading')) requestAnimationFrame(f); };
+      b.click(); f();
+    }, to);
+    await settled(page);
+    const seen = await page.evaluate(() => (window as unknown as { seen: string[] }).seen);
+    expect(seen.length).toBeGreaterThan(5);
+    expect(new Set(seen)).toEqual(new Set([seen[seen.length - 1]]));
+  });
+
   test('the page fades out and back in', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('load');

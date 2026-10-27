@@ -28,6 +28,12 @@
   --color-status-positive: #13804f;
   --color-status-positive-soft: rgba(31, 175, 107, 0.13);
   --color-status-negative-text: #c2421f;
+  --color-view-design: #1b6fe3;
+  --color-view-design-soft: rgba(27, 111, 227, 0.14);
+  --color-view-recruiter: #6e5be8;
+  --color-view-recruiter-soft: rgba(110, 91, 232, 0.13);
+  --color-view-engineer: #0a7d44;
+  --color-view-engineer-soft: rgba(20, 174, 92, 0.13);
   color-scheme: light;
 }
 
@@ -55,6 +61,12 @@
   --color-status-positive: #3dd68c;
   --color-status-positive-soft: rgba(61, 214, 140, 0.14);
   --color-status-negative-text: #ff8a73;
+  --color-view-design: #4fd3ea;
+  --color-view-design-soft: rgba(79, 211, 234, 0.14);
+  --color-view-recruiter: #a98bfa;
+  --color-view-recruiter-soft: rgba(169, 139, 250, 0.14);
+  --color-view-engineer: #3dd68c;
+  --color-view-engineer-soft: rgba(61, 214, 140, 0.14);
   color-scheme: dark;
 }
 
@@ -83,6 +95,12 @@
     --color-status-positive: #3dd68c;
     --color-status-positive-soft: rgba(61, 214, 140, 0.14);
     --color-status-negative-text: #ff8a73;
+    --color-view-design: #4fd3ea;
+    --color-view-design-soft: rgba(79, 211, 234, 0.14);
+    --color-view-recruiter: #a98bfa;
+    --color-view-recruiter-soft: rgba(169, 139, 250, 0.14);
+    --color-view-engineer: #3dd68c;
+    --color-view-engineer-soft: rgba(61, 214, 140, 0.14);
     color-scheme: dark;
   }
 }

@@ -50,6 +50,12 @@ const links = [
   .name { font: var(--type-ui-brand); color: var(--color-text-primary); }
   .switch { grid-column: 2; display: flex; align-items: center; gap: 10px; }
   .lab { font: 400 11.5px/1 var(--font-mono); color: var(--color-text-muted); white-space: nowrap; }
+  /* The chosen option shows its own view's colour (tokens color/view/*), so it changes on the click, not after the
+     page has switched. It also stays out of the colour fade of the switch (base.css, .view-fading). */
+  .switch :global([data-view-option='design'][aria-checked='true']) { background: var(--color-view-design-soft); color: var(--color-view-design); }
+  .switch :global([data-view-option='recruiter'][aria-checked='true']) { background: var(--color-view-recruiter-soft); color: var(--color-view-recruiter); }
+  .switch :global([data-view-option='engineer'][aria-checked='true']) { background: var(--color-view-engineer-soft); color: var(--color-view-engineer); }
+  :global(html.view-fading) .switch :global([data-view-option]) { transition: none !important; }
   .nav { display: flex; align-items: center; gap: var(--space-24); white-space: nowrap; }
   .nav a:not(.btn) { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
   .nav a:not(.btn):hover { color: var(--color-text-primary); }
