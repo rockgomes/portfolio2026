@@ -1,6 +1,6 @@
 ---
 // The live page of a project, scaled to fit (from the old Webflow embed fa-live), in the same framed box as Proof,
-// under a small browser bar: three dots, the address (a small Pill) and a Reload button (the shared .btn) that
+// under a small browser bar (Figma: Browser bar 427:83): three dots, the address (a small Pill) and a Reload button (the shared .btn .btn-icon) that
 // starts the prototype again. The iframe is drawn at 1440x900 and scaled to the box width. Below half size (phones)
 // the iframe is too small to use, so a screen recording shows instead, playing in view as every proof video does;
 // there Reload starts the recording again. Without JS, or before JS runs, the recording shows with its controls:
@@ -16,7 +16,7 @@ const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
     <div class="bar">
       <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
       <span class="ui-pill ui-pill-sm addr">{address}</span>
-      <button type="button" class="btn reload" data-live-reload aria-label="Reload the live page"><IconRotateCw /></button>
+      <button type="button" class="btn btn-icon reload" data-live-reload aria-label="Reload the live page"><IconRotateCw /></button>
     </div>
     <div class="view" data-live-view>
       <iframe src={src} title={title} loading="lazy"></iframe>
@@ -29,7 +29,7 @@ const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
   .dots { display: flex; gap: 6px; }
   .dots i { width: 8px; height: 8px; border-radius: var(--radius-pill); border: 1px solid var(--color-border-strong); }
   .addr { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .reload { justify-self: end; padding: 4px; }
+  .reload { justify-self: end; }
   .view { position: relative; overflow: hidden; }
   iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; }
   video { display: none; width: 100%; height: auto; }

@@ -57,6 +57,8 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .btn:hover { color: var(--color-text-primary); }
 .btn-primary { background: var(--color-annotation-measure); border-color: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-control-strong); }
 .btn-primary:hover { background: color-mix(in srgb, var(--color-annotation-measure) 85%, var(--color-text-primary)); color: var(--color-surface-page); }
+/* Icon only (Figma: Button, Type=Icon only): one 14px icon, no label, a 24px button. Give it an aria-label. */
+.btn-icon { padding: var(--space-4); }
 /* Underline tab (Figma: Tab / Underline): text tabs at the top of a panel. The selected tab gets a 2px line on the bar's bottom border. */
 .utabs { display: flex; align-items: flex-end; gap: var(--space-16); padding: 0 14px; border-bottom: 1px solid var(--color-border-subtle); }
 .utab { padding: 0 0 7px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; font: var(--type-ui-tab); color: var(--color-text-muted); }
