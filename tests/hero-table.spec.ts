@@ -59,12 +59,30 @@ test.describe('hero story', () => {
 
   test('clicking the table skips to the end state and saves nothing', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('[data-tabs] .tab')).toHaveCount(2); // the story starts before the view exists
+    await expect(page.locator('[data-tabs] .tab')).toHaveCount(1); // the story starts with no saved views, only All companies
     await page.locator('[data-count]').click();
     await expect(page.locator('[data-count]')).toHaveText('28');
     await expect(page.getByRole('tab', { name: 'ICP · Not churned' })).toHaveAttribute('aria-selected', 'true');
     await expect(page.locator('[data-story-thread]')).toHaveAttribute('data-state', 'end');
     expect(await page.evaluate(() => localStorage.getItem('rg-hero-table'))).toBeNull();
+  });
+
+  test('the story starts with no saved views, from the first frame, and only the story adds one', async ({ page }) => {
+    // Log the tabs on every painted frame from the start of the page load
+    await page.addInitScript(() => {
+      const log: string[] = ((window as any).__tabs = []);
+      const tick = () => {
+        const t = [...document.querySelectorAll('[data-tabs] .tab')].map((b) => b.textContent).join('|');
+        if (t && t !== log[log.length - 1]) log.push(t);
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    await page.goto('/');
+    await expect(page.locator('[data-save-view]')).toBeVisible({ timeout: 20_000 }); // Rock has added the condition
+    expect(await page.evaluate(() => (window as any).__tabs)).toEqual(['All companies']);
+    await expect(page.getByRole('tab', { name: 'ICP · Not churned' })).toBeVisible({ timeout: 10_000 }); // Rock saves it
+    await expect(page.locator('[data-tabs] .tab')).toHaveText(['All companies', 'ICP · Not churned']);
   });
 
   test('leaving the design lead view ends the story', async ({ page }) => {

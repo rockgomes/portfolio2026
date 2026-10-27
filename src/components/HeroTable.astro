@@ -13,7 +13,7 @@ const cols = [
   { key: 'last', label: 'Last activity', w: 138 },
 ];
 ---
-<div class="win" data-hero-table>
+<div class="win" data-hero-table data-total={companies.length}>
   <div class="bar views">
     <div class="tabs" role="tablist" aria-label="Saved views" data-tabs>
       <button type="button" class="tab" role="tab" data-preset="all" aria-selected="false">All companies</button>
@@ -59,6 +59,19 @@ const cols = [
     </table>
   </div>
 </div>
+<script is:inline>
+  // When the hero story is going to play (same rules as HeroStory), show its start from the first frame:
+  // only "All companies", nothing filtered. Otherwise the saved views show for a moment before the story loads.
+  (function () {
+    var seen = false; try { seen = sessionStorage.getItem('rg-hero-story-seen') === '1'; } catch (e) {}
+    var v = document.documentElement.dataset.view;
+    if (innerWidth < 1200 || seen || v === 'recruiter' || v === 'engineer' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var win = document.querySelector('[data-hero-table]');
+    win.dataset.storyStart = '';
+    win.querySelectorAll('[data-tabs] .tab').forEach(function (t) { if (t.dataset.preset === 'all') t.setAttribute('aria-selected', 'true'); else t.remove(); });
+    win.querySelector('[data-count]').textContent = win.dataset.total;
+  })();
+</script>
 
 <script type="application/json" id="hero-table-data" set:html={JSON.stringify(companies)} />
 
@@ -180,7 +193,10 @@ const cols = [
   if (!Array.isArray(state.hidden)) state.hidden = []; // state saved before the Columns menu existed
   let paused = false; // while the hero story plays, nothing is saved
   const save = () => { if (paused) return; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
-  const allViews = () => [ALL, ...state.views, EMEA];
+  // While the hero story plays there are no saved views yet, not even EMEA: the story saves the first one (Rock's request).
+  let story = false;
+  const storyStart = () => ({ ...fresh(), view: 'all', conds: [] as Cond[], views: [] as View[] });
+  const allViews = () => story ? [ALL, ...state.views] : [ALL, ...state.views, EMEA];
   const viewName = (cs: Cond[]) => cs.map((c) => c.field === 'employees' ? `${c.op === 'more than' ? 'Over' : 'Under'} ${Number(c.value).toLocaleString('en')} people` : c.op === 'is not' ? `Not ${c.value.toLowerCase()}` : c.value).join(' · ');
 
   const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
@@ -251,12 +267,12 @@ const cols = [
     hasUserState: () => hasUserState,
     snapshot: () => JSON.parse(JSON.stringify(state)),
     pause: (on: boolean) => { paused = on; },
-    load: (s: typeof state) => { state = JSON.parse(JSON.stringify(s)); draw(); },
-    start: () => { state = { ...fresh(), view: 'all', conds: [], views: [] }; menu.hidden = true; draw(); },
+    load: (s: typeof state) => { story = false; state = JSON.parse(JSON.stringify(s)); draw(); },
+    start: () => { story = true; state = storyStart(); menu.hidden = true; draw(); },
     openMenu: () => { menu.hidden = false; addBtn.setAttribute('aria-expanded', 'true'); },
     addCond: (i: number) => { state.conds.push({ ...ADDABLE[i] }); state.view = ''; menu.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); draw(); },
     saveView,
-    reset: () => { state = fresh(); menu.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); draw(); },
+    reset: () => { story = false; state = fresh(); menu.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); draw(); },
   };
 
   root.addEventListener('click', (e) => {
@@ -289,5 +305,8 @@ const cols = [
     const items = colToggles.filter((b) => !b.disabled); const i = items.indexOf(document.activeElement as HTMLButtonElement);
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); items[(i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length]?.focus(); }
   });
-  draw();
+  // The first paint shows the story's start when the story is going to play (the inline script above marks it).
+  // Only the look: the state stays the visitor's own, so HeroStory can put it back after the story.
+  if ('storyStart' in root.dataset) { const own = state; story = true; state = storyStart(); draw(); state = own; story = false; delete root.dataset.storyStart; }
+  else draw();
 </script>
