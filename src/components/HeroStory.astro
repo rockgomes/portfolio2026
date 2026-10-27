@@ -94,8 +94,6 @@ import { messages } from '../data/heroStory';
       return { x: () => at().x, y: () => at().y, duration: MOVE, ease: 'power2.inOut' };
     };
     const q = (sel: string) => () => table.querySelector(sel);
-    // A cursor leaves back the way it came (to its start point below the table), fading out.
-    const leave = { x: 0, y: 0, autoAlpha: 0, duration: MOVE, ease: 'power2.inOut' };
     const press = (sel: string) => () => { const el = table.querySelector(sel); if (el) gsap.fromTo(el, { scale: 0.93 }, { scale: 1, duration: 0.35, ease: 'back.out(2)' }); };
     // A message fades in by its cursor (sliding 6px towards it), and fades out when the story moves on.
     const sayFrom = (b: HTMLElement) => ({ autoAlpha: 0, y: b.classList.contains('say-above') ? 6 : -6 });
@@ -157,8 +155,6 @@ import { messages } from '../data/heroStory';
 
       // The cursors fade in as they move up from their start points (below the table), and go back there fading out.
       // Each message shows by its cursor while that person acts, so it can be read during the action.
-      // One person talks at a time: when the next person starts, the one before leaves with their message,
-      // so a cursor never sits on someone else's message (Rock's feedback on PR 53).
       // The thread stays hidden until the end, then shows as the resolved comment.
       tl = gsap.timeline({ delay: 0.3, onComplete: () => finish() });
       gsap.ticker.add(fit); fit();
@@ -166,12 +162,12 @@ import { messages } from '../data/heroStory';
       // The PM stops on the pill, not beside it: at 1200px the table hides the Status column, and a PM beside the pill stuck out past the screen edge.
       tl.to(pm, { ...to(pm, q('.pill-churned'), 0.3, 0.8), autoAlpha: 1 })
         .fromTo(says[0], sayFrom(says[0]), sayIn, '-=0.3')
-      // 2. Rock proposes the fix, then builds it: a condition, then Save as view. As he starts talking, the PM leaves.
-      // His message sits above his cursor, so it never covers the + Condition menu, and stays while he works.
+      // 2. Rock proposes the fix, then builds it: a condition, then Save as view. His message sits above his cursor,
+      // so it never covers the + Condition menu, and stays while he works.
         .to(rock, { ...to(rock, q('[data-add]')), autoAlpha: 1 }, '+=3')
         .fromTo(says[1], sayFrom(says[1]), sayIn, '<0.4')
-        .to(says[0], sayOut, '<').to(pm, leave, '<')
         .add(press('[data-add]'), '+=1.6').add(() => api.openMenu())
+        .to(says[0], sayOut, '<')
       // He picks the condition near the right end of the menu item, so his message clears the menu.
         .to(rock, { ...to(rock, q('[data-add-i="3"]'), 0.95), duration: 0.9 }, '+=0.6')
         .add(press('[data-add-i="3"]'))
@@ -179,19 +175,21 @@ import { messages } from '../data/heroStory';
         .to(rock, to(rock, q('[data-save-view]')), '+=1.1')
         .add(press('[data-save-view]'))
         .add(() => { const tab = api.saveView('ICP · Not churned'); if (tab) gsap.from(tab, { autoAlpha: 0, scale: 0.85, duration: 0.6, ease: 'back.out(1.8)' }); }, '+=0.25')
-      // 3. The Dev asks how it works, and Rock leaves as the Dev comes in (he was on Save as view, under the Dev's message).
-      // After 3s to read the question, Rock comes back to answer by the match count, and the Dev leaves.
+      // 3. The Dev asks how it works; Rock answers by the match count. The PM leaves as the Dev comes in
+      // (Rock's request: the PM's cursor sat on Rock's answer).
         .to(dev, { ...to(dev, q('[data-preset]:not([data-preset="all"]):not([data-preset="emea"])'), 0.6, 0.9), autoAlpha: 1 }, '+=0.8')
-        .to(says[1], sayOut, '<').to(rock, leave, '<')
+        .to(pm, { x: 0, y: 0, autoAlpha: 0, duration: MOVE, ease: 'power2.inOut' }, '<') // back the way they came
         .fromTo(says[2], sayFrom(says[2]), sayIn, '-=0.3')
-        .to(rock, { ...to(rock, q('[data-count]'), 0.2, 2.2), autoAlpha: 1 }, '+=3')
-        .to(says[2], sayOut, '<').to(dev, leave, '<')
+      // After 3s to read the question, both earlier messages go as Rock moves to answer (at 1200px the Dev's message
+      // sits over the match count, where Rock goes).
+        .to([says[1], says[2]], sayOut, '+=3')
+        .to(rock, { ...to(rock, q('[data-count]'), 0.2, 2.2), duration: 1 }, '<')
         .fromTo(says[3], sayFrom(says[3]), sayIn, '-=0.2')
-      // 4. After 4s to read the answer, Rock's message goes, the resolved comment shows, and Rock leaves
+      // 4. After 4s to read the answer, the messages go, the resolved comment shows, and the Dev and Rock leave
         .to(says[3], { ...sayOut, duration: 0.4 }, '+=4')
         .add(() => { thread.dataset.state = 'end'; msgs[0].hidden = false; toggle.hidden = false; }, '<')
         .to(thread, { autoAlpha: 1, duration: 0.5 }, '<')
-        .to(rock, leave, '<');
+        .to([dev, rock], { x: 0, y: 0, autoAlpha: 0, duration: 1.2, ease: 'power2.inOut', stagger: 0.15 }, '<'); // back the way they came
 
       // Clicking the table skips to the end, so a visitor can use it. Scrolling and keys do not.
       spec.addEventListener('pointerdown', skip);
