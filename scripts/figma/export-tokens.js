@@ -15,6 +15,11 @@ const col = (await figma.variables.getLocalVariableCollectionsAsync()).find((c) 
 const modeId = (name) => col.modes.find((m) => m.name === name).modeId;
 const vars = await Promise.all(col.variableIds.map((id) => figma.variables.getVariableByIdAsync(id)));
 const byId = Object.fromEntries(vars.map((v) => [v.id, v]));
+// Semantic tokens point at the "primitives" collection (one mode). Primitives are not CSS variables,
+// so an alias to a primitive is written as its raw value.
+const primCol = (await figma.variables.getLocalVariableCollectionsAsync()).find((c) => c.name === 'primitives');
+const prims = primCol ? await Promise.all(primCol.variableIds.map((id) => figma.variables.getVariableByIdAsync(id))) : [];
+const primById = Object.fromEntries(prims.map((v) => [v.id, v.valuesByMode[primCol.modes[0].modeId]]));
 
 const r3 = (n) => Math.round(n * 1000) / 1000;
 const hex = (c) => '#' + [c.r, c.g, c.b].map((x) => Math.round(x * 255).toString(16).padStart(2, '0')).join('');
@@ -25,6 +30,7 @@ const set = (obj, keys, val) => { let o = obj; keys.slice(0, -1).forEach((k) => 
 
 // Alias values are written as references, colours as DTCG colour objects.
 const value = (v, raw) => {
+  if (raw?.type === 'VARIABLE_ALIAS' && primById[raw.id]) return value(v, primById[raw.id]);
   if (raw?.type === 'VARIABLE_ALIAS') return ref(byId[raw.id]);
   if (v.resolvedType === 'COLOR') return color(raw);
   return `${raw}px`;
