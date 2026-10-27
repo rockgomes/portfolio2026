@@ -14,6 +14,10 @@ test.describe('hero table', () => {
     await page.click('[data-add]'); await page.getByRole('menuitem', { name: 'Employees more than 500' }).click();
     await expect(count(page)).toHaveText('22');
   });
+  test('with reduced motion the top bar is just there, with the saved views', async ({ page }) => {
+    await expect(page.locator('[data-views-bar]')).toBeVisible();
+    await expect(page.locator('[data-tabs] .tab')).toHaveText(['All companies', 'ICP · Not churned', 'EMEA']);
+  });
   test('the + Condition menu is closed on load', async ({ page }) => {
     await expect(page.locator('[data-add-menu]')).toBeHidden();
   });
@@ -67,22 +71,42 @@ test.describe('hero story', () => {
     expect(await page.evaluate(() => localStorage.getItem('rg-hero-table'))).toBeNull();
   });
 
-  test('the story starts with no saved views, from the first frame, and only the story adds one', async ({ page }) => {
-    // Log the tabs on every painted frame from the start of the page load
+  test('the story starts without the top bar, from the first frame; it slides in when Rock proposes, and the window keeps its height as it does', async ({ page }) => {
+    test.setTimeout(60_000);
+    // Log, on every painted frame from the start of the page load: is the top bar showing, which tabs, and the window height
     await page.addInitScript(() => {
-      const log: string[] = ((window as any).__tabs = []);
+      const log: string[] = ((window as any).__bar = []);
       const tick = () => {
-        const t = [...document.querySelectorAll('[data-tabs] .tab')].map((b) => b.textContent).join('|');
-        if (t && t !== log[log.length - 1]) log.push(t);
+        const bar = document.querySelector<HTMLElement>('[data-views-bar]');
+        if (bar) {
+          const c = getComputedStyle(bar);
+          const shown = c.visibility !== 'hidden' && +c.opacity > 0 ? 'bar' : 'no bar';
+          const t = `${shown} ${[...bar.querySelectorAll('.tab[data-preset]')].map((b) => b.textContent).join('|')}`;
+          if (t !== log[log.length - 1]) log.push(t);
+        }
         requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
     });
     await page.goto('/');
-    await expect(page.locator('[data-save-view]')).toBeVisible({ timeout: 20_000 }); // Rock has added the condition
-    expect(await page.evaluate(() => (window as any).__tabs)).toEqual(['All companies']);
-    await expect(page.getByRole('tab', { name: 'ICP · Not churned' })).toBeVisible({ timeout: 10_000 }); // Rock saves it
+    const win = page.locator('[data-hero-table]');
+    const height = () => win.evaluate((w) => Math.round(w.getBoundingClientRect().height));
+    // While the PM talks, there is no top bar, and the window is as tall as at rest
+    await expect(page.locator('.cursor.c-pm [data-say="0"]')).toBeVisible({ timeout: 15_000 });
+    const h0 = await height();
+    expect(await page.evaluate(() => (window as any).__bar)).toEqual(['no bar All companies']);
+    // Rock proposes: the bar slides in, with only "All companies"; the window keeps its height
+    // (it grows a little later, when Rock adds the condition: the condition is taller than "+ Condition", as before)
+    await expect(page.locator('[data-say="1"]')).toBeVisible({ timeout: 15_000 });
+    await expect.poll(() => page.evaluate(() => (window as any).__bar.at(-1))).toBe('bar All companies');
+    await page.waitForTimeout(1000);
+    expect(await height()).toBe(h0);
+    // Only the story adds the saved view
+    await expect(page.getByRole('tab', { name: 'ICP · Not churned' })).toBeVisible({ timeout: 15_000 });
     await expect(page.locator('[data-tabs] .tab')).toHaveText(['All companies', 'ICP · Not churned']);
+    // At the end, the table is back as before, with the bar
+    await expect(page.locator('[data-story-thread]')).toHaveAttribute('data-state', 'end', { timeout: 30_000 });
+    await expect(page.locator('[data-tabs] .tab')).toHaveText(['All companies', 'ICP · Not churned', 'EMEA']);
   });
 
   test('leaving the design lead view ends the story', async ({ page }) => {

@@ -14,7 +14,7 @@ const cols = [
 ];
 ---
 <div class="win" data-hero-table data-total={companies.length}>
-  <div class="bar views">
+  <div class="bar views" data-views-bar>
     <div class="tabs" role="tablist" aria-label="Saved views" data-tabs>
       <button type="button" class="tab" role="tab" data-preset="all" aria-selected="false">All companies</button>
       <button type="button" class="tab" role="tab" data-preset="icp" aria-selected="true">ICP · Not churned</button>
@@ -60,14 +60,25 @@ const cols = [
   </div>
 </div>
 <script is:inline>
-  // When the hero story is going to play (same rules as HeroStory), show its start from the first frame:
-  // only "All companies", nothing filtered. Otherwise the saved views show for a moment before the story loads.
+  // The hero story starts without the top bar (Rock's request): it slides in when Rock proposes saved views (HeroStory).
+  // closeBar() tucks the bar under the window's top edge, and lets the rows fill its space, so the window keeps its height.
+  // When the story is going to play (same rules as HeroStory), this runs before the first frame, so the bar and the
+  // saved views never show for a moment before the story loads.
   (function () {
+    var win = document.querySelector('[data-hero-table]');
+    win.closeBar = function () {
+      var bar = win.querySelector('[data-views-bar]'), sc = win.querySelector('.scroll');
+      bar.style.marginTop = bar.style.opacity = bar.style.visibility = sc.style.maxHeight = '';
+      var h = bar.offsetHeight;
+      bar.style.marginTop = -h + 'px'; bar.style.opacity = '0'; bar.style.visibility = 'hidden';
+      sc.style.maxHeight = parseFloat(getComputedStyle(sc).maxHeight) + h + 'px';
+      return h;
+    };
     var seen = false; try { seen = sessionStorage.getItem('rg-hero-story-seen') === '1'; } catch (e) {}
     var v = document.documentElement.dataset.view;
     if (innerWidth < 1200 || seen || v === 'recruiter' || v === 'engineer' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var win = document.querySelector('[data-hero-table]');
     win.dataset.storyStart = '';
+    win.closeBar();
     win.querySelectorAll('[data-tabs] .tab').forEach(function (t) { if (t.dataset.preset === 'all') t.setAttribute('aria-selected', 'true'); else t.remove(); });
     win.querySelector('[data-count]').textContent = win.dataset.total;
   })();
