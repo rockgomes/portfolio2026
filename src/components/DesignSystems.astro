@@ -10,16 +10,16 @@ const systems = [
 const variants = [{ name: 'Primary', cls: 'pri' }, { name: 'Secondary', cls: 'sec' }, { name: 'Ghost', cls: 'gho' }];
 const states = [{ name: 'Default', cls: '' }, { name: 'Hover', cls: 'hov' }, { name: 'Disabled', cls: 'dis' }];
 const chains = [
-  { sw: 'brand', prim: 'blue.600', sem: 'color.action.primary', use: 'button.bg' }, // row 1 drives the Primary buttons in 01 and 02
+  { sw: 'brand', prim: 'blue.600', sem: 'color.action.primary', use: 'button.bg' }, // row 1 drives the Primary buttons in the Variants and Properties cards
   { sw: 'primary', prim: 'grey.050', sem: 'color.text.primary', use: 'h1, row title' },
-  { sw: 'redline', prim: 'red.400', sem: 'color.redline', use: 'dimension, pin' },
+  { sw: 'redline', prim: 'red.400', sem: 'color.redline', use: 'pin, cursor' },
 ];
 ---
 <section class="ds" id="design-systems" aria-labelledby="ds-title">
   <div class="wrap inner section-top">
     <div class="head">
       <p class="fig t-mono-label"><Glyph kind="master" /> Section / Design systems</p>
-      <SectionHeader num="03" title="Design systems" titleId="ds-title" subtitle="two built from zero, one rebuilt · this page runs on a fourth" />
+      <SectionHeader anchor title="Design systems" titleId="ds-title" subtitle="two built from zero, one rebuilt · this page runs on a fourth" />
     </div>
 
     <div class="intro">
@@ -45,7 +45,7 @@ const chains = [
       <p class="how t-mono-label">how I build them</p>
       <div class="spec-grid">
         <article class="spec">
-          <h3 class="spec-h"><span class="n t-mono-label">01</span><span class="t-heading-item">Variants, not copies</span></h3>
+          <h3 class="spec-h"><span class="t-heading-item">Variants, not copies</span></h3>
           <div class="area">
             <div class="set-wrap">
             <p class="fig t-mono-label"><Glyph kind="master" /> Button<span class="pick" data-pick></span></p>
@@ -60,7 +60,7 @@ const chains = [
         </article>
 
         <article class="spec">
-          <h3 class="spec-h"><span class="n t-mono-label">02</span><span class="t-heading-item">Properties that make sense</span></h3>
+          <h3 class="spec-h"><span class="t-heading-item">Properties that make sense</span></h3>
           <div class="area" data-drag-bounds>
             <div class="ip">
               <div class="inst" data-draggable>
@@ -82,7 +82,7 @@ const chains = [
         </article>
 
         <article class="spec">
-          <h3 class="spec-h"><span class="n t-mono-label">03</span><span class="t-heading-item">Three layers of tokens</span></h3>
+          <h3 class="spec-h"><span class="t-heading-item">Three layers of tokens</span></h3>
           <div class="area">
             <div class="chains t-mono-small" data-chains>
               {chains.map((c, i) => (
@@ -98,7 +98,7 @@ const chains = [
         </article>
 
         <article class="spec">
-          <h3 class="spec-h"><span class="n t-mono-label">04</span><span class="t-heading-item">Modes, not duplicates</span></h3>
+          <h3 class="spec-h"><span class="t-heading-item">Modes, not duplicates</span></h3>
           <div class="area">
             <div class="modes" aria-hidden="true">
               <div class="mode" data-theme-sample="dark"><p class="ml t-mono-label">mode: dark<span class="here" data-here="dark"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag ui-tag">Data, SaaS</span></div></div>
@@ -113,7 +113,7 @@ const chains = [
   </div>
 </section>
 <style>
-  /* --brand is color.action.primary in card 03. Primary buttons in 01 and 02 read it, so a rebrand restyles them. */
+  /* --brand is color.action.primary in the tokens card. Primary buttons in the Variants and Properties cards read it, so a rebrand restyles them. */
   /* Same look as the site's buttons (.btn and .btn-primary in base.css) */
   .ds { --brand: var(--color-annotation-measure); --brand-hover: color-mix(in srgb, var(--brand) 85%, var(--color-text-primary)); }
   .inner { display: flex; flex-direction: column; gap: var(--space-48); }
@@ -139,10 +139,9 @@ const chains = [
   .spec-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-24); }
   .spec { display: flex; flex-direction: column; gap: 14px; padding: var(--space-24); background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); min-width: 0; }
   .spec-h { margin: 0; display: flex; gap: 10px; align-items: baseline; color: var(--color-text-primary); }
-  .spec-h .n { color: var(--color-annotation-redline); }
   .area { flex: 1 0 auto; min-height: 230px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; padding: var(--space-32) var(--space-24); background: var(--color-surface-stage); overflow: hidden; }
   .cap { margin: 0; color: var(--color-text-secondary); }
-  /* The set's name sits on its top-left corner, like an instance's name in 02 */
+  /* The set's name sits on its top-left corner, like an instance's name in the Properties card */
   .set-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-8); }
   .set { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-16); border: 1px dashed var(--color-figma-component); border-radius: 4px; }
   .vr { display: flex; gap: var(--space-12); }

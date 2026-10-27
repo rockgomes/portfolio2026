@@ -14,7 +14,7 @@ const next = projects.length > 1 ? projects[(i + 1) % projects.length] : undefin
   <section class="next wrap" aria-labelledby="next-case-title" data-next-case>
     <h2 class="label t-mono-label" id="next-case-title">next case study</h2>
     <ul class="one">
-      <WorkCard id={next.id} href={`/project/${next.id}`} img={next.data.homeImage} alt={next.data.homeImageAlt} demo={next.data.demoUrl} d={next.data} hideNumber />
+      <WorkCard id={next.id} href={`/project/${next.id}`} img={next.data.homeImage} alt={next.data.homeImageAlt} demo={next.data.demoUrl} d={next.data} />
     </ul>
   </section>
 )}

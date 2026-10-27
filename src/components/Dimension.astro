@@ -1,5 +1,5 @@
 ---
-// Figma: Dimension / Horizontal (20:3). Redline with ticks and a measure label. Set data-measure to fill the label live from the parent width.
+// Figma: Dimension / Horizontal (20:3). Blue measure line with ticks and a measure label. Set data-measure to fill the label live from the parent width.
 interface Props { label: string; live?: string }
 const { label, live } = Astro.props;
 ---
@@ -11,7 +11,7 @@ const { label, live } = Astro.props;
 <style>
   .dim { display: flex; align-items: center; gap: 10px; height: 12px; width: 100%; }
   .side { flex: 1 0 0; min-width: 0; display: flex; align-items: center; overflow: hidden; }
-  .tick { width: 1px; height: 9px; background: var(--color-annotation-redline); flex: none; }
-  .line { flex: 1 0 0; height: 1px; background: var(--color-annotation-redline); }
+  .tick { width: 1px; height: 9px; background: var(--color-annotation-measure); flex: none; }
+  .line { flex: 1 0 0; height: 1px; background: var(--color-annotation-measure); }
   .label { color: var(--color-annotation-measure); white-space: nowrap; text-align: center; }
 </style>
