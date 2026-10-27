@@ -73,7 +73,7 @@ test('each view has its own accent in dark mode', async ({ page }) => {
 test('the recruiter view has no designer layer', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/?view=recruiter');
-  const hidden = ['#experience .num', '#experience .dim', '#about .num', '#about .dim', '#about .sh .sub', '#about .tag', '#about .facts', '#about [data-overlay]'];
+  const hidden = ['#experience .dim', '#about .dim', '#about .sh .sub', '#about .tag', '#about .facts', '#about [data-overlay]'];
   for (const sel of hidden) for (const el of await page.locator(sel).all()) await expect(el, sel).toBeHidden();
   await expect(page.locator('#experience h2')).toHaveCSS('font-size', '44px');
   await page.goto('/?view=design');

@@ -19,7 +19,7 @@ const items: Item[] = [
 ---
 <section class="exp" id="experience" aria-labelledby="exp-title" data-recruiter-also>
   <div class="wrap inner section-top">
-    <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle={`2016 → ${new Date().getFullYear()}`} dimension={`timeline.span = ${new Date().getFullYear() - 2016} yrs · roles = ${items.length}`} command="git log --graph --since=2016" />
+    <SectionHeader anchor title="Experience" titleId="exp-title" subtitle={`2016 → ${new Date().getFullYear()}`} dimension={`timeline.span = ${new Date().getFullYear() - 2016} yrs · roles = ${items.length}`} command="git log --graph --since=2016" />
     <ol class="timeline" data-timeline>
       {items.map((it, i) => (
         <li class="item">
@@ -53,13 +53,13 @@ const items: Item[] = [
 </section>
 <style>
   .inner { display: flex; flex-direction: column; gap: var(--space-48); }
-  /* The red line is a pseudo-element (not a border), so it can draw itself as you scroll (--draw, Motion.astro). Same place as the old 1px border. */
+  /* The line is a pseudo-element (not a border), so it can draw itself as you scroll (--draw, Motion.astro). Same place as the old 1px border. */
   .timeline { position: relative; list-style: none; margin: 0; padding: 0 0 0 5px; }
-  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--color-annotation-redline); transform-origin: 50% 0%; transform: scaleY(var(--draw, 1)); }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--color-annotation-measure); transform-origin: 50% 0%; transform: scaleY(var(--draw, 1)); }
   .item { display: flex; align-items: flex-start; padding-block: var(--space-32); border-bottom: 1px solid var(--color-border-subtle); }
   .marker { position: relative; width: 32px; height: 16px; flex: none; }
   /* 7px square (border included) centred on the 1px line at the timeline's left edge; the marker box starts 5px in */
-  .marker i { position: absolute; left: -8px; top: 5px; width: 7px; height: 7px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-redline); }
+  .marker i { position: absolute; left: -8px; top: 5px; width: 7px; height: 7px; background: var(--color-surface-page); border: 1px solid var(--color-annotation-measure); }
   .years { width: 184px; flex: none; display: flex; flex-direction: column; gap: var(--space-4); color: var(--color-text-secondary); white-space: nowrap; }
   .body { width: min(540px, 100%); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
   .co { margin: 0; color: var(--color-text-primary); }
@@ -71,14 +71,13 @@ const items: Item[] = [
   .cmeta { margin: 0; color: var(--color-text-muted); }
   .todo .text { color: var(--color-text-muted); font-style: italic; }
   .corow { display: flex; align-items: center; gap: var(--space-12); flex-wrap: wrap; }
-  /* Recruiter view (Figma: Timeline item, View=Recruiter): the same timeline in the recruiter accent, not the designer
-     redline. A round 9px dot centred on the 1px line; the current role fills its dot. */
-  :global(html[data-view='recruiter']) .timeline::before { background: var(--color-annotation-measure); }
+  /* Recruiter view (Figma: Timeline item, View=Recruiter): a round 9px dot centred on the 1px line; the current role
+     fills its dot. */
   :global(html[data-view='recruiter']) .marker i { left: -9px; top: 4px; width: 9px; height: 9px; border: 1.5px solid var(--color-annotation-measure); border-radius: 50%; }
   :global(html[data-view='recruiter']) .item:first-child .marker i { background: var(--color-annotation-measure); }
-  /* Engineer view (Figma: Experience A - git log graph): the red timeline becomes a git log graph. One green branch line
+  /* Engineer view (Figma: Experience A - git log graph): the timeline becomes a git log graph. One green branch line
      from the current role down, round commits (filled = HEAD), client tabs as branches with the Lucide git-branch icon. */
-  :global(html[data-view='engineer']) .timeline::before { width: 2px; top: calc(var(--space-32) + 8px); background: var(--color-annotation-measure); }
+  :global(html[data-view='engineer']) .timeline::before { width: 2px; top: calc(var(--space-32) + 8px); }
   :global(html[data-view='engineer']) .marker i { left: -9.5px; top: 3px; width: 11px; height: 11px; border: 2px solid var(--color-annotation-measure); border-radius: 50%; }
   :global(html[data-view='engineer']) .item:first-child .marker i { background: var(--color-annotation-measure); }
   .ref { padding: 2px 8px; border-radius: 999px; background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); white-space: nowrap; }

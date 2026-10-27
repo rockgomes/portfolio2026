@@ -1,14 +1,13 @@
 ---
 // Figma: Work card (333:262). Used in the Projects grid (SelectedWork.astro) and as "next case study" on case pages.
 // The `overlay` slot holds the collaborators (cursor + comment) that point at the thumbnail, so they stay children of it.
-// hideNumber: case pages hide the card index (no Figma layer there).
 import type { CollectionEntry } from 'astro:content';
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 
 type Data = CollectionEntry<'projects'>['data'] | CollectionEntry<'experiments'>['data'];
-interface Props { id: string; href: string; img?: ImageMetadata; alt: string; demo: string; d: Data; hideNumber?: boolean }
-const { id, href, img, alt, demo, d, hideNumber = false } = Astro.props;
+interface Props { id: string; href: string; img?: ImageMetadata; alt: string; demo: string; d: Data }
+const { id, href, img, alt, demo, d } = Astro.props;
 const cardTag = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Experiment' : '');
 // Engineer view: the tags as GitHub topics (lower case), the same tags as the designer card shows.
 const topics = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].map((t) => t.toLowerCase().replace(/\s+/g, '-'));
@@ -20,7 +19,7 @@ const topics = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' 
     </a>
     <slot name="overlay" />
   </div>
-  <p class="meta">{!hideNumber && <span class="n t-mono-small" data-not-engineer>{d.cardNumber}</span>}<span class="co t-mono-label" data-not-engineer>{d.cardCompany}</span><span class="file t-mono-label" data-engineer>{id}.md</span><span class="sp"></span>{d.cardYear && <span class="yr t-mono-small">{d.cardYear}</span>}</p>
+  <p class="meta"><span class="co t-mono-label" data-not-engineer>{d.cardCompany}</span><span class="file t-mono-label" data-engineer>{id}.md</span><span class="sp"></span>{d.cardYear && <span class="yr t-mono-small">{d.cardYear}</span>}</p>
   <h3 class="title"><a href={href}>{d.cardTitle || d.name}</a></h3>
   <p class="line">{d.cardLine}</p>
   <p class="foot">
@@ -38,7 +37,6 @@ const topics = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' 
   .card:hover .thumb :global(img) { transform: scale(1.02); }
   .ph { display: block; width: 100%; height: 100%; }
   .meta { margin: 0; display: flex; align-items: center; gap: var(--space-12); white-space: nowrap; }
-  .meta .n { color: var(--color-annotation-redline); }
   .meta .co, .meta .yr { color: var(--color-text-muted); }
   .sp { flex: 1 1 0; }
   .title { margin: 0; font: var(--type-heading-card); letter-spacing: var(--tracking-heading-card); color: var(--color-text-primary); }
