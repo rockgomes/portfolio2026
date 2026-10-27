@@ -3,8 +3,8 @@
 // Filter rules (from the prototype): nothing selected = everything. Type is single choice.
 // Same group = OR, different groups = AND. Counts show what you would get. Zero-result tags are disabled.
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import SectionHeader from './SectionHeader.astro';
+import WorkCard from './WorkCard.astro';
 import Cursor from './Cursor.astro';
 import Comment from './Comment.astro';
 import { isPrivate } from '../lib/private';
@@ -16,9 +16,6 @@ const experiments = (await getCollection('experiments')).filter((e) => !isPrivat
   id: e.id, href: `/experiments/${e.id}`, img: e.data.cardImage, alt: '', demo: '', d: e.data,
 }));
 const items = [...projects, ...experiments].sort((a, b) => a.d.cardOrder - b.d.cardOrder);
-const cardTag = (d: (typeof items)[number]['d']) => [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Experiment' : '');
-// Engineer view: the tags as GitHub topics (lower case), the same tags as the designer card shows.
-const topics = (d: (typeof items)[number]['d']) => [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].map((t) => t.toLowerCase().replace(/\s+/g, '-'));
 const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.industry, focus: i.d.focus }));
 ---
 <section class="work" id="work" aria-labelledby="work-title">
@@ -62,27 +59,13 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
         <div class="active" data-filter-active hidden data-not-engineer></div>
         <ul class="grid" data-grid>
           {items.map((it) => (
-            <li class="card" data-id={it.id}>
-              <div class="thumb-wrap">
-                <a class="thumb" href={it.href} tabindex="-1" aria-hidden="true">
-                  {it.img ? <Image src={it.img} alt={it.alt} widths={[485, 970]} sizes="(min-width: 1200px) 485px, (min-width: 720px) 45vw, 100vw" /> : <span class="ph"></span>}
-                </a>
-                {/* Collaborators come in when the card comes into view, comment, then leave with their comment (Motion.astro).
-                    Places are from Figma at 1440px (card 485px); on narrower cards they move left with the card's right edge, so they never leave the page. */}
-                {it.id === 'dealfront-dynamic-lists' && <><Cursor name="Dev" color="dev" style="left: min(150px, calc(100% - 335px)); top: 200px;" /><Comment who="Dev" initial="D" color="dev" when="just now" style="left: min(168px, calc(100% - 317px)); top: 243px; width: 290px;">Views only store the filter, so this was easy to build.</Comment></>}
-                {it.id === 'inbank---hire-purchase' && <><Cursor name="Client" color="client" style="left: min(195px, calc(100% - 290px)); top: 110px;" /><Comment who="Client" initial="C" when="2 min ago" style="left: min(213px, calc(100% - 272px)); top: 153px; width: 300px;">Support tickets went down after launch. Great job!</Comment></>}
-                {it.id === 'bigbank---loan-flow' && <><Cursor name="PM" color="pm" style="left: min(150px, calc(100% - 335px)); top: 150px;" /><Comment who="PM" initial="P" color="pm" when="just now" style="left: min(168px, calc(100% - 317px)); top: 193px; width: 290px;">This flow now works the same in all 7 countries. One design, no forks.</Comment></>}
-              </div>
-              <p class="meta"><span class="n t-mono-small" data-not-engineer>{it.d.cardNumber}</span><span class="co t-mono-label" data-not-engineer>{it.d.cardCompany}</span><span class="file t-mono-label" data-engineer>{it.id}.md</span><span class="sp"></span>{it.d.cardYear && <span class="yr t-mono-small">{it.d.cardYear}</span>}</p>
-              <h3 class="title"><a href={it.href}>{it.d.cardTitle || it.d.name}</a></h3>
-              <p class="line">{it.d.cardLine}</p>
-              <p class="foot">
-                {cardTag(it.d) && <span class="tag ui-tag ui-tag-accent" data-not-engineer>{cardTag(it.d)}</span>}
-                {topics(it.d).map((t) => <span class="topic" data-engineer>{t}</span>)}
-                {it.demo && <a class="demo t-mono-label" href={it.demo} target="_blank" rel="noopener" data-not-engineer>+ Open live demo ↗</a>}
-                {it.demo && <a class="demo-dev" href={it.demo} target="_blank" rel="noopener" data-engineer>Live demo ↗</a>}
-              </p>
-            </li>
+            <WorkCard id={it.id} href={it.href} img={it.img} alt={it.alt} demo={it.demo} d={it.d}>
+              {/* Collaborators come in when the card comes into view, comment, then leave with their comment (Motion.astro).
+                  Places are from Figma at 1440px (card 485px); on narrower cards they move left with the card's right edge, so they never leave the page. */}
+              {it.id === 'dealfront-dynamic-lists' && <Fragment slot="overlay"><Cursor name="Dev" color="dev" style="left: min(150px, calc(100% - 335px)); top: 200px;" /><Comment who="Dev" initial="D" color="dev" when="just now" style="left: min(168px, calc(100% - 317px)); top: 243px; width: 290px;">Views only store the filter, so this was easy to build.</Comment></Fragment>}
+              {it.id === 'inbank---hire-purchase' && <Fragment slot="overlay"><Cursor name="Client" color="client" style="left: min(195px, calc(100% - 290px)); top: 110px;" /><Comment who="Client" initial="C" when="2 min ago" style="left: min(213px, calc(100% - 272px)); top: 153px; width: 300px;">Support tickets went down after launch. Great job!</Comment></Fragment>}
+              {it.id === 'bigbank---loan-flow' && <Fragment slot="overlay"><Cursor name="PM" color="pm" style="left: min(150px, calc(100% - 335px)); top: 150px;" /><Comment who="PM" initial="P" color="pm" when="just now" style="left: min(168px, calc(100% - 317px)); top: 193px; width: 290px;">This flow now works the same in all 7 countries. One design, no forks.</Comment></Fragment>}
+            </WorkCard>
           ))}
         </ul>
         <div class="empty" data-filter-empty hidden>
@@ -144,37 +127,10 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   .active :global(.pill i) { font-style: normal; color: var(--color-text-muted); }
   .active :global(.clear-all-inline) { border: 0; background: transparent; cursor: pointer; padding: var(--space-4) 0; font: var(--type-mono-label); color: var(--color-annotation-measure); }
   .grid { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-48) var(--space-24); }
-  .card { position: relative; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-  .card[hidden] { display: none; }
-  .thumb-wrap { position: relative; }
-  .thumb { display: block; aspect-ratio: 485 / 394; border: 1px solid var(--color-border-subtle); overflow: hidden; background: var(--color-surface-stage); }
-  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  .card:hover .thumb :global(img) { transform: scale(1.02); }
-  .ph { display: block; width: 100%; height: 100%; }
-  .meta { margin: 0; display: flex; align-items: center; gap: var(--space-12); white-space: nowrap; }
-  .meta .n { color: var(--color-annotation-redline); }
-  .meta .co, .meta .yr { color: var(--color-text-muted); }
-  .title { margin: 0; font: var(--type-heading-card); letter-spacing: var(--tracking-heading-card); color: var(--color-text-primary); }
-  .title a { text-decoration: none; }
-  .title a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
-  .title a:focus-visible { outline: none; }
-  .card:has(.title a:focus-visible) { outline: 2px solid var(--color-annotation-measure); outline-offset: 6px; }
-  .line { margin: 0; font: var(--type-body-row); color: var(--color-text-secondary); }
-  .foot { margin: 0; display: flex; align-items: center; gap: var(--space-16); flex-wrap: wrap; }
-  .demo { position: relative; z-index: 2; color: var(--color-annotation-measure); text-decoration: none; white-space: nowrap; }
-  .demo:hover { text-decoration: underline; }
-  .card :global([data-overlay]) { z-index: 3; }
-  .thumb-wrap :global(.cursor) { visibility: hidden; opacity: 0; } /* only on screen while acting */
   .empty { border: 1px dashed var(--color-border-strong); padding: var(--space-32) var(--space-24); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
   .empty p { margin: 0; } .empty-t { font: var(--type-heading-item); }
   .empty-s { color: var(--color-text-muted); }
   .ftoggle, .fshow { display: none; }
-  /* Engineer view: file name instead of number and company, GitHub topic pills, plain "Live demo" link, no cursors */
-  .meta .file { color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; }
-  .topic { padding: 2px 9px; border-radius: 999px; background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font: var(--type-ui-pill-small); }
-  .foot:has(.topic) { gap: var(--space-8); }
-  .demo-dev { position: relative; z-index: 2; margin-left: var(--space-8); font: var(--type-ui-pill-small); color: var(--color-text-primary); text-decoration: none; white-space: nowrap; }
-  .demo-dev:hover { text-decoration: underline; }
   /* The filter as a terminal. Each flag value is a real button; on values are green. */
   .dhead { display: flex; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-primary); }
   .dbody { padding: 10px 0 4px; white-space: pre; color: var(--color-text-primary); overflow-x: auto; }
@@ -216,8 +172,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
     /* The comment describes the sticky panel, which only exists on wide screens */
   }
   @media (prefers-reduced-motion: reduce) { .ftoggle svg { transition: none; } }
-  @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } .title { font-size: 24px; } }
-  @media (prefers-reduced-motion: reduce) { .thumb :global(img) { transition: none; } }
+  @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } }
 </style>
 
 <script>

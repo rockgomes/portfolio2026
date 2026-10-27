@@ -1,0 +1,63 @@
+---
+// Figma: Work card (333:262). Used in the Projects grid (SelectedWork.astro) and as "next case study" on case pages.
+// The `overlay` slot holds the collaborators (cursor + comment) that point at the thumbnail, so they stay children of it.
+// hideNumber: case pages hide the card index (no Figma layer there).
+import type { CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+type Data = CollectionEntry<'projects'>['data'] | CollectionEntry<'experiments'>['data'];
+interface Props { id: string; href: string; img?: ImageMetadata; alt: string; demo: string; d: Data; hideNumber?: boolean }
+const { id, href, img, alt, demo, d, hideNumber = false } = Astro.props;
+const cardTag = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Experiment' : '');
+// Engineer view: the tags as GitHub topics (lower case), the same tags as the designer card shows.
+const topics = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].map((t) => t.toLowerCase().replace(/\s+/g, '-'));
+---
+<li class="card" data-id={id}>
+  <div class="thumb-wrap">
+    <a class="thumb" href={href} tabindex="-1" aria-hidden="true">
+      {img ? <Image src={img} alt={alt} widths={[485, 970]} sizes="(min-width: 1200px) 485px, (min-width: 720px) 45vw, 100vw" /> : <span class="ph"></span>}
+    </a>
+    <slot name="overlay" />
+  </div>
+  <p class="meta">{!hideNumber && <span class="n t-mono-small" data-not-engineer>{d.cardNumber}</span>}<span class="co t-mono-label" data-not-engineer>{d.cardCompany}</span><span class="file t-mono-label" data-engineer>{id}.md</span><span class="sp"></span>{d.cardYear && <span class="yr t-mono-small">{d.cardYear}</span>}</p>
+  <h3 class="title"><a href={href}>{d.cardTitle || d.name}</a></h3>
+  <p class="line">{d.cardLine}</p>
+  <p class="foot">
+    {cardTag && <span class="tag ui-tag ui-tag-accent" data-not-engineer>{cardTag}</span>}
+    {topics.map((t) => <span class="topic" data-engineer>{t}</span>)}
+    {demo && <a class="demo t-mono-label" href={demo} target="_blank" rel="noopener" data-not-engineer>+ Open live demo ↗</a>}
+    {demo && <a class="demo-dev" href={demo} target="_blank" rel="noopener" data-engineer>Live demo ↗</a>}
+  </p>
+</li>
+<style>
+  .card { position: relative; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .thumb-wrap { position: relative; }
+  .thumb { display: block; aspect-ratio: 485 / 394; border: 1px solid var(--color-border-subtle); overflow: hidden; background: var(--color-surface-stage); }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .card:hover .thumb :global(img) { transform: scale(1.02); }
+  .ph { display: block; width: 100%; height: 100%; }
+  .meta { margin: 0; display: flex; align-items: center; gap: var(--space-12); white-space: nowrap; }
+  .meta .n { color: var(--color-annotation-redline); }
+  .meta .co, .meta .yr { color: var(--color-text-muted); }
+  .sp { flex: 1 1 0; }
+  .title { margin: 0; font: var(--type-heading-card); letter-spacing: var(--tracking-heading-card); color: var(--color-text-primary); }
+  .title a { text-decoration: none; }
+  .title a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+  .title a:focus-visible { outline: none; }
+  .card:has(.title a:focus-visible) { outline: 2px solid var(--color-annotation-measure); outline-offset: 6px; }
+  .line { margin: 0; font: var(--type-body-row); color: var(--color-text-secondary); }
+  .foot { margin: 0; display: flex; align-items: center; gap: var(--space-16); flex-wrap: wrap; }
+  .demo { position: relative; z-index: 2; color: var(--color-annotation-measure); text-decoration: none; white-space: nowrap; }
+  .demo:hover { text-decoration: underline; }
+  .card :global([data-overlay]) { z-index: 3; }
+  .thumb-wrap :global(.cursor) { visibility: hidden; opacity: 0; } /* only on screen while acting */
+  /* Engineer view: file name instead of number and company, GitHub topic pills, plain "Live demo" link, no cursors */
+  .meta .file { color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; }
+  .topic { padding: 2px 9px; border-radius: 999px; background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font: var(--type-ui-pill-small); }
+  .foot:has(.topic) { gap: var(--space-8); }
+  .demo-dev { position: relative; z-index: 2; margin-left: var(--space-8); font: var(--type-ui-pill-small); color: var(--color-text-primary); text-decoration: none; white-space: nowrap; }
+  .demo-dev:hover { text-decoration: underline; }
+  @media (max-width: 720px) { .title { font-size: 24px; } }
+  @media (prefers-reduced-motion: reduce) { .thumb :global(img) { transition: none; } }
+</style>

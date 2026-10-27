@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { readdirSync } from 'node:fs';
 
-const slugs = (dir: string) => readdirSync(`src/content/${dir}`).map((f) => f.replace(/\.md$/, ''));
+const slugs = (dir: string) => readdirSync(`src/content/${dir}`).map((f) => f.replace(/\.mdx?$/, ''));
 
 test('homepage loads without console errors', async ({ page }) => {
   const errors: string[] = [];

@@ -1,0 +1,23 @@
+---
+// Two columns of text under a case study section (sketch C 377:10259 and 377:10281): each a muted mono label, then
+// a "- " list or a paragraph. One column below 800px.
+interface Col { label: string; items?: string[]; text?: string }
+interface Props { left: Col; right: Col }
+const { left, right } = Astro.props;
+---
+<div class="two" data-two-col>
+  {[left, right].map((c) => (
+    <div class="col">
+      <p class="k t-mono-label">{c.label}</p>
+      {c.items && <ul class="t-dash-list">{c.items.map((it) => <li>{it}</li>)}</ul>}
+      {c.text && <p class="txt">{c.text}</p>}
+    </div>
+  ))}
+</div>
+<style>
+  .two { display: flex; gap: var(--space-80); align-items: flex-start; }
+  .col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-8); }
+  .k { margin: 0; color: var(--color-text-muted); }
+  ul, .txt { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  @media (max-width: 800px) { .two { flex-direction: column; gap: var(--space-32); } }
+</style>

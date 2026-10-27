@@ -2,6 +2,10 @@
 import { getCollection, render } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import CaseSummary from '../../components/case/CaseSummary.astro';
+import LivePage from '../../components/case/LivePage.astro';
+import Proof from '../../components/case/Proof.astro';
+import NextCase from '../../components/case/NextCase.astro';
 import { isPrivate } from '../../lib/private';
 
 export async function getStaticPaths() {
@@ -11,13 +15,30 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
+// A case study with the summary fields uses the new layout (docs/superpowers/specs/2026-10-27-case-study-design.md).
+// The others keep the old layout until each one gets its own pull request.
+const isCase = !!d.problem;
 ---
 <Base title={`${d.name} - Rock Gomes`} description={d.heroDescription} noindex={isPrivate(d)}>
-  <article class="article">
-    <div class="eyebrow">Case study</div>
-    <h1>{d.heroTitle || d.name}</h1>
-    {d.heroDescription && <p class="lead">{d.heroDescription}</p>}
-    {d.homeImage && <Image class="hero-img" src={d.homeImage} alt={d.homeImageAlt} widths={[768, 1536]} sizes="(min-width: 800px) 768px, 100vw" loading="eager" />}
-    <div class="prose"><Content /></div>
-  </article>
+  {isCase ? (
+    <>
+      <CaseSummary title={d.cardTitle || d.name} subtitle={d.subtitle} lead={d.heroDescription} facts={d.facts} problem={d.problem} decision={d.decision} result={d.result} links={d.links}>
+        {d.live ? <LivePage {...d.live} /> : d.homeImage && <Proof media={{ kind: 'image', src: d.homeImage, alt: d.homeImageAlt ?? '', width: d.homeImage.width, height: d.homeImage.height }} sizes="(min-width: 1440px) 1280px, 100vw" eager />}
+      </CaseSummary>
+      <div class="case-body"><Content /></div>
+      <NextCase currentId={entry.id} />
+    </>
+  ) : (
+    <article class="article">
+      <div class="eyebrow">Case study</div>
+      <h1>{d.heroTitle || d.name}</h1>
+      {d.heroDescription && <p class="lead">{d.heroDescription}</p>}
+      {d.homeImage && <Image class="hero-img" src={d.homeImage} alt={d.homeImageAlt} widths={[768, 1536]} sizes="(min-width: 800px) 768px, 100vw" loading="eager" />}
+      <div class="prose"><Content /></div>
+    </article>
+  )}
 </Base>
+<style>
+  /* The coverage line under the design system stats (sketch C 377:10243) */
+  .case-body :global(.coverage) { margin: 0; font: var(--type-mono-body); color: var(--color-text-secondary); }
+</style>

@@ -2,6 +2,7 @@
 // Figma: Experience (96:6929), Timeline item 21:111
 import SectionHeader from './SectionHeader.astro';
 import IconGitBranch from './IconGitBranch.astro';
+import Tabs from './Tabs.astro';
 // Independent work (from 2025) is one entry with a tab per client. Facts from Rock's CV (Oct 2026).
 type Client = { id: string; name: string; about: string; text: string; todo?: boolean }; // about: one line on the business (no dates: projects run about 6 months)
 type Item = { years: string; company: string; role: string; text?: string; clients?: Client[] };
@@ -33,11 +34,11 @@ const items: Item[] = [
             {it.text && <p class="text">{it.text}</p>}
             {it.clients && (
               <div class="clients" data-clients>
-                <div class="ctabs" role="tablist" aria-label="Clients">
-                  {it.clients.map((c, i) => <button type="button" class="ctab" role="tab" id={`client-tab-${c.id}`} aria-controls={`client-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}><IconGitBranch data-engineer /><span data-not-engineer>{c.name}</span><span data-engineer>{c.name.toLowerCase()}</span></button>)}
-                </div>
+                <Tabs label="Clients" id="client" tabs={it.clients.map((c) => c.name)} keys={it.clients.map((c) => c.id)}>
+                  {(name: string) => <><IconGitBranch data-engineer /><span data-not-engineer>{name}</span><span data-engineer>{name.toLowerCase()}</span></>}
+                </Tabs>
                 {it.clients.map((c, i) => (
-                  <div class:list={['cpanel', c.todo && 'todo']} role="tabpanel" id={`client-${c.id}`} aria-labelledby={`client-tab-${c.id}`} hidden={i !== 0}>
+                  <div class:list={['cpanel', c.todo && 'todo']} role="tabpanel" id={`client-panel-${c.id}`} aria-labelledby={`client-tab-${c.id}`} hidden={i !== 0}>
                     <p class="cmeta t-mono-small">{c.about}</p>
                     <p class="text">{c.text}</p>
                   </div>
@@ -66,12 +67,7 @@ const items: Item[] = [
   .text { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
   /* Independent: one tab per client (same tab style as the hero table) */
   .clients { display: flex; flex-direction: column; gap: var(--space-12); padding-top: 6px; }
-  .ctabs { display: flex; gap: var(--space-8); flex-wrap: wrap; }
-  .ctab { padding: 5px 10px; border-radius: var(--radius-control); border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: 400 12.5px/18px var(--font-sans); color: var(--color-text-secondary); white-space: nowrap; }
-  .ctab:hover { color: var(--color-text-primary); }
-  .ctab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font-weight: 500; }
   .cpanel { display: flex; flex-direction: column; gap: 6px; }
-  .cpanel[hidden] { display: none; }
   .cmeta { margin: 0; color: var(--color-text-muted); }
   .todo .text { color: var(--color-text-muted); font-style: italic; }
   .corow { display: flex; align-items: center; gap: var(--space-12); flex-wrap: wrap; }
@@ -86,35 +82,20 @@ const items: Item[] = [
   :global(html[data-view='engineer']) .marker i { left: -9.5px; top: 3px; width: 11px; height: 11px; border: 2px solid var(--color-annotation-measure); border-radius: 50%; }
   :global(html[data-view='engineer']) .item:first-child .marker i { background: var(--color-annotation-measure); }
   .ref { padding: 2px 8px; border-radius: 999px; background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); white-space: nowrap; }
-  :global(html[data-view='engineer']) .ctab { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 8px; border-radius: 6px; font: var(--type-mono-label); color: var(--color-text-secondary); }
-  :global(html[data-view='engineer']) .ctab :global(.gb) { color: var(--color-text-muted); flex: none; }
-  :global(html[data-view='engineer']) .ctab[aria-selected='true'] { background: var(--color-annotation-measure-soft); border-color: var(--color-annotation-measure); color: var(--color-annotation-measure); font-weight: 400; }
-  :global(html[data-view='engineer']) .ctab[aria-selected='true'] :global(.gb) { color: var(--color-annotation-measure); }
+  :global(html[data-view='engineer']) .clients :global(.ui-tab) { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 8px; border-radius: 6px; font: var(--type-mono-label); color: var(--color-text-secondary); }
+  :global(html[data-view='engineer']) .clients :global(.ui-tab .gb) { color: var(--color-text-muted); flex: none; }
+  :global(html[data-view='engineer']) .clients :global(.ui-tab[aria-selected='true']) { background: var(--color-annotation-measure-soft); border-color: var(--color-annotation-measure); color: var(--color-annotation-measure); font-weight: 400; }
+  :global(html[data-view='engineer']) .clients :global(.ui-tab[aria-selected='true'] .gb) { color: var(--color-annotation-measure); }
   @media (max-width: 720px) { .item { flex-wrap: wrap; row-gap: 10px; } .years { width: auto; flex-direction: row; gap: var(--space-12); } .body { flex: 1 1 100%; padding-left: var(--space-32); } }
 </style>
 
 <script>
-  import { gsap, reduceMotion } from '../lib/motion';
+  import { bindChoice } from '../lib/choice';
 
   // Client tabs: click or arrow keys switch the panel; the new panel fades in and the height eases.
   document.querySelectorAll<HTMLElement>('[data-clients]').forEach((box) => {
     const tabs = [...box.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    const panels = tabs.map((t) => box.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`)!);
-    const select = (i: number, focus = false) => {
-      const from = box.offsetHeight;
-      tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === i)); t.tabIndex = j === i ? 0 : -1; panels[j].hidden = j !== i; });
-      if (focus) tabs[i].focus();
-      if (reduceMotion()) return;
-      gsap.fromTo(box, { height: from }, { height: box.scrollHeight, duration: 0.35, ease: 'power2.out', clearProps: 'height' });
-      gsap.fromTo(panels[i], { autoAlpha: 0, y: 4 }, { autoAlpha: 1, y: 0, duration: 0.3, ease: 'power2.out', clearProps: 'transform,opacity,visibility' });
-    };
-    tabs.forEach((t, i) => {
-      t.addEventListener('click', () => select(i));
-      t.addEventListener('keydown', (e) => {
-        const n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-        if (n) { e.preventDefault(); select((i + n + tabs.length) % tabs.length, true); }
-      });
-    });
+    bindChoice({ options: tabs, panels: tabs.map((t) => box.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`)), box });
   });
 </script>
 

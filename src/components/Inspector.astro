@@ -91,6 +91,8 @@
 </style>
 
 <script>
+  import { bindChoice } from '../lib/choice';
+
   // The parts of the hero table, matched to filter-builder (commit SHA below). `site` is the real call site in the repo.
   const SHA = 'dbab9093d59f25add2f4e1a6ec320459b30413a4';
   const GH = `https://github.com/rockgomes/filter-builder/blob/${SHA}/`;
@@ -246,16 +248,9 @@
     fold.addEventListener('click', () => setCollapsed(!collapsed));
     try { if (localStorage.getItem(FOLD) === '1') setCollapsed(true, false); } catch {}
 
-    // Tabs (arrow keys move between them)
+    // Tabs: clicks and arrow keys come from the shared script (src/lib/choice.ts); in this small panel they swap at once
     const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    const show = (t: HTMLButtonElement, focus = false) => {
-      tabs.forEach((b) => { const on = b === t; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; root.querySelector<HTMLElement>(`[data-pane="${b.dataset.tab}"]`)!.hidden = !on; });
-      if (focus) t.focus();
-    };
-    tabs.forEach((t, i) => {
-      t.addEventListener('click', () => show(t));
-      t.addEventListener('keydown', (e) => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d) { e.preventDefault(); show(tabs[(i + d + tabs.length) % tabs.length], true); } });
-    });
+    bindChoice({ options: tabs, panels: tabs.map((t) => root.querySelector<HTMLElement>(`[data-pane="${t.dataset.tab}"]`)), animate: false });
 
     // Start on the first condition, as in Figma; fill again when the engineer view opens (layout needs it visible).
     const start = () => { if (document.documentElement.dataset.view !== 'engineer') return; const first = win.querySelector<HTMLElement>('.cond') ? PARTS[0] : PARTS[1]; if (!sel) sel = { part: first, key: '0' }; fill(); };

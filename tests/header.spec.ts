@@ -13,7 +13,7 @@ test('the view switch stays in the same place in every view', async ({ page }) =
   const spots: { x: number; y: number }[] = [];
   for (const view of ['design', 'recruiter', 'engineer']) {
     await page.goto(`/?view=${view}`);
-    spots.push((await page.locator('.switch .seg').boundingBox())!);
+    spots.push((await page.locator('.switch .ui-seg').boundingBox())!);
   }
   // Within 1px: the bold label of the chosen view is a little wider, so the centred switch can move by half a pixel
   for (const s of spots) { expect(Math.abs(s.x - spots[0].x)).toBeLessThanOrEqual(1); expect(Math.abs(s.y - spots[0].y)).toBeLessThanOrEqual(1); }
@@ -64,4 +64,16 @@ test('the header parts never touch the switch', async ({ page }) => {
       expect(Math.min(left, right), `${view} at ${width}px`).toBeGreaterThanOrEqual(12);
     }
   }
+});
+
+test('only the chosen view is in the tab order of the switch, and arrow keys move it', async ({ page }) => {
+  await page.goto('/?view=recruiter');
+  const opts = page.locator('.switch [role="radio"]');
+  await expect(opts).toHaveCount(3);
+  expect(await opts.evaluateAll((b) => b.map((e) => (e as HTMLElement).tabIndex))).toEqual([-1, 0, -1]);
+  await opts.nth(1).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('[data-view-option="engineer"]')).toBeFocused();
+  await expect(page.locator('html')).toHaveAttribute('data-view', 'engineer');
+  expect(await opts.evaluateAll((b) => b.map((e) => (e as HTMLElement).tabIndex))).toEqual([-1, -1, 0]);
 });
