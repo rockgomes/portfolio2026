@@ -1,0 +1,14 @@
+---
+// Segmented control (Figma 193:119): a real radio group in the shared .ui-seg look (base.css). The selected option is
+// the only one in the tab order; src/lib/choice.ts (bindChoice) gives it clicks and arrow keys. Extra attributes go on
+// the group; an option can carry its own (data-*, id, aria-controls).
+type Option = string | { label: string; attrs?: Record<string, string> };
+interface Props { label: string; options: Option[]; selected?: number; class?: string; [attr: string]: unknown }
+const { label, options, selected = 0, class: cls, ...attrs } = Astro.props;
+const opts = options.map((o) => (typeof o === 'string' ? { label: o, attrs: {} } : { attrs: {}, ...o }));
+---
+<div class:list={['ui-seg', cls]} role="radiogroup" aria-label={label} {...attrs}>
+  {opts.map((o, i) => (
+    <button type="button" role="radio" aria-checked={i === selected ? 'true' : 'false'} tabindex={i === selected ? 0 : -1} {...o.attrs}>{o.label}</button>
+  ))}
+</div>

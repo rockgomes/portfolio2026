@@ -2,8 +2,9 @@
 // Inspect the layers of a hero (sketch C 377:10183, from the old fa-ins embed). Numbered pins sit on the real layers
 // of the picture (children of the picture's own box, overlays rule), with a Callout list under it. Picking a pin or a
 // line lists that layer's tokens with their value in the current mode; Light / Dark swaps the picture and the values.
-// Uses the shared .ui-seg, .ui-pin, .ui-callout, the Proof frame and bindChoice. Pins show at every width.
+// Uses the shared Segmented, .ui-pin, .ui-callout, the Proof frame and bindChoice. Pins show at every width.
 import Proof from './Proof.astro';
+import Segmented from '../Segmented.astro';
 import type { Pin } from '../../data/flex-academy';
 interface Pic { src: string; alt: string }
 interface Props { pins: Pin[]; tokens: Record<string, [string, string]>; spaces: Record<string, string>; light: Pic; dark: Pic; width: number; height: number }
@@ -19,10 +20,7 @@ const rows = (p: Pin) => p.props.map(([k, name, note]) => {
 });
 ---
 <div class="inspect" data-inspect data-mode="light">
-  <div class="ui-seg ctrl" role="radiogroup" aria-label="Token mode" data-inspect-mode>
-    <button type="button" role="radio" aria-checked="true" tabindex="0">Light</button>
-    <button type="button" role="radio" aria-checked="false" tabindex="-1">Dark</button>
-  </div>
+  <Segmented class="ctrl" label="Token mode" data-inspect-mode options={['Light', 'Dark']} />
   <Proof>
     <div class="stage">
       <img class="light" src={light.src} alt={light.alt} width={width} height={height} loading="lazy" decoding="async" />
@@ -58,8 +56,7 @@ const rows = (p: Pin) => p.props.map(([k, name, note]) => {
 </div>
 <style>
   .inspect { display: flex; flex-direction: column; gap: var(--space-12); min-width: 0; }
-  .ctrl { align-self: flex-start; }
-  .ctrl button:focus-visible, .ui-callout:focus-visible { outline: 2px solid var(--color-annotation-measure); outline-offset: 2px; }
+  .inspect > :global(.ctrl) { align-self: flex-start; }
   .stage { position: relative; }
   .stage img { display: block; width: 100%; height: auto; }
   .inspect[data-mode='light'] .dark, .inspect[data-mode='dark'] .light { display: none; }
@@ -70,7 +67,6 @@ const rows = (p: Pin) => p.props.map(([k, name, note]) => {
   .ui-callout { width: 100%; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
   .ui-callout:hover, .ui-callout[aria-pressed='true'] { color: var(--color-text-primary); }
   .props { list-style: none; margin: 0; padding: var(--space-16) 0 0; border-top: 1px solid var(--color-border-subtle); display: flex; flex-direction: column; gap: var(--space-8); }
-  .props[hidden] { display: none; }
   .props li { display: grid; grid-template-columns: 22px auto minmax(0, 1fr); gap: var(--space-12); align-items: center; }
   .sw { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--color-border-strong); overflow: hidden; font: var(--type-mono-label); color: var(--color-text-muted); }
   .sw i { width: 100%; height: 100%; }

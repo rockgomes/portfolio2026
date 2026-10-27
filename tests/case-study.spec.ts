@@ -52,6 +52,17 @@ test('live page video does not play on its own with reduced motion', async ({ pa
   const v = page.locator('[data-live] video');
   await expect(v).toHaveAttribute('controls', '');
   expect(await v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
+  expect(await v.evaluate((e: HTMLVideoElement) => e.loop)).toBe(false);
+});
+
+test('method steps: the side note goes under the text when the column is narrow', async ({ page }) => {
+  await page.setViewportSize({ width: 1100, height: 900 });
+  await page.goto(FLEX);
+  const view = page.locator('[data-method] .step:visible [data-view-of="solo"]');
+  const main = await view.locator('.main').boundingBox();
+  const side = await view.locator('.side').boundingBox();
+  expect(side!.y).toBeGreaterThanOrEqual(main!.y + main!.height);
+  expect(main!.width).toBeGreaterThan(300);
 });
 
 test('next case study is the next project by card order', async ({ page }) => {

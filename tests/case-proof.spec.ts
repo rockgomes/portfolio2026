@@ -41,7 +41,10 @@ test('no video plays on its own with reduced motion, and each shows its controls
     await page.waitForTimeout(150);
     expect(await v.evaluate((e: HTMLVideoElement) => e.controls)).toBe(true);
   }
-  for (const v of await page.locator('[data-proof] video').all()) expect(await v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
+  for (const v of await page.locator('[data-proof] video').all()) {
+    expect(await v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
+    expect(await v.evaluate((e: HTMLVideoElement) => e.loop)).toBe(false);
+  }
 });
 
 test.describe('without JavaScript', () => {
@@ -75,5 +78,33 @@ test.describe('with motion', () => {
     await expect.poll(() => first.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
     const second = d2.locator('[data-proof-panel]').nth(1).locator('video');
     await expect.poll(() => second.evaluate((e: HTMLVideoElement) => e.paused)).toBe(false);
+  });
+  test('a playing video keeps its controls, so it can always be paused', async ({ page }) => {
+    await page.goto(FLEX);
+    const v = page.locator('[data-decision="3"] video');
+    await v.scrollIntoViewIfNeeded();
+    await expect.poll(() => v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(false);
+    expect(await v.evaluate((e: HTMLVideoElement) => e.controls)).toBe(true);
+  });
+  test('a video the visitor paused stays paused when it comes back into view', async ({ page }) => {
+    await page.goto(FLEX);
+    const v = page.locator('[data-decision="3"] video');
+    await v.scrollIntoViewIfNeeded();
+    await expect.poll(() => v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(false);
+    await v.evaluate((e: HTMLVideoElement) => e.pause());
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(200);
+    await v.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+    expect(await v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
+  });
+  test('the live page video on phones plays in view and pauses out of view', async ({ page }) => {
+    await page.setViewportSize({ width: 400, height: 860 });
+    await page.goto(FLEX);
+    const v = page.locator('[data-live] video');
+    await v.scrollIntoViewIfNeeded();
+    await expect.poll(() => v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(false);
+    await page.locator('[data-decision="3"]').scrollIntoViewIfNeeded();
+    await expect.poll(() => v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
   });
 });

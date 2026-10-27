@@ -1,8 +1,8 @@
 ---
 // The live page of a project, scaled to fit (from the old Webflow embed fa-live), in the same framed box as Proof.
 // The iframe is drawn at 1440x900 and scaled to the box width. Below half size (phones) the iframe is too small to
-// use, so a screen recording shows instead. Without JS, or before JS runs, the recording shows with its controls:
-// nothing is ever blank or wider than the page.
+// use, so a screen recording shows instead, playing in view as every proof video does. Without JS, or before JS
+// runs, the recording shows with its controls: nothing is ever blank or wider than the page.
 import Proof from './Proof.astro';
 interface Props { src: string; video: string; poster: string; caption: string; title: string; videoLabel: string }
 const { src, video, poster, caption, title, videoLabel } = Astro.props;
@@ -22,7 +22,7 @@ const { src, video, poster, caption, title, videoLabel } = Astro.props;
   .live[data-phone] :global([data-proof-box]) { height: auto !important; }
 </style>
 <script>
-  import { reduceMotion } from '../../lib/motion';
+  import { autoplay } from '../../lib/autoplay';
 
   const W = 1440, H = 900;
   document.querySelectorAll<HTMLElement>('[data-live]').forEach((fig) => {
@@ -33,16 +33,15 @@ const { src, video, poster, caption, title, videoLabel } = Astro.props;
       const s = box.clientWidth / W;
       if (s < 0.5) {
         fig.toggleAttribute('data-phone', true);
-        // Phones: the recording plays on its own, unless the visitor asked for reduced motion (then it keeps its controls)
-        if (!reduceMotion()) { video.controls = false; video.play().catch(() => { video.controls = true; }); } // blocked autoplay (iOS Low Power Mode): give the controls back
       } else {
         fig.toggleAttribute('data-phone', false);
-        video.pause();
         frame.style.transform = `scale(${s})`;
         box.style.height = `${Math.round(H * s)}px`;
       }
     };
     fit();
     new ResizeObserver(fit).observe(box);
+    // Phones: the recording plays in view (src/lib/autoplay.ts); on desktop it is hidden, so it never plays
+    autoplay(video);
   });
 </script>

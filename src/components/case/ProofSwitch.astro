@@ -1,27 +1,25 @@
 ---
-// A control that swaps the proof below it: kind="segmented" is the Segmented control (.ui-seg, Figma 193:119),
-// kind="tabs" the Tab (.ui-tab, Figma 195:113), the same ones as the header and the Experience client tabs.
-// Every panel is in the HTML and only the selected one shows, so without JS the first choice (or `selected`) is
-// still there. Arrow keys stay inside this group. Motion as in Experience.astro: the new panel fades in and the height eases.
+// A control that swaps the proof below it: kind="segmented" is the Segmented control, kind="tabs" the Tab (the shared
+// Segmented.astro and Tabs.astro, the same ones as the header and the Experience client tabs). Every panel is in the
+// HTML and only the selected one shows, so without JS the first choice (or `selected`) is still there. Clicks, arrow
+// keys and motion come from src/lib/choice.ts. A video in a closed panel is out of view, so it pauses (autoplay.ts).
 import Proof from './Proof.astro';
+import Segmented from '../Segmented.astro';
+import Tabs from '../Tabs.astro';
 import type { ProofMedia } from './proof';
 interface Item { label: string; caption: string; media: ProofMedia }
 interface Props { kind: 'tabs' | 'segmented'; label: string; id: string; items: Item[]; selected?: number }
 const { kind, label, id, items, selected = 0 } = Astro.props;
 const tabs = kind === 'tabs';
-const on = (i: number) => (i === selected ? 'true' : 'false');
+const labels = items.map((it) => it.label);
 ---
 <div class="proof-switch" data-switch={id}>
-  <div class:list={['ctrl', tabs ? 'ui-tabs' : 'ui-seg']} role={tabs ? 'tablist' : 'radiogroup'} aria-label={label}>
-    {items.map((it, i) => (
-      <button type="button" id={`${id}-opt-${i}`} role={tabs ? 'tab' : 'radio'}
-        aria-selected={tabs ? on(i) : undefined} aria-checked={tabs ? undefined : on(i)}
-        class:list={[tabs && 'ui-tab']} aria-controls={`${id}-panel-${i}`} tabindex={i === selected ? 0 : -1}>{it.label}</button>
-    ))}
-  </div>
+  {tabs
+    ? <Tabs class="ctrl" label={label} id={id} tabs={labels} selected={selected} />
+    : <Segmented class="ctrl" label={label} selected={selected} options={labels.map((l, i) => ({ label: l, attrs: { id: `${id}-tab-${i}`, 'aria-controls': `${id}-panel-${i}` } }))} />}
   <div class="panels">
     {items.map((it, i) => (
-      <div data-proof-panel id={`${id}-panel-${i}`} role={tabs ? 'tabpanel' : undefined} aria-labelledby={`${id}-opt-${i}`} hidden={i !== selected}>
+      <div data-proof-panel id={`${id}-panel-${i}`} role={tabs ? 'tabpanel' : undefined} aria-labelledby={tabs ? `${id}-tab-${i}` : undefined} hidden={i !== selected}>
         <Proof media={it.media} caption={it.caption} />
       </div>
     ))}
@@ -29,17 +27,13 @@ const on = (i: number) => (i === selected ? 'true' : 'false');
 </div>
 <style>
   .proof-switch { display: flex; flex-direction: column; gap: var(--space-12); min-width: 0; }
-  .ctrl { flex-wrap: wrap; align-self: flex-start; max-width: 100%; }
-  .ctrl button:focus-visible { outline: 2px solid var(--color-annotation-measure); outline-offset: 2px; }
-  [data-proof-panel][hidden] { display: none; }
+  .proof-switch > :global(.ctrl) { flex-wrap: wrap; align-self: flex-start; max-width: 100%; }
 </style>
 <script>
   import { bindChoice } from '../../lib/choice';
 
   document.querySelectorAll<HTMLElement>('[data-switch]').forEach((sw) => {
     const options = [...sw.querySelectorAll<HTMLButtonElement>('.ctrl button')];
-    const panels = options.map((o) => sw.querySelector<HTMLElement>(`#${o.getAttribute('aria-controls')}`));
-    // A video in a panel that closes stops; the one in the new panel starts through its own in-view rule
-    bindChoice({ options, panels, box: sw.querySelector<HTMLElement>('.panels')!, onSelect: (i) => panels.forEach((p, j) => { if (j !== i) p?.querySelectorAll('video').forEach((v) => v.pause()); }) });
+    bindChoice({ options, panels: options.map((o) => sw.querySelector<HTMLElement>(`#${o.getAttribute('aria-controls')}`)), box: sw.querySelector<HTMLElement>('.panels')! });
   });
 </script>

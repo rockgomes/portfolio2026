@@ -1,25 +1,21 @@
 ---
 // The method in seven steps (sketch C 376:10204, from the old fa-method embed). A segmented control switches between
 // what I did alone and how I would lead each step with a team; the tabs pick the step. Every step is in the HTML (solo
-// view, first step shown), so it reads without JS. Uses the shared .ui-seg, .ui-tab and bindChoice.
+// view, first step shown), so it reads without JS. Uses the shared Segmented, Tabs and bindChoice. The side note goes
+// under the text when the column is narrower than 640px (a container query, so it follows the column, not the screen).
+import Segmented from '../Segmented.astro';
+import Tabs from '../Tabs.astro';
 import type { Step } from '../../data/flex-academy';
 interface Props { steps: Step[]; id?: string }
 const { steps, id = 'method' } = Astro.props;
 const n = (i: number) => String(i + 1).padStart(2, '0');
 ---
 <div class="method" data-method data-mode="solo">
-  <div class="ui-seg ctrl" role="radiogroup" aria-label="How to read the steps" data-method-mode>
-    <button type="button" role="radio" aria-checked="true" tabindex="0">This challenge, solo</button>
-    <button type="button" role="radio" aria-checked="false" tabindex="-1">With a team</button>
-  </div>
-  <div class="ui-tabs ctrl" role="tablist" aria-label="Steps" data-method-steps>
-    {steps.map((s, i) => (
-      <button type="button" class="ui-tab" role="tab" id={`${id}-tab-${i}`} aria-controls={`${id}-step-${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{n(i)} {s.name}</button>
-    ))}
-  </div>
+  <Segmented class="ctrl" label="How to read the steps" data-method-mode options={['This challenge, solo', 'With a team']} />
+  <Tabs class="ctrl" label="Steps" id={id} tabs={steps.map((s, i) => `${n(i)} ${s.name}`)} data-method-steps />
   <div class="panels">
     {steps.map((s, i) => (
-      <div class="step" role="tabpanel" id={`${id}-step-${i}`} aria-labelledby={`${id}-tab-${i}`} hidden={i !== 0}>
+      <div class="step" role="tabpanel" id={`${id}-panel-${i}`} aria-labelledby={`${id}-tab-${i}`} hidden={i !== 0}>
         {(['solo', 'team'] as const).map((m) => (
           <div class="view" data-view-of={m}>
             <div class="main">
@@ -40,9 +36,8 @@ const n = (i: number) => String(i + 1).padStart(2, '0');
 </div>
 <style>
   .method { display: flex; flex-direction: column; gap: var(--space-12); min-width: 0; }
-  .ctrl { align-self: flex-start; max-width: 100%; }
-  .ctrl button:focus-visible { outline: 2px solid var(--color-annotation-measure); outline-offset: 2px; }
-  .step[hidden] { display: none; }
+  .method > :global(.ctrl) { align-self: flex-start; max-width: 100%; }
+  .panels { container-type: inline-size; }
   .view { display: flex; gap: var(--space-40); padding: var(--space-24); border: 1px solid var(--color-border-subtle); }
   .method[data-mode='solo'] [data-view-of='team'], .method[data-mode='team'] [data-view-of='solo'] { display: none; }
   .main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-8); }
@@ -53,7 +48,8 @@ const n = (i: number) => String(i + 1).padStart(2, '0');
   ul { font: var(--type-body-default); color: var(--color-text-secondary); }
   .gate { font: var(--type-mono-body); color: var(--color-annotation-measure); }
   .side p:not(.k) { font: var(--type-body-default); color: var(--color-text-secondary); }
-  @media (max-width: 720px) { .view { flex-direction: column; gap: var(--space-24); padding: var(--space-16); } .side { flex-basis: auto; } }
+  @container (max-width: 640px) { .view { flex-direction: column; gap: var(--space-24); } .side { flex-basis: auto; } }
+  @media (max-width: 720px) { .view { padding: var(--space-16); } }
 </style>
 <script>
   import { bindChoice } from '../../lib/choice';

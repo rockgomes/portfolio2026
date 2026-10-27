@@ -27,18 +27,16 @@ const { stats } = Astro.props;
   @media (max-width: 560px) { .stats { grid-template-columns: minmax(0, 1fr); } }
 </style>
 <script>
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const els = document.querySelectorAll<HTMLElement>('[data-count-to]');
-  if (!reduce && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      for (const en of entries) {
-        if (!en.isIntersecting) continue; io.unobserve(en.target);
-        const el = en.target as HTMLElement; const to = Number(el.dataset.countTo); if (!to) continue;
-        const t0 = performance.now(); const dur = 900; const suffix = el.dataset.suffix ?? '';
-        const step = (t: number) => { const p = Math.min(1, (t - t0) / dur); el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))) + (p < 1 ? '' : suffix); if (p < 1) requestAnimationFrame(step); };
-        el.textContent = '0'; requestAnimationFrame(step);
-      }
-    }, { threshold: 0.6 });
-    els.forEach((el) => { if (Number(el.dataset.countTo)) io.observe(el); });
-  }
+  import { playOnce } from '../lib/motion';
+
+  // Count up once, when the number comes into view (shared rule in src/lib/motion.ts: never with reduced motion)
+  document.querySelectorAll<HTMLElement>('[data-count-to]').forEach((el) => {
+    const to = Number(el.dataset.countTo); if (!to) return;
+    const suffix = el.dataset.suffix ?? '';
+    playOnce(el, () => { el.textContent = '0'; }, () => {
+      const t0 = performance.now(); const dur = 900;
+      const step = (t: number) => { const p = Math.min(1, (t - t0) / dur); el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))) + (p < 1 ? '' : suffix); if (p < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }, 0.6);
+  });
 </script>

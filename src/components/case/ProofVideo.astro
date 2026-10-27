@@ -1,7 +1,6 @@
 ---
-// A screen recording used as proof (from auto() in the old fa-truth and fa-flows embeds). It plays when a third of it
-// is in view and pauses when it leaves. With reduced motion it never starts on its own: it shows its controls instead.
-// A video inside a hidden switch panel is out of view, so switching panels plays and pauses the right one.
+// A screen recording used as proof (from auto() in the old fa-truth and fa-flows embeds). Plays in view and pauses out
+// of view, always with its controls: see src/lib/autoplay.ts.
 interface Props { src: string; poster: string; label: string; width: number; height: number }
 const { src, poster, label, width, height } = Astro.props;
 ---
@@ -10,17 +9,7 @@ const { src, poster, label, width, height } = Astro.props;
   video { display: block; width: 100%; height: auto; background: var(--color-surface-stage); }
 </style>
 <script>
-  import { reduceMotion } from '../../lib/motion';
+  import { autoplay } from '../../lib/autoplay';
 
-  const videos = document.querySelectorAll<HTMLVideoElement>('[data-proof-video]');
-  if (reduceMotion()) {
-    videos.forEach((v) => v.removeAttribute('loop'));
-  } else {
-    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-      const v = e.target as HTMLVideoElement;
-      if (e.isIntersecting) v.play().catch(() => { v.controls = true; }); // blocked autoplay: give the controls back
-      else v.pause();
-    }), { threshold: 0.35 });
-    videos.forEach((v) => { v.controls = false; io.observe(v); });
-  }
+  document.querySelectorAll<HTMLVideoElement>('[data-proof-video]').forEach(autoplay);
 </script>

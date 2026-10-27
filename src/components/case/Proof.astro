@@ -1,19 +1,20 @@
 ---
 // One piece of proof in a case study: a picture or a screen recording in a framed box, with a caption below
 // (sketch C 376:10124: media box with a 1px strong border, caption in Body/Small, muted). Without `media`, the box
-// holds the default slot instead (LivePage puts its scaled iframe there).
+// holds the default slot instead (LivePage puts its scaled iframe there). A picture from src/assets gets responsive
+// sizes; `sizes` says how wide it shows (default: the proof column next to a case block's text), `eager` loads it first.
 import { Image } from 'astro:assets';
 import ProofVideo from './ProofVideo.astro';
 import type { ProofMedia } from './proof';
-interface Props { media?: ProofMedia; caption?: string }
-const { media, caption } = Astro.props;
+interface Props { media?: ProofMedia; caption?: string; sizes?: string; eager?: boolean }
+const { media, caption, sizes = '(min-width: 1440px) 800px, (min-width: 1040px) 60vw, 100vw', eager = false } = Astro.props;
 ---
 <figure class="proof" data-proof>
   <div class="box" data-proof-box>
     {!media ? <slot /> : media.kind === 'image'
       ? typeof media.src === 'string'
         ? <img src={media.src} alt={media.alt} width={media.width} height={media.height} loading="lazy" decoding="async" />
-        : <Image src={media.src} alt={media.alt} width={media.width} height={media.height} />
+        : <Image src={media.src} alt={media.alt} width={media.width} height={media.height} widths={[...new Set([768, 1536, media.width])].filter((w) => w <= media.width)} sizes={sizes} loading={eager ? 'eager' : 'lazy'} />
       : <ProofVideo src={media.src} poster={media.poster} label={media.label} width={media.width} height={media.height} />}
   </div>
   {caption && <figcaption>{caption}</figcaption>}

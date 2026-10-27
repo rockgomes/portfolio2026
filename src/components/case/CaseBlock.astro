@@ -8,7 +8,7 @@ const { label, title, pills = [], ...attrs } = Astro.props;
 <article class="block" data-case-block {...attrs}>
   <div class="text">
     <p class="label t-mono-label">{label}</p>
-    <h3 class="title">{title}</h3>
+    <h3 class="title t-heading-item">{title}</h3>
     <div class="body"><slot /></div>
     {pills.length > 0 && <ul class="pills">{pills.map((p) => <li class="ui-pill ui-pill-sm">{p}</li>)}</ul>}
   </div>
@@ -18,7 +18,7 @@ const { label, title, pills = [], ...attrs } = Astro.props;
   .block { display: flex; gap: var(--space-80); align-items: flex-start; }
   .text { flex: 0 0 400px; display: flex; flex-direction: column; gap: var(--space-16); }
   .label { margin: 0; color: var(--color-annotation-measure); }
-  .title { margin: 0; font: var(--type-heading-item); letter-spacing: var(--tracking-heading-item); color: var(--color-text-primary); }
+  .title { margin: 0; color: var(--color-text-primary); }
   .body { font: var(--type-body-default); color: var(--color-text-secondary); }
   .body :global(p) { margin: 0; }
   .body :global(p + p) { margin-top: var(--space-12); }

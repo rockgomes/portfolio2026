@@ -99,6 +99,17 @@ test.describe('storybook (desktop)', () => {
     await expect(opts.nth(1)).toHaveAttribute('aria-checked', 'true');
     await expect(opts.nth(1)).toBeFocused();
   });
+
+  test('the theme switch on the intro page is a radio group with arrow keys', async ({ page }) => {
+    await page.goto('/?view=engineer');
+    const opts = page.locator(`${sb} [data-sb-theme-seg] [role="radio"]`);
+    await expect(opts.nth(1)).toHaveAttribute('tabindex', '-1');
+    await opts.first().focus();
+    await page.keyboard.press('ArrowRight');
+    await expect(opts.nth(1)).toHaveAttribute('aria-checked', 'true');
+    await expect(opts.nth(1)).toBeFocused();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  });
 });
 
 test.describe('storybook (phone)', () => {

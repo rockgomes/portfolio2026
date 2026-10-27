@@ -4,6 +4,7 @@
 // Every story renders the site's real classes and tokens. Values on the Colour page are read live from tokens.css.
 import SectionHeader from './SectionHeader.astro';
 import SbDropdown from './SbDropdown.astro';
+import Segmented from './Segmented.astro';
 const chevron = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
 
 const systems = [
@@ -94,7 +95,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
               <div class="story">
                 <h4>Modes</h4>
                 <div class="canvas">
-                  <div class="render"><div class="ui-seg" role="radiogroup" aria-label="Theme of this page" data-sb-theme-seg><button type="button" role="radio" aria-checked="true" data-sb-set-theme="light">Light - Dev</button><button type="button" role="radio" aria-checked="false" data-sb-set-theme="dark">Dark - Dev</button></div></div>
+                  <div class="render"><Segmented label="Theme of this page" data-sb-theme-seg options={[{ label: 'Light - Dev', attrs: { 'data-sb-set-theme': 'light' } }, { label: 'Dark - Dev', attrs: { 'data-sb-set-theme': 'dark' } }]} /></div>
                   <details class="code"><summary>Show code</summary><pre><code>{`<html data-view="engineer" data-theme="dark">`}</code></pre></details>
                 </div>
                 <p class="cap">This switch changes the theme of this page. The components do not change, only the token values do.</p>
@@ -180,9 +181,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
         <div class="page" data-sb-page="segmented" hidden>
           <div class="cv" data-sb-panel="canvas" role="tabpanel" aria-labelledby="sb-tab-canvas">
             <div class="stage">
-              <div class="ui-seg" role="radiogroup" aria-label="Demo options" data-sb-demo-seg>
-                <button type="button" role="radio" aria-checked="true" tabindex="0">Option</button><button type="button" role="radio" aria-checked="false" tabindex="-1">Option</button><button type="button" role="radio" aria-checked="false" tabindex="-1">Option</button>
-              </div>
+              <Segmented label="Demo options" data-sb-demo-seg options={['Option', 'Option', 'Option']} />
             </div>
             <p class="hint">Click an option, or use the arrow keys. This is the view switch from the header.</p>
           </div>
@@ -374,6 +373,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
 
 <script>
   import { reduceMotion } from '../lib/motion';
+  import { bindChoice, mark } from '../lib/choice';
 
   const root = document.getElementById('design-systems-dev')!;
   const win = root.querySelector<HTMLElement>('[data-sb]')!;
@@ -404,27 +404,15 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     const page = pages.find((p) => p.dataset.sbPage === current)!;
     const hasCanvas = !!page.querySelector('[data-sb-panel="canvas"]');
     page.querySelectorAll<HTMLElement>('[data-sb-panel]').forEach((el) => (el.hidden = el.dataset.sbPanel !== panel));
-    tabs.forEach((t) => {
-      const on = t.dataset.sbTab === panel;
-      t.setAttribute('aria-selected', String(on));
-      t.tabIndex = on ? 0 : -1;
-      if (t.dataset.sbTab === 'canvas') t.setAttribute('aria-disabled', String(!hasCanvas));
-    });
+    tabs.find((t) => t.dataset.sbTab === 'canvas')!.setAttribute('aria-disabled', String(!hasCanvas));
+    mark(tabs, tabs.findIndex((t) => t.dataset.sbTab === panel));
   }
   items.forEach((i) => i.addEventListener('click', () => {
     show(i.dataset.sbGo!);
     if (phone.matches) { setMenu(false); win.scrollIntoView({ block: 'start', behavior: reduceMotion() ? 'auto' : 'smooth' }); }
   }));
-  tabs.forEach((t) => t.addEventListener('click', () => {
-    if (t.getAttribute('aria-disabled') === 'true') return;
-    panel = t.dataset.sbTab as 'canvas' | 'docs'; paintTabs();
-  }));
-  root.querySelector('[role="tablist"]')!.addEventListener('keydown', (e) => {
-    const k = (e as KeyboardEvent).key; if (k !== 'ArrowLeft' && k !== 'ArrowRight') return;
-    const other = tabs.find((t) => t.dataset.sbTab !== panel)!;
-    if (other.getAttribute('aria-disabled') === 'true') return;
-    panel = other.dataset.sbTab as 'canvas' | 'docs'; paintTabs(); other.focus();
-  });
+  // Canvas and Docs: the shared tab script (src/lib/choice.ts) skips Canvas while this page has none
+  bindChoice({ options: tabs, animate: false, onSelect: (i) => { panel = tabs[i].dataset.sbTab as 'canvas' | 'docs'; paintTabs(); } });
 
   // Phones: the menu button opens the page list in place
   function setMenu(open: boolean) { menu.setAttribute('aria-expanded', String(open)); win.toggleAttribute('data-sb-open', open); }
@@ -486,14 +474,15 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     if (d.startViewTransition && !reduceMotion()) d.startViewTransition(go); else go();
   };
   root.querySelector('[data-sb-theme-btn2]')!.addEventListener('click', () => setTheme(theme() === 'dark' ? 'light' : 'dark'));
-  root.querySelectorAll<HTMLButtonElement>('[data-sb-set-theme]').forEach((b) => b.addEventListener('click', () => setTheme(b.dataset.sbSetTheme!)));
+  const themeOpts = [...root.querySelectorAll<HTMLButtonElement>('[data-sb-set-theme]')];
+  bindChoice({ options: themeOpts, onSelect: (i) => setTheme(themeOpts[i].dataset.sbSetTheme!) });
 
   // Live values: read each token from the page, so the Colour page always matches the mode you see
   function paintMode() {
     const t = theme(); const name = t === 'dark' ? 'Dark - Dev' : 'Light - Dev';
     root.querySelectorAll('[data-sb-mode-name]').forEach((el) => (el.textContent = name));
     setDdValue(root.querySelector<HTMLElement>('[data-sb-dd="theme"]')!, name);
-    root.querySelectorAll<HTMLButtonElement>('[data-sb-set-theme]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.sbSetTheme === t)));
+    mark(themeOpts, themeOpts.findIndex((b) => b.dataset.sbSetTheme === t));
     root.querySelectorAll<HTMLElement>('[data-sb-mode-cell]').forEach((c) => c.toggleAttribute('data-sb-active', c.dataset.sbModeCell === t));
     root.querySelector('[data-sb-theme-btn2]')!.textContent = `Switch this page to ${t === 'dark' ? 'light' : 'dark'}`;
     const cs = getComputedStyle(html);
@@ -520,16 +509,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   root.querySelectorAll('[data-sb-c-style]').forEach((r) => r.addEventListener('change', paintBtn));
 
   // Segmented control story: a real radio group, with arrow keys
-  const seg = [...root.querySelectorAll<HTMLButtonElement>('[data-sb-demo-seg] button')];
-  const pickSeg = (b: HTMLButtonElement) => seg.forEach((s) => { const on = s === b; s.setAttribute('aria-checked', String(on)); s.tabIndex = on ? 0 : -1; });
-  seg.forEach((b, i) => {
-    b.addEventListener('click', () => pickSeg(b));
-    b.addEventListener('keydown', (e) => {
-      const step = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
-      if (!step) return; e.preventDefault();
-      const n = seg[(i + step + seg.length) % seg.length]; pickSeg(n); n.focus();
-    });
-  });
+  bindChoice({ options: [...root.querySelectorAll<HTMLButtonElement>('[data-sb-demo-seg] [role="radio"]')] });
 
   // Status pill story
   const pill = root.querySelector<HTMLElement>('[data-sb-demo-pill]')!;
