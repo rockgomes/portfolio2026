@@ -1,12 +1,12 @@
 ---
-// Figma: Comment (44:575). Not shown in the engineer view.
-interface Props { who: string; initial: string; when: string; color?: 'client' | 'pm' | 'dev' | 'rock'; style?: string; class?: string }
-const { who, initial, when, color = 'client', style, class: cls } = Astro.props;
+// Figma: Comment (44:575). Not shown in the engineer view. `when` is optional (the hero story's messages have none).
+interface Props { who: string; initial: string; when?: string; color?: 'client' | 'pm' | 'dev' | 'rock'; style?: string; class?: string; [attr: `data-${string}`]: string | number }
+const { who, initial, when, color = 'client', style, class: cls, ...data } = Astro.props;
 ---
-<div class:list={['cm', 'ui-comment-card', 'ui-comment-float', `c-${color}`, cls]} style={style} data-overlay aria-hidden="true">
+<div class:list={['cm', 'ui-comment-card', 'ui-comment-float', `c-${color}`, cls]} style={style} data-overlay aria-hidden="true" {...data}>
   <span class="ui-avatar t-mono-label">{initial}</span>
   <div class="body">
-    <p class="meta"><span class="who">{who}</span><span class="when t-mono-label">{when}</span></p>
+    <p class="meta"><span class="who">{who}</span>{when && <span class="when t-mono-label">{when}</span>}</p>
     <p class="txt t-body-small"><slot /></p>
   </div>
 </div>

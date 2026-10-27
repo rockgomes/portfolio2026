@@ -3,9 +3,13 @@
 import Dimension from './Dimension.astro';
 import SelectionBox from './SelectionBox.astro';
 import Cursor from './Cursor.astro';
+import Comment from './Comment.astro';
+import { messages } from '../data/heroStory';
 import HeroStory from './HeroStory.astro';
 import HeroTable from './HeroTable.astro';
 import Inspector from './Inspector.astro';
+// Each person's story messages, as children of their cursor (HeroStory shows them one by one).
+const says = (color: string) => messages.map((m, i) => ({ ...m, i })).filter((m) => m.color === color);
 ---
 <section class="hero" aria-labelledby="hero-title">
   <div class="wrap grid">
@@ -27,10 +31,13 @@ import Inspector from './Inspector.astro';
       <p class="tag jsx jsx-close t-mono-label" aria-hidden="true" data-engineer>&lt;/FilterPanel&gt;</p>
       <div class="caption t-mono-label" data-not-engineer><span>fig. 00 · filter builder, example data <button type="button" class="replay" data-story-replay hidden>↻ replay the session</button></span><span data-table-meta>rows = 40 · fields = 6</span></div>
 
-      <!-- Start points for the hero story. Hidden at rest (Rock's request): they fade in to act, then fade out. -->
-      <Cursor name="Rock" color="rock" style="left: 8px; top: 596px;" />
-      <Cursor name="PM" color="pm" style="left: 92px; top: 596px;" />
-      <Cursor name="Dev" color="dev" style="left: 164px; top: 596px;" />
+      <!-- Start points for the hero story. Hidden at rest (Rock's request): they fade in to act, then fade out.
+           Each cursor carries its person's messages, so a message moves with the action it talks about. -->
+      {[{ name: 'Rock', color: 'rock', left: 8 }, { name: 'PM', color: 'pm', left: 92 }, { name: 'Dev', color: 'dev', left: 164 }].map((c) => (
+        <Cursor name={c.name} color={c.color as 'rock' | 'pm' | 'dev'} style={`left: ${c.left}px; top: 596px;`}>
+          {says(c.color).map((m) => <Comment who={m.who} initial={m.initial} color={m.color} class:list={['say', m.above && 'say-above']} data-say={m.i}>{m.text}</Comment>)}
+        </Cursor>
+      ))}
       <HeroStory />
       <Inspector />
     </div>
@@ -64,6 +71,10 @@ import Inspector from './Inspector.astro';
   .caption { display: flex; justify-content: space-between; gap: var(--space-16); padding-left: var(--space-24); color: var(--color-text-muted); }
   /* Cursors and the comment thread sit above the table's + Condition menu (z-index 10) */
   .specimen > :global(.cursor) { z-index: 12; visibility: hidden; opacity: 0; }
+  /* A story message sits below and right of its cursor, like the Projects comments (18px right, 43px down). Hidden until
+     HeroStory shows it; HeroStory also keeps it inside the table's width. .say-above sits over the cursor instead. */
+  .specimen > :global(.cursor .say) { left: 18px; top: 43px; width: 260px; visibility: hidden; opacity: 0; }
+  .specimen > :global(.cursor .say-above) { top: auto; bottom: 20px; border-radius: 10px 10px 10px 2px; }
   .replay { margin-left: var(--space-8); padding: 0; border: 0; background: none; font: inherit; color: var(--color-annotation-measure); cursor: pointer; }
   .replay:hover { text-decoration: underline; }
   @media (max-width: 1199px) {
