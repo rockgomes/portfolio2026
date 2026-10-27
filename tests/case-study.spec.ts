@@ -52,8 +52,8 @@ test('live page: a browser bar with the address and a Reload button', async ({ p
   await expect(live.locator('.addr')).toHaveText('flex-academy-prototype.netlify.app');
   const reload = live.getByRole('button', { name: 'Reload the live page' });
   await expect(reload).toBeVisible();
-  // Same sizes as the Figma Browser bar: a 24px Button with the 10px icon slot, in a 37px bar
-  expect(await reload.locator('svg').boundingBox()).toMatchObject({ width: 10, height: 10 });
+  // A 24px Button with a 14px icon, in a 37px bar
+  expect(await reload.locator('svg').boundingBox()).toMatchObject({ width: 14, height: 14 });
   expect((await reload.boundingBox())?.height).toBe(24);
   expect((await live.locator('.bar').boundingBox())?.height).toBe(37);
 });
