@@ -46,6 +46,9 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 /* Type helpers (Figma text styles) */
 .t-mono-label { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); }
 .t-mono-small { font: var(--type-mono-small); }
+/* A list with "- " in front of each line, as the case study sketches write lists */
+.t-dash-list { margin: 0; padding: 0; list-style: none; }
+.t-dash-list > li::before { content: '- '; }
 
 /* Button (Figma: Button 193:109 and Button / Copy email). The site's control style, same as the table and client tabs.
    States: Default, Hover, Pressed, Focus (the global :focus-visible ring), Disabled.
@@ -59,11 +62,30 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .btn:active { background: var(--color-border-subtle); color: var(--color-text-primary); }
 .btn-primary:active { background: color-mix(in srgb, var(--color-annotation-measure) 73%, var(--color-text-primary)); color: var(--color-surface-page); }
 .btn:disabled, .btn[aria-disabled='true'] { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+/* Icon only (Figma: Button, Type=Icon only): one 14px icon, no label, a 24px button. Give it an aria-label. */
+.btn-icon { padding: var(--space-4); }
 /* Underline tab (Figma: Tab / Underline): text tabs at the top of a panel. The selected tab gets a 2px line on the bar's bottom border. */
 .utabs { display: flex; align-items: flex-end; gap: var(--space-16); padding: 0 14px; border-bottom: 1px solid var(--color-border-subtle); }
 .utab { padding: 0 0 7px; margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; font: var(--type-ui-tab); color: var(--color-text-muted); }
 .utab:hover { color: var(--color-text-primary); }
 .utab[aria-selected='true'] { border-bottom-color: var(--color-annotation-measure); color: var(--color-text-primary); font: var(--type-ui-tab-strong); }
+/* Segmented control (Figma: Segmented control 193:119): one choice out of a few, in a framed row. Markup only through
+   Segmented.astro, behaviour through src/lib/choice.ts. */
+.ui-seg { display: inline-flex; gap: 2px; padding: 3px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; }
+.ui-seg button { border: 0; background: transparent; padding: 4px 10px; border-radius: 6px; cursor: pointer; font: var(--type-ui-control-compact); color: var(--color-text-secondary); white-space: nowrap; }
+.ui-seg button:hover { color: var(--color-text-primary); }
+.ui-seg button[aria-checked='true'] { background: var(--color-annotation-measure-soft); color: var(--color-annotation-measure); font: var(--type-ui-control-compact-strong); }
+/* Tab (Figma: Tab 195:113): bordered tabs that wrap, same frame as .btn. Markup only through Tabs.astro, behaviour
+   through src/lib/choice.ts. */
+.ui-tabs { display: flex; gap: var(--space-8); flex-wrap: wrap; }
+.ui-tab { padding: 5px 10px; border-radius: var(--radius-control); border: 1px solid var(--color-border-strong); background: transparent; cursor: pointer; font: var(--type-ui-control); color: var(--color-text-secondary); white-space: nowrap; }
+.ui-tab:hover { color: var(--color-text-primary); }
+.ui-tab[aria-selected='true'] { background: color-mix(in srgb, var(--color-annotation-measure-soft) 60%, transparent); border-color: color-mix(in srgb, var(--color-annotation-measure) 35%, transparent); color: var(--color-annotation-measure); font: var(--type-ui-control-strong); }
+/* Pin (Figma: Pin 21:125): a numbered marker on a picture. .ui-pin-callout is the smaller soft one in front of a
+   Callout line (Figma: Callout 21:121), so a list under the picture names each pin. */
+.ui-pin { display: inline-grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: var(--radius-pill); background: var(--color-annotation-redline); font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); color: var(--color-surface-page); }
+.ui-pin-callout { width: 18px; height: 18px; border-radius: var(--radius-pill); border: 1px solid var(--color-annotation-redline); background: var(--color-annotation-redline-soft); color: var(--color-annotation-redline); }
+.ui-callout { display: flex; gap: var(--space-12); align-items: flex-start; font: var(--type-body-small); color: var(--color-text-secondary); }
 /* Pill (Figma: Pill): fully round. Default size for facts (recruiter), Small for badges ("Public", "Ready for dev").
    Not called .pill because the hero table already uses that name. */
 .ui-pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-pill); font: var(--type-ui-pill); color: var(--color-text-secondary); white-space: nowrap; }

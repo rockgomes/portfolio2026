@@ -1,0 +1,16 @@
+---
+// Tab (Figma 195:113): a row of .ui-tab buttons (base.css). Tab `key` has the id `${id}-tab-${key}` and controls the
+// panel `${id}-panel-${key}`, which the page renders (role="tabpanel", aria-labelledby the tab, hidden unless
+// selected). src/lib/choice.ts (bindChoice) gives it clicks and arrow keys. The default slot can draw a tab's content:
+// it gets (label, index); without it the tab shows its label.
+interface Props { label: string; id: string; tabs: string[]; keys?: string[]; selected?: number; class?: string; [attr: string]: unknown }
+const { label, id, tabs, keys = tabs.map((_, i) => String(i)), selected = 0, class: cls, ...attrs } = Astro.props;
+const custom = Astro.slots.has('default');
+const inner = await Promise.all(tabs.map((t, i) => (custom ? Astro.slots.render('default', [t, i]) : Promise.resolve(''))));
+---
+<div class:list={['ui-tabs', cls]} role="tablist" aria-label={label} {...attrs}>
+  {tabs.map((t, i) => (
+    <button type="button" class="ui-tab" role="tab" id={`${id}-tab-${keys[i]}`} aria-controls={`${id}-panel-${keys[i]}`}
+      aria-selected={i === selected ? 'true' : 'false'} tabindex={i === selected ? 0 : -1}>{custom ? <Fragment set:html={inner[i]} /> : t}</button>
+  ))}
+</div>

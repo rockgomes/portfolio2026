@@ -1,0 +1,57 @@
+---
+// Figma: Summary (30 seconds) 375:10126 in sketch C (Flex Academy). The part a recruiter reads in 30 seconds:
+// title, lead, facts, problem / decision / result, links to the real thing, then the main picture or live page (slot).
+interface Facts { role: string; context: string; made: string; tools: string }
+interface Props { title: string; subtitle: string; lead: string; facts?: Facts; problem: string; decision: string; result: string; links: { label: string; href: string }[] }
+const { title, subtitle, lead, facts, problem, decision, result, links } = Astro.props;
+const factRows = facts ? (['role', 'context', 'made', 'tools'] as const).map((k) => [k, facts[k]] as const) : [];
+const pdr = [['problem', problem], ['decision', decision], ['result', result]].filter(([, v]) => v);
+---
+<header class="summary wrap" data-case-summary>
+  <div class="head">
+    <h1 class="title">{title}</h1>
+    {subtitle && <p class="sub t-mono-label">{subtitle}</p>}
+  </div>
+  <div class="row">
+    <div class="what">
+      {lead && <p class="lead">{lead}</p>}
+      {factRows.length > 0 && (
+        <dl class="facts" data-facts>
+          {factRows.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+      )}
+      {links.length > 0 && (
+        <p class="links" data-case-links>
+          {links.map((l, i) => <a class:list={['btn', i === 0 && 'btn-primary']} href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
+        </p>
+      )}
+    </div>
+    {pdr.length > 0 && (
+      <div class="pdr" data-pdr>
+        {pdr.map(([k, v]) => <div><p class="k t-mono-label">{k}</p><p class="v">{v}</p></div>)}
+      </div>
+    )}
+  </div>
+  <slot />
+</header>
+<style>
+  .summary { display: flex; flex-direction: column; gap: var(--space-40); padding-top: var(--space-96); }
+  .head { display: flex; flex-direction: column; gap: var(--space-12); }
+  .title { margin: 0; font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); color: var(--color-text-primary); text-wrap: balance; }
+  .sub { margin: 0; color: var(--color-annotation-measure); }
+  .row { display: flex; gap: var(--space-80); align-items: flex-start; }
+  .what { flex: 0 1 680px; min-width: 0; display: flex; flex-direction: column; gap: var(--space-24); }
+  .lead { margin: 0; font: var(--type-body-lead); color: var(--color-text-primary); }
+  .facts { margin: 0; padding-top: var(--space-8); display: flex; flex-direction: column; gap: 6px; font: var(--type-mono-body); }
+  .facts div { display: flex; gap: var(--space-12); }
+  .facts dt { flex: none; width: 56px; color: var(--color-annotation-measure); }
+  .facts dd { margin: 0; flex: 1 1 0; min-width: 0; color: var(--color-text-secondary); }
+  .links { margin: 0; padding-top: var(--space-8); display: flex; flex-wrap: wrap; gap: var(--space-8); }
+  .pdr { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+  .pdr > div { display: flex; flex-direction: column; gap: 6px; padding-block: var(--space-16); border-top: 1px solid var(--color-border-subtle); }
+  .pdr p { margin: 0; }
+  .k { color: var(--color-text-muted); }
+  .v { font: var(--type-body-default); color: var(--color-text-secondary); }
+  @media (max-width: 1040px) { .row { flex-direction: column; gap: var(--space-32); } .what { flex-basis: auto; } .pdr { width: 100%; } }
+  @media (max-width: 720px) { .summary { padding-top: var(--space-64); gap: var(--space-32); } .facts div { flex-direction: column; gap: 0; } .facts dt { width: auto; } }
+</style>

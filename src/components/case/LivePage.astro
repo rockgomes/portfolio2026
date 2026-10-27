@@ -1,0 +1,69 @@
+---
+// The live page of a project, scaled to fit (from the old Webflow embed fa-live), in the same framed box as Proof,
+// under a small browser bar (Figma: Browser bar 427:83): three dots, the address (a small Pill) and a Reload button (the shared .btn .btn-icon) that
+// starts the prototype again. The iframe is drawn at 1440x900 and scaled to the box width. Below half size (phones)
+// the iframe is too small to use, so a screen recording shows instead, playing in view as every proof video does;
+// there Reload starts the recording again. Without JS, or before JS runs, the recording shows with its controls:
+// nothing is ever blank or wider than the page.
+import Proof from './Proof.astro';
+import IconRotateCw from '../IconRotateCw.astro';
+interface Props { src: string; video: string; poster: string; caption: string; title: string; videoLabel: string }
+const { src, video, poster, caption, title, videoLabel } = Astro.props;
+const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
+---
+<div class="live" data-live data-phone>
+  <Proof caption={caption}>
+    <div class="bar">
+      <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="ui-pill ui-pill-sm addr">{address}</span>
+      <button type="button" class="btn btn-icon reload" data-live-reload aria-label="Reload the live page"><IconRotateCw /></button>
+    </div>
+    <div class="view" data-live-view>
+      <iframe src={src} title={title} loading="lazy"></iframe>
+      <video muted loop playsinline controls preload="none" poster={poster} aria-label={videoLabel}><source src={video} type="video/mp4" /></video>
+    </div>
+  </Proof>
+</div>
+<style>
+  .bar { display: grid; grid-template-columns: 1fr minmax(0, auto) 1fr; align-items: center; gap: var(--space-12); padding: 6px var(--space-12); background: var(--color-surface-page); border-bottom: 1px solid var(--color-border-subtle); }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 8px; height: 8px; border-radius: var(--radius-pill); border: 1px solid var(--color-border-strong); }
+  .addr { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .reload { justify-self: end; }
+  .view { position: relative; overflow: hidden; }
+  iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; }
+  video { display: none; width: 100%; height: auto; }
+  .live[data-phone] iframe { display: none; }
+  .live[data-phone] video { display: block; }
+  .live[data-phone] .view { height: auto !important; }
+  @media (max-width: 560px) { .dots { display: none; } .bar { grid-template-columns: minmax(0, 1fr) auto; } .addr { justify-self: start; } }
+</style>
+<script>
+  import { autoplay, restart } from '../../lib/autoplay';
+
+  const W = 1440, H = 900;
+  document.querySelectorAll<HTMLElement>('[data-live]').forEach((fig) => {
+    const view = fig.querySelector<HTMLElement>('[data-live-view]')!;
+    const frame = fig.querySelector('iframe')!;
+    const video = fig.querySelector('video')!;
+    const fit = () => {
+      const s = view.clientWidth / W;
+      if (s < 0.5) {
+        fig.toggleAttribute('data-phone', true);
+      } else {
+        fig.toggleAttribute('data-phone', false);
+        frame.style.transform = `scale(${s})`;
+        view.style.height = `${Math.round(H * s)}px`;
+      }
+    };
+    fit();
+    new ResizeObserver(fit).observe(view);
+    // Phones: the recording plays in view (src/lib/autoplay.ts); on desktop it is hidden, so it never plays
+    autoplay(video);
+    // Reload: the prototype starts again from the top (phones: the recording starts again)
+    fig.querySelector('[data-live-reload]')!.addEventListener('click', () => {
+      if (fig.hasAttribute('data-phone')) restart(video);
+      else frame.src = frame.src;
+    });
+  });
+</script>

@@ -1,0 +1,15 @@
+---
+// A screen recording used as proof (from auto() in the old fa-truth and fa-flows embeds). Plays in view and pauses out
+// of view, always with its controls: see src/lib/autoplay.ts.
+interface Props { src: string; poster: string; label: string; width: number; height: number }
+const { src, poster, label, width, height } = Astro.props;
+---
+<video data-proof-video muted playsinline loop controls preload="metadata" poster={poster} width={width} height={height} aria-label={label}><source src={src} type="video/mp4" /></video>
+<style>
+  video { display: block; width: 100%; height: auto; background: var(--color-surface-stage); }
+</style>
+<script>
+  import { autoplay } from '../../lib/autoplay';
+
+  document.querySelectorAll<HTMLVideoElement>('[data-proof-video]').forEach(autoplay);
+</script>

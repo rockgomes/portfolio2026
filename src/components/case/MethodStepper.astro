@@ -1,0 +1,64 @@
+---
+// The method in seven steps (sketch C 376:10204, from the old fa-method embed). A segmented control switches between
+// what I did alone and how I would lead each step with a team; the tabs pick the step. Every step is in the HTML (solo
+// view, first step shown), so it reads without JS. Uses the shared Segmented, Tabs and bindChoice. The side note goes
+// under the text when the column is narrower than 640px (a container query, so it follows the column, not the screen).
+import Segmented from '../Segmented.astro';
+import Tabs from '../Tabs.astro';
+import type { Step } from '../../data/flex-academy';
+interface Props { steps: Step[]; id?: string }
+const { steps, id = 'method' } = Astro.props;
+const n = (i: number) => String(i + 1).padStart(2, '0');
+---
+<div class="method" data-method data-mode="solo">
+  <Segmented class="ctrl" label="How to read the steps" data-method-mode options={['This challenge, solo', 'With a team']} />
+  <Tabs class="ctrl" label="Steps" id={id} tabs={steps.map((s, i) => `${n(i)} ${s.name}`)} data-method-steps />
+  <div class="panels">
+    {steps.map((s, i) => (
+      <div class="step" role="tabpanel" id={`${id}-panel-${i}`} aria-labelledby={`${id}-tab-${i}`} hidden={i !== 0}>
+        {(['solo', 'team'] as const).map((m) => (
+          <div class="view" data-view-of={m}>
+            <div class="main">
+              <p class="k t-mono-label">{m === 'solo' ? `what I did · ${s.short.toLowerCase()}` : 'with a team · how I would lead it'}</p>
+              <p class="lead">{s[m].lead}</p>
+              <ul class="t-dash-list">{s[m].items.map((it) => <li>{it}</li>)}</ul>
+              <p class="gate">{s[m].gate}</p>
+            </div>
+            <div class="side">
+              <p class="k t-mono-label">{m === 'solo' ? 'why this step matters' : 'what I did alone'}</p>
+              <p>{m === 'solo' ? s.why : s.solo.lead}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+<style>
+  .method { display: flex; flex-direction: column; gap: var(--space-12); min-width: 0; }
+  .method > :global(.ctrl) { align-self: flex-start; max-width: 100%; }
+  .panels { container-type: inline-size; }
+  .view { display: flex; gap: var(--space-40); padding: var(--space-24); border: 1px solid var(--color-border-subtle); }
+  .method[data-mode='solo'] [data-view-of='team'], .method[data-mode='team'] [data-view-of='solo'] { display: none; }
+  .main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-8); }
+  .side { flex: 0 0 240px; display: flex; flex-direction: column; gap: var(--space-8); }
+  p { margin: 0; }
+  .k { color: var(--color-text-muted); }
+  .lead { font: var(--type-body-default); color: var(--color-text-primary); }
+  ul { font: var(--type-body-default); color: var(--color-text-secondary); }
+  .gate { font: var(--type-mono-body); color: var(--color-annotation-measure); }
+  .side p:not(.k) { font: var(--type-body-default); color: var(--color-text-secondary); }
+  @container (max-width: 640px) { .view { flex-direction: column; gap: var(--space-24); } .side { flex-basis: auto; } }
+  @media (max-width: 720px) { .view { padding: var(--space-16); } }
+</style>
+<script>
+  import { bindChoice } from '../../lib/choice';
+
+  document.querySelectorAll<HTMLElement>('[data-method]').forEach((m) => {
+    const tabs = [...m.querySelectorAll<HTMLButtonElement>('[data-method-steps] [role="tab"]')];
+    const box = m.querySelector<HTMLElement>('.panels')!;
+    bindChoice({ options: tabs, panels: tabs.map((t) => m.querySelector<HTMLElement>(`#${t.getAttribute('aria-controls')}`)), box });
+    const modes = [...m.querySelectorAll<HTMLButtonElement>('[data-method-mode] [role="radio"]')];
+    bindChoice({ options: modes, box, onSelect: (i) => { m.dataset.mode = i ? 'team' : 'solo'; } });
+  });
+</script>
