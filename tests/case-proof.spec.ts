@@ -98,6 +98,18 @@ test.describe('with motion', () => {
     await page.waitForTimeout(300);
     expect(await v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(true);
   });
+  test('on phones, Reload starts the live page recording again', async ({ page }) => {
+    await page.setViewportSize({ width: 400, height: 860 });
+    await page.goto(FLEX);
+    const v = page.locator('[data-live] video');
+    await v.scrollIntoViewIfNeeded();
+    await expect.poll(() => v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(false);
+    await v.evaluate((e: HTMLVideoElement) => e.pause()); // the visitor pauses it
+    await page.waitForTimeout(200);
+    await page.locator('[data-live]').getByRole('button', { name: 'Reload the live page' }).click();
+    await expect.poll(() => v.evaluate((e: HTMLVideoElement) => e.paused)).toBe(false);
+    expect(await v.evaluate((e: HTMLVideoElement) => e.currentTime)).toBeLessThan(1);
+  });
   test('the live page video on phones plays in view and pauses out of view', async ({ page }) => {
     await page.setViewportSize({ width: 400, height: 860 });
     await page.goto(FLEX);

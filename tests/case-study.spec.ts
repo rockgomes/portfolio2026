@@ -46,6 +46,25 @@ test('live page: iframe on desktop, video on phones', async ({ page, viewport })
   }
 });
 
+test('live page: a browser bar with the address and a Reload button', async ({ page }) => {
+  await page.goto(FLEX);
+  const live = page.locator('[data-live]');
+  await expect(live.locator('.addr')).toHaveText('flex-academy-prototype.netlify.app');
+  await expect(live.getByRole('button', { name: 'Reload the live page' })).toBeVisible();
+});
+
+test('live page: Reload loads the prototype again on desktop', async ({ page, viewport }) => {
+  test.skip((viewport?.width ?? 0) < 1000, 'desktop shows the iframe');
+  await page.goto(FLEX);
+  const live = page.locator('[data-live]');
+  await live.scrollIntoViewIfNeeded();
+  await expect(live.locator('iframe')).toBeVisible();
+  let loads = 0;
+  page.on('framenavigated', (f) => { if (f.url().includes('flex-academy-prototype')) loads++; });
+  await live.getByRole('button', { name: 'Reload the live page' }).click();
+  await expect.poll(() => loads).toBeGreaterThan(0);
+});
+
 test('live page video does not play on its own with reduced motion', async ({ page }) => {
   await page.setViewportSize({ width: 400, height: 860 });
   await page.goto(FLEX);

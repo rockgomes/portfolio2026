@@ -19,3 +19,10 @@ export function autoplay(v: HTMLVideoElement) {
   }), { threshold: 0.35 });
   io.observe(v);
 }
+
+/** Starts a video again from the start (a Reload button). With reduced motion it only goes back to the start. */
+export function restart(v: HTMLVideoElement) {
+  v.currentTime = 0;
+  held.delete(v);
+  if (!reduceMotion()) v.play().catch(() => {});
+}
