@@ -22,7 +22,7 @@ const topics = (d: (typeof items)[number]['d']) => [...d.focus.slice(0, 1), ...d
 const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.industry, focus: i.d.focus }));
 ---
 <section class="work" id="work" aria-labelledby="work-title">
-  <div class="wrap inner">
+  <div class="wrap inner section-top">
     <div class="sh-wrap">
       <SectionHeader num="02" title="Projects" titleId="work-title" subtitle="client work and experiments in one list · filter with the tags on the left" />
     </div>
@@ -98,7 +98,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
 <script type="application/json" id="work-filter-data" set:html={JSON.stringify(filterData)} />
 
 <style>
-  .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-top: var(--space-120); }
+  .inner { display: flex; flex-direction: column; gap: var(--space-48); }
   .sh-wrap { position: relative; }
   .layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: var(--space-40); align-items: start; }
   /* Sticky 24px under the sticky header. On short screens the tag list scrolls inside the panel, so every row and
@@ -216,7 +216,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
     /* The comment describes the sticky panel, which only exists on wide screens */
   }
   @media (prefers-reduced-motion: reduce) { .ftoggle svg { transition: none; } }
-  @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } .inner { padding-top: var(--space-80); } .title { font-size: 24px; } }
+  @media (max-width: 720px) { .grid { grid-template-columns: minmax(0, 1fr); } .title { font-size: 24px; } }
   @media (prefers-reduced-motion: reduce) { .thumb :global(img) { transition: none; } }
 </style>
 

@@ -10,9 +10,5 @@ const { name, color, style, class: cls } = Astro.props;
   .cursor { position: absolute; z-index: 5; pointer-events: none; width: 0; height: 0; }
   .arrow { position: absolute; left: 0; top: 0; overflow: visible; }
   .tag { position: absolute; left: 12px; top: 16px; padding: 3px 6px; border-radius: var(--radius-tag); background: var(--c); color: var(--color-surface-page); white-space: nowrap; }
-  .c-client { --c: var(--color-cursor-client); }
-  .c-pm { --c: var(--color-cursor-pm); }
-  .c-rock { --c: var(--color-annotation-redline); }
-  .c-dev { --c: var(--color-annotation-measure); }
-  .c-you { --c: var(--color-cursor-pm); }
+  /* --c comes from the shared person colours in base.css (.c-*) */
 </style>

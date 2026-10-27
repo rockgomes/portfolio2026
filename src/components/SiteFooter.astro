@@ -28,7 +28,7 @@ const built = new Date().toISOString().slice(0, 10);
         <p class="sub t-mono-small">Email is the fastest way. I reply within a day.</p>
         <div class="email">
           <a href="mailto:rock@rockgomes.com" class="addr">rock@rockgomes.com</a>
-          <span class="btn-wrap" data-you-area><CopyEmail variant="short" /><Cursor name="You" color="you" style="left: 66px; top: 23px;" /><span class="copied" data-copied data-overlay aria-hidden="true" hidden><span class="av t-mono-label">Y</span><span class="t-body-small"><b>You</b> Copied</span></span></span>
+          <span class="btn-wrap" data-you-area><CopyEmail variant="short" /><Cursor name="You" color="you" style="left: 66px; top: 23px;" /><span class="copied ui-comment-card ui-comment-float c-you" data-copied data-overlay aria-hidden="true" hidden><span class="ui-avatar ui-avatar-sm t-mono-label">Y</span><span class="t-body-small"><b>You</b> Copied</span></span></span>
           <span class="ok t-mono-label" role="status" data-engineer data-copied-dev></span>
           <a class="cv btn btn-primary" href="/Rock_Gomes_CV.pdf" download>Download CV (PDF)</a>
         </div>
@@ -89,8 +89,7 @@ const built = new Date().toISOString().slice(0, 10);
   .build .sha { color: var(--color-text-secondary); }
   /* While the pointer is in the footer, the "You" cursor replaces the system arrow (script below) */
   :global(.ftr.you-here), :global(.ftr.you-here *) { cursor: none !important; }
-  .copied { position: absolute; z-index: 7; display: flex; gap: var(--space-8); align-items: center; padding: 6px 12px 7px 6px; white-space: nowrap; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }
-  .copied .av { width: 22px; height: 22px; border-radius: 11px; display: grid; place-items: center; background: var(--color-cursor-pm); color: var(--color-surface-page); }
+  .copied { position: absolute; z-index: 7; display: flex; gap: var(--space-8); align-items: center; padding: 6px 12px 7px 6px; white-space: nowrap; } /* card and avatar: base.css */
   .copied b { font-weight: 600; color: var(--color-text-primary); margin-right: var(--space-4); }
   .copied .t-body-small { color: var(--color-text-secondary); }
 </style>
