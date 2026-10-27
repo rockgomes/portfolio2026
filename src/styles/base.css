@@ -34,6 +34,10 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
   padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
   padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
 }
+/* Space above a homepage section's title: 120px, 80px on phones (720px, the same width --to-title uses above).
+   Put it on the section's .wrap. */
+.section-top { padding-top: var(--space-120); }
+@media (max-width: 720px) { .section-top { padding-top: var(--space-80); } }
 
 /* Draggable selections (Overlays.astro): only on wide screens, where the overlays show */
 @media (min-width: 1200px) { [data-draggable] { cursor: grab; touch-action: none; } }
@@ -99,6 +103,20 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .ui-tag-outline { border-color: var(--color-annotation-measure-soft); background: var(--color-surface-page); color: var(--color-annotation-measure); }
 .ui-tag-component { background: var(--color-figma-component-soft); color: var(--color-figma-component); }
 .ui-tag-selected { border-color: var(--color-annotation-measure); background: var(--color-annotation-measure-soft); color: var(--color-text-primary); cursor: pointer; }
+/* People in the Figma layer (Figma: Cursor set 44:562, Comment 44:575): each person has a colour, set as --c by
+   .c-client, .c-pm, .c-rock, .c-dev (.c-you is the visitor). Cursors, avatars and comments read --c. */
+.c-client { --c: var(--color-cursor-client); }
+.c-pm, .c-you { --c: var(--color-cursor-pm); }
+.c-rock { --c: var(--color-annotation-redline); }
+.c-dev { --c: var(--color-annotation-measure); }
+/* Avatar (part of Figma Comment 44:575): the person's initial in a circle of their colour. .ui-avatar-sm is the
+   smaller one in the footer "Copied" bubble. Use with .t-mono-label and a .c-* colour. */
+.ui-avatar { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: var(--radius-pill); background: var(--c); color: var(--color-surface-page); }
+.ui-avatar-sm { width: 22px; height: 22px; }
+/* Comment card (Figma Comment 44:575): the bubble with one square corner. .ui-comment-float is a comment that floats
+   over the page (Figma layer): it casts a shadow and lets clicks through. */
+.ui-comment-card { padding: 10px 14px 12px 10px; background: var(--color-surface-sunken); border: 1px solid var(--color-border-strong); border-radius: 2px 10px 10px 10px; }
+.ui-comment-float { filter: drop-shadow(0 8px 12px rgba(0,0,0,0.1)); pointer-events: none; }
 .t-mono-body { font: var(--type-mono-body); }
 .t-heading-item { font: var(--type-heading-item); letter-spacing: var(--tracking-heading-item); }
 .t-body-small { font: var(--type-body-small); }

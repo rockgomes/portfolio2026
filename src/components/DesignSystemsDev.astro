@@ -28,7 +28,7 @@ const preview = ['surface-page', 'text-primary', 'text-secondary', 'annotation-m
 const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
 ---
 <section class="dsd" id="design-systems-dev" data-engineer aria-labelledby="dsd-title">
-  <div class="wrap inner">
+  <div class="wrap inner section-top">
     <SectionHeader title="Design systems" titleId="dsd-title" subtitle="two built from zero, one rebuilt · this page runs on a fourth" />
 
     <div class="win" data-sb>
@@ -229,7 +229,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   /* The engineer view swaps the design lead's section for this one */
   :global(html[data-view='engineer'] #design-systems) { display: none !important; }
 
-  .inner { display: flex; flex-direction: column; gap: var(--space-32); padding-top: var(--space-120); }
+  .inner { display: flex; flex-direction: column; gap: var(--space-32); }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .mono, code, pre { font-family: var(--font-mono); }
   .mut { color: var(--color-text-muted); }
@@ -336,7 +336,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
 
   /* Phones: no fixed height and no inner scroll. The page scrolls, the sidebar becomes a menu button. */
   @media (max-width: 760px) {
-    .inner { padding-top: var(--space-80); gap: var(--space-24); }
+    .inner { gap: var(--space-24); }
     .win { height: auto; grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: 'menu' 'side' 'bar' 'scroll'; }
     .navbar { grid-area: menu; display: block; padding: 10px var(--space-12); background: var(--color-surface-stage); border-bottom: 1px solid var(--color-border-subtle); }
     /* Same look as the Columns button in HeroTable.astro */

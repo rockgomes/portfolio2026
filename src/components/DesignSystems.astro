@@ -16,7 +16,7 @@ const chains = [
 ];
 ---
 <section class="ds" id="design-systems" aria-labelledby="ds-title">
-  <div class="wrap inner">
+  <div class="wrap inner section-top">
     <div class="head">
       <p class="fig t-mono-label"><Glyph kind="master" /> Section / Design systems</p>
       <SectionHeader num="03" title="Design systems" titleId="ds-title" subtitle="two built from zero, one rebuilt · this page runs on a fourth" />
@@ -116,7 +116,7 @@ const chains = [
   /* --brand is color.action.primary in card 03. Primary buttons in 01 and 02 read it, so a rebrand restyles them. */
   /* Same look as the site's buttons (.btn and .btn-primary in base.css) */
   .ds { --brand: var(--color-annotation-measure); --brand-hover: color-mix(in srgb, var(--brand) 85%, var(--color-text-primary)); }
-  .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-top: var(--space-120); }
+  .inner { display: flex; flex-direction: column; gap: var(--space-48); }
   .head { display: flex; flex-direction: column; gap: 10px; }
   .fig { margin: 0; display: flex; gap: 5px; align-items: center; color: var(--color-figma-component); white-space: nowrap; }
   .intro { display: flex; gap: var(--space-80); align-items: stretch; }
@@ -215,7 +215,6 @@ const chains = [
   @media (max-width: 1040px) { .spec-grid { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 860px) { .systems { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 560px) {
-    .inner { padding-top: var(--space-80); }
     .area { height: auto; min-height: 230px; overflow-x: auto; justify-content: flex-start; align-items: flex-start; }
     .ip, .modes { flex-direction: column; align-items: flex-start; }
     .chain { flex-wrap: wrap; white-space: normal; } .prim, .sem, .use { width: auto; }

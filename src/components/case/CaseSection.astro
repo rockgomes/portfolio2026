@@ -1,19 +1,19 @@
 ---
 // One part of a case study page (decisions, how I got there, ...). The Section header (Figma 20:28) without the
 // number or the dimension line: case pages have no Figma layer. Title at the Heading/Section size, as in sketch C.
-// `gap` is the space between the header and each block, as in each section of the sketch: 96, 64 or 48.
+// Top space: the shared .section-top (120px, 80px below 720px). `gap` is the space between the header and each block, as in each section of the sketch: 96, 64 or 48.
 import SectionHeader from '../SectionHeader.astro';
 interface Props { title: string; subtitle: string; id: string; gap?: 48 | 64 | 96 }
 const { title, subtitle, id, gap = 96 } = Astro.props;
 ---
-<section class:list={['case-section wrap', `gap-${gap}`]} id={id} aria-labelledby={`${id}-title`}>
+<section class:list={['case-section wrap section-top', `gap-${gap}`]} id={id} aria-labelledby={`${id}-title`}>
   <SectionHeader title={title} subtitle={subtitle} titleId={`${id}-title`} />
   <slot />
 </section>
 <style>
-  .case-section { display: flex; flex-direction: column; gap: var(--space-96); padding-top: var(--space-120); }
+  .case-section { display: flex; flex-direction: column; gap: var(--space-96); }
   .gap-64 { gap: var(--space-64); }
   .gap-48 { gap: var(--space-48); }
   .case-section :global(.sh .title) { font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); }
-  @media (max-width: 720px) { .case-section { padding-top: var(--space-80); gap: var(--space-64); } .gap-64, .gap-48 { gap: var(--space-32); } }
+  @media (max-width: 720px) { .case-section { gap: var(--space-64); } .gap-64, .gap-48 { gap: var(--space-32); } }
 </style>

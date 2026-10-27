@@ -15,7 +15,7 @@ const tags = [
 ];
 ---
 <section class="about" id="about" aria-labelledby="about-title" data-recruiter-also>
-  <div class="wrap inner">
+  <div class="wrap inner section-top">
     <SectionHeader num="05" title="About" titleId="about-title" subtitle="subject annotated for completeness" dimension={`portrait.w = ${portrait.width} · portrait.h = ${portrait.height}`} command="file portrait.png" />
     <div class="body">
       <div class="pcol">
@@ -45,7 +45,7 @@ const tags = [
   </div>
 </section>
 <style>
-  .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-block: var(--space-120); }
+  .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-bottom: var(--space-120); }
   .body { display: flex; gap: var(--space-80); align-items: flex-start; }
   .pcol { display: flex; flex-direction: column; gap: var(--space-12); width: 440px; max-width: 100%; flex: none; }
   .portrait { position: relative; width: 100%; aspect-ratio: 440 / 544; border: 1px solid var(--color-border-strong); flex: none; touch-action: none; }
@@ -73,5 +73,6 @@ const tags = [
   /* Recruiter view (sober): no photo labels or their subtitle; no facts list, the summary at the top has them */
   :global(html[data-view='recruiter']) .about :is(.tag, .leader, .facts), :global(html[data-view='recruiter']) .about :global(.sh .sub) { display: none; }
   @media (max-width: 1040px) { .body { flex-direction: column; gap: var(--space-48); } }
-  @media (max-width: 640px) { .inner { padding-block: var(--space-80); } .tag { left: 16px; } :global(html[data-view='engineer']) .tag { max-width: calc(100% - 32px); } .leader { display: none; } }
+  @media (max-width: 720px) { .inner { padding-bottom: var(--space-80); } }
+  @media (max-width: 640px) { .tag { left: 16px; } :global(html[data-view='engineer']) .tag { max-width: calc(100% - 32px); } .leader { display: none; } }
 </style>

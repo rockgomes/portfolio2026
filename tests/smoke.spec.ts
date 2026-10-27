@@ -23,3 +23,15 @@ test('every case study and experiment page works (same URLs as Webflow)', async 
   for (const s of slugs('projects')) { const r = await page.goto(`/project/${s}`); expect(r?.status(), s).toBe(200); await expect(page.locator('h1'), s).toHaveCount(1); }
   for (const s of slugs('experiments')) { const r = await page.goto(`/experiments/${s}`); expect(r?.status(), s).toBe(200); await expect(page.locator('h1'), s).toHaveCount(1); }
 });
+
+test('every homepage section has the same top space: 120px, 80px from 720px down', async ({ page }) => {
+  for (const [w, pad] of [[740, '120px'], [700, '80px']] as const) {
+    await page.setViewportSize({ width: w, height: 900 });
+    for (const view of ['design', 'engineer']) {
+      await page.goto(`/?view=${view}`);
+      const pads = await page.locator('section[id] > .wrap.inner:visible').evaluateAll((els) => els.map((e) => getComputedStyle(e).paddingTop));
+      expect(pads.length).toBeGreaterThanOrEqual(4);
+      expect(new Set(pads)).toEqual(new Set([pad]));
+    }
+  }
+});

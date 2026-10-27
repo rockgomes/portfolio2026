@@ -18,7 +18,7 @@ const items: Item[] = [
 ];
 ---
 <section class="exp" id="experience" aria-labelledby="exp-title" data-recruiter-also>
-  <div class="wrap inner">
+  <div class="wrap inner section-top">
     <SectionHeader num="04" title="Experience" titleId="exp-title" subtitle={`2016 → ${new Date().getFullYear()}`} dimension={`timeline.span = ${new Date().getFullYear() - 2016} yrs · roles = ${items.length}`} command="git log --graph --since=2016" />
     <ol class="timeline" data-timeline>
       {items.map((it, i) => (
@@ -52,7 +52,7 @@ const items: Item[] = [
   </div>
 </section>
 <style>
-  .inner { display: flex; flex-direction: column; gap: var(--space-48); padding-top: var(--space-120); }
+  .inner { display: flex; flex-direction: column; gap: var(--space-48); }
   /* The red line is a pseudo-element (not a border), so it can draw itself as you scroll (--draw, Motion.astro). Same place as the old 1px border. */
   .timeline { position: relative; list-style: none; margin: 0; padding: 0 0 0 5px; }
   .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: var(--color-annotation-redline); transform-origin: 50% 0%; transform: scaleY(var(--draw, 1)); }
@@ -86,7 +86,7 @@ const items: Item[] = [
   :global(html[data-view='engineer']) .clients :global(.ui-tab .gb) { color: var(--color-text-muted); flex: none; }
   :global(html[data-view='engineer']) .clients :global(.ui-tab[aria-selected='true']) { background: var(--color-annotation-measure-soft); border-color: var(--color-annotation-measure); color: var(--color-annotation-measure); font-weight: 400; }
   :global(html[data-view='engineer']) .clients :global(.ui-tab[aria-selected='true'] .gb) { color: var(--color-annotation-measure); }
-  @media (max-width: 720px) { .item { flex-wrap: wrap; row-gap: 10px; } .years { width: auto; flex-direction: row; gap: var(--space-12); } .body { flex: 1 1 100%; padding-left: var(--space-32); } .inner { padding-top: var(--space-80); } }
+  @media (max-width: 720px) { .item { flex-wrap: wrap; row-gap: 10px; } .years { width: auto; flex-direction: row; gap: var(--space-12); } .body { flex: 1 1 100%; padding-left: var(--space-32); } }
 </style>
 
 <script>
