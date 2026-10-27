@@ -1,17 +1,13 @@
 ---
 // Hero story (motion plan, moment 01): a short working session on the hero table, based on the Dynamic Lists project.
 // The PM brings the users' problem, Rock proposes and builds the fix (a saved view), the Dev asks how it works, Rock answers.
-// It starts after the headline animation and ends in the resting state: "ICP · Not churned" selected, no cursors
-// (they fade in to act and fade out at the end), and one resolved comment that opens to show the whole conversation.
+// It starts after the headline animation. While it plays, each message sits next to the cursor of the person who says it
+// (the messages are children of the cursors, in Hero.astro), so a visitor reads it and watches the action in the same place.
+// It ends in the resting state: "ICP · Not churned" selected, no cursors (they fade in to act and fade out at the end),
+// and one resolved comment (this thread) that opens to show the whole conversation.
 // Plays once per browser tab on wide screens, never with reduced motion. A visitor's own table state is put back after it.
-// Copy is a first draft (Rock to confirm), taken from the Dynamic Lists case study.
 import ResolvedLabel from './ResolvedLabel.astro';
-const messages = [
-  { who: 'PM', initial: 'P', color: 'pm', text: 'Users duplicate a list just to filter it in different ways. Then the copies stop matching.', keep: true },
-  { who: 'Rock', initial: 'R', color: 'rock', text: "Let's keep one list and save the filter as a view on top of it. Like this." },
-  { who: 'Dev', initial: 'D', color: 'dev', text: 'Does a view copy the companies, or only store the filter?' },
-  { who: 'Rock', initial: 'R', color: 'rock', text: 'Only the filter. The list stays the source of truth, so a view never drifts.' },
-];
+import { messages } from '../data/heroStory';
 ---
 <div class="thread" data-story-thread data-state="end" data-overlay role="group" aria-label="Comment thread">
   {messages.map((m) => (
@@ -33,7 +29,6 @@ const messages = [
   .thread[data-state='end'] .msg:not(.keep) { display: none; }
   /* Engineer view: the inspect panel replaces the story and its comment */
   :global(html[data-view='engineer']) .thread, :global(html[data-view='engineer'] [data-story-replay]) { display: none !important; }
-  .thread[data-state='story'] .replies { display: none; }
   .msg { display: flex; gap: 10px; align-items: flex-start; overflow: hidden; }
   .av { width: 26px; height: 26px; border-radius: 13px; display: grid; place-items: center; background: var(--c); color: var(--color-surface-page); flex: none; }
   .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 0 0; }
@@ -60,7 +55,7 @@ const messages = [
   const replies = thread?.querySelector<HTMLElement>('[data-replies]');
   const others = msgs.filter((m) => !m.classList.contains('keep'));
 
-  // Grow an element from zero height, so the thread gets taller as people post.
+  // Grow an element from zero height, so the thread gets taller as it opens.
   const grow = (el: HTMLElement) => gsap.fromTo(el, { height: 0, autoAlpha: 0 }, { height: 'auto', autoAlpha: 1, duration: 0.4, ease: 'power2.out', clearProps: 'height' });
 
   // The resolved comment opens and folds the whole conversation. Works with or without motion.
@@ -82,28 +77,46 @@ const messages = [
   const pm = spec?.querySelector<HTMLElement>(':scope > .cursor.c-pm');
   const dev = spec?.querySelector<HTMLElement>(':scope > .cursor.c-dev');
   const wide = () => innerWidth >= 1200; // the cursors and comments only show at this width
+  // The story messages, by their place in the conversation. Each one is a child of its person's cursor (Hero.astro).
+  const says = msgs.map((_, i) => spec?.querySelector<HTMLElement>(`:scope > .cursor [data-say="${i}"]`)).filter((b): b is HTMLElement => !!b);
 
-  if (spec && table && api && thread && toggle && pm && dev && rock && !reduceMotion()) run(spec, table, thread, toggle, pm, dev, rock);
+  if (spec && table && api && thread && toggle && pm && dev && rock && says.length === msgs.length && !reduceMotion()) run(spec, table, thread, toggle, pm, dev, rock);
 
   function run(spec: HTMLElement, table: HTMLElement, thread: HTMLElement, toggle: HTMLButtonElement, pm: HTMLElement, dev: HTMLElement, rock: HTMLElement) {
     let tl: gsap.core.Timeline | null = null;
     let snapshot: unknown = null;
 
+    // Slower than before, so people can follow (Rock's request): a cursor move takes 1.3s (was 0.9s).
+    const MOVE = 1.3;
     // A point on an element, in the specimen's coordinates, turned into the offset a cursor needs to reach it.
     const to = (cur: HTMLElement, el: () => Element | null, fx = 0.5, fy = 0.6) => {
       const at = () => { const s = spec.getBoundingClientRect(); const r = (el() ?? table).getBoundingClientRect(); return { x: r.left - s.left + r.width * fx - cur.offsetLeft, y: r.top - s.top + r.height * fy - cur.offsetTop }; };
-      return { x: () => at().x, y: () => at().y, duration: 0.9, ease: 'power2.inOut' };
+      return { x: () => at().x, y: () => at().y, duration: MOVE, ease: 'power2.inOut' };
     };
     const q = (sel: string) => () => table.querySelector(sel);
-    const post = (m: HTMLElement) => () => { m.hidden = false; grow(m); };
-    const press = (sel: string) => () => { const el = table.querySelector(sel); if (el) gsap.fromTo(el, { scale: 0.93 }, { scale: 1, duration: 0.25, ease: 'back.out(2)' }); };
+    const press = (sel: string) => () => { const el = table.querySelector(sel); if (el) gsap.fromTo(el, { scale: 0.93 }, { scale: 1, duration: 0.35, ease: 'back.out(2)' }); };
+    // A message fades in by its cursor (sliding 6px towards it), and fades out when the story moves on.
+    const sayFrom = (b: HTMLElement) => ({ autoAlpha: 0, y: b.classList.contains('say-above') ? 6 : -6 });
+    const sayIn = { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out' };
+    const sayOut = { autoAlpha: 0, duration: 0.3 };
+    // A message sits 18px right of its cursor, but never more than 40px past the table's right edge
+    // (the page gutter is wider than that from 1200px). Checked on every frame, because the cursors move.
+    const DX = 18, OVER = 40;
+    const fit = () => {
+      const s = spec.getBoundingClientRect();
+      for (const b of says) {
+        const cx = b.parentElement!.getBoundingClientRect().left - s.left;
+        b.style.left = `${Math.max(0, Math.min(cx + DX, s.width + OVER - b.offsetWidth)) - cx}px`;
+      }
+    };
 
     function finish() {
       if (!tl) return;
       tl.kill(); tl = null;
       spec.removeEventListener('pointerdown', skip);
-      gsap.killTweensOf([pm, dev, rock, thread, ...msgs, toggle]);
-      gsap.set([pm, dev, rock], { clearProps: 'transform,opacity,visibility' });
+      gsap.ticker.remove(fit);
+      gsap.killTweensOf([pm, dev, rock, thread, ...msgs, toggle, ...says]);
+      gsap.set([pm, dev, rock, ...says], { clearProps: 'transform,opacity,visibility,left' });
       gsap.set([thread, ...msgs, toggle], { clearProps: 'opacity,visibility,transform,height' });
       [...msgs, toggle].forEach((el) => (el.hidden = false));
       toggle.disabled = false; setOpen(false);
@@ -141,30 +154,40 @@ const messages = [
       const count = table.querySelector<HTMLElement>('[data-count]')!;
 
       // The cursors fade in as they move up from their start points (below the table), and go back there fading out.
+      // Each message shows by its cursor while that person acts, so it can be read during the action.
+      // The thread stays hidden until the end, then shows as the resolved comment.
       tl = gsap.timeline({ delay: 0.3, onComplete: () => finish() });
-      // 1. The PM brings the users' problem
+      gsap.ticker.add(fit); fit();
+      // 1. The PM brings the users' problem. Their message has 3s on its own (was 1.4s) before Rock comes in.
       // The PM stops on the pill, not beside it: at 1200px the table hides the Status column, and a PM beside the pill stuck out past the screen edge.
       tl.to(pm, { ...to(pm, q('.pill-churned'), 0.3, 0.8), autoAlpha: 1 })
-        .add(() => { msgs[0].hidden = false; }).to(thread, { autoAlpha: 1, duration: 0.3 })
-      // 2. Rock proposes the fix, then builds it: a condition, then Save as view
-        .to(rock, { ...to(rock, q('[data-add]')), autoAlpha: 1 }, '+=1.4')
-        .add(post(msgs[1]), '<0.3')
-        .add(press('[data-add]'), '+=1.2').add(() => api.openMenu())
-        .to(rock, { ...to(rock, q('[data-add-i="3"]'), 0.4), duration: 0.6 }, '+=0.35')
+        .fromTo(says[0], sayFrom(says[0]), sayIn, '-=0.3')
+      // 2. Rock proposes the fix, then builds it: a condition, then Save as view. His message sits above his cursor,
+      // so it never covers the + Condition menu, and stays while he works.
+        .to(rock, { ...to(rock, q('[data-add]')), autoAlpha: 1 }, '+=3')
+        .fromTo(says[1], sayFrom(says[1]), sayIn, '<0.4')
+        .add(press('[data-add]'), '+=1.6').add(() => api.openMenu())
+        .to(says[0], sayOut, '<')
+      // He picks the condition near the right end of the menu item, so his message clears the menu.
+        .to(rock, { ...to(rock, q('[data-add-i="3"]'), 0.95), duration: 0.9 }, '+=0.6')
         .add(press('[data-add-i="3"]'))
-        .add(() => { api.addCond(3); gsap.to({ n: 40 }, { n: 28, duration: 0.6, ease: 'power2.out', onUpdate() { count.textContent = String(Math.round(this.targets()[0].n)); } }); }, '+=0.15')
-        .to(rock, to(rock, q('[data-save-view]')), '+=0.7')
+        .add(() => { api.addCond(3); gsap.to({ n: 40 }, { n: 28, duration: 0.9, ease: 'power2.out', onUpdate() { count.textContent = String(Math.round(this.targets()[0].n)); } }); }, '+=0.25')
+        .to(rock, to(rock, q('[data-save-view]')), '+=1.1')
         .add(press('[data-save-view]'))
-        .add(() => { const tab = api.saveView('ICP · Not churned'); if (tab) gsap.from(tab, { autoAlpha: 0, scale: 0.85, duration: 0.4, ease: 'back.out(1.8)' }); }, '+=0.15')
-      // 3. The Dev asks how it works; Rock answers
-        .to(dev, { ...to(dev, q('[data-preset]:not([data-preset="all"]):not([data-preset="emea"])'), 0.6, 0.9), autoAlpha: 1 }, '+=0.5')
-        .add(post(msgs[2]), '+=0.1')
-        .to(rock, { ...to(rock, q('[data-count]'), 0.2, 2.2), duration: 0.7 }, '+=1.4')
-        .add(post(msgs[3]), '+=0.1')
-        .add(post(toggle), '+=1.2')
-      // 4. Fold the thread; the cursors leave
-        .to(others, { height: 0, autoAlpha: 0, duration: 0.4, ease: 'power2.inOut' }, '+=2')
-        .to([pm, dev, rock], { x: 0, y: 0, autoAlpha: 0, duration: 0.9, ease: 'power2.inOut', stagger: 0.12 }, '<'); // back the way they came
+        .add(() => { const tab = api.saveView('ICP · Not churned'); if (tab) gsap.from(tab, { autoAlpha: 0, scale: 0.85, duration: 0.6, ease: 'back.out(1.8)' }); }, '+=0.25')
+      // 3. The Dev asks how it works; Rock answers by the match count
+        .to(dev, { ...to(dev, q('[data-preset]:not([data-preset="all"]):not([data-preset="emea"])'), 0.6, 0.9), autoAlpha: 1 }, '+=0.8')
+        .fromTo(says[2], sayFrom(says[2]), sayIn, '-=0.3')
+      // After 3s to read the question, both earlier messages go as Rock moves to answer (at 1200px the Dev's message
+      // sits over the match count, where Rock goes).
+        .to([says[1], says[2]], sayOut, '+=3')
+        .to(rock, { ...to(rock, q('[data-count]'), 0.2, 2.2), duration: 1 }, '<')
+        .fromTo(says[3], sayFrom(says[3]), sayIn, '-=0.2')
+      // 4. After 4s to read the answer, the messages go, the resolved comment shows, and the cursors leave
+        .to(says[3], { ...sayOut, duration: 0.4 }, '+=4')
+        .add(() => { thread.dataset.state = 'end'; msgs[0].hidden = false; toggle.hidden = false; }, '<')
+        .to(thread, { autoAlpha: 1, duration: 0.5 }, '<')
+        .to([pm, dev, rock], { x: 0, y: 0, autoAlpha: 0, duration: 1.2, ease: 'power2.inOut', stagger: 0.15 }, '<'); // back the way they came
 
       // Clicking the table skips to the end, so a visitor can use it. Scrolling and keys do not.
       spec.addEventListener('pointerdown', skip);

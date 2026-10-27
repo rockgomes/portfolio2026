@@ -82,6 +82,37 @@ test.describe('hero story', () => {
     await expect(thread).toHaveAttribute('data-state', 'end');
     const cursors = await page.locator('.hero .cursor').evaluateAll((els) => els.filter((c) => getComputedStyle(c).visibility !== 'hidden' && +getComputedStyle(c).opacity > 0).length);
     expect(cursors).toBe(0);
+    await expect(page.locator('[data-say]:visible')).toHaveCount(0); // the messages went with their cursors
+  });
+
+  test('each message sits by its cursor and moves with it, then the story ends as the resolved comment', async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto('/');
+    const thread = page.locator('[data-story-thread]');
+    // The PM's message shows by the PM's cursor; the thread is hidden while the story plays
+    await expect(page.locator('.cursor.c-pm [data-say="0"]')).toBeVisible({ timeout: 15_000 });
+    await expect(thread).toBeHidden();
+    // Rock's message sits above his cursor (20px) and goes with him from + Condition into the menu,
+    // without covering the menu
+    const rock = () => page.evaluate(() => {
+      const a = document.querySelector('[data-specimen] > .cursor.c-rock .arrow')!.getBoundingClientRect();
+      const b = document.querySelector('.cursor.c-rock [data-say="1"]')!.getBoundingClientRect();
+      const m = document.querySelector('[data-add-menu]')!.getBoundingClientRect();
+      return { y: a.top, gap: a.top - b.bottom, coversMenu: b.left < m.right && b.right > m.left && b.top < m.bottom && b.bottom > m.top };
+    });
+    await expect(page.locator('[data-add-menu]')).toBeVisible({ timeout: 20_000 }); // Rock has opened the menu
+    await expect(page.locator('[data-say="1"]')).toBeVisible();
+    const before = await rock();
+    await page.waitForTimeout(2000); // Rock moves down to the condition
+    const after = await rock();
+    expect(after.y - before.y).toBeGreaterThan(50);
+    expect(Math.round(before.gap)).toBe(20); expect(Math.round(after.gap)).toBe(20);
+    expect(after.coversMenu).toBe(false);
+    // End state, as before: no messages by the cursors, one resolved comment that opens
+    await expect(thread).toHaveAttribute('data-state', 'end', { timeout: 30_000 });
+    await expect(page.locator('[data-say]:visible')).toHaveCount(0);
+    await expect(page.locator('[data-story-thread] [data-msg]:visible')).toHaveCount(1);
+    await expect(page.locator('[data-resolved]')).toContainText('Show');
   });
 
   test('the resolved comment opens and folds the conversation', async ({ page }) => {

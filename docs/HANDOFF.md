@@ -15,7 +15,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 5. **No more "B2"** (#4, #7). Components live in `src/components/`. Never call the design "B2".
 6. **Motion** (#8 to #12, #14), all with GSAP 3.15 and one helper, `src/lib/motion.ts` (`playOnce`: play once when in view; nothing with reduced motion; the page renders finished without JS):
    - Redlines draw out from their label; selection boxes draw like a drag; number rules draw; the timeline line follows the scroll (`Motion.astro`).
-   - Hero story (`HeroStory.astro`): after the headline animation, the PM, Rock and the Dev act out a Dynamic Lists session on the live table; ends with a resolved comment that opens on click. Once per browser tab; "↻ replay the session" under the table.
+   - Hero story (`HeroStory.astro`): after the headline animation, the PM, Rock and the Dev act out a Dynamic Lists session on the live table; ends with a resolved comment that opens on click. Once per browser tab; "↻ replay the session" under the table. While it plays, each message sits next to the cursor of the person who says it (a child of the cursor, in `Hero.astro`; text in `src/data/heroStory.ts`), so a visitor reads it during the action.
    - Projects: cards rise in; filters move cards with GSAP Flip; the Client, Dev and PM come in on three cards, comment, and leave.
    - Design system cards work (`DesignSystems.astro`): pick a variant, change properties, rebrand the Primary token, switch the page mode.
    - About labels appear one by one; in the footer the visitor's pointer becomes "You".
