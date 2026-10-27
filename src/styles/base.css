@@ -51,12 +51,17 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .t-dash-list > li::before { content: '- '; }
 
 /* Button (Figma: Button 193:109 and Button / Copy email). The site's control style, same as the table and client tabs.
+   States: Default, Hover, Pressed, Focus (the global :focus-visible ring), Disabled.
    .btn-primary is the Primary style: the main action (Download CV), a solid accent button.
    The soft accent look is only for selected tabs and options, never for a button. */
 .btn { display: inline-flex; align-items: center; gap: var(--space-8); padding: 5px 10px; background: transparent; border: 1px solid var(--color-border-strong); border-radius: var(--radius-control); color: var(--color-text-secondary); font: var(--type-ui-control); white-space: nowrap; text-decoration: none; cursor: pointer; }
 .btn:hover { color: var(--color-text-primary); }
 .btn-primary { background: var(--color-annotation-measure); border-color: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-control-strong); }
 .btn-primary:hover { background: color-mix(in srgb, var(--color-annotation-measure) 85%, var(--color-text-primary)); color: var(--color-surface-page); }
+/* Pressed and Disabled (Figma: Button State=Pressed, State=Disabled) */
+.btn:active { background: var(--color-border-subtle); color: var(--color-text-primary); }
+.btn-primary:active { background: color-mix(in srgb, var(--color-annotation-measure) 73%, var(--color-text-primary)); color: var(--color-surface-page); }
+.btn:disabled, .btn[aria-disabled='true'] { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 /* Icon only (Figma: Button, Type=Icon only): one 14px icon, no label, a 24px button. Give it an aria-label. */
 .btn-icon { padding: var(--space-4); }
 /* Underline tab (Figma: Tab / Underline): text tabs at the top of a panel. The selected tab gets a 2px line on the bar's bottom border. */
