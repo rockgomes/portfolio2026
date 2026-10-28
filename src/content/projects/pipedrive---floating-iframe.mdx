@@ -1,0 +1,88 @@
+---
+name: "Pipedrive - Floating Iframe"
+heroTitle: "Pipedrive - Floating Iframe"
+heroDescription: "A deeper, more interactive way for integrations to work inside Pipedrive, starting with calling apps. I ran the interviews, the design rounds and the prototype tests. It was my last project at Pipedrive before the layoffs, so I do not know if it shipped."
+homeImage: "../../assets/projects/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
+homeImageAlt: ""
+tag1: "Dev"
+tag2: ""
+type: "client"
+industry: []
+focus: []
+tagsToCheck: true
+private: false
+webflowId: "693867544becfc843648ccf3"
+cardOrder: 7
+cardNumber: "07"
+cardCompany: "Pipedrive"
+cardYear: ""
+cardTitle: "Floating Iframe"
+cardLine: "A deeper, more interactive way for integrations to connect with Pipedrive users."
+cardToCheck: true
+demoUrl: ""
+subtitle: "Pipedrive · 20NN · integration concept"
+facts:
+  role: "Senior Product Designer (to confirm). Interviews, design rounds, prototypes and tests."
+  context: "Pipedrive integrations. Two kinds of users: partner companies, and the people who use Pipedrive every day."
+  made: "Partner and user interviews, many design rounds, four test prototypes, one winning prototype."
+  tools: "Figma (prototype), NN (to confirm)"
+problem: "Calling integrations are used a lot, but they had no good way to sync call data with Pipedrive."
+decision: "A floating window for the integration: always one click away, easy to move or minimise, and it links back into Pipedrive."
+result: "Four prototypes tested with users, and one clear winner. Then the layoffs came. I do not know if it shipped."
+links:
+  - label: "Figma prototype ↗"
+    href: "https://www.figma.com/proto/SCXg3AbVLFUSlZsD1HJFfP/Pipedrive?page-id=802%3A6719&node-id=802-32024&starting-point-node-id=802%3A32024&scaling=contain&content-scaling=fixed"
+caseImage:
+  src: "../../assets/projects/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
+  alt: "A laptop with Pipedrive open on a deal page. The Aircall window floats over it with a call in progress, and the installed integrations menu is open from the top bar."
+  caption: "The winning concept: a calling app floats over a deal page in Pipedrive."
+copyToCheck: true
+---
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import InspectPins from '../../components/case/InspectPins.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.jpg';
+
+<CaseSection title="Two decisions I would defend" subtitle="where to start, and what to build" id="decisions">
+  <CaseBlock label="decision 1 of 2" data-decision="1" title="Start with calling apps" pills={['used very often', 'no good way to sync call data']}>
+    The data showed that calling integrations are used very often, and they had no good way to sync call data. So they were the best first case for a deeper integration. A good fit there would prove the idea for other apps.
+  </CaseBlock>
+  <CaseBlock label="decision 2 of 2" data-decision="2" title="Always there, never in the way">
+    Users wanted quick, 'permanent' access to the integration, and also a way to get it out of the way. They wanted alerts, and links from the app into Pipedrive, like opening a person's page from a caller. So the app lives in a window that floats, moves freely and minimises.
+    <InspectPins slot="proof" width={980} height={930}
+      light={{ src: closeUp.src, alt: 'Close-up: the Aircall window with a call in progress over a deal page, and the installed integrations menu open from the top bar.' }}
+      pins={[
+        { name: 'Top bar', kind: 'The integrations sit in the top bar, one click away on every page.', x: 638, y: 6, w: 128, h: 42 },
+        { name: 'Installed integrations', kind: 'The installed integrations menu. A badge on Aircall shows there is something new.', x: 672, y: 130, w: 108, h: 40 },
+        { name: 'Minimise', kind: 'Minimise the window to get it out of the way, and re-open it from the top bar. It can also move anywhere on the page.', x: 460, y: 180, w: 58, h: 34 },
+        { name: 'Call controls', kind: 'Answer, deny and end calls without leaving the deal page.', x: 286, y: 634, w: 80, h: 80 },
+      ]} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="How I got there" subtitle="the process, short" id="process">
+  <CaseBlock label="interviews" title="Talk to both sides" pills={['4 or 5 partner calls', '10 to 12 user interviews']}>
+    With partners, my team and I talked about the data they could share, pricing models and their experience with other CRMs. With users, I let the conversation lead them to my questions, so I did not have to ask them directly.
+  </CaseBlock>
+  <CaseBlock label="design rounds" title="Get the whole design team on board">
+    The idea changed the core product, so it needed the whole design team. I shared drafts with engineers, the PM and other designers all the time. It took many rounds.
+  </CaseBlock>
+  <CaseBlock label="testing" title="Four prototypes, two per interview" pills={['4 prototypes', '2 per interview', 'order changed each time']}>
+    Each prototype tested a different idea, for example a different entry point. In each interview, users did the same task in two prototypes and compared them. The order changed in every interview.
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="If it shipped" subtitle="how I would measure it, and what I learned" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'how I would measure it', items: [
+      'How many calls are logged in Pipedrive through the floating window',
+      'How often users open a Pipedrive page from the window',
+      'How many calling partners adopt it',
+      'Fewer switches between the calling app and Pipedrive (from interviews or session data)',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'A change to the core product needs the whole design team on board early.',
+      'Two prototypes in one session, in a changing order, let users compare ideas directly.',
+    ] }} />
+</CaseSection>
