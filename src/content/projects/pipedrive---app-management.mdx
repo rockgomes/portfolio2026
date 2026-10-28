@@ -1,7 +1,7 @@
 ---
 name: "Pipedrive - App Management"
 heroTitle: "Pipedrive - App Management"
-heroDescription: "Marketplace Manager is where developers connect their apps to Pipedrive, with JSON Schema, iframes or API calls. I redesigned the part where they create and manage their app extensions. The goal: make every option clear, so developers can build apps that feel native inside Pipedrive."
+heroDescription: "Marketplace Manager is where developers connect their apps to Pipedrive, with JSON Schema, iframes or API calls. I redesigned the part where they create and manage their app extensions. The goal was to make every option clear, so developers can build apps that work like part of Pipedrive."
 homeImage: "../../assets/projects/pipedrive---app-management/pipedrive-app-management.avif"
 homeImageAlt: ""
 tag1: ""
@@ -17,18 +17,18 @@ cardNumber: "06"
 cardCompany: "Pipedrive"
 cardYear: "2021"
 cardTitle: "App Management"
-cardLine: "App creation and management for developers, inside the Pipedrive Marketplace Manager."
+cardLine: "Where developers create and manage app extensions, in the Pipedrive Marketplace Manager."
 cardToCheck: true
 demoUrl: ""
 subtitle: "Pipedrive · 2021 · developer platform"
 facts:
-  role: "Senior Product Designer. The only senior designer in the integrations area, so I led the design there. Flows, UI and forms, with the PM and engineers."
+  role: "Senior Product Designer. The only senior designer in the integrations area, so I led the design there. I designed the flows, UI and forms with the PM and engineers."
   context: "Pipedrive's developer platform. Users are app vendors and developers who build integrations."
   made: "Flows and diagrams, the app extensions page, one form for each extension type."
   tools: "Figma, Miro"
-problem: "Customers need integrations that work right inside Pipedrive. Pipedrive cannot build them all, and the platform did not give developers the tools to build deep, native-feeling apps."
-decision: "Split schema-based and iframe-based extensions into two clear sections, and show each option as a block with a drawing and a short text."
-result: "One page where developers see all their options, a form for each extension, and a check for the JSON file that helped developers a lot. It shipped in 2021."
+problem: "Customers need integrations that work inside Pipedrive. Pipedrive cannot build them all. The platform did not give developers the tools to build apps that work like part of Pipedrive."
+decision: "Put schema-based and iframe-based extensions in two sections. Show each option as a block with a drawing and a short text."
+result: "Developers see all their options on one page, with a form for each extension. A check for the JSON file helped them a lot. The new page shipped in 2021."
 caseImage:
   src: "../../assets/projects/pipedrive---app-management/case-hero.png"
   alt: "The app extensions page: Actions and JSON panels, each with a short text and an add button, then Custom UI extensions with a Custom panel block and a Custom modal block, each with a drawing and an add button."
@@ -64,7 +64,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="Two decisions I would defend" subtitle="make every option easy to find" id="decisions">
   <CaseBlock label="decision 1 of 2" data-decision="1" title="Group the options by how they are built" pills={['based on developer feedback']}>
-    Developers told us they did not see all the options they had. So schema-based extensions (actions and JSON panels) and iframe-based extensions (custom panels and modals) got their own sections. A developer can start from the technology or from the place in Pipedrive. Either way, they have enough information about both to decide what to build and how.
+    Developers told us they did not see all the options they had. So schema-based extensions (actions and JSON panels) and iframe-based extensions (custom panels and modals) got their own sections. A developer can start from the technology or from the place in Pipedrive. Either way, they see enough about each option to decide what to build and how.
     <InspectPins slot="proof" width={top.width} height={top.height}
       light={{ src: top.src, alt: 'The top of the app extensions page: Actions and JSON panels, each with a short text and an add button, then the Custom UI extensions section with its first block, Custom panel.' }}
       pins={[
@@ -73,25 +73,25 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
         { name: 'Custom UI extensions', kind: 'Custom UI extensions: iframe content, in its own section, so it does not mix with the schema options.', x: 140, y: 854, w: 458, h: 64 },
       ]} />
   </CaseBlock>
-  <CaseBlock label="decision 2 of 2" data-decision="2" title="Show each option, do not just list it">
-    We wanted to make the options easier to discover. A name like "Custom modal" says little on its own. A small drawing gives developers a hint of where the extension will appear in Pipedrive, so it is easier to pick one. The short text and the docs link give the details.
+  <CaseBlock label="decision 2 of 2" data-decision="2" title="A small drawing for each option">
+    We wanted to make the options easier to find. A name like "Custom modal" does not tell developers much. A small drawing gives developers a hint of where the extension will appear in Pipedrive, so it is easier to pick one. The short text and the docs link give the details.
     <Proof slot="proof" caption="Custom panel and Custom modal: a drawing gives a hint of where the iframe appears." media={img(iframes, 'Two blocks: Custom panel (beta) with a drawing of an iframe in a side panel, and Custom modal with a drawing of an iframe in a modal. Each has an add button.')} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="research" title="Start from research we already had" pills={['market study', 'HVC buying criteria', 'trial company research']}>
-    Integrations were one of the top buying needs for bigger customers, and the most important topic for trial companies. That made the case for a better developer platform before I drew anything.
+    Integrations were one of the top buying needs for bigger customers, and the most important topic for trial companies. So we knew the developer platform had to get better before I drew anything.
   </CaseBlock>
   <CaseBlock label="flows" title="Flows first, with the PM and engineers">
-    Together with the PM and engineers, we drew the first flows and diagrams. We checked the flow with internal and external developers, refined it, and then chose the final solution.
+    Together with the PM and engineers, we drew the first flows and diagrams. We checked the flow with internal and external developers, improved it, and then chose the final solution.
     <Proof slot="proof" caption="The working file after a few rounds: every state of each extension type, and the flow between them." media={img(flows, 'A Figma board: columns for App actions, Interactive app actions and App panels, each with empty, filled, active and editing states, and a flow diagram between the states.')} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="One form for each extension" subtitle="what a developer fills in" id="forms">
-  <CaseBlock label="forms" title="Short forms, with the rules next to each field">
-    Each extension type has its own form: a name, a description, a URL or a JSON file, and the places in Pipedrive where it shows. The limits, like 30 characters for a name, sit under each field. During testing, we got errors from badly formatted JSON files. So the engineers came up with a check for the uploaded file, which was a great help for developers.
+  <CaseBlock label="forms" title="Short forms, with the limits under each field">
+    Each extension type has its own form: a name, a description, a URL or a JSON file, and the places in Pipedrive where it shows. The limits, like 30 characters for a name, are shown under each field. During testing, we got errors from badly formatted JSON files. So the engineers came up with a check for the uploaded file, which was a great help for developers.
     <ProofSwitch slot="proof" kind="tabs" id="form" label="Extension form" items={[
       { label: 'Action', caption: 'Action: a link or a JSON modal, and up to three actions per location.', media: img(formAction, 'The Action form: name, description, action type (Link or JSON modal), API endpoint, JWT secret, JSON file upload and locations.') },
       { label: 'JSON panel', caption: 'JSON panel: one panel per location, with an optional main action.', media: img(formJson, 'The JSON panel form: name, description, API endpoint, HTTP auth or JWT secret, JSON file upload, location and a main action.') },
@@ -101,7 +101,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   </CaseBlock>
 </CaseSection>
 
-<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+<CaseSection title="What changed" subtitle="the outcome, and what I learned" id="result" gap={48}>
   <TwoCol
     left={{ label: 'outcome', items: [
       'Schema-based and iframe-based extensions in two clear sections',
@@ -111,7 +111,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       'Shipped in 2021',
     ] }}
     right={{ label: 'what I learned', items: [
-      'With good research and well-defined steps, the flow is the easy part.',
-      'The hard part is turning the flow into a visual form and handling the edge cases.',
+      'With good research and clear steps, designing the flow was easy.',
+      'The hard work was turning the flow into a visual design and handling the edge cases.',
     ] }} />
 </CaseSection>
