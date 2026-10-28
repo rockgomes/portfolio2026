@@ -26,7 +26,7 @@ const experiments = await getCollection('experiments');
 const total = projects.length + experiments.length;
 const row = (e: (typeof projects)[number] | (typeof experiments)[number], line: string) => ({
   href: e.collection === 'projects' ? `/project/${e.id}` : `/experiments/${e.id}`,
-  image: e.collection === 'projects' ? e.data.homeImage : e.data.cardImage,
+  image: e.data.cardImage ?? (e.collection === 'projects' ? e.data.homeImage : undefined),
   title: e.data.cardTitle, line, meta: [e.data.cardCompany, e.data.cardYear].filter(Boolean).join(' · '),
 });
 const work = picks.flatMap(([id, line]) => projects.filter((p) => p.id === id).map((e) => row(e, line)));
