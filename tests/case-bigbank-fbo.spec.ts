@@ -34,9 +34,9 @@ test('the main picture is the card picture, with its caption', async ({ page }) 
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['What I made', 'How I got there', 'What changed']);
-  await expect(page.locator('#made [data-case-block] h3')).toHaveText(['Every list works the same way', 'Search opens beside the table', 'Long documents in clear groups', 'Dense data, kept readable']);
+  await expect(page.locator('#made [data-case-block] h3')).toHaveText(['Every list works the same way', 'Search opens beside the table', 'Long documents in clear groups', 'Many transactions on one screen']);
   await expect(page.locator('#made [data-case-block] .label')).toHaveText(['lists', 'search', 'forms', 'transactions']);
-  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Design next to the people who use it']);
+  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Working with the accountants every week']);
   await expect(page.locator('#process .pills li')).toHaveText(['developers', 'analysts', 'PMs', 'accountants']);
 });
 
@@ -61,7 +61,7 @@ test('the search switch starts on Open, and Closed shows the table alone', async
   await page.goto(PAGE);
   const sw = page.locator('[data-switch="search"]');
   await expect(sw.getByRole('radio', { name: 'Open' })).toHaveAttribute('aria-checked', 'true');
-  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toHaveText('Search open: the fields sit next to the table, not over it.');
+  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toHaveText('Search open: the fields are next to the table.');
   await sw.getByRole('radio', { name: 'Closed' }).click();
   await expect(sw.getByRole('radio', { name: 'Closed' })).toHaveAttribute('aria-checked', 'true');
   await expect(sw.locator('[data-proof-panel]:visible figcaption')).toHaveText('Search closed: the table uses the full width.');
