@@ -37,7 +37,7 @@ test('live page: iframe on desktop, still picture on phones', async ({ page, vie
   const live = page.locator('[data-live]');
   await expect(live.locator('.addr')).toHaveText('dealfront-ai-company-profile.netlify.app');
   await expect(live.locator('iframe')).toHaveAttribute('src', LIVE);
-  await expect(live.locator('figcaption')).toHaveText('The interactive replica of the Company Profile. A guided tour opens on its own, and the pill at the bottom right runs it again.');
+  await expect(live.locator('figcaption')).toHaveText('An interactive replica of the Company Profile. A guided tour starts on its own, and the button at the bottom right starts it again.');
   await expect(live.locator('video')).toHaveCount(0);
   const reload = live.getByRole('button', { name: 'Reload the live page' });
   if ((viewport?.width ?? 0) >= 1200) {
@@ -55,17 +55,17 @@ test('live page: iframe on desktop, still picture on phones', async ({ page, vie
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Four decisions I would defend', 'How I got there', 'What changed']);
-  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Questions, not one automatic summary', 'Filter the table, do not mark the rows', 'Show where the answer comes from', 'Edit a pin, not a question you already asked']);
+  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Each AI block starts with questions', 'A filter shows the recommended contacts', 'Show where the answer comes from', 'Only pinned questions can be edited']);
   await expect(page.locator('#decisions .pills li')).toHaveText(['internal users', 'real users, same week', 'MVP scope']);
-  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Research and design side by side', 'One block, three places', 'Join the house pattern, keep the log in view', 'A pin has a title and a prompt']);
+  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Research and design at the same time', 'The same AI block on three tabs', 'Match the other AI features and keep the log visible', 'A pin has a title and a prompt']);
   await expect(page.locator('#process .pills li')).toHaveText(['PMs', 'CS reps', 'clients', 'C-level']);
 });
 
 // Each switch: [id, option it starts on, a word of its caption, the other option, a word of that caption]
 const switches = [
-  ['design', 'Dropped: Generate', 'no way to steer', 'Shipped: question cards', 'already wanted to ask'],
+  ['design', 'Dropped: Generate', 'cannot choose what the AI writes', 'Shipped: question cards', 'already wanted to ask'],
   ['table', 'Shipped: filter toggle', 'only the recommended people show', 'Dropped: icon and hover', 'you hover to find out why'],
-  ['source', 'AI Insights', 'the claims carry links', 'Activity', ''],
+  ['source', 'AI Insights', 'each claim has a link', 'Activity', ''],
   ['pinning', 'Nine cards', 'Nine cards fit', 'Pin a question', 'You write the prompt once'],
 ] as const;
 
@@ -89,7 +89,7 @@ for (const [id, start, startText, other, otherText] of switches) {
 test('round two: a pin outlines its part and shows its note under it', async ({ page }) => {
   await page.goto(PAGE);
   const ins = page.locator('#process [data-inspect]');
-  await expect(ins.locator('.callouts .ui-callout')).toHaveText([/AI summary and Filter share one space/, /The house pattern/, /Example prompts/, /activity log stays near the top/]);
+  await expect(ins.locator('.callouts .ui-callout')).toHaveText([/AI summary and Filter share one space/, /The shared AI style/, /Example prompts/, /activity log stays near the top/]);
   await expect(ins.locator('[data-inspect-mode]')).toHaveCount(0);
   await expect(ins.locator('[data-note]:visible')).toHaveCount(0);
   await ins.locator('.layer .ui-pin').nth(1).click();

@@ -1,7 +1,7 @@
 ---
 name: "Dealfront - AI in the Company Profile"
 heroTitle: "Dealfront - AI in the Company Profile"
-heroDescription: "Dealfront already knew which companies visited your website, who worked there, and what they looked at. Reading it was a research job, and nobody had time for it. I added an AI layer inside the Company Profile that answers the questions people were already trying to answer by hand. Both rounds shipped within two weeks."
+heroDescription: "Dealfront already showed which companies visited your website, who worked there, and which pages they looked at. To use that data, people had to read all of it, and nobody had time. I added AI to the Company Profile. It answers the questions people were trying to answer by hand. The work shipped in two rounds within two weeks."
 homeImage: "../../assets/projects/dealfront-ai-company-profile/df-ai-hero-v5-2400x1738.png"
 homeImageAlt: ""
 tag1: ""
@@ -17,18 +17,18 @@ cardNumber: "01"
 cardCompany: "Dealfront"
 cardYear: "2025"
 cardTitle: "AI in the Company Profile"
-cardLine: "Added an AI layer that answers the questions salespeople were answering by hand. Both rounds shipped in two weeks."
+cardLine: "Added AI that answers the questions salespeople were answering by hand. Shipped in two rounds within two weeks."
 cardToCheck: false
 demoUrl: "https://dealfront-ai-company-profile.netlify.app"
 subtitle: "Dealfront · 2025 · AI feature in a live product"
 facts:
   role: "Senior Product Designer on the Company Profile team."
-  context: "A company-wide push: teams had a couple of weeks to build on an AI backend that was already built and tested. Two rounds, about a week each. I worked with one PM and several developers."
-  made: "AI blocks on Activity and Contacts, the AI Insights tab, question cards, pinning, a contacts filter and answers that name their source. Later I built the interactive replica of the profile myself, with Claude."
+  context: "The whole company had a couple of weeks to build on an AI backend that was already built and tested. We worked in two rounds, about a week each. I worked with one PM and several developers."
+  made: "AI blocks on Activity and Contacts, the AI Insights tab, question cards, pinning, a contacts filter and answers that show their source. Later I built the interactive replica of the profile myself, with Claude."
   tools: "v0 by Vercel to explore ideas, Figma to design, Claude to build the replica later."
-problem: "The data on Activity and Contacts was all there, but unsorted. Finding the useful visits or the right person meant reading everything by hand, and company research happened on Google, in another tab."
-decision: "Let people ask, instead of one automatic summary. Every AI block opens with ready questions that run in one click. People can also save their own questions and reuse them on the next company."
-result: "Both rounds shipped in beta inside two weeks. People asked questions and pinned them, the behaviour the design was built around. I left before I could see if it held over time."
+problem: "The Activity and Contacts tabs had all the data, but it was not sorted. To find the useful visits or the right person, people read everything by hand. They did company research on Google, in another tab."
+decision: "I let people ask the AI questions. Every AI block opens with ready questions that run in one click. People can also save their own questions and use them again on the next company."
+result: "Both rounds shipped in beta within two weeks. People asked questions and pinned them, which is what I designed for. I left before I could see if they kept doing it."
 links:
   - label: "Open the live demo ↗"
     href: "https://dealfront-ai-company-profile.netlify.app"
@@ -36,7 +36,7 @@ live:
   src: "https://dealfront-ai-company-profile.netlify.app"
   title: "Dealfront Company Profile, interactive replica"
   poster: "/media/projects/dealfront-ai-company-profile/live.jpg"
-  caption: "The interactive replica of the Company Profile. A guided tour opens on its own, and the pill at the bottom right runs it again."
+  caption: "An interactive replica of the Company Profile. A guided tour starts on its own, and the button at the bottom right starts it again."
 copyToCheck: true
 ---
 import CaseSection from '../../components/case/CaseSection.astro';
@@ -60,72 +60,72 @@ import pinIt from '../../assets/projects/dealfront-ai-company-profile/df-ai-v6-0
 export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
 
 <CaseSection title="Four decisions I would defend" subtitle="what I chose, and what I gave up" id="decisions">
-  <CaseBlock label="decision 1 of 4" data-decision="1" title="Questions, not one automatic summary" pills={['internal users', 'real users, same week']}>
-    The first design had one Generate button: the AI read the whole log and wrote a summary. Users pushed back. The summary was fine, but it was not what they would have asked. So every block now opens with question cards and a free text field.
+  <CaseBlock label="decision 1 of 4" data-decision="1" title="Each AI block starts with questions" pills={['internal users', 'real users, same week']}>
+    The first design had one Generate button. The AI read the whole activity log and wrote a summary. Users did not want it. The summary was good enough, but it did not answer the questions they had. So every block now opens with question cards and a text field.
     <ProofSwitch slot="proof" kind="segmented" id="design" label="which design" selected={0} items={[
-      { label: 'Dropped: Generate', caption: 'The whole flow of the design we dropped. One button, and no way to steer what comes back.', media: img(dropped, 'Three states of the dropped design: an AI Summary bar with a Generate button, a loading skeleton, and one finished paragraph of summary text.') },
-      { label: 'Shipped: question cards', caption: 'The way in is a question someone already wanted to ask.', media: img(shipped, 'The Activity tab with the AI activity summary block: three question cards and a prompt field above the activity data.') },
+      { label: 'Dropped: Generate', caption: 'The design we dropped, from start to end. There is one button, and you cannot choose what the AI writes.', media: img(dropped, 'Three states of the dropped design: an AI Summary bar with a Generate button, a loading skeleton, and one finished paragraph of summary text.') },
+      { label: 'Shipped: question cards', caption: 'Each card is a question people already wanted to ask.', media: img(shipped, 'The Activity tab with the AI activity summary block: three question cards and a prompt field above the activity data.') },
     ]} />
   </CaseBlock>
-  <CaseBlock label="decision 2 of 4" data-decision="2" title="Filter the table, do not mark the rows">
-    Contacts questions return names, so the answer has to reach the table. I tried an AI icon on the recommended rows, with the reason in a hover. Filtering won. The icon was easy to miss in a long table, and a hover never reaches keyboard or touch users. The toggle is visible, says what it does, and you can undo it.
-    <ProofSwitch slot="proof" kind="segmented" id="table" label="how the answer reaches the table" selected={1} items={[
-      { label: 'Dropped: icon and hover', caption: 'The one we dropped: the AI marks people in the table, and you hover to find out why.', media: img(flag, 'The contacts table with an AI icon next to two names and a blue tooltip that explains why one person was picked.') },
-      { label: 'Shipped: filter toggle', caption: 'Turn it on and only the recommended people show. You can see it, and you can undo it.', media: img(filter, 'The filter toggle turned on, with the table cut down to the two recommended people and their names shown as chips you can remove.') },
+  <CaseBlock label="decision 2 of 4" data-decision="2" title="A filter shows the recommended contacts">
+    Questions on the Contacts tab return names, so the answer has to show in the contacts table. First I tried an AI icon next to each recommended person, with the reason in a hover tooltip. I chose a filter instead. The icon was easy to miss in a long table, and keyboard and touch users cannot open a hover tooltip. The filter toggle is easy to see and has a clear label. You can turn it off again.
+    <ProofSwitch slot="proof" kind="segmented" id="table" label="how the answer shows in the table" selected={1} items={[
+      { label: 'Dropped: icon and hover', caption: 'The design we dropped: the AI marks people in the table, and you hover to find out why.', media: img(flag, 'The contacts table with an AI icon next to two names and a blue tooltip that explains why one person was picked.') },
+      { label: 'Shipped: filter toggle', caption: 'Turn it on and only the recommended people show. Turn it off to see everyone again.', media: img(filter, 'The filter toggle turned on, with the table cut down to the two recommended people and their names shown as chips you can remove.') },
     ]} />
   </CaseBlock>
   <CaseBlock label="decision 3 of 4" data-decision="3" title="Show where the answer comes from">
-    Round one shipped with a line that says the AI can make mistakes. That hands you the work and no way to do it. In round two, answers come back in numbered sections. On AI Insights, each claim carries a Source link you can open. When the AI finds nothing, the answer says so.
+    Round one shipped with a line that says the AI can make mistakes. That line asks you to check the answer, but gives you no way to check it. In round two, answers come back in numbered sections. On AI Insights, each claim has a Source link you can open. When the AI finds nothing, the answer says that.
     <ProofSwitch slot="proof" kind="tabs" id="source" label="where the AI reads" selected={1} items={[
       { label: 'Activity', caption: '', media: img(activity, 'An AI activity answer with the question shown above it, key points as bullets, and thumbs up and down.') },
-      { label: 'AI Insights', caption: 'On AI Insights the claims carry links, because the material came from outside. When it finds nothing, it says so.', media: img(insights, 'An AI Insights answer in numbered sections, each claim with a Source link, and one section that says nothing was found.') },
+      { label: 'AI Insights', caption: 'On AI Insights each claim has a link, because the information comes from outside sources. When the AI finds nothing, it says so.', media: img(insights, 'An AI Insights answer in numbered sections, each claim with a Source link, and one section that says nothing was found.') },
     ]} />
   </CaseBlock>
-  <CaseBlock label="decision 4 of 4" data-decision="4" title="Edit a pin, not a question you already asked" pills={['MVP scope']}>
-    Claude and ChatGPT let you edit a question and run it again. We left it out: it needs its own states and history, and this was an MVP. Asking again costs a few seconds. Editing a pinned question was built, because you reuse a pin many times.
+  <CaseBlock label="decision 4 of 4" data-decision="4" title="Only pinned questions can be edited" pills={['MVP scope']}>
+    Claude and ChatGPT let you edit a question you already asked and run it again. We left this out. It needs its own states and history, and this was an MVP. Asking again takes a few seconds. We did build editing for pinned questions, because people use a pin many times.
     <Proof slot="proof" caption="Built: editing a pinned question. Left out: editing and re-running a question you already asked." media={img(editPin, 'The Edit pinned question window, with the title and prompt filled in, a delete button, and cancel and save buttons.')} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="two rounds, about a week each" id="process">
-  <CaseBlock label="round one" title="Research and design side by side" pills={['PMs', 'CS reps', 'clients', 'C-level']}>
-    Research, design and testing ran at the same time, not one after another. We had a basic first draft by Tuesday, with no text input yet. Through the week we moved from no questions to people asking their own, and handed it to the dev team on Friday.
+  <CaseBlock label="round one" title="Research and design at the same time" pills={['PMs', 'CS reps', 'clients', 'C-level']}>
+    We did research, design and testing at the same time. We had a basic first draft by Tuesday, with no questions and no text field yet. By Friday people could ask their own questions, and we handed the design to the developers.
   </CaseBlock>
-  <CaseBlock label="one pattern" title="One block, three places">
-    Activity and Contacts run the same block. Only the title and the questions change, because each one reads the data on its tab. AI Insights takes any question about the company and can read outside material too, so it got its own tab.
-    <Proof slot="proof" caption="It can answer any question about the company, so it got the whole tab." media={img(insightsTab, 'The AI Insights tab with six suggested insight cards in two columns above a prompt field and an Ask AI button.')} />
+  <CaseBlock label="one pattern" title="The same AI block on three tabs">
+    Activity and Contacts use the same AI block. Only the title and the questions change, because each block reads the data on its own tab. AI Insights answers any question about the company and can also read outside sources, so it got its own tab.
+    <Proof slot="proof" caption="AI Insights answers any question about the company, so it has the whole tab." media={img(insightsTab, 'The AI Insights tab with six suggested insight cards in two columns above a prompt field and an Ask AI button.')} />
   </CaseBlock>
-  <CaseBlock label="round two" title="Join the house pattern, keep the log in view">
-    Lists Enrichment and Alerts were building their own AI features, each with its own look. The Company Profile joined one shared pattern. On Activity, the AI block also pushed the log down, so AI summary and Filter now share one space.
+  <CaseBlock label="round two" title="Match the other AI features and keep the log visible">
+    Lists Enrichment and Alerts were building their own AI features, each with its own look. We moved the Company Profile to one shared AI style. On Activity, the AI block also pushed the activity log down. So the AI summary and Filter buttons now share one space.
     <InspectPins slot="proof" width={house.width} height={house.height}
       light={{ src: house.src, alt: 'The round two Activity tab: AI summary and Filter buttons, the AI block with a purple outline and three question cards, and the activity log below.' }}
       pins={[
-        { name: 'AI summary and Filter', kind: 'AI summary and Filter share one space. Click Filter and the filters take its place.', x: 1050, y: 495, w: 490, h: 85 },
-        { name: 'House pattern', kind: 'The house pattern: purple accent, sparkle icon, a lighter surface. The outline animates once when the tab opens, so you know which block is the AI.', x: 60, y: 595, w: 1480, h: 390 },
-        { name: 'Example prompts', kind: 'Example prompts instead of an empty field. Three fit, because the block shares the tab with the log.', x: 95, y: 705, w: 1410, h: 130 },
+        { name: 'AI summary and Filter', kind: 'AI summary and Filter share one space. Click Filter, and the filters show in that space.', x: 1050, y: 495, w: 490, h: 85 },
+        { name: 'Shared AI style', kind: 'The shared AI style: purple accent, sparkle icon, a lighter background. The outline animates once when the tab opens, so you can see which block is the AI.', x: 60, y: 595, w: 1480, h: 390 },
+        { name: 'Example prompts', kind: 'Example prompts help people start. Only three fit, because the block shares the tab with the activity log.', x: 95, y: 705, w: 1410, h: 130 },
         { name: 'Activity log', kind: 'The activity log stays near the top.', x: 50, y: 1190, w: 1500, h: 500 },
       ]} />
   </CaseBlock>
   <CaseBlock label="pinning" title="A pin has a title and a prompt">
-    The prompt is the full request sent to the AI. The title is the short label on the card, so you scan it in a second. A heavy user pins many questions, so the block shows nine cards, and a Show all link opens the rest.
+    The prompt is the full request sent to the AI. The title is the short label on the card, so people can read it fast. Some people pin many questions, so the block shows nine cards, and a Show all link opens the rest.
     <ProofSwitch slot="proof" kind="tabs" id="pinning" label="pinning" selected={0} items={[
-      { label: 'Nine cards', caption: 'Nine cards fit. The rest sit behind one link.', media: img(grid, 'The AI contact recommendation block with nine pinned question cards in a grid and a Show all (17) link above them.') },
+      { label: 'Nine cards', caption: 'Nine cards fit. A Show all link opens the rest.', media: img(grid, 'The AI contact recommendation block with nine pinned question cards in a grid and a Show all (17) link above them.') },
       { label: 'Pin a question', caption: 'You write the prompt once. After that you only read the title.', media: img(pinIt, 'The Pin your question window, with a title field, a 100 character limit, a prompt field, and cancel and pin buttons.') },
     ]} />
   </CaseBlock>
 </CaseSection>
 
-<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+<CaseSection title="What changed" subtitle="the outcome, and what I learned" id="result" gap={48}>
   <TwoCol
     left={{ label: 'outcome', items: [
-      'Both rounds shipped, in beta, inside two weeks',
-      'People asked questions, and they pinned them, the harder thing to get people to do',
-      'I stayed a few more weeks: the behaviour held in the short term',
-      'I left before I could see if it held over time',
+      'Both rounds shipped in beta within two weeks',
+      'People asked questions and also pinned them. Pinning is harder to get people to do',
+      'I stayed a few more weeks, and people kept using it in that time',
+      'I left before I could see if they kept using it for longer',
     ] }}
     right={{ label: 'what I learned', items: [
-      'One automatic summary was not what people would have asked. One person wants buying signals, the next wants to know who to call.',
-      'An empty chat box asks you to invent the right question. Most people will not. Questions that are already written get them started.',
-      'A line that says the AI can make mistakes hands you the work and no way to do it. Showing where the answer comes from is more useful.',
+      'One automatic summary did not answer people\'s questions. One person wants buying signals, the next wants to know who to call.',
+      'With an empty chat box, you have to think of the right question yourself, and most people do not. Ready questions help them start.',
+      'A line that says the AI can make mistakes asks you to check the answer, but gives you no way to do it. Showing where the answer comes from is more useful.',
     ] }} />
 </CaseSection>
