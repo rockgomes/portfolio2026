@@ -20,14 +20,14 @@ cardTitle: "AI in the Company Profile"
 cardLine: "Added an AI layer that answers the questions salespeople were answering by hand. Both rounds shipped in two weeks."
 cardToCheck: false
 demoUrl: "https://dealfront-ai-company-profile.netlify.app"
-subtitle: "Dealfront · NN 2025 · AI feature in a live product"
+subtitle: "Dealfront · 2025 · AI feature in a live product"
 facts:
-  role: "Product designer on the Company Profile team. NN (to confirm: your title and what you owned)."
-  context: "A company-wide push: teams had a couple of weeks to build on an AI backend that was already built and tested. Two rounds, about a week each."
-  made: "AI blocks on Activity and Contacts, the AI Insights tab, question cards, pinning, a contacts filter, answers that name their source, and an interactive replica of the profile."
-  tools: "NN (to confirm)"
+  role: "Senior Product Designer on the Company Profile team."
+  context: "A company-wide push: teams had a couple of weeks to build on an AI backend that was already built and tested. Two rounds, about a week each. I worked with one PM and several developers."
+  made: "AI blocks on Activity and Contacts, the AI Insights tab, question cards, pinning, a contacts filter and answers that name their source. Later I built the interactive replica of the profile myself, with Claude."
+  tools: "v0 by Vercel to explore ideas, Figma to design, Claude to build the replica later."
 problem: "The data on Activity and Contacts was all there, but unsorted. Finding the useful visits or the right person meant reading everything by hand, and company research happened on Google, in another tab."
-decision: "Let people ask, instead of one automatic summary. Every AI block opens with ready questions that run in one click, and a good question can be pinned and reused on the next company."
+decision: "Let people ask, instead of one automatic summary. Every AI block opens with ready questions that run in one click. People can also save their own questions and reuse them on the next company."
 result: "Both rounds shipped in beta inside two weeks. People asked questions and pinned them, the behaviour the design was built around. I left before I could see if it held over time."
 links:
   - label: "Open the live demo ↗"
@@ -61,7 +61,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="Four decisions I would defend" subtitle="what I chose, and what I gave up" id="decisions">
   <CaseBlock label="decision 1 of 4" data-decision="1" title="Questions, not one automatic summary" pills={['internal users', 'real users, same week']}>
-    The first design had one Generate button: the AI read the whole log and wrote a summary. Users pushed back. The summary was fine, but it was not what they would have asked. So every block now opens with question cards and a free text field. I gave up the zero-effort summary for control.
+    The first design had one Generate button: the AI read the whole log and wrote a summary. Users pushed back. The summary was fine, but it was not what they would have asked. So every block now opens with question cards and a free text field.
     <ProofSwitch slot="proof" kind="segmented" id="design" label="which design" selected={0} items={[
       { label: 'Dropped: Generate', caption: 'The whole flow of the design we dropped. One button, and no way to steer what comes back.', media: img(dropped, 'Three states of the dropped design: an AI Summary bar with a Generate button, a loading skeleton, and one finished paragraph of summary text.') },
       { label: 'Shipped: question cards', caption: 'The way in is a question someone already wanted to ask.', media: img(shipped, 'The Activity tab with the AI activity summary block: three question cards and a prompt field above the activity data.') },
@@ -74,8 +74,8 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       { label: 'Shipped: filter toggle', caption: 'Turn it on and only the recommended people show. You can see it, and you can undo it.', media: img(filter, 'The filter toggle turned on, with the table cut down to the two recommended people and their names shown as chips you can remove.') },
     ]} />
   </CaseBlock>
-  <CaseBlock label="decision 3 of 4" data-decision="3" title="Name the source, even when it is us">
-    Round one shipped with a line that says the AI can make mistakes. That hands you the work and no way to do it. In round two, answers come back in numbered sections. On AI Insights, claims from outside carry a Source link. On Activity and Contacts the data is Dealfront's own, so there is nothing to link to, and the answer says so by having none.
+  <CaseBlock label="decision 3 of 4" data-decision="3" title="Show where the answer comes from">
+    Round one shipped with a line that says the AI can make mistakes. That hands you the work and no way to do it. In round two, answers come back in numbered sections. On AI Insights, each claim carries a Source link you can open. When the AI finds nothing, the answer says so.
     <ProofSwitch slot="proof" kind="tabs" id="source" label="where the AI reads" selected={1} items={[
       { label: 'Activity', caption: 'On Activity there are no links, because the data is ours.', media: img(activity, 'An AI activity answer with the question shown above it, key points as bullets, thumbs up and down, and no source links.') },
       { label: 'AI Insights', caption: 'On AI Insights the claims carry links, because the material came from outside. When it finds nothing, it says so.', media: img(insights, 'An AI Insights answer in numbered sections, each claim with a Source link, and one section that says nothing was found.') },
@@ -122,11 +122,10 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       'People asked questions, and they pinned them, the harder thing to get people to do',
       'I stayed a few more weeks: the behaviour held in the short term',
       'I left before I could see if it held over time',
-      'No usage numbers on the page: NN (to confirm if you have any you can share)',
     ] }}
     right={{ label: 'what I learned', items: [
-      'One automatic answer serves nobody well. People want to ask their own question.',
-      'A warning line is not honesty you can use. Naming the source is.',
-      'In an MVP, build what people reuse, like pins. Leave out what one click already replaces.',
+      'One automatic summary was not what people would have asked. One person wants buying signals, the next wants to know who to call.',
+      'An empty chat box asks you to invent the right question. Most people will not. Questions that are already written get them started.',
+      'A line that says the AI can make mistakes hands you the work and no way to do it. Showing where the answer comes from is more useful.',
     ] }} />
 </CaseSection>

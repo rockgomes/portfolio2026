@@ -9,9 +9,11 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await page.goto(PAGE);
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('AI in the Company Profile');
-  await expect(s.locator('.sub')).toHaveText('Dealfront · NN 2025 · AI feature in a live product');
+  await expect(s.locator('.sub')).toHaveText('Dealfront · 2025 · AI feature in a live product');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
+  await expect(s.locator('[data-facts]')).toContainText('Senior Product Designer on the Company Profile team.');
+  await expect(s).not.toContainText('NN');
 });
 
 test('summary is in the first screen on desktop', async ({ page, viewport }) => {
@@ -53,7 +55,7 @@ test('live page: iframe on desktop, still picture on phones', async ({ page, vie
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Four decisions I would defend', 'How I got there', 'What changed']);
-  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Questions, not one automatic summary', 'Filter the table, do not mark the rows', 'Name the source, even when it is us', 'Edit a pin, not a question you already asked']);
+  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Questions, not one automatic summary', 'Filter the table, do not mark the rows', 'Show where the answer comes from', 'Edit a pin, not a question you already asked']);
   await expect(page.locator('#decisions .pills li')).toHaveText(['internal users', 'real users, same week', 'MVP scope']);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Research and design side by side', 'One block, three places', 'Join the house pattern, keep the log in view', 'A pin has a title and a prompt']);
   await expect(page.locator('#process .pills li')).toHaveText(['PMs', 'CS reps', 'clients', 'C-level']);
