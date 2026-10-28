@@ -1,0 +1,43 @@
+---
+// A case study page (docs/superpowers/specs/2026-10-27-case-study-design.md), for a project or an experiment: the
+// summary with the live page, the Before / After switch or the main picture, then the MDX body, then the next case
+// study. Experiments use the lighter template of sketches 11 to 14: the same parts, with buttons to the live demo and
+// the source code made from liveDemoUrl and sourceCodeUrl.
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import CaseSummary from './CaseSummary.astro';
+import LivePage from './LivePage.astro';
+import Proof from './Proof.astro';
+import ProofSwitch from './ProofSwitch.astro';
+import NextCase from './NextCase.astro';
+interface Props { entry: CollectionEntry<'projects'> | CollectionEntry<'experiments'> }
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const isProject = entry.collection === 'projects';
+const lead = 'heroDescription' in d ? d.heroDescription : d.summary;
+const links = d.links.length || isProject ? d.links : [
+  ...('liveDemoUrl' in d && d.liveDemoUrl ? [{ label: 'Open the live demo ↗', href: d.liveDemoUrl }] : []),
+  ...('sourceCodeUrl' in d && d.sourceCodeUrl ? [{ label: 'Source code ↗', href: d.sourceCodeUrl }] : []),
+];
+const wide = '(min-width: 1440px) 1280px, 100vw';
+// Before / After in the summary starts on After (sketch D 442:10216)
+const ba = d.beforeAfter && (['before', 'after'] as const).map((k) => {
+  const { src, alt } = d.beforeAfter![k];
+  return { label: k === 'before' ? 'Before' : 'After', caption: d.beforeAfter!.caption, media: { kind: 'image' as const, src, alt, width: src.width, height: src.height } };
+});
+// The main picture: caseImage (with its caption), else the card picture
+const main = d.caseImage ? { src: d.caseImage.src, alt: d.caseImage.alt, caption: d.caseImage.caption }
+  : 'homeImage' in d && d.homeImage ? { src: d.homeImage, alt: d.homeImageAlt, caption: undefined } : undefined;
+---
+<CaseSummary title={d.cardTitle || d.name} subtitle={d.subtitle} lead={lead} facts={d.facts} problem={d.problem} decision={d.decision} result={d.result} links={links}>
+  {d.live ? <LivePage {...d.live} />
+    : ba ? <ProofSwitch kind="segmented" id="ba" label="Show the page before or after" items={ba} selected={1} sizes={wide} />
+    : main && <Proof media={{ kind: 'image', src: main.src, alt: main.alt, width: main.src.width, height: main.src.height }} caption={main.caption} sizes={wide} eager />}
+</CaseSummary>
+<div class="case-body"><Content /></div>
+<NextCase currentId={entry.id} />
+<style>
+  /* The coverage line under the design system stats (sketch C 377:10243) */
+  .case-body :global(.coverage) { margin: 0; font: var(--type-mono-body); color: var(--color-text-secondary); }
+</style>
