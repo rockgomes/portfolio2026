@@ -1,6 +1,6 @@
 ---
 name: "Portfolio presentation template"
-summary: "A portfolio PDF flattens interaction design into screenshots. This is the alternative: one scroll-driven page where chapter cards zoom open into full-screen chapters with working prototypes inside."
+summary: "A portfolio PDF shows interaction design only as still screenshots. This template is one page that moves as you scroll. Chapter cards zoom open into full-screen chapters with working prototypes."
 cardImage: "../../assets/experiments/portfolio-presentation-template/template.png"
 heroImage: "../../assets/experiments/portfolio-presentation-template/experiment-portfolio-presentation-template.png"
 date: "2026-08-28"
@@ -21,16 +21,16 @@ cardNumber: "e.04"
 cardCompany: "Template"
 cardYear: "site"
 cardTitle: "Portfolio presentation template"
-cardLine: "Scroll-driven case-study page, chapter cards zoom into full-screen chapters with working prototypes."
+cardLine: "A case study page that moves as you scroll. Chapter cards zoom open into full-screen chapters with working prototypes."
 cardToCheck: false
 subtitle: "Template · 2026 · experiment"
 facts:
-  role: "Solo side project. Product and design decisions, directed the build"
+  role: "Solo side project. I made the product and design decisions and directed the build"
   context: "Experiment, a reusable template"
   made: "A case study page with chapters and working demos"
   tools: "Vite, GSAP (ScrollTrigger + Flip), Lenis, Claude Code"
-problem: "If the work was about how something behaves, a still image is the wrong medium for it."
-decision: "One continuous page. A chapter card zooms open into a full-screen chapter, with working rebuilds of the designs next to the story."
+problem: "When the work is about how something moves and reacts, a still image cannot show it."
+decision: "I made one long page. Each chapter card zooms open into a full-screen chapter. The chapter shows working rebuilds of the designs next to the story."
 result: "A live template you can open and scroll."
 live:
   src: "https://rockgomes-portfolio-template.netlify.app"
@@ -52,16 +52,16 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="How it is built" subtitle="and what I would change" id="built">
   <CaseBlock label="the idea" title="A card that opens into a chapter">
-    Click a chapter card and it zooms open into a full-screen chapter (a FLIP animation). The story runs next to working rebuilds of the shipped designs.
+    Click a chapter card and it zooms open into a full-screen chapter. This is a FLIP animation: the card grows smoothly into its new size and place. The chapter shows the story next to working rebuilds of the designs that shipped.
     <ProofSwitch slot="proof" kind="segmented" id="chapter" label="Show the chapter card or the open chapter" selected={0} items={[
       { label: 'Card', caption: 'The chapter index: one card per case study.', media: img(cards, 'The chapter index of the template: two cards side by side, 01 Dealfront AI activity summary and 02 MedTech company list, each with a screenshot, a headline, a short line and Enter.') },
       { label: 'Open chapter', caption: 'The first chapter, zoomed open to full screen.', media: img(chapter, 'Chapter 01 Dealfront open at full screen: a large headline, The model already worked. Nobody had a way to use it, a big 01 behind it, a row with role, timeline, team and status, and a Close button at the top.') },
     ]} />
   </CaseBlock>
-  <CaseBlock label="one file" title="All the content lives in one file" pills={['Vite', 'GSAP', 'Lenis', 'no framework']}>
-    Each chapter is one object in src/data/chapters.js: its copy, its images, and which demo to mount. A different set of case studies means editing that file, never the layout.
+  <CaseBlock label="one file" title="All the content is in one file" pills={['Vite', 'GSAP', 'Lenis', 'no framework']}>
+    Each chapter is one entry in src/data/chapters.js, with its text, its images and the demo it loads. To show different case studies, you only edit that file. The layout code stays the same.
   </CaseBlock>
-  <CaseBlock label="what I would change" title="Shared demo parts, not one-offs">
-    The chapter demos are hand-built per project, which does not scale. Next time I would make a small shared set of demo parts.
+  <CaseBlock label="what I would change" title="Next time, shared demo parts">
+    I built each chapter demo by hand for its own project. That takes too long when there are many projects. Next time I would make a small set of demo parts that all chapters share.
   </CaseBlock>
 </CaseSection>

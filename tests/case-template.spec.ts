@@ -45,7 +45,7 @@ test('live demo: a still picture under the browser bar, at every size', async ({
 test('one section, in the order of the sketch', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['How it is built']);
-  await expect(page.locator('#built [data-case-block] h3')).toHaveText(['A card that opens into a chapter', 'All the content lives in one file', 'Shared demo parts, not one-offs']);
+  await expect(page.locator('#built [data-case-block] h3')).toHaveText(['A card that opens into a chapter', 'All the content is in one file', 'Next time, shared demo parts']);
   await expect(page.locator('#built .pills li')).toHaveText(['Vite', 'GSAP', 'Lenis', 'no framework']);
 });
 
