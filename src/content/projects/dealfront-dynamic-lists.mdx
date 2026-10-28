@@ -1,0 +1,111 @@
+---
+name: "Dealfront - Dynamic Lists"
+heroTitle: "Dealfront - Dynamic Lists"
+heroDescription: "Dealfront's lists pull matching companies from a pool of millions and keep updating as new matches appear. But a smaller group inside a list meant creating another full list. I designed Views: saved filter and column setups on top of a list. One list, many lenses."
+homeImage: "../../assets/projects/dealfront-dynamic-lists/homepage-illustration-v5.png"
+homeImageAlt: ""
+tag1: "Design"
+tag2: ""
+type: "client"
+industry: ["B2B", "SaaS"]
+focus: ["Data"]
+tagsToCheck: true
+private: false
+webflowId: "6a67b5ec7f1acc57d1b37819"
+cardOrder: 2
+cardNumber: "02"
+cardCompany: "Dealfront"
+cardYear: "2025"
+cardTitle: "Dynamic Lists"
+cardLine: "Saved, non-destructive filter and column views on top of one list. One list, many lenses."
+cardToCheck: false
+demoUrl: "https://dealfront-dynamic-lists-cd-7c276e015d.netlify.app"
+subtitle: "Dealfront · 2025 · product feature"
+facts:
+  role: "Senior Product Designer, contract. Problem framing, exploration, final UI, and a working demo of the design."
+  context: "Lists in Dealfront Target, a platform that helps B2B teams find and reach companies. Lists feed exports, alerts, ad campaigns and LinkedIn audiences. Team: NN (to confirm)."
+  made: "Explorations of where filters live, the Filter window, Save as new view, the state details, and a working copy of the design."
+  tools: "Figma, AI tools for the working copy: NN (to confirm)."
+problem: "A smaller group inside a list meant a whole new list. The criteria were copied, the copies stopped matching, and sidebars filled up."
+decision: "Views live inside their own list. Filters and columns are saved together, because together they answer one question: what am I looking at?"
+result: "One list, many views that always match it. Views also gave alerts and workflows something precise to point to. No numbers I can share."
+links:
+  - label: "Open the live demo ↗"
+    href: "https://dealfront-dynamic-lists-cd-7c276e015d.netlify.app"
+live:
+  src: "https://dealfront-dynamic-lists-cd-7c276e015d.netlify.app"
+  title: "Dynamic Lists working copy, live demo"
+  poster: "/media/projects/dealfront-dynamic-lists/live.jpg"
+  caption: "A working copy of the design, built with AI from the real Figma files. Not the real product. Filter the list, change columns, save views and switch between them."
+copyToCheck: true
+---
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import InspectPins from '../../components/case/InspectPins.astro';
+import Proof from '../../components/case/Proof.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import toolbar from '../../assets/projects/dealfront-dynamic-lists/case-d1.jpg';
+import explored from '../../assets/projects/dealfront-dynamic-lists/e3268e8a-c3f0-46b4-bd6a-4f999ec2a1ce.png';
+import shipped from '../../assets/projects/dealfront-dynamic-lists/m94kfx.png';
+import filtered from '../../assets/projects/dealfront-dynamic-lists/screenshot-2026-07-28-at-01-58-16.png';
+import filterWindow from '../../assets/projects/dealfront-dynamic-lists/d47nxy.png';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="Three decisions I would defend" subtitle="three turning points, in the order they happened" id="decisions">
+  <CaseBlock label="decision 1 of 3" data-decision="1" title="Views belong to one list" pills={['dropped: a new list every time', 'dropped: views shared across lists', 'chosen: views inside their list']}>
+    Users did not want more lists. They wanted more ways to look at one list. So where does a saved filter live? I compared three answers. A new list every time was the problem already. Views shared across all lists break the link: a group like "low engagement" only makes sense next to its own list. So views live inside their own list, and the list stays the source of truth.
+    <Proof slot="proof" caption="The view selector sits in the list's own toolbar, under the list name." media={img(toolbar, 'The list header: the list name CRM Connected with its size, 29k, and the Default view selector in the same toolbar, next to the filter and column icons.')} />
+  </CaseBlock>
+  <CaseBlock label="decision 2 of 3" data-decision="2" title="Filters and columns are one idea">
+    I tried the controls in a sidebar, a flyout, a popup, a side panel, and a View options modal with tabs that kept growing wider. The turning point: filters and columns answer one question together, which companies and what you see about them. So they come together at the moment you save.
+    <div slot="proof" style={{ maxWidth: '648px' }}>
+      <ProofSwitch kind="segmented" id="stage" label="Design stage" selected={1} items={[
+        { label: 'Explored', caption: 'A road not taken: a tabbed modal that tried to hold filters and table setup in one place.', media: img(explored, 'A View options modal with two tabs, Filters and Table. The Filters tab has three columns: available filters, the selected filter, and active filters.') },
+        { label: 'Shipped', caption: 'Save as new view: the filters and the columns, each with a count, saved as one thing.', media: img(shipped, 'The Save as new view modal: a view name, Sales CRM, then Filters with a count of 2 and Columns with a count of 6.') },
+      ]} />
+    </div>
+  </CaseBlock>
+  <CaseBlock label="decision 3 of 3" data-decision="3" title="The state is always honest">
+    Views only work if people always know what they are looking at. So the state is never hidden. Change a saved view and a "modified" flag tells you, with save as new or revert. One rule: Default view clears everything, and it is never overwritten by accident.
+    <InspectPins slot="proof" width={3050} height={1850}
+      light={{ src: filtered.src, alt: 'A list with two filters on: a Filtered by row under the toolbar with Web activity and Tags chips, Clear all and Save view. The list shows 7 of 29k companies.' }}
+      pins={[
+        { name: 'Filtered by', kind: 'Filtered by: every active filter is a chip you can remove. Save view is right there.', x: 755, y: 412, w: 831, h: 55 },
+        { name: 'Filter dot', kind: 'A dot on the filter icon when filters are on but the window is closed.', x: 2824, y: 320, w: 58, h: 58 },
+        { name: 'View selector', kind: 'The view selector. A changed view shows a "modified" flag here, with save as new or revert.', x: 2593, y: 328, w: 213, h: 46 },
+        { name: 'Updated every hour', kind: '"Data is updated every hour": a reminder that the list is alive under every view.', x: 785, y: 1106, w: 724, h: 41 },
+      ]} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="How I got there" subtitle="the process, short" id="process">
+  <CaseBlock label="exploration" title="Five places for the controls" pills={['sidebar', 'flyout', 'popup', 'side panel', 'tabbed modal']}>
+    Before the final design, I tried the filter controls in five places. The tabbed modal grew wider with every tab, because it tried to fit filters and table setup into one surface. That is what pointed to one idea instead of two.
+  </CaseBlock>
+  <CaseBlock label="filtering" title="Filtering, kept simple">
+    The filter icon opens a short Filter window. Each category opens on its own, with a number for its active filters. Clear all and Apply filter close it. Applied filters then show as chips under the toolbar.
+    <div slot="proof" style={{ maxWidth: '689px' }}>
+      <Proof caption="The Filter window: one category open at a time, counts always visible." media={img(filterWindow, 'The Filter window: Web activity, Tags, Company lists with a count of 2, AI enrichment and CRM status, with Clear all and Apply filter buttons.')} />
+    </div>
+  </CaseBlock>
+  <CaseBlock label="working copy" title="Something to try, not only to read" pills={['built with AI', 'guided tour']}>
+    I rebuilt the design as a working copy with AI, from the real Figma files and shipped screens, plus some optimizations. A guided tour walks through the decisions, or you can just play.
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'outcome', items: [
+      'One list, one set of criteria, and views like "Low engagement" and "Manufacturing" that always match it. They are not copies: the same list, seen differently.',
+      'No duplicated work, no lists that drift apart, and a sidebar that stays easy to use.',
+      'Beyond the brief: views gave alerts and workflows something precise to point to, like "notify me when a company enters this view".',
+      'No numbers I can share.',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'Users asked for more lists, but they wanted more ways to look at one list.',
+      'Two controls can be one idea. Filters and columns only made sense once they were saved together.',
+      'A working copy lets people try a design instead of reading about it.',
+    ] }} />
+</CaseSection>
