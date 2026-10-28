@@ -1,0 +1,64 @@
+---
+name: "MoveOutSale"
+summary: "A marketplace for people who leave a city and have three weeks to sell the furniture from a whole flat. All of one person's listings go into one moving sale."
+cardImage: "../../assets/experiments/moveoutsale/moveoutsale.png"
+heroImage: "../../assets/experiments/moveoutsale/experiment-moveoutsale-photos.png"
+date: "2026-08-28"
+tools: "Next.js, Supabase, Tailwind, Playwright, Claude Code"
+liveDemoUrl: "https://moving-out-demo.netlify.app"
+sourceCodeUrl: "https://github.com/rockgomes/moving-out-webapp"
+featured: false
+category: "Code"
+readTime: "2 min read"
+type: "experiment"
+industry: ["B2C"]
+focus: ["Code"]
+tagsToCheck: true
+private: false
+webflowId: "6a916f32a7daa4d848265485"
+cardOrder: 13
+cardNumber: "e.03"
+cardCompany: "Side project"
+cardYear: "site"
+cardTitle: "MoveOutSale"
+cardLine: "A marketplace for selling the furniture from a whole flat when you move. Built with Next.js and Supabase."
+cardToCheck: false
+subtitle: "Side project · 2026 · experiment"
+facts:
+  role: "Solo side project. I made the product and design decisions and directed the build"
+  context: "Side project, public demo"
+  made: "A marketplace with moving sales, and a demo that uses its own test database"
+  tools: "Next.js, Supabase, Tailwind, Playwright, Claude Code"
+problem: "When one person sells everything before a move, buyers see many separate posts."
+decision: "I put all of one seller's listings into one moving sale. The public demo uses its own database, so visitors cannot reach real data."
+result: "Anyone can try the demo as a signed-in user. The demo resets at night, but only if someone changed something."
+live:
+  src: "https://moving-out-demo.netlify.app"
+  title: "MoveOutSale, live demo"
+  poster: "/media/experiments/moveoutsale/live.jpg"
+  caption: "The live demo. Anything you add there is deleted at night."
+copyToCheck: true
+---
+
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import Proof from '../../components/case/Proof.astro';
+import sale from '../../assets/experiments/moveoutsale/case-sale.jpg';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="How it is built" subtitle="the part that was interesting" id="built">
+  <CaseBlock label="the idea" title="One moving sale for each seller">
+    A moving sale has everything one person sells before they leave. Buyers see all of that person's items in one place.
+    <Proof slot="proof" caption="One moving sale: a flat clear-out in Kalamaja, six items." media={img(sale, 'The Kalamaja flat clear-out page in MoveOutSale: one seller, Marta Kuusk from Tallinn, with six items in a grid, among them a grey sofa, an oak dining table, a brass lamp and a cast iron pan.')} />
+  </CaseBlock>
+  <CaseBlock label="the interesting part" title="A public demo that cannot reach real data">
+    The demo uses its own Supabase project (the database and sign-in service). It never has the keys to the real site. The demo signs in every visitor with their own temporary account. Database rules (row-level security) stop visitors from seeing each other's data. A noindex header tells search engines not to list what visitors type.
+  </CaseBlock>
+  <CaseBlock label="a small thing" title="Reset only when something changed">
+    Every night, a scheduled job deletes the demo data and loads the starting data again, but only if someone changed something. On most nights nobody did, so the job does nothing.
+  </CaseBlock>
+  <CaseBlock label="the stack" title="The database checks who can see what" pills={['Next.js', 'Supabase', 'Playwright']}>
+    I built it with Next.js (App Router). Supabase gives the Postgres database, sign-in and file storage. Every table has row-level security, so the database itself checks who can read or change each row. The browser makes photos smaller before it uploads them. Playwright tests cover the main flows.
+  </CaseBlock>
+</CaseSection>
