@@ -39,7 +39,7 @@ test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Three decisions I would defend', 'How I got there', 'The parts behind it', 'What changed']);
   await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Records open beside the customer', 'Every status sits next to its fix', 'One search for every number']);
-  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Map every screen before drawing one', 'Ask the people who use it, then check the data', 'A moodboard before the screens', 'Stay close to the build']);
+  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Map every screen before drawing one', 'Ask the people who use it, then check the data', 'A moodboard before the screens', 'Work with the developers during the build']);
   await expect(page.locator('#process .pills li')).toHaveText(['support agents', 'team leads', 'product managers', 'developers']);
 });
 
