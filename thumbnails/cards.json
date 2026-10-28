@@ -1,7 +1,8 @@
 {
   "defaults": {
     "w": 1940,
-    "h": 1576
+    "h": 1576,
+    "groundFrom": "../src/assets/projects/dealfront-ai-company-profile/df-ai-v8-00-fullview-contacts.png"
   },
   "quality": 0.9,
   "jobs": [
@@ -19,7 +20,7 @@
     },
     {
       "out": "../src/assets/cards/inbank---customer-service-backoffice.jpg",
-      "web": "../src/assets/projects/inbank---customer-service-backoffice/inbank-cs-new-open.png"
+      "web": "../src/assets/projects/inbank---customer-service-backoffice/desktop-white.avif"
     },
     {
       "out": "../src/assets/cards/inbank---hire-purchase.jpg",
