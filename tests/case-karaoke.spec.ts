@@ -35,7 +35,7 @@ test('live demo: iframe on desktop, still picture on phones', async ({ page, vie
   await page.goto(PAGE);
   const live = page.locator('[data-live]');
   await expect(live.locator('.addr')).toHaveText('karaoke-os.netlify.app');
-  await expect(live.locator('figcaption')).toHaveText('The live demo. Your copy of a bar is deleted overnight, so change anything.');
+  await expect(live.locator('figcaption')).toHaveText('The live demo. You can change anything. Your copy of a bar is deleted at night.');
   await expect(live.locator('video')).toHaveCount(0);
   const reload = live.getByRole('button', { name: 'Reload the live page' });
   if ((viewport?.width ?? 0) >= 1200) {
@@ -54,7 +54,7 @@ test('one section, in the order of the sketch', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['How it is built']);
   await expect(page.locator('#built [data-case-block] .label')).toHaveText(['the interesting part', 'who sees what', 'why I could build it']);
-  await expect(page.locator('#built [data-case-block] h3')).toHaveText(['One search page became three parts', 'The database decides who sees what', 'I knew the problem, AI wrote the code']);
+  await expect(page.locator('#built [data-case-block] h3')).toHaveText(['One search page became three parts', 'Database rules control who sees what', 'I designed it, and Claude Code wrote the code']);
   await expect(page.locator('#built [data-case-block]').nth(0).locator('.pills li')).toHaveText(['guests', 'bar staff', 'service operator']);
   await expect(page.locator('#built [data-case-block]').nth(1).locator('.pills li')).toHaveText(['Next.js', 'Supabase', 'Netlify']);
   await expect(page.locator('#built [data-case-block]').nth(2).locator('.pills')).toHaveCount(0);
