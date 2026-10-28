@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { readdirSync, readFileSync } from 'node:fs';
 
 // Case study pages (docs/superpowers/specs/2026-10-27-case-study-design.md). Flex Academy is the first one built this way.
 const FLEX = '/project/flex-academy';
@@ -27,10 +28,22 @@ test('buttons link to the live page, the prototype and the source', async ({ pag
   await expect(a.nth(2)).toHaveAttribute('href', 'https://github.com/rockgomes/flex-academy-prototype');
 });
 
+// Until every case study is on the new template: any file without `problem` keeps the old layout
+const oldLayout = [['projects', 'project'], ['experiments', 'experiments']].flatMap(([dir, path]) => readdirSync(`src/content/${dir}`)
+  .filter((f) => !/^problem:/m.test(readFileSync(`src/content/${dir}/${f}`, 'utf8'))).map((f) => `/${path}/${f.replace(/\.mdx?$/, '')}`));
 test('pages without the new fields keep the old layout', async ({ page }) => {
-  await page.goto('/project/dealfront-dynamic-lists');
+  test.skip(!oldLayout.length, 'every page is on the new template');
+  await page.goto(oldLayout[0]);
   await expect(page.locator('[data-case-summary]')).toHaveCount(0);
   await expect(page.locator('article.article h1')).toHaveCount(1);
+});
+
+// The next case study follows the homepage card order, across projects and experiments, and wraps around
+test('next case study: experiments follow the projects in card order', async ({ page }) => {
+  for (const [from, to] of [['/project/inbank---customer-service-backoffice', '/project/inbank---hire-purchase'], ['/experiments/fieldset', '/experiments/karaoke-os']]) {
+    await page.goto(from);
+    await expect(page.locator('[data-next-case] .title a'), from).toHaveAttribute('href', to);
+  }
 });
 
 test('live page: iframe on desktop, video on phones', async ({ page, viewport }) => {

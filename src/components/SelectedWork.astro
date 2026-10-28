@@ -2,20 +2,13 @@
 // Figma: Projects (96:6873) = Section header + Filter panel (B, 96:6877) + Work card grid (52:2051).
 // Filter rules (from the prototype): nothing selected = everything. Type is single choice.
 // Same group = OR, different groups = AND. Counts show what you would get. Zero-result tags are disabled.
-import { getCollection } from 'astro:content';
 import SectionHeader from './SectionHeader.astro';
 import WorkCard from './WorkCard.astro';
 import Cursor from './Cursor.astro';
 import Comment from './Comment.astro';
-import { isPrivate } from '../lib/private';
+import { workItems } from '../lib/work';
 
-const projects = (await getCollection('projects')).filter((p) => !isPrivate(p.data)).map((p) => ({
-  id: p.id, href: `/project/${p.id}`, img: p.data.homeImage, alt: p.data.homeImageAlt, demo: p.data.demoUrl, d: p.data,
-}));
-const experiments = (await getCollection('experiments')).filter((e) => !isPrivate(e.data)).map((e) => ({
-  id: e.id, href: `/experiments/${e.id}`, img: e.data.cardImage, alt: '', demo: '', d: e.data,
-}));
-const items = [...projects, ...experiments].sort((a, b) => a.d.cardOrder - b.d.cardOrder);
+const items = await workItems();
 const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.industry, focus: i.d.focus }));
 ---
 <section class="work" id="work" aria-labelledby="work-title">

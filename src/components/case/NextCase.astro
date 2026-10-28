@@ -1,20 +1,20 @@
 ---
-// Figma: Next case study (377:10288) in sketch C. The next public project by card order, after the last back to the
-// first. The same Work card as the homepage, without its index (no Figma layer on case pages).
-import { getCollection } from 'astro:content';
+// Figma: Next case study (377:10288) in sketch C. The next public project or experiment by card order (the homepage
+// order: 01 to 10, then the experiments 11 to 14), after the last back to the first. The same Work card as the
+// homepage, without its index (no Figma layer on case pages).
 import WorkCard from '../WorkCard.astro';
-import { isPrivate } from '../../lib/private';
+import { workItems } from '../../lib/work';
 interface Props { currentId: string }
 const { currentId } = Astro.props;
-const projects = (await getCollection('projects')).filter((p) => !isPrivate(p.data)).sort((a, b) => a.data.cardOrder - b.data.cardOrder);
-const i = projects.findIndex((p) => p.id === currentId);
-const next = projects.length > 1 ? projects[(i + 1) % projects.length] : undefined;
+const items = await workItems();
+const i = items.findIndex((it) => it.id === currentId);
+const next = items.length > 1 ? items[(i + 1) % items.length] : undefined;
 ---
 {next && (
   <section class="next wrap" aria-labelledby="next-case-title" data-next-case>
     <h2 class="label t-mono-label" id="next-case-title">next case study</h2>
     <ul class="one">
-      <WorkCard id={next.id} href={`/project/${next.id}`} img={next.data.homeImage} alt={next.data.homeImageAlt} demo={next.data.demoUrl} d={next.data} />
+      <WorkCard {...next} />
     </ul>
   </section>
 )}
