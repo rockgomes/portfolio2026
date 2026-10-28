@@ -10,6 +10,7 @@ test('summary: title, subtitle, facts, problem, decision, result, and no buttons
   await expect(s.locator('.sub')).toHaveText('Bigbank · 2019 · loan application flow');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
+  await expect(s.locator('[data-facts] dd').last()).toHaveText('Figma, InVision, Miro');
   // No public link or prototype on the old page
   await expect(s.locator('[data-case-links]')).toHaveCount(0);
 });
@@ -34,8 +35,8 @@ test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['What I made', 'How I got there', 'What changed']);
   await expect(page.locator('#made [data-case-block] h3')).toHaveText(['Four steps, always in view', 'Change the offer without starting over', 'Short forms, one topic per screen']);
-  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Ask clients and country managers', 'One design for every country']);
-  await expect(page.locator('#process .pills li')).toHaveText(['clients', 'country managers']);
+  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Enough data, as fast as possible', 'One design for every country']);
+  await expect(page.locator('#process .pills li')).toHaveText(['clients', 'country managers', 'Legal', 'Accounting']);
 });
 
 test('the steps tabs start on Review offer, and every step swaps the screen', async ({ page }) => {
@@ -60,6 +61,8 @@ test('the old Webflow body is gone', async ({ page }) => {
   await expect(page.locator('.prose')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText('Challenge');
   await expect(page.locator('main')).not.toContainText('seamless');
+  // No open markers left from the draft
+  await expect(page.locator('main')).not.toContainText(/\bNN\b|to confirm|No exact numbers|Baltic/);
 });
 
 test('result: outcome and what I learned', async ({ page }) => {

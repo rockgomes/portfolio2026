@@ -1,7 +1,7 @@
 ---
 name: "Bigbank - Loan flow"
 heroTitle: "Bigbank - Loan flow"
-heroDescription: "One of my first projects at Bigbank. The loan application was basic, slow and different from country to country. We redesigned it as one flow for every country, with shorter forms and clearer steps."
+heroDescription: "One of my first projects at Bigbank. The old loan flows had no real personality, and each country made its own decisions. The new design brought them all together under one shared design language, with shorter forms and clearer steps."
 homeImage: "../../assets/projects/bigbank---loan-flow/bigbank-loan.avif"
 homeImageAlt: ""
 tag1: "design"
@@ -22,13 +22,13 @@ cardToCheck: false
 demoUrl: ""
 subtitle: "Bigbank · 2019 · loan application flow"
 facts:
-  role: "Product designer at Bigbank (title to confirm). I designed the client-facing loan applications for the Baltic countries, web and mobile."
-  context: "Bigbank, a bank specialised in loans in several European countries. One of my first projects after I joined."
-  made: "The new loan application: personal details, the offer, additional data and the contract."
-  tools: "NN (to confirm)"
+  role: "Product Designer at Bigbank. With one other designer, then alone, I owned it end to end: wireframes, visual design, stakeholder interviews, design reviews with PMs and developers, the build, and a design system in parallel."
+  context: "Bigbank, a bank specialised in loans in several European countries. The team: 2 designers, a PM for each country and a couple of analysts."
+  made: "The new loan application for 5 countries, responsive and mobile-first: personal details, the offer, additional data and the contract."
+  tools: "Figma, InVision, Miro"
 problem: "The old application had a very basic design, did not focus on users and was not unified. Approval took long and many applicants dropped off."
 decision: "One application for all countries, with shorter forms and clearer steps."
-result: "Loan answers came faster, the NPS score went up, and support had fewer manual tasks. No exact numbers on the old page."
+result: "Loan answers came faster, the NPS score went up, and support had fewer manual tasks."
 caseImage:
   src: "../../assets/projects/bigbank---loan-flow/bigbank-loan.avif"
   alt: "Five phones on a blue background, each showing a screen of the new loan application: two personal details screens, the offer, the payment details and the contract."
@@ -64,17 +64,21 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     <Proof slot="proof" caption="Editing the offer: amount and period on sliders, the monthly payment under them." media={img(editOffer, 'A pop-up over the offer screen with a slider for the offer amount (8 000 euro, from 1 000 to 10 000), a slider for the loan period (62 months, from 6 to 72), the monthly payment, and an Update my offer button.')} />
   </CaseBlock>
   <CaseBlock label="the forms" title="Short forms, one topic per screen">
-    Each screen asks a few questions on one topic. Choices like residency and education are buttons, not long drop-down lists.
+    Each screen asks a few questions on one topic. Short lists, up to about 7 short options, are buttons on the screen, because that makes choosing faster. Long lists stay drop-downs.
     <Proof slot="proof" caption="Personal details, part 2 of 3: residency and education are buttons." media={img(form, 'A phone screen, step 2 of 3 of Personal Details: family status, dependants, and residency type and education as rows of buttons.')} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
-  <CaseBlock label="research" title="Ask clients and country managers" pills={['clients', 'country managers']}>
-    Before the redesign, we did research with clients and with our own country managers. NN (to confirm): what we learned and how it changed the flow.
+  <CaseBlock label="research" title="Enough data, as fast as possible" pills={['clients', 'country managers', 'Legal', 'Accounting']}>
+    A bank sells money. It must follow rules, regulations and risk checks, so it needs a lot of data. Each country has its own laws and required checks.
+
+    Clients do not want the money. They want what it solves: a new TV, a broken appliance, a family trip. The bank stands between them and that, so they want a fast yes or no. At that time, many loans took days to answer.
+
+    So we designed the flow so that each step gives enough information to start early decisions, and kept it as clear and short as possible. This took the whole bank: lawyers, accountants and others checked that no question was irrelevant and none was missing.
   </CaseBlock>
   <CaseBlock label="scope" title="One design for every country">
-    The old application was not unified across countries. The new one has one design for all of them. The screens show it in Latvian and Lithuanian.
+    Before, each country made its own decisions about its flow. Now 5 countries share one design. We did Finland, Estonia and Sweden together, then I did Latvia and Lithuania alone. Everything is responsive and mobile-first.
   </CaseBlock>
 </CaseSection>
 
@@ -82,11 +86,11 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   <TwoCol
     left={{ label: 'outcome', items: [
       'Faster loan answers: a shorter application and an improved back-end',
-      'A higher NPS score, with positive feedback even from applicants who got a no',
+      'A higher NPS score. Some clients who got a no still gave a 10, because the answer came fast and did not waste their time',
       'Fewer manual tasks for customer support',
-      'No exact numbers on the old page',
     ] }}
     right={{ label: 'what I learned', items: [
-      'NN (to write): what I learned from this project',
+      'A designer is a bridge between all parts of the company. I had to understand what country managers needed, weigh it against the limits from Legal and Accounting, and keep everyone on the same page, even with different goals',
+      'All of that while being the voice of the customer inside the bank',
     ] }} />
 </CaseSection>
