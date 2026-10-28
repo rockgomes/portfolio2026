@@ -1,0 +1,74 @@
+{
+  "defaults": {
+    "w": 1940,
+    "h": 1576,
+    "groundFrom": "../src/assets/projects/dealfront-ai-company-profile/df-ai-v8-00-fullview-contacts.png"
+  },
+  "quality": 0.9,
+  "jobs": [
+    {
+      "out": "../src/assets/cards/dealfront-ai-company-profile.jpg",
+      "web": "../src/assets/projects/dealfront-ai-company-profile/df-ai-v8-00-fullview-contacts.png"
+    },
+    {
+      "out": "../src/assets/cards/dealfront-dynamic-lists.jpg",
+      "web": "../src/assets/projects/dealfront-dynamic-lists/list.png"
+    },
+    {
+      "out": "../src/assets/cards/flex-academy.jpg",
+      "web": "../src/assets/projects/flex-academy/flex-academy-hero.jpg"
+    },
+    {
+      "out": "../src/assets/cards/inbank---customer-service-backoffice.jpg",
+      "web": "../src/assets/projects/inbank---customer-service-backoffice/desktop-white.avif"
+    },
+    {
+      "out": "../src/assets/cards/inbank---hire-purchase.jpg",
+      "mobile": [
+        "sources/hire-purchase-1.png",
+        "sources/hire-purchase-2.png",
+        "sources/hire-purchase-3.png"
+      ]
+    },
+    {
+      "out": "../src/assets/cards/pipedrive---app-management.jpg",
+      "web": "sources/app-management.png"
+    },
+    {
+      "out": "../src/assets/cards/pipedrive---floating-iframe.jpg",
+      "web": "../src/assets/projects/pipedrive---floating-iframe/case-p-open.png"
+    },
+    {
+      "out": "../src/assets/cards/pipedrive---interactive-panels.jpg",
+      "web": "sources/interactive-panels.png"
+    },
+    {
+      "out": "../src/assets/cards/bigbank---loan-flow.jpg",
+      "mobile": [
+        "sources/loan-flow-1.png",
+        "sources/loan-flow-2.png",
+        "sources/loan-flow-3.png"
+      ]
+    },
+    {
+      "out": "../src/assets/cards/bigbank---financial-backoffice.jpg",
+      "web": "../src/assets/projects/bigbank---financial-backoffice/fbo-transactions-1920px-04.avif"
+    },
+    {
+      "out": "../src/assets/cards/fieldset.jpg",
+      "web": "sources/fieldset.png"
+    },
+    {
+      "out": "../src/assets/cards/karaoke-os.jpg",
+      "web": "sources/karaoke-os.png"
+    },
+    {
+      "out": "../src/assets/cards/moveoutsale.jpg",
+      "web": "sources/moveoutsale.png"
+    },
+    {
+      "out": "../src/assets/cards/portfolio-presentation-template.jpg",
+      "web": "../src/assets/experiments/portfolio-presentation-template/experiment-portfolio-presentation-template.png"
+    }
+  ]
+}

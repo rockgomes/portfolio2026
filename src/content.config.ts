@@ -52,6 +52,8 @@ const projects = defineCollection({
       heroDescription: z.string().default(''),
       homeImage: image().optional(),
       homeImageAlt: z.string().default(''),
+      // The Work card picture, made with Shotkit (thumbnails/cards.json). homeImage stays the case page picture.
+      cardImage: image().optional(),
       tag1: z.string().default(''),
       tag2: z.string().default(''),
       demoUrl: z.string().default(''),
