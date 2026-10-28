@@ -141,3 +141,13 @@ test('looks the same as the approved screenshots', async ({ page }) => {
     await expect(page).toHaveScreenshot(`floating-iframe-${sel.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}.png`, { fullPage: true, mask: [page.locator('[data-live] iframe')], clip: { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.w), height: Math.round(b.h) } });
   }
 });
+
+test('testing: the winning prototype in three steps, from Figma', async ({ page }) => {
+  await page.goto(PAGE);
+  const sw = page.locator('[data-switch="winner"]');
+  await expect(sw.getByRole('radio')).toHaveText(['1. Open', '2. Use', '3. Minimise']);
+  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('installed integrations menu');
+  await sw.getByRole('radio', { name: '3. Minimise' }).click();
+  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('small bar');
+  await expect(sw.locator('[data-proof-panel]:visible')).toHaveCount(1);
+});

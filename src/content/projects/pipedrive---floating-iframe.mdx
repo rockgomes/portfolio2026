@@ -47,7 +47,13 @@ import CaseSection from '../../components/case/CaseSection.astro';
 import CaseBlock from '../../components/case/CaseBlock.astro';
 import InspectPins from '../../components/case/InspectPins.astro';
 import TwoCol from '../../components/case/TwoCol.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
 import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.jpg';
+import menu from '../../assets/projects/pipedrive---floating-iframe/case-p-menu.png';
+import inUse from '../../assets/projects/pipedrive---floating-iframe/case-p-open.png';
+import minimised from '../../assets/projects/pipedrive---floating-iframe/case-p-minimised.png';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
 
 <CaseSection title="Two decisions I would defend" subtitle="where to start, and what to build" id="decisions">
   <CaseBlock label="decision 1 of 2" data-decision="1" title="Start with calling apps" pills={['used a lot', 'no good way to sync call data']}>
@@ -75,6 +81,11 @@ import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.j
   </CaseBlock>
   <CaseBlock label="testing" title="Four prototypes, two per interview" pills={['4 prototypes', '2 per interview', 'order changed each time']}>
     Each prototype tested a different idea, for example a different entry point. In each interview, users did the same task in two prototypes and compared them. The order changed in every interview.
+    <ProofSwitch slot="proof" kind="segmented" id="winner" label="the winning prototype, step by step" selected={0} items={[
+      { label: '1. Open', caption: 'Users open the app from the installed integrations menu in the top bar.', media: img(menu, 'A Pipedrive deal page with the installed integrations menu open from the top bar: Aircall, Asana and Xero.') },
+      { label: '2. Use', caption: 'The app opens in a window over the deal page, so users do not leave the deal.', media: img(inUse, 'A Pipedrive deal page with the Aircall window open on the right, showing a to-do list of calls and voicemails.') },
+      { label: '3. Minimise', caption: 'Users minimise the window to a small bar at the bottom of the page.', media: img(minimised, 'A Pipedrive deal page with Aircall minimised to a small bar at the bottom right.') },
+    ]} />
   </CaseBlock>
 </CaseSection>
 
