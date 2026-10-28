@@ -52,15 +52,38 @@ test('the old Webflow body is gone', async ({ page }) => {
 test('parts: a pin outlines its part and marks its line, with no Light / Dark control', async ({ page }) => {
   await page.goto(PAGE);
   const ins = page.locator('#parts [data-inspect]');
-  await expect(ins.locator('.ui-callout')).toHaveText([/Data card/, /Status pill/, /Table with a filter/, /Tabs with counts/]);
+  await expect(ins.locator('.callouts .ui-callout')).toHaveText([/Data card/, /Status pill/, /Table with a filter/, /Tabs with counts/]);
   await expect(ins.locator('[data-inspect-mode]')).toHaveCount(0);
   await expect(ins.locator('[data-inspect-panel]')).toHaveCount(0);
   await ins.locator('.layer .ui-pin').nth(1).click();
-  await expect(ins.locator('.ui-callout').nth(1)).toHaveAttribute('aria-pressed', 'true');
+  await expect(ins.locator('.callouts .ui-callout').nth(1)).toHaveAttribute('aria-pressed', 'true');
   await expect(ins.locator('[data-layer="1"]')).toHaveClass(/on/);
-  await ins.locator('.ui-callout').nth(3).click();
-  await expect(ins.locator('.ui-callout').nth(1)).toHaveAttribute('aria-pressed', 'false');
+  await ins.locator('.callouts .ui-callout').nth(3).click();
+  await expect(ins.locator('.callouts .ui-callout').nth(1)).toHaveAttribute('aria-pressed', 'false');
   await expect(ins.locator('[data-layer="3"]')).toHaveClass(/on/);
+});
+
+// The picture is tall, so the line list is often off screen: the chosen part's note shows right under its outline
+test('parts: a pin shows its note right under the outlined part, on screen', async ({ page }) => {
+  await page.goto(PAGE);
+  const ins = page.locator('#parts [data-inspect]');
+  await expect(ins.locator('[data-note]:visible')).toHaveCount(0);
+  await ins.locator('.layer .ui-pin').nth(1).click();
+  const note = ins.locator('[data-note="1"]');
+  await expect(note).toBeVisible();
+  await expect(note).toContainText('Status pill with its fix next to it');
+  await expect(ins.locator('[data-note]:visible')).toHaveCount(1);
+  const layer = (await ins.locator('[data-layer="1"]').boundingBox())!;
+  const box = (await note.boundingBox())!;
+  expect(box.y).toBeGreaterThanOrEqual(layer.y + layer.height);
+  expect(box.y - (layer.y + layer.height)).toBeLessThan(16);
+  expect(box.x).toBeGreaterThanOrEqual(layer.x - 1);
+  // Inside the picture, so its frame never cuts it
+  const stage = (await ins.locator('.stage').boundingBox())!;
+  expect(box.x + box.width).toBeLessThanOrEqual(stage.x + stage.width);
+  await ins.locator('.layer .ui-pin').nth(3).click();
+  await expect(ins.locator('[data-note="3"]')).toBeVisible();
+  await expect(note).toBeHidden();
 });
 
 test('result: outcome and what I learned', async ({ page }) => {

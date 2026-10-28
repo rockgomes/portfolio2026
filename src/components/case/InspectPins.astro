@@ -3,7 +3,8 @@
 // of the picture (children of the picture's own box, overlays rule), with a Callout list under it. Picking a pin or a
 // line outlines that layer. With `tokens`, it also lists the layer's tokens with their value in the current mode, and
 // with `dark`, Light / Dark swaps the picture and the values (Flex Academy). Without them, the pins only point at the
-// parts (Inbank, sketch D 442:10346). Uses the shared Segmented, .ui-pin, .ui-callout, the Proof frame and bindChoice.
+// parts (Inbank, sketch D 442:10346), and the chosen part's line shows as a note right under its outline, because the
+// list can be off screen under a tall picture. Uses the shared Segmented, .ui-pin, .ui-callout, the Proof frame and bindChoice.
 // Pins show at every width.
 import Proof from './Proof.astro';
 import Segmented from '../Segmented.astro';
@@ -31,6 +32,11 @@ const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? [
         <span class="layer" data-layer={i} style={`left:${pct(p.x, width)};top:${pct(p.y, height)};width:${pct(p.w, width)};height:${pct(p.h, height)}`}>
           <button type="button" class="ui-pin" tabindex="-1" aria-hidden="true" data-pick={i}>{i + 1}</button>
         </span>
+      ))}
+      {!tokens && pins.map((p, i) => (
+        <div class="part-note" data-note={i} hidden aria-hidden="true" style={`--l:${pct(p.x, width)};left:${pct(p.x, width)};top:calc(${pct(p.y + p.h, height)} + 8px)`}>
+          <span class="ui-callout"><span class="ui-pin ui-pin-callout">{i + 1}</span>{p.kind}</span>
+        </div>
       ))}
     </div>
   </Proof>
@@ -65,6 +71,9 @@ const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? [
   .layer { position: absolute; border: 1.5px solid transparent; border-radius: 6px; pointer-events: none; }
   .layer.on { border-color: var(--color-annotation-redline); }
   .layer .ui-pin { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); border: 0; padding: 0; cursor: pointer; pointer-events: auto; }
+  /* The note under the chosen part: the Callout in a panel like the menu panel, kept inside the picture */
+  .part-note { position: absolute; z-index: 1; width: max-content; max-width: min(320px, calc(100% - var(--l) - 8px)); padding: var(--space-8) var(--space-12); background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: var(--radius-control); box-shadow: var(--shadow-panel); }
+  .part-note .ui-callout { color: var(--color-text-primary); }
   .callouts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
   .ui-callout { width: 100%; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
   .ui-callout:hover, .ui-callout[aria-pressed='true'] { color: var(--color-text-primary); }
@@ -83,11 +92,12 @@ const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? [
   document.querySelectorAll<HTMLElement>('[data-inspect]').forEach((ins) => {
     const modes = [...ins.querySelectorAll<HTMLButtonElement>('[data-inspect-mode] [role="radio"]')];
     bindChoice({ options: modes, onSelect: (i) => { ins.dataset.mode = i ? 'dark' : 'light'; } });
-    const lines = [...ins.querySelectorAll<HTMLButtonElement>('.ui-callout')];
+    const lines = [...ins.querySelectorAll<HTMLButtonElement>('.callouts .ui-callout')];
     const pick = (i: number) => {
       lines.forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
       ins.querySelectorAll<HTMLElement>('[data-layer]').forEach((l) => l.classList.toggle('on', l.dataset.layer === String(i)));
       ins.querySelectorAll<HTMLElement>('[data-props-of]').forEach((u) => { u.hidden = u.dataset.propsOf !== String(i); });
+      ins.querySelectorAll<HTMLElement>('[data-note]').forEach((n) => { n.hidden = n.dataset.note !== String(i); });
     };
     ins.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.addEventListener('click', () => pick(Number(b.dataset.pick))));
   });
