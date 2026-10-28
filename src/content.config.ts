@@ -42,6 +42,8 @@ const projects = defineCollection({
       links: z.array(z.object({ label: z.string(), href: z.string().url() })).default([]),
       // The live page in the summary (an iframe, with a screen recording on phones). Without it, the summary shows homeImage.
       live: z.object({ src: z.string().url(), title: z.string(), video: z.string(), videoLabel: z.string(), poster: z.string(), caption: z.string() }).optional(),
+      // A Before / After switch in the summary (a segmented control), in place of the live page or homeImage.
+      beforeAfter: z.object({ caption: z.string(), before: z.object({ src: image(), alt: z.string() }), after: z.object({ src: image(), alt: z.string() }) }).optional(),
       // copyToCheck = page copy written by Claude, Rock to confirm (the PR lists the sentences).
       copyToCheck: z.boolean().default(false),
       ...tagging,

@@ -3,13 +3,14 @@
 // Segmented.astro and Tabs.astro, the same ones as the header and the Experience client tabs). Every panel is in the
 // HTML and only the selected one shows, so without JS the first choice (or `selected`) is still there. Clicks, arrow
 // keys and motion come from src/lib/choice.ts. A video in a closed panel is out of view, so it pauses (autoplay.ts).
+// `sizes` goes to each Proof (how wide the pictures show).
 import Proof from './Proof.astro';
 import Segmented from '../Segmented.astro';
 import Tabs from '../Tabs.astro';
 import type { ProofMedia } from './proof';
 interface Item { label: string; caption: string; media: ProofMedia }
-interface Props { kind: 'tabs' | 'segmented'; label: string; id: string; items: Item[]; selected?: number }
-const { kind, label, id, items, selected = 0 } = Astro.props;
+interface Props { kind: 'tabs' | 'segmented'; label: string; id: string; items: Item[]; selected?: number; sizes?: string }
+const { kind, label, id, items, selected = 0, sizes } = Astro.props;
 const tabs = kind === 'tabs';
 const labels = items.map((it) => it.label);
 ---
@@ -20,7 +21,7 @@ const labels = items.map((it) => it.label);
   <div class="panels">
     {items.map((it, i) => (
       <div data-proof-panel id={`${id}-panel-${i}`} role={tabs ? 'tabpanel' : undefined} aria-labelledby={tabs ? `${id}-tab-${i}` : undefined} hidden={i !== selected}>
-        <Proof media={it.media} caption={it.caption} />
+        <Proof media={it.media} caption={it.caption} sizes={sizes} />
       </div>
     ))}
   </div>

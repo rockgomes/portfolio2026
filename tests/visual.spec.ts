@@ -43,3 +43,10 @@ test('case study page looks the same as the approved screenshots', async ({ page
   await shoot(page, '#built', 'case-built.png');
   await shoot(page, '#result', 'case-result.png');
 });
+
+test('Inbank case study page looks the same as the approved screenshots', async ({ page }) => {
+  await page.goto('/project/inbank---customer-service-backoffice');
+  await loadImages(page);
+  for (const sel of ['[data-case-summary]', '#decisions', '#process', '#parts', '#result'])
+    await shoot(page, sel, `inbank-${sel.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}.png`);
+});

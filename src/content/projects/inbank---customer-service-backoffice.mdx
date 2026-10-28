@@ -1,0 +1,117 @@
+---
+name: "Inbank - Customer Service Back-office"
+heroTitle: "Inbank - Customer Service Backoffice"
+heroDescription: "Inbank was growing fast and launching new Hire Purchase products. The back-office its support team used every day could not keep up. As Inbank's first in-house designer, I redesigned it from the ground up: one clear, modular tool that helps agents work faster and has room for the next product."
+homeImage: "../../assets/projects/inbank---customer-service-backoffice/nbank-cs-backoffice.avif"
+homeImageAlt: ""
+tag1: ""
+tag2: ""
+type: "client"
+industry: ["B2B", "Fintech"]
+focus: ["Back-office", "Design systems"]
+tagsToCheck: true
+private: false
+webflowId: "6938675334b2efe789bdf9ab"
+cardOrder: 4
+cardNumber: "04"
+cardCompany: "Inbank"
+cardYear: "2024"
+cardTitle: "Customer Service Back-office"
+cardLine: "Rebuilt the internal support tool from scratch for new hire-purchase products."
+cardToCheck: false
+demoUrl: ""
+subtitle: "Inbank · 2024 · internal tool"
+facts:
+  role: "Senior Product Designer, Inbank's first in-house designer. Owned it end to end: audit, research, UX, UI, components, reviews of the build."
+  context: "Inbank's 2024 restructuring and new Hire Purchase products. Used all day by support agents and their team leads."
+  made: "A map of the old tool, interviews, a moodboard, a modular component set, the core back-office screens."
+  tools: "Figma, Mixpanel, NN (to confirm)"
+problem: "The tool grew one screen at a time, with no shared patterns. It was hard to learn, easy to misuse, and the new products did not fit."
+decision: "Rebuild it from a small set of parts: data cards, tables, status pills, side panels and one search. A new product adds data, not new screens."
+result: "Key screens shipped, including flows for the new product lines. Layouts are predictable and new agents learn the tool faster. No numbers I can share."
+beforeAfter:
+  caption: "The customer page, before and after. The old page is blurred to hide customer data. Six coloured buttons became three menus."
+  before:
+    src: "../../assets/projects/inbank---customer-service-backoffice/inbank-cs-original-top.png"
+    alt: "The customer page before the redesign, blurred: a red header, six coloured action buttons, and contact, address and identification data in loose columns."
+  after:
+    src: "../../assets/projects/inbank---customer-service-backoffice/desktop-white-2.avif"
+    alt: "The customer page after the redesign: data in labelled cards, Contracts and Offers tables, three menus at the top, and the global search open."
+copyToCheck: true
+---
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import InspectPins from '../../components/case/InspectPins.astro';
+import Proof from '../../components/case/Proof.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import panel from '../../assets/projects/inbank---customer-service-backoffice/inbank-cs-new-open.png';
+import contract from '../../assets/projects/inbank---customer-service-backoffice/desktop-white.avif';
+import search from '../../assets/projects/inbank---customer-service-backoffice/inbank-cs-search.png';
+import screenMap from '../../assets/projects/inbank---customer-service-backoffice/screenshot-202024-11-03-20at-2001-22-31.avif';
+import moodboard from '../../assets/projects/inbank---customer-service-backoffice/screenshot-202024-11-03-20at-2001-24-35.avif';
+import shipped from '../../assets/projects/inbank---customer-service-backoffice/nbank-cs-backoffice.avif';
+import parts from '../../assets/projects/inbank---customer-service-backoffice/group-16763.avif';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="Three decisions I would defend" subtitle="what makes the tool faster to use" id="decisions">
+  <CaseBlock label="decision 1 of 3" data-decision="1" title="Records open beside the customer">
+    An agent on a call often needs a contract or an application while the customer's details stay in view. So a record opens in a side panel over the customer page, not on a new page. Close it, and the agent is back where they were.
+    <Proof slot="proof" caption="A credit application open in the side panel, with the customer page still behind it." media={img(panel, 'The customer page with a credit application open in a side panel on the right: product, identification and contact details.')} />
+  </CaseBlock>
+  <CaseBlock label="decision 2 of 3" data-decision="2" title="Every status sits next to its fix">
+    Problems show as status pills at the top of the record: Unsigned, Unidentified, Required. The action that fixes each one sits on the same line, like Identify or Check PEP, so the next step is always in sight.
+    <Proof slot="proof" caption="A contract: three statuses next to the title, and Identify next to the customer status." media={img(contract, 'A contract page: Unsigned, Unidentified and Required pills next to the title, and an Identify link next to the customer status.')} />
+  </CaseBlock>
+  <CaseBlock label="decision 3 of 3" data-decision="3" title="One search for every number">
+    Customers call with whatever number they have: an ID code, a contract, an account, a username. One search box takes all of them, and each result shows what it matched.
+    <Proof slot="proof" caption="The global search: one query finds the customer by ID code, account numbers and username." media={img(search, 'The global search open: two customers named Sirje Tamm, each with an ID code, account numbers and a username.')} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="How I got there" subtitle="the process, short" id="process">
+  <CaseBlock label="audit" title="Map every screen before drawing one">
+    I listed every screen of the old tool and tagged each part: a table, a state, an action, a filter or a pop-up. The same few parts came back on every screen. They became the component list.
+    <Proof slot="proof" caption="Part of the map: each screen with its tables, states, actions and filters." media={img(screenMap, 'A map of the old back-office: Billing, Contracts, Customers, Home and Offer screens, each part tagged as a table, state, action or filter.')} />
+  </CaseBlock>
+  <CaseBlock label="research" title="Ask the people who use it, then check the data" pills={['support agents', 'team leads', 'product managers', 'developers']}>
+    I interviewed the people on every side of the tool. Mixpanel showed which screens and actions they used most, so those were redesigned first.
+  </CaseBlock>
+  <CaseBlock label="visual direction" title="A moodboard before the screens">
+    Before any screen, I made a moodboard that followed Inbank's new visual identity. It set the tone, the hierarchy and the level of consistency early.
+    <Proof slot="proof" caption="The moodboard: data-heavy tools with a calm, clear hierarchy." media={img(moodboard, 'A moodboard of about twenty dashboards, tables, search panels and profile pages.')} />
+  </CaseBlock>
+  <CaseBlock label="delivery" title="Stay close to the build">
+    Weekly syncs with the developers, a review of each build, and design changes when a technical limit came up. Several key screens shipped, including flows for the new product lines.
+    <Proof slot="proof" caption="Shipped screens: a contract, a customer with a credit application open, the search, and the parts they share." media={img(shipped, 'Shipped back-office screens on a purple background: a contract on desktop and tablet, a customer page with a side panel, the search, and four cards.')} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="The parts behind it" subtitle="one set of parts for every product" id="parts" gap={64}>
+  <CaseBlock label="components" title="Built from parts, not pages">
+    Flexible tables, customer data blocks, status pills, action panels, and search and filter patterns. Each part adapts to different products and data, so a new product line mostly reuses them.
+    <InspectPins slot="proof" width={1583} height={1644}
+      light={{ src: parts.src, alt: 'Back-office parts: Identification, Contact and Additional info cards, a Reminders table, an Attachments table and a Payment schedule.' }}
+      pins={[
+        { name: 'Data card', kind: 'Data card · a label, a value, and a status or link on the same row', x: 525, y: 39, w: 537, h: 324 },
+        { name: 'Status pill', kind: 'Status pill with its fix next to it · Expired, then Manage', x: 222, y: 305, w: 240, h: 34 },
+        { name: 'Table filters', kind: 'Table with a filter in each column header', x: 62, y: 552, w: 1453, h: 42 },
+        { name: 'Tabs with counts', kind: 'Tabs with counts · To be paid, Paid, Full schedule', x: 56, y: 1244, w: 320, h: 42 },
+      ]} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'outcome', items: [
+      'Faster daily work through predictable layouts and patterns',
+      'Easier onboarding for new support agents',
+      'A shared component set that speeds up new features',
+      'Better visibility for managers and operations',
+      'No numbers I can share yet',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'Internal tools deserve the same design care as the product customers see.',
+      'Next: telemetry to find friction, usability tests with agents, more parts for new use cases, and automation for repetitive tasks.',
+    ] }} />
+</CaseSection>

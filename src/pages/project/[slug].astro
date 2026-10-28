@@ -5,6 +5,7 @@ import Base from '../../layouts/Base.astro';
 import CaseSummary from '../../components/case/CaseSummary.astro';
 import LivePage from '../../components/case/LivePage.astro';
 import Proof from '../../components/case/Proof.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
 import NextCase from '../../components/case/NextCase.astro';
 import { isPrivate } from '../../lib/private';
 
@@ -18,12 +19,20 @@ const d = entry.data;
 // A case study with the summary fields uses the new layout (docs/superpowers/specs/2026-10-27-case-study-design.md).
 // The others keep the old layout until each one gets its own pull request.
 const isCase = !!d.problem;
+const wide = '(min-width: 1440px) 1280px, 100vw';
+// Before / After in the summary starts on After (sketch D 442:10216)
+const ba = d.beforeAfter && (['before', 'after'] as const).map((k) => {
+  const { src, alt } = d.beforeAfter![k];
+  return { label: k === 'before' ? 'Before' : 'After', caption: d.beforeAfter!.caption, media: { kind: 'image' as const, src, alt, width: src.width, height: src.height } };
+});
 ---
 <Base title={`${d.name} - Rock Gomes`} description={d.heroDescription} noindex={isPrivate(d)}>
   {isCase ? (
     <>
       <CaseSummary title={d.cardTitle || d.name} subtitle={d.subtitle} lead={d.heroDescription} facts={d.facts} problem={d.problem} decision={d.decision} result={d.result} links={d.links}>
-        {d.live ? <LivePage {...d.live} /> : d.homeImage && <Proof media={{ kind: 'image', src: d.homeImage, alt: d.homeImageAlt ?? '', width: d.homeImage.width, height: d.homeImage.height }} sizes="(min-width: 1440px) 1280px, 100vw" eager />}
+        {d.live ? <LivePage {...d.live} />
+          : ba ? <ProofSwitch kind="segmented" id="ba" label="Show the page before or after" items={ba} selected={1} sizes={wide} />
+          : d.homeImage && <Proof media={{ kind: 'image', src: d.homeImage, alt: d.homeImageAlt ?? '', width: d.homeImage.width, height: d.homeImage.height }} sizes={wide} eager />}
       </CaseSummary>
       <div class="case-body"><Content /></div>
       <NextCase currentId={entry.id} />
