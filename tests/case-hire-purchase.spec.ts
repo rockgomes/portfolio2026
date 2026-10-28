@@ -45,9 +45,9 @@ test('the main picture starts on After, and Before shows the old first screen', 
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Three decisions I would defend', 'Try the flow', 'How I got there', 'What changed']);
-  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Mobile sets the structure', 'The payment plan comes first', 'One pattern, many outcomes']);
+  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Design for the phone first', 'The payment plan comes first', 'Patterns that adapt to each case']);
   await expect(page.locator('#decisions .pills li')).toHaveText(['mobile first', 'desktop from the same structure', 'new and returning customers', 'several ID methods', 'country rules']);
-  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Map the whole journey first', 'Learn the rules with product and analytics', 'Country rules inside one structure', 'Stay close to the build']);
+  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Map the whole journey first', 'Learn the rules with product and analytics', 'Country rules inside one structure', 'Work with the team through development']);
   await expect(page.locator('#process [data-case-block] .label')).toHaveText(['audit', 'research', 'flows', 'delivery']);
   await expect(page.locator('#process .pills li')).toHaveText(['country rules', 'data and edge cases', 'new and returning customers']);
 });

@@ -27,8 +27,8 @@ facts:
   made: "A map of the full journey, mobile and desktop flows, reusable summary and offer patterns, country variants like the Estonian AIS flow, and components for the design system."
   tools: "Figma for the design. Claude for the coded prototype."
 problem: "The checkout differed by market and by device. Layouts were inconsistent, the hierarchy was unclear, and there were accessibility gaps, worst on mobile, where most customers finished the flow."
-decision: "Design flows, not screens. One mobile-first structure with a few repeatable patterns, so country rules, ID methods and offer outcomes change the content, not the layout."
-result: "Live in all four countries. A consistent, accessible journey, clearer on mobile, with fewer support tickets and faster completion."
+decision: "I designed one mobile-first flow with a few patterns that repeat. Country rules, ID methods and offer outcomes change what each screen says. The layout stays the same."
+result: "The new checkout is live in all four countries. It is consistent, accessible and clearer on mobile. Support tickets went down and customers finish faster."
 links:
   - label: "Open the live mockup ↗"
     href: "https://inbank-loan-app.vercel.app/"
@@ -60,12 +60,12 @@ import flowAis from '../../assets/projects/inbank---hire-purchase/screenshot-202
 export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
 
 <CaseSection title="Three decisions I would defend" subtitle="what makes the flow clear in every market" id="decisions">
-  <CaseBlock label="decision 1 of 3" data-decision="1" title="Mobile sets the structure" pills={['mobile first', 'desktop from the same structure']}>
-    Most customers finished the flow on a phone, so mobile was the main constraint. Hierarchy, actions and forms had to stay clear on a small screen first. Desktop layouts grow from the same structure, so there is one flow to build and keep, not two.
+  <CaseBlock label="decision 1 of 3" data-decision="1" title="Design for the phone first" pills={['mobile first', 'desktop from the same structure']}>
+    Most customers finished the flow on a phone, so I designed for the small screen first. The hierarchy, buttons and forms had to be clear there. The desktop layouts use the same structure, so the team builds and maintains one flow.
     <Proof slot="proof" caption="The main path on a phone: plan, identification, details, offer, down payment, done." media={img(mobilePath, "Six phone screens of the checkout in a row: Pay in parts, Identify yourself, Hello!, Your personal credit offer, Down payment, and You're all set!")} />
   </CaseBlock>
   <CaseBlock label="decision 2 of 3" data-decision="2" title="The payment plan comes first">
-    People already know the price before they start Hire Purchase. Here they want a payment plan: how much to pay each month, for how long, and when. So I grouped the data to make the plan the main information. The final total is still there, lower down.
+    People already know the price before they start Hire Purchase. Here they want a payment plan: how much to pay each month, for how long, and when. So I grouped the data to put the plan first. The final total is still there, lower down.
     <InspectPins slot="proof" width={1085} height={1684}
       light={{ src: summaryCard.src, alt: 'The payment summary card: 12.64 euro times 48 months at the top, down payment and payment day below, an Edit conditions button, the purchase details, and a dark Continue button.' }}
       pins={[
@@ -75,35 +75,35 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
         { name: 'Continue', kind: 'Continue is the only strong colour.', x: 130, y: 1470, w: 820, h: 125 },
       ]} />
   </CaseBlock>
-  <CaseBlock label="decision 3 of 3" data-decision="3" title="One pattern, many outcomes" pills={['new and returning customers', 'several ID methods', 'country rules']}>
-    New and returning customers, different ID methods, different offers, and different laws in each country. Instead of a screen for each case, I defined patterns that adapt. The summary card is one: the same card shows the plan, a changed value or a rental. The logic can change without breaking the UI.
+  <CaseBlock label="decision 3 of 3" data-decision="3" title="Patterns that adapt to each case" pills={['new and returning customers', 'several ID methods', 'country rules']}>
+    The flow has to handle new and returning customers, different ID methods, different offers and different laws in each country. I defined patterns that adapt to each case. The summary card is one of them: the same card shows the plan, a changed value or a rental. The rules behind the card can change and the layout stays the same.
     <Proof slot="proof" caption="Variants of one summary card. Changed values get a badge, and a rental shows its first payment." media={img(cardVariants, 'Variants of the summary card: some with Changed badges on the down payment and financed amount, one for a rental with the first payment today, and versions with Edit conditions.')} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="Try the flow" subtitle="the live mockup" id="live" gap={48}>
-  <LivePage src="https://inbank-loan-app.vercel.app/" title="Hire Purchase checkout, live mockup" poster="/media/projects/inbank---hire-purchase/live.jpg" caption="The live mockup, scaled to fit. A coded prototype of the new checkout, made with Claude." />
+  <LivePage src="https://inbank-loan-app.vercel.app/" title="Hire Purchase checkout, live mockup" poster="/media/projects/inbank---hire-purchase/live.jpg" caption="The live mockup is a coded prototype of the new checkout, made with Claude. It is scaled to fit." />
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="audit" title="Map the whole journey first">
-    I mapped the full loan application across devices, systems and people: the customer, the merchant's shop, the checkout, the partner portal, the back-office and customer support. The map showed where the flow was split, repeated or hard, most of all on mobile.
+    I mapped the full loan application across devices, systems and people: the customer, the merchant's shop, the checkout, the partner portal, the back-office and customer support. The map showed where the flow was split, repeated or hard to use, most of all on mobile.
     <ProofSwitch slot="proof" kind="segmented" id="map" label="Which map" selected={1} items={[
       { label: 'The map I found', caption: 'How the flow was mapped before I arrived: screens and arrows.', media: img(mapFound, 'A large board of small old checkout screens joined by arrows, in several groups.') },
       { label: 'The map I made', caption: 'My map: every step and decision, by who does it, from the shop to the payout.', media: img(mapMine, 'A swimlane map with six lanes: Personal, Partner eShop, ePOS, Partner portal, Backoffice and Customer support, with steps, decisions and end points.') },
     ]} />
   </CaseBlock>
   <CaseBlock label="research" title="Learn the rules with product and analytics" pills={['country rules', 'data and edge cases', 'new and returning customers']}>
-    With product managers and analysts, I worked through the legal rules of each country, the data each step needs and its edge cases, and how new and returning customers differ. The result was one shared picture of the flow and a clear list of what to simplify first.
+    With product managers and analysts, I worked through the legal rules of each country, the data each step needs and its edge cases, and how new and returning customers differ. In the end, we all had the same view of the flow and a list of what to simplify first.
   </CaseBlock>
   <CaseBlock label="flows" title="Country rules inside one structure">
-    I organised the flow into the same stages for every market. Where a country needs more, like Estonia's AIS flow, it uses the same screens and patterns, on mobile and desktop. Less duplication, simpler development, and the checkout feels the same in every market.
+    I organised the flow into the same stages for every market. Where a country needs more, like Estonia's AIS flow, it uses the same screens and patterns, on mobile and desktop. So there is less duplicated work, development is simpler, and the checkout feels the same in every market.
     <ProofSwitch slot="proof" kind="tabs" id="flow" label="Flow" items={[
       { label: 'Main flow', caption: 'The main flow in eight stages, from the landing page to the end, with its variants.', media: img(flowMain, 'Phone screens grouped in stages: Landing pages, Identification, Additional info, Decision, Offer, Signing, Downpayment and End.') },
       { label: 'Estonia · AIS flow', caption: 'The Estonian AIS flow, on mobile and desktop, built from the same screens.', media: img(flowAis, 'The Estonian AIS flow on mobile and on desktop: More information needed, Please wait, Add another statement and Thank you screens, with arrows for each path.') },
     ]} />
   </CaseBlock>
-  <CaseBlock label="delivery" title="Stay close to the build">
+  <CaseBlock label="delivery" title="Work with the team through development">
     I worked with product, analytics and engineering to the end: aligning on logic and country rules, changing designs when a technical limit came up, reviewing each build, and fixing edge cases during development.
   </CaseBlock>
 </CaseSection>
@@ -114,14 +114,14 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       'Live in all four countries, at different times, because each country has its own flows',
       'A consistent and accessible journey across devices and markets',
       'Clearer and easier to use, most of all on mobile',
-      'Less friction for returning customers',
+      'Easier for returning customers',
       'Fewer support tickets and faster completion, as seen by the customer service team and in Mixpanel',
-      'Patterns that scale to new products and markets',
+      'Patterns that work for new products and markets',
       "Strong foundations for Inbank's design system",
     ] }}
     right={{ label: 'what I learned', items: [
       'A clear map of the flow, in swim lanes, showed the scope and gave us a roadmap. It made the project easier to manage with product managers and developers.',
       'I used the same idea in the design file: a clear order, and arrows from each action to the next, so others could follow it.',
-      'Next: telemetry to measure drop-off, usability and accessibility tests, more shared patterns, and faster mobile performance.',
+      'Next: tracking to measure drop-off, usability and accessibility tests, more shared patterns, and faster mobile performance.',
     ] }} />
 </CaseSection>
