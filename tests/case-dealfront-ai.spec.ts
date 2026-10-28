@@ -65,7 +65,7 @@ test('sections of the sketch, in order', async ({ page }) => {
 const switches = [
   ['design', 'Dropped: Generate', 'no way to steer', 'Shipped: question cards', 'already wanted to ask'],
   ['table', 'Shipped: filter toggle', 'only the recommended people show', 'Dropped: icon and hover', 'you hover to find out why'],
-  ['source', 'AI Insights', 'the claims carry links', 'Activity', 'the data is ours'],
+  ['source', 'AI Insights', 'the claims carry links', 'Activity', ''],
   ['pinning', 'Nine cards', 'Nine cards fit', 'Pin a question', 'You write the prompt once'],
 ] as const;
 
@@ -79,7 +79,9 @@ for (const [id, start, startText, other, otherText] of switches) {
     await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText(startText);
     await sw.getByRole(role, { name: other }).click();
     await expect(sw.getByRole(role, { name: other })).toHaveAttribute(state, 'true');
-    await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText(otherText);
+    // An empty caption means the option has no caption at all
+    if (otherText) await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText(otherText);
+    else await expect(sw.locator('[data-proof-panel]:visible figcaption')).toHaveCount(0);
     await expect(sw.locator('[data-proof-panel]:visible')).toHaveCount(1);
   });
 }

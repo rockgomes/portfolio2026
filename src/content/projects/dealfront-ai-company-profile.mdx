@@ -77,7 +77,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   <CaseBlock label="decision 3 of 4" data-decision="3" title="Show where the answer comes from">
     Round one shipped with a line that says the AI can make mistakes. That hands you the work and no way to do it. In round two, answers come back in numbered sections. On AI Insights, each claim carries a Source link you can open. When the AI finds nothing, the answer says so.
     <ProofSwitch slot="proof" kind="tabs" id="source" label="where the AI reads" selected={1} items={[
-      { label: 'Activity', caption: 'On Activity there are no links, because the data is ours.', media: img(activity, 'An AI activity answer with the question shown above it, key points as bullets, thumbs up and down, and no source links.') },
+      { label: 'Activity', caption: '', media: img(activity, 'An AI activity answer with the question shown above it, key points as bullets, and thumbs up and down.') },
       { label: 'AI Insights', caption: 'On AI Insights the claims carry links, because the material came from outside. When it finds nothing, it says so.', media: img(insights, 'An AI Insights answer in numbered sections, each claim with a Source link, and one section that says nothing was found.') },
     ]} />
   </CaseBlock>
