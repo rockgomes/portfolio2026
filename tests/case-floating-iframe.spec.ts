@@ -7,8 +7,10 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await page.goto(PAGE);
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Floating Iframe');
-  await expect(s.locator('.sub')).toHaveText('Pipedrive · 20NN · integration concept');
+  await expect(s.locator('.sub')).toHaveText('Pipedrive · 2022 · integration concept');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dd').last()).toHaveText('Figma, Miro');
+  await expect(s.locator('[data-pdr]')).toContainText('JustCall uses it for its Quick access feature');
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 
@@ -19,26 +21,33 @@ test('summary is in the first screen on desktop', async ({ page, viewport }) => 
   expect(box!.y + box!.height).toBeLessThanOrEqual(900);
 });
 
-test('one button opens the Figma prototype', async ({ page }) => {
+test('buttons open the Figma prototype, the developer docs and the JustCall app', async ({ page }) => {
   await page.goto(PAGE);
   const a = page.locator('[data-case-links] a');
-  await expect(a).toHaveText(['Figma prototype ↗']);
+  await expect(a).toHaveText(['Figma prototype ↗', 'Developer docs ↗', 'JustCall app ↗']);
   await expect(a.nth(0)).toHaveAttribute('href', /^https:\/\/www\.figma\.com\/proto\/SCXg3AbVLFUSlZsD1HJFfP\/Pipedrive\?/);
   await expect(a.nth(0)).toHaveClass(/btn-primary/);
+  await expect(a.nth(1)).toHaveAttribute('href', 'https://pipedrive.readme.io/docs/custom-ui-extensions-floating-window');
+  await expect(a.nth(2)).toHaveAttribute('href', 'https://www.pipedrive.com/en/marketplace/app/just-call/d401831fa27bdb38');
 });
 
-test('the main picture is the winning concept, with its caption, and no live page', async ({ page }) => {
+test('the main picture is the live Figma prototype, and the laptop picture on phones', async ({ page, viewport }) => {
   await page.goto(PAGE);
-  const s = page.locator('[data-case-summary]');
-  await expect(s.locator('[data-live]')).toHaveCount(0);
-  await expect(s.locator('[data-switch]')).toHaveCount(0);
-  await expect(s.locator('figure img')).toHaveAttribute('alt', /Aircall window floats over it/);
-  await expect(s.locator('figcaption')).toHaveText('The winning concept: a calling app floats over a deal page in Pipedrive.');
+  const live = page.locator('[data-case-summary] [data-live]');
+  await expect(live).toHaveCount(1);
+  await expect(live.locator('iframe')).toHaveAttribute('src', /^https:\/\/embed\.figma\.com\/proto\/SCXg3AbVLFUSlZsD1HJFfP\/Pipedrive\?/);
+  await expect(live.locator('figcaption')).toHaveText(/^The winning prototype: a calling app floats over a deal page in Pipedrive\./);
+  if ((viewport?.width ?? 0) >= 1000) {
+    await expect(live.locator('iframe')).toBeVisible();
+  } else {
+    await expect(live).toHaveAttribute('data-phone', '');
+    await expect(live.locator('img.still')).toBeVisible();
+  }
 });
 
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('main h2:not(.label)')).toHaveText(['Two decisions I would defend', 'How I got there', 'If it shipped']);
+  await expect(page.locator('main h2:not(.label)')).toHaveText(['Two decisions I would defend', 'How I got there', 'What I would measure']);
   await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Start with calling apps', 'Always there, never in the way']);
   await expect(page.locator('#decisions .pills li')).toHaveText(['used very often', 'no good way to sync call data']);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Talk to both sides', 'Get the whole design team on board', 'Four prototypes, two per interview']);
@@ -76,16 +85,16 @@ test('decision 2: every note stays inside the picture', async ({ page }) => {
   }
 });
 
-test('result: how I would measure it, and what I learned', async ({ page }) => {
+test('result: what I would measure, and what I learned', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('#result [data-two-col] .k')).toHaveText(['how I would measure it', 'what I learned']);
+  await expect(page.locator('#result [data-two-col] .k')).toHaveText(['what I would measure', 'what I learned']);
   await expect(page.locator('#result [data-two-col] li')).toHaveCount(6);
 });
 
 test('the old Webflow body is gone', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('.prose')).toHaveCount(0);
-  await expect(page.locator('main iframe')).toHaveCount(0);
+  await expect(page.locator('.case-body iframe')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText('Standard qualitative method');
 });
 
@@ -119,7 +128,7 @@ for (const width of [320, 400]) {
 
 // Screenshots, made by CI on the pull request (never commit local ones). Each section is shot from the full page,
 // snapped onto a whole pixel first (as in visual.spec.ts): element shots of a section taller than the screen moved
-// the picture by a subpixel from run to run.
+// the picture by a subpixel from run to run. The live prototype is on Figma's site, so its iframe is masked (as in visual.spec.ts).
 test('looks the same as the approved screenshots', async ({ page }) => {
   await page.goto(PAGE);
   await page.evaluate(async () => { await document.fonts.ready; for (const img of Array.from(document.images)) { img.loading = 'eager'; if (!img.complete) await new Promise((r) => { img.onload = img.onerror = r; }); } });
@@ -129,6 +138,6 @@ test('looks the same as the approved screenshots', async ({ page }) => {
       if (frac > 0.001) el.style.marginTop = `${parseFloat(getComputedStyle(el).marginTop) + (1 - frac)}px`;
       const r = el.getBoundingClientRect(); return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
     });
-    await expect(page).toHaveScreenshot(`floating-iframe-${sel.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}.png`, { fullPage: true, clip: { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.w), height: Math.round(b.h) } });
+    await expect(page).toHaveScreenshot(`floating-iframe-${sel.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}.png`, { fullPage: true, mask: [page.locator('[data-live] iframe')], clip: { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.w), height: Math.round(b.h) } });
   }
 });

@@ -1,7 +1,7 @@
 ---
 name: "Pipedrive - Floating Iframe"
 heroTitle: "Pipedrive - Floating Iframe"
-heroDescription: "A deeper, more interactive way for integrations to work inside Pipedrive, starting with calling apps. I ran the interviews, the design rounds and the prototype tests. It was my last project at Pipedrive before the layoffs, so I do not know if it shipped."
+heroDescription: "A deeper, more interactive way for integrations to work inside Pipedrive, starting with calling apps. I ran the interviews, the design rounds and the prototype tests. It was my last project at Pipedrive before the layoffs. It shipped, and the calling app JustCall uses it."
 homeImage: "../../assets/projects/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
 homeImageAlt: ""
 tag1: "Dev"
@@ -20,22 +20,27 @@ cardTitle: "Floating Iframe"
 cardLine: "A deeper, more interactive way for integrations to connect with Pipedrive users."
 cardToCheck: true
 demoUrl: ""
-subtitle: "Pipedrive · 20NN · integration concept"
+subtitle: "Pipedrive · 2022 · integration concept"
 facts:
-  role: "Senior Product Designer (to confirm). Interviews, design rounds, prototypes and tests."
+  role: "Senior Product Designer. Interviews, design rounds, prototypes and tests."
   context: "Pipedrive integrations. Two kinds of users: partner companies, and the people who use Pipedrive every day."
   made: "Partner and user interviews, many design rounds, four test prototypes, one winning prototype."
-  tools: "Figma (prototype), NN (to confirm)"
+  tools: "Figma, Miro"
 problem: "Calling integrations are used a lot, but they had no good way to sync call data with Pipedrive."
 decision: "A floating window for the integration: always one click away, easy to move or minimise, and it links back into Pipedrive."
-result: "Four prototypes tested with users, and one clear winner. Then the layoffs came. I do not know if it shipped."
+result: "Four prototypes tested with users, and one clear winner. It shipped, and JustCall uses it for its Quick access feature."
 links:
   - label: "Figma prototype ↗"
     href: "https://www.figma.com/proto/SCXg3AbVLFUSlZsD1HJFfP/Pipedrive?page-id=802%3A6719&node-id=802-32024&starting-point-node-id=802%3A32024&scaling=contain&content-scaling=fixed"
-caseImage:
-  src: "../../assets/projects/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
-  alt: "A laptop with Pipedrive open on a deal page. The Aircall window floats over it with a call in progress, and the installed integrations menu is open from the top bar."
-  caption: "The winning concept: a calling app floats over a deal page in Pipedrive."
+  - label: "Developer docs ↗"
+    href: "https://pipedrive.readme.io/docs/custom-ui-extensions-floating-window"
+  - label: "JustCall app ↗"
+    href: "https://www.pipedrive.com/en/marketplace/app/just-call/d401831fa27bdb38"
+live:
+  src: "https://embed.figma.com/proto/SCXg3AbVLFUSlZsD1HJFfP/Pipedrive?page-id=802%3A6719&node-id=802-32024&node-type=frame&viewport=1300%2C-1582%2C0.25&scaling=contain&content-scaling=fixed&starting-point-node-id=802%3A32024&embed-host=share"
+  title: "The winning prototype in Figma"
+  poster: "/embeds/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
+  caption: "The winning prototype: a calling app floats over a deal page in Pipedrive. Answer a call, move the window or minimise it."
 copyToCheck: true
 ---
 import CaseSection from '../../components/case/CaseSection.astro';
@@ -46,7 +51,7 @@ import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.j
 
 <CaseSection title="Two decisions I would defend" subtitle="where to start, and what to build" id="decisions">
   <CaseBlock label="decision 1 of 2" data-decision="1" title="Start with calling apps" pills={['used very often', 'no good way to sync call data']}>
-    The data showed that calling integrations are used very often, and they had no good way to sync call data. So they were the best first case for a deeper integration. A good fit there would prove the idea for other apps.
+    The data showed that calling integrations are used very often, and they had no good way to sync call data. We had a few candidates, but calling apps were the best proof of concept. Pipedrive had also just dropped the idea of its own calling feature, so we wanted to improve the calling integrations.
   </CaseBlock>
   <CaseBlock label="decision 2 of 2" data-decision="2" title="Always there, never in the way">
     Users wanted quick, 'permanent' access to the integration, and also a way to get it out of the way. They wanted alerts, and links from the app into Pipedrive, like opening a person's page from a caller. So the app lives in a window that floats, moves freely and minimises.
@@ -73,9 +78,9 @@ import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.j
   </CaseBlock>
 </CaseSection>
 
-<CaseSection title="If it shipped" subtitle="how I would measure it, and what I learned" id="result" gap={48}>
+<CaseSection title="What I would measure" subtitle="and what I learned" id="result" gap={48}>
   <TwoCol
-    left={{ label: 'how I would measure it', items: [
+    left={{ label: 'what I would measure', items: [
       'How many calls are logged in Pipedrive through the floating window',
       'How often users open a Pipedrive page from the window',
       'How many calling partners adopt it',
