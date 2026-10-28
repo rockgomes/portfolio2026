@@ -52,8 +52,8 @@ export const steps: Step[] = [
 
 /** One prop of an inspected layer: c = colour token, t = text style, s = space or radius token, x = effect. */
 export type PinProp = ['c' | 't' | 's' | 'x', string, string?];
-/** A layer of the Figma hero. x, y, w, h are pixels on the 1440x905 hero picture. */
-export type Pin = { name: string; kind: string; x: number; y: number; w: number; h: number; props: PinProp[] };
+/** A layer of a picture for InspectPins. x, y, w, h are pixels on that picture (here the 1440x905 hero). props: its tokens. */
+export type Pin = { name: string; kind: string; x: number; y: number; w: number; h: number; props?: PinProp[] };
 
 // The four layers sketch C 377:10168 pins, out of the eight in the old embed
 export const pins: Pin[] = [
