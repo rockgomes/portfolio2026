@@ -1,0 +1,87 @@
+---
+name: "Pipedrive - interactive Panels"
+heroTitle: "Pipedrive - interactive Panels"
+heroDescription: "App panels show data from third-party apps inside Pipedrive. Before this project they were read-only: users saw the data, but had to leave to act on it. I redesigned them so actions sit right next to the data, with patterns every Marketplace partner can use."
+homeImage: "../../assets/projects/pipedrive---interactive-panels/pipedrive-interactive-panels.avif"
+homeImageAlt: ""
+tag1: "Design"
+tag2: ""
+type: "client"
+industry: []
+focus: []
+tagsToCheck: true
+private: false
+webflowId: "693867547c76f9b1f482ae78"
+cardOrder: 8
+cardNumber: "08"
+cardCompany: "Pipedrive"
+cardYear: ""
+cardTitle: "Interactive Panels"
+cardLine: "Act on a third-party app or a piece of data right where it shows in Pipedrive."
+cardToCheck: true
+demoUrl: ""
+subtitle: "Pipedrive · 20NN · integration platform"
+facts:
+  role: "Product Designer. Interaction patterns, prototypes and design details during the build. Worked with PMs, engineers and other designers."
+  context: "Pipedrive Marketplace. For end users of integrations, and for the partners who build them."
+  made: "Interaction patterns for object, field and global actions, animated prototypes, design support during the build."
+  tools: "Figma (animated prototypes), NN (to confirm)"
+problem: "Panels were read-only, and actions were hard to find or hidden. Only around 30 percent of users found the actions before release."
+decision: "Put actions next to the data, on three levels: actions for an object in its header, actions for a field next to it, and global actions under one main button."
+result: "Action discovery went from around 30 percent to around 50 percent in the first month. Integrations that used the new patterns saw action usage above 68 percent."
+beforeAfter:
+  caption: "An app panel before and after. Before, all actions hid in one menu. After, the new parts (in green) put actions next to the data."
+  before:
+    src: "../../assets/projects/pipedrive---interactive-panels/group-2017804.avif"
+    alt: "A panel before: the Trello app with one object and three fields. The only actions hide in the menu at the top."
+  after:
+    src: "../../assets/projects/pipedrive---interactive-panels/group-2016768.avif"
+    alt: "A panel after, with numbered parts: an Actions menu on each object, edit and open buttons next to fields, and an Add an order button with a dropdown at the bottom."
+copyToCheck: true
+---
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import Proof from '../../components/case/Proof.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import panelBottom from '../../assets/projects/pipedrive---interactive-panels/case-panel-bottom.png';
+import patterns from '../../assets/projects/pipedrive---interactive-panels/screenshot-202022-11-20-20at-2023-44-201.avif';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="Two decisions I would defend" subtitle="actions where users already look" id="decisions">
+  <CaseBlock label="decision 1 of 2" data-decision="1" title="Actions sit next to the data they change" pills={['object actions', 'field actions', 'global actions']}>
+    Users look at the data, so the action should be there too. An object gets an Actions menu in its header. A field gets its own edit or open button. The panel gets one main action at the bottom. Users finish simple tasks without leaving the panel.
+    <Proof slot="proof" caption="The animated Figma prototype: object, field and global actions in one panel." media={{ kind: 'video', src: '/media/projects/pipedrive---interactive-panels/app-actions.mp4', poster: '/media/projects/pipedrive---interactive-panels/app-actions.jpg', label: 'Animation of a Trello panel: an object opens, its Actions menu opens, a field gets an edit button on hover, and the main button opens a dropdown and a modal.', width: 1040, height: 950 }} />
+  </CaseBlock>
+  <CaseBlock label="decision 2 of 2" data-decision="2" title="Key actions first, the rest on demand" pills={['progressive disclosure']}>
+    One main button per panel, with more actions in its dropdown. Extra objects stay collapsed, with their status and an Actions menu still in view. The panel stays short, but nothing is hidden.
+    <Proof slot="proof" caption="Collapsed objects keep their status and actions (10). One main action, more in the dropdown (11, 12)." media={img(panelBottom, 'The bottom of the new panel: two collapsed objects with status labels and Actions menus, the Add an order button with a dropdown, and the feedback bar. Numbers 10 to 13 explain the parts.')} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="How I got there" subtitle="the process, short" id="process">
+  <CaseBlock label="research" title="Find out why actions were missed" pills={['usage data', 'expected actions', 'schema limits']}>
+    We looked at how users used panels, which actions they expected, how easy the current actions were to find, and the limits of Marketplace apps and schemas. Only around 30 percent of users found the actions. So actions had to move closer to the data.
+  </CaseBlock>
+  <CaseBlock label="patterns" title="Patterns, not screens" pills={['action close to data', 'progressive disclosure', 'consistency across apps', 'scalability']}>
+    Partners build many different apps, so I designed patterns that work for any panel, app and data type, not single screens.
+    <Proof slot="proof" caption="The brainstorming board: many panel variants before the patterns were set." media={img(patterns, 'A wide Figma board titled brainstorming exercise: many panel variants side by side, some collapsed, some in a modal.')} />
+  </CaseBlock>
+  <CaseBlock label="prototype and build" title="Show the motion, then stay close to the build">
+    Many changes were small, so I made animated prototypes in Figma to show how they work. They aligned design, product and engineering, and found edge cases early. During the build, I refined details to fit the app schema and existing Pipedrive UI.
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'outcome', items: [
+      'Action discovery: from around 30 percent to around 50 percent in the first month',
+      'Integrations with the new patterns: action usage above 68 percent',
+      'App panels became an active part of the product, not only a place to read data',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'Motion is key to explain small interaction changes. A still screen does not show them.',
+      'Platform patterns pay off twice: for users, and for every partner who builds on them.',
+      'Next: patterns for more complex integrations, and clearer guidelines for partners.',
+    ] }} />
+</CaseSection>
