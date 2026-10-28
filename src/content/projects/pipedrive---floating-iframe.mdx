@@ -1,7 +1,7 @@
 ---
 name: "Pipedrive - Floating Iframe"
 heroTitle: "Pipedrive - Floating Iframe"
-heroDescription: "A deeper, more interactive way for integrations to work inside Pipedrive, starting with calling apps. I ran the interviews, the design rounds and the prototype tests. It was my last project at Pipedrive before the layoffs. It shipped, and the calling app JustCall uses it."
+heroDescription: "A floating window that gives integrations more ways to work inside Pipedrive, starting with calling apps. I ran the interviews, the design rounds and the prototype tests. It was my last project at Pipedrive before the layoffs. It shipped, and the calling app JustCall uses it."
 homeImage: "../../assets/projects/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
 homeImageAlt: ""
 tag1: "Dev"
@@ -17,7 +17,7 @@ cardNumber: "07"
 cardCompany: "Pipedrive"
 cardYear: ""
 cardTitle: "Floating Iframe"
-cardLine: "A deeper, more interactive way for integrations to connect with Pipedrive users."
+cardLine: "A floating window that lets integrations, like calling apps, work inside Pipedrive."
 cardToCheck: true
 demoUrl: ""
 subtitle: "Pipedrive · 2022 · integration"
@@ -50,28 +50,28 @@ import TwoCol from '../../components/case/TwoCol.astro';
 import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.jpg';
 
 <CaseSection title="Two decisions I would defend" subtitle="where to start, and what to build" id="decisions">
-  <CaseBlock label="decision 1 of 2" data-decision="1" title="Start with calling apps" pills={['used very often', 'no good way to sync call data']}>
-    The data showed that calling integrations are used very often, and they had no good way to sync call data. We had a few candidates, but calling apps were the best proof of concept. Pipedrive had also just dropped the idea of its own calling feature, so we wanted to improve the calling integrations.
+  <CaseBlock label="decision 1 of 2" data-decision="1" title="Start with calling apps" pills={['used a lot', 'no good way to sync call data']}>
+    The data showed that people use calling integrations a lot, and these integrations had no good way to sync call data. We looked at a few kinds of integrations to start with. Calling apps were the best first test of the idea. Also, Pipedrive had just dropped its plan for its own calling feature, so we wanted to make the calling integrations better.
   </CaseBlock>
-  <CaseBlock label="decision 2 of 2" data-decision="2" title="Always there, never in the way">
-    Users wanted quick, 'permanent' access to the integration, and also a way to get it out of the way. They wanted alerts, and links from the app into Pipedrive, like opening a person's page from a caller. So the app lives in a window that floats, moves freely and minimises.
+  <CaseBlock label="decision 2 of 2" data-decision="2" title="A floating window that users can move or minimise">
+    Users wanted quick access to the integration that is always there, and also a way to hide it. They wanted alerts. They also wanted links from the app into Pipedrive, for example to open the page of the person who is calling. So we put the app in a floating window. Users can move it anywhere on the page or minimise it.
     <InspectPins slot="proof" width={980} height={930}
       light={{ src: closeUp.src, alt: 'Close-up: the Aircall window with a call in progress over a deal page, and the installed integrations menu open from the top bar.' }}
       pins={[
         { name: 'Top bar', kind: 'The integrations sit in the top bar, one click away on every page.', x: 638, y: 6, w: 128, h: 42 },
         { name: 'Installed integrations', kind: 'The installed integrations menu. A badge on Aircall shows there is something new.', x: 672, y: 130, w: 108, h: 40 },
-        { name: 'Minimise', kind: 'Minimise the window to get it out of the way, and re-open it from the top bar. It can also move anywhere on the page.', x: 460, y: 180, w: 58, h: 34 },
+        { name: 'Minimise', kind: 'Minimise the window to hide it, and open it again from the top bar. Users can also move it anywhere on the page.', x: 460, y: 180, w: 58, h: 34 },
         { name: 'Call controls', kind: 'Answer, deny and end calls without leaving the deal page.', x: 286, y: 634, w: 80, h: 80 },
       ]} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
-  <CaseBlock label="interviews" title="Talk to both sides" pills={['4 or 5 partner calls', '10 to 12 user interviews']}>
-    With partners, my team and I talked about the data they could share, pricing models and their experience with other CRMs. With users, I let the conversation lead them to my questions, so I did not have to ask them directly.
+  <CaseBlock label="interviews" title="Talk to partners and users" pills={['4 or 5 partner calls', '10 to 12 user interviews']}>
+    With partners, my team and I talked about the data they could share, pricing models and their experience with other CRMs. With users, I guided the conversation so they answered my questions without me asking them directly.
   </CaseBlock>
-  <CaseBlock label="design rounds" title="Get the whole design team on board">
-    The idea changed the core product, so it needed the whole design team. I shared drafts with engineers, the PM and other designers all the time. It took many rounds.
+  <CaseBlock label="design rounds" title="Work with the whole design team">
+    The idea changed the core product, so the whole design team had to agree on it. I shared drafts with engineers, the product manager and other designers all the time. It took many design rounds.
   </CaseBlock>
   <CaseBlock label="testing" title="Four prototypes, two per interview" pills={['4 prototypes', '2 per interview', 'order changed each time']}>
     Each prototype tested a different idea, for example a different entry point. In each interview, users did the same task in two prototypes and compared them. The order changed in every interview.
@@ -87,7 +87,7 @@ import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.j
       'Fewer switches between the calling app and Pipedrive (from interviews or session data)',
     ] }}
     right={{ label: 'what I learned', items: [
-      'A change to the core product needs the whole design team on board early.',
-      'Two prototypes in one session, in a changing order, let users compare ideas directly.',
+      'A change to the core product needs the whole design team involved from the start.',
+      'Showing two prototypes in one session, in a different order each time, let users compare the ideas directly.',
     ] }} />
 </CaseSection>

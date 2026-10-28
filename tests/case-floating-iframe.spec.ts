@@ -48,9 +48,9 @@ test('the main picture is the live Figma prototype, and the laptop picture on ph
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Two decisions I would defend', 'How I got there', 'What I would measure']);
-  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Start with calling apps', 'Always there, never in the way']);
-  await expect(page.locator('#decisions .pills li')).toHaveText(['used very often', 'no good way to sync call data']);
-  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Talk to both sides', 'Get the whole design team on board', 'Four prototypes, two per interview']);
+  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Start with calling apps', 'A floating window that users can move or minimise']);
+  await expect(page.locator('#decisions .pills li')).toHaveText(['used a lot', 'no good way to sync call data']);
+  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Talk to partners and users', 'Work with the whole design team', 'Four prototypes, two per interview']);
   await expect(page.locator('#process .pills li')).toHaveText(['4 or 5 partner calls', '10 to 12 user interviews', '4 prototypes', '2 per interview', 'order changed each time']);
 });
 
