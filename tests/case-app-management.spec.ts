@@ -3,15 +3,20 @@ import { test, expect } from '@playwright/test';
 // The Pipedrive App Management case study (Figma frame 455:523), on the case study template.
 const PAGE = '/project/pipedrive---app-management';
 
-test('summary: title, subtitle, facts, problem, decision, result, and no buttons', async ({ page }) => {
+test('summary: title, subtitle, facts, problem, decision, result, and two link buttons', async ({ page }) => {
   await page.goto(PAGE);
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('App Management');
-  await expect(s.locator('.sub')).toHaveText('Pipedrive · 20NN · developer platform');
+  await expect(s.locator('.sub')).toHaveText('Pipedrive · 2021 · developer platform');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
-  // No public link yet
-  await expect(s.locator('[data-case-links]')).toHaveCount(0);
+  await expect(s.locator('[data-facts] dd').last()).toHaveText('Figma, Miro');
+  // The public docs for this project, then the developer site
+  const links = s.locator('[data-case-links] a');
+  await expect(links).toHaveText(['App extensions docs ↗', 'Pipedrive developer site ↗']);
+  await expect(links.nth(0)).toHaveAttribute('href', 'https://pipedrive.readme.io/docs/app-extensions-json-panels');
+  await expect(links.nth(1)).toHaveAttribute('href', 'https://developers.pipedrive.com/');
+  await expect(s).not.toContainText('No numbers');
 });
 
 test('summary is in the first screen on desktop', async ({ page, viewport }) => {

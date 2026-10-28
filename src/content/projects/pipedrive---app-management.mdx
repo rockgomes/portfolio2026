@@ -15,25 +15,30 @@ webflowId: "6938675459ce51ddbf1fc812"
 cardOrder: 6
 cardNumber: "06"
 cardCompany: "Pipedrive"
-cardYear: ""
+cardYear: "2021"
 cardTitle: "App Management"
 cardLine: "App creation and management for developers, inside the Pipedrive Marketplace Manager."
 cardToCheck: true
 demoUrl: ""
-subtitle: "Pipedrive · 20NN · developer platform"
+subtitle: "Pipedrive · 2021 · developer platform"
 facts:
-  role: "Senior Product Designer (to confirm). Flows, UI and forms, with the PM and engineers."
+  role: "Senior Product Designer. The only senior designer in the integrations area, so I led the design there. Flows, UI and forms, with the PM and engineers."
   context: "Pipedrive's developer platform. Users are app vendors and developers who build integrations."
   made: "Flows and diagrams, the app extensions page, one form for each extension type."
-  tools: "Figma (to confirm), NN (to confirm)"
+  tools: "Figma, Miro"
 problem: "Customers need integrations that work right inside Pipedrive. Pipedrive cannot build them all, and the platform did not give developers the tools to build deep, native-feeling apps."
 decision: "Split schema-based and iframe-based extensions into two clear sections, and show each option as a block with a drawing and a short text."
-result: "One page where developers see all their options, a form for each extension, and a check for the JSON file that helped developers a lot. No numbers on the old page."
+result: "One page where developers see all their options, a form for each extension, and a check for the JSON file that helped developers a lot. It shipped in 2021."
 caseImage:
   src: "../../assets/projects/pipedrive---app-management/case-hero.png"
   alt: "The app extensions page: Actions and JSON panels, each with a short text and an add button, then Custom UI extensions with a Custom panel block and a Custom modal block, each with a drawing and an add button."
   caption: "The app extensions page: Actions and JSON panels at the top, Custom UI extensions (iframes) in their own section below."
 copyToCheck: true
+links:
+  - label: "App extensions docs ↗"
+    href: "https://pipedrive.readme.io/docs/app-extensions-json-panels"
+  - label: "Pipedrive developer site ↗"
+    href: "https://developers.pipedrive.com/"
 ---
 import CaseSection from '../../components/case/CaseSection.astro';
 import CaseBlock from '../../components/case/CaseBlock.astro';
@@ -51,18 +56,15 @@ import formModal from '../../assets/projects/pipedrive---app-management/case-for
 
 export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
 
-{/* Tall pictures stop at 1200px high, as in the sketch: the frame gets the picture's width at that height (this page only) */}
+{/* Tall pictures stop at about 1200px high, as in the sketch (this page only). The four forms share one width and scale, so text stays the same size when you switch tabs */}
 <style>{`
   [data-case-summary] [data-proof-box] { max-width: 666px; }
-  #form-panel-0 [data-proof-box] { max-width: 656px; }
-  #form-panel-1 [data-proof-box] { max-width: 607px; }
-  #form-panel-2 [data-proof-box] { max-width: 646px; }
-  #form-panel-3 [data-proof-box] { max-width: 589px; }
+  [data-switch="form"] [data-proof-box] { max-width: 600px; }
 `}</style>
 
 <CaseSection title="Two decisions I would defend" subtitle="make every option easy to find" id="decisions">
   <CaseBlock label="decision 1 of 2" data-decision="1" title="Group the options by how they are built" pills={['based on developer feedback']}>
-    Developers told us they did not see all the options they had. So schema-based extensions (actions and JSON panels) and iframe-based extensions (custom panels and modals) got their own sections. A developer first picks the technology, then the place in Pipedrive.
+    Developers told us they did not see all the options they had. So schema-based extensions (actions and JSON panels) and iframe-based extensions (custom panels and modals) got their own sections. A developer can start from the technology or from the place in Pipedrive. Either way, they have enough information about both to decide what to build and how.
     <InspectPins slot="proof" width={top.width} height={top.height}
       light={{ src: top.src, alt: 'The top of the app extensions page: Actions and JSON panels, each with a short text and an add button, then the Custom UI extensions section with its first block, Custom panel.' }}
       pins={[
@@ -72,8 +74,8 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       ]} />
   </CaseBlock>
   <CaseBlock label="decision 2 of 2" data-decision="2" title="Show each option, do not just list it">
-    Each iframe option is a block with a small drawing of where it shows up in Pipedrive: a panel in the details view, or a modal. A short text and a link to the docs sit next to it. Developers can see the result before they read the docs.
-    <Proof slot="proof" caption="Custom panel and Custom modal: a drawing shows where the iframe appears." media={img(iframes, 'Two blocks: Custom panel (beta) with a drawing of an iframe in a side panel, and Custom modal with a drawing of an iframe in a modal. Each has an add button.')} />
+    We wanted to make the options easier to discover. A name like "Custom modal" says little on its own. A small drawing gives developers a hint of where the extension will appear in Pipedrive, so it is easier to pick one. The short text and the docs link give the details.
+    <Proof slot="proof" caption="Custom panel and Custom modal: a drawing gives a hint of where the iframe appears." media={img(iframes, 'Two blocks: Custom panel (beta) with a drawing of an iframe in a side panel, and Custom modal with a drawing of an iframe in a modal. Each has an add button.')} />
   </CaseBlock>
 </CaseSection>
 
@@ -89,7 +91,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="One form for each extension" subtitle="what a developer fills in" id="forms">
   <CaseBlock label="forms" title="Short forms, with the rules next to each field">
-    Each extension type has its own form: a name, a description, a URL or a JSON file, and the places in Pipedrive where it shows. The limits, like 30 characters for a name, sit under each field. We also built a check for the uploaded JSON file, which was a great help for developers.
+    Each extension type has its own form: a name, a description, a URL or a JSON file, and the places in Pipedrive where it shows. The limits, like 30 characters for a name, sit under each field. During testing, we got errors from badly formatted JSON files. So the engineers came up with a check for the uploaded file, which was a great help for developers.
     <ProofSwitch slot="proof" kind="tabs" id="form" label="Extension form" items={[
       { label: 'Action', caption: 'Action: a link or a JSON modal, and up to three actions per location.', media: img(formAction, 'The Action form: name, description, action type (Link or JSON modal), API endpoint, JWT secret, JSON file upload and locations.') },
       { label: 'JSON panel', caption: 'JSON panel: one panel per location, with an optional main action.', media: img(formJson, 'The JSON panel form: name, description, API endpoint, HTTP auth or JWT secret, JSON file upload, location and a main action.') },
@@ -106,7 +108,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       'One form for each extension type',
       'A check for the JSON file that was a great help for developers',
       'A base for new ways to integrate, which the team was already working on',
-      'No numbers on the old page',
+      'Shipped in 2021',
     ] }}
     right={{ label: 'what I learned', items: [
       'With good research and well-defined steps, the flow is the easy part.',
