@@ -1,7 +1,7 @@
 ---
 name: "Bigbank - Financial Back-office"
 heroTitle: "Bigbank - Financial Backoffice"
-heroDescription: "Bigbank's accountants worked in legacy software with several issues. The goal was to build a Financial Back-office in-house and replace it. I studied the old system and designed the new one, close to the accountants who use it."
+heroDescription: "Bigbank's accountants used a generic third-party tool that was slow and cumbersome. The goal was to build a Financial Back-office in-house and replace it. I studied the old system and designed the new one, close to the accountants who use it."
 homeImage: "../../assets/projects/bigbank---financial-backoffice/bigbank-fbo.avif"
 homeImageAlt: ""
 tag1: "design"
@@ -22,13 +22,13 @@ cardToCheck: false
 demoUrl: ""
 subtitle: "Bigbank · 2018 · internal tool"
 facts:
-  role: "Product designer at Bigbank (title to confirm). I also designed the Baltic loan applications, their back-offices and partner systems."
+  role: "Product Designer at Bigbank. I also designed the Baltic loan applications, their back-offices and partner systems."
   context: "Bigbank, a bank specialised in loans in several European countries, mainly Nordic and Baltic. The users were the bank's own accountants."
   made: "The screens of the new Financial Back-office: lookup values, transactions, incoming invoices and cost reports."
-  tools: "NN (to confirm)"
-problem: "The legacy financial software had several issues. The accountants needed a system made for their work."
+  tools: "Figma, InVision"
+problem: "The accountants used a generic third-party tool. It was packed with features they did not use, and that made it slow and cumbersome. They needed a system made for their work."
 decision: "Build it in-house and design it with the accountants: talk to them often, try new ideas, and get feedback early."
-result: "NN (to confirm): what shipped and what changed for the accountants. The old page does not say."
+result: "It went live. It shows the accountants the data they need, the way they want it."
 caseImage:
   src: "../../assets/projects/bigbank---financial-backoffice/bigbank-fbo.avif"
   alt: "Screens of the Financial Back-office at an angle on orange and yellow bands: Lookup values with and without the search panel, an invoice, a cost report and the Transactions table."
@@ -63,7 +63,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       ]} />
   </CaseBlock>
   <CaseBlock label="search" title="Search opens beside the table">
-    The search button opens a panel on the right. The table and its filters stay in view while the accountant changes the search.
+    The search button opens a panel on the right. The accountants wanted to see all the data at once, so the panel never covers the table.
     <ProofSwitch slot="proof" kind="segmented" id="search" label="search panel" selected={1} items={[
       { label: 'Closed', caption: 'Search closed: the table uses the full width.', media: img(lists, 'The Lookup values table with the Lookup value search button top right.') },
       { label: 'Open', caption: 'Search open: the fields sit next to the table, not over it.', media: img(search, 'The Lookup values table with a search panel open on the right: lookup code, code, name, additional info, valid, and a green Search button.') },
@@ -77,24 +77,25 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     ]} />
   </CaseBlock>
   <CaseBlock label="transactions" title="Dense data, kept readable">
-    The transactions table has many columns. Each transaction takes two rows, marked D and C, under a two-line header, with light and white bands between transactions.
-    <Proof slot="proof" caption="Transactions: two rows per transaction, marked D and C." media={img(transactions, 'The Transactions table: a two-line blue header, rows in pairs marked D and C, with amounts, customer, ledger, business code, account code and balance.')} />
+    The accountants wanted as many rows on screen as possible, so the rows are compact. Each transaction takes two rows: D for debit and C for credit. Light and white bands keep the transactions apart.
+    <Proof slot="proof" caption="Transactions: two rows per transaction, D for debit and C for credit." media={img(transactions, 'The Transactions table: a two-line blue header, rows in pairs marked D (debit) and C (credit), with amounts, customer, ledger, business code, account code and balance.')} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="team" title="Design next to the people who use it" pills={['developers', 'analysts', 'PMs', 'accountants']}>
-    I worked very closely with developers, analysts and PMs. The users were our own accountants, so I could talk to them often, try new ideas and get feedback quickly.
+    I worked very closely with developers, analysts and PMs. The users were our own accountants. We met them in person every week. They tested the new system step by step and got used to it. They also told us what should or should not be there.
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
   <TwoCol
     left={{ label: 'outcome', items: [
-      'NN (to confirm): did it replace the legacy software, and when?',
-      'No numbers on the old page',
+      'It fully replaced the old third-party tool.',
     ] }}
     right={{ label: 'what I learned', items: [
-      'NN (to write): what I learned from this project',
+      'People have very different mental models. Making a system simpler and cleaner can hurt it.',
+      'My first clean designs did not go far. The accountants wanted all the data on screen. Many numbers gave them a feeling of trust.',
+      'Understand their mental model first, then design for it.',
     ] }} />
 </CaseSection>
