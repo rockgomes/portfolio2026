@@ -32,7 +32,7 @@ test('the main picture starts on After, and Before shows the old first screen', 
   const sw = page.locator('[data-case-summary] [data-switch="ba"]');
   await expect(sw.getByRole('radio', { name: 'After' })).toHaveAttribute('aria-checked', 'true');
   await expect(sw.locator('[data-proof-panel]:visible img')).toHaveAttribute('alt', /^The new first screen/);
-  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('The money comes first');
+  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('The payment plan comes first');
   await sw.getByRole('radio', { name: 'Before' }).click();
   await expect(sw.getByRole('radio', { name: 'Before' })).toHaveAttribute('aria-checked', 'true');
   await expect(sw.locator('[data-proof-panel]:visible img')).toHaveAttribute('alt', /^The old first screen/);
@@ -44,8 +44,8 @@ test('the main picture starts on After, and Before shows the old first screen', 
 
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('main h2:not(.label)')).toHaveText(['Three decisions I would defend', 'How I got there', 'What changed']);
-  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Mobile sets the structure', 'The money comes first', 'One pattern, many outcomes']);
+  await expect(page.locator('main h2:not(.label)')).toHaveText(['Three decisions I would defend', 'Try the flow', 'How I got there', 'What changed']);
+  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Mobile sets the structure', 'The payment plan comes first', 'One pattern, many outcomes']);
   await expect(page.locator('#decisions .pills li')).toHaveText(['mobile first', 'desktop from the same structure', 'new and returning customers', 'several ID methods', 'country rules']);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Map the whole journey first', 'Learn the rules with product and analytics', 'Country rules inside one structure', 'Stay close to the build']);
   await expect(page.locator('#process [data-case-block] .label')).toHaveText(['audit', 'research', 'flows', 'delivery']);
@@ -73,7 +73,7 @@ test('the flow tabs start on Main flow, and swap to the Estonian AIS flow', asyn
   await expect(sw.locator('[data-proof-panel]:visible')).toHaveCount(1);
 });
 
-test('the money comes first: a pin outlines its part and shows its note under it', async ({ page }) => {
+test('the payment plan comes first: a pin outlines its part and shows its note under it', async ({ page }) => {
   await page.goto(PAGE);
   const ins = page.locator('[data-decision="2"] [data-inspect]');
   await expect(ins.locator('.callouts .ui-callout')).toHaveText([/monthly payment is the largest/, /Down payment and payment day/, /Amount, merchant and payment method/, /Continue is the only strong colour/]);
@@ -103,7 +103,28 @@ test('the old Webflow body is gone', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('.prose')).toHaveCount(0);
   await expect(page.locator('main')).not.toContainText('Core design principles');
-  await expect(page.locator('main iframe')).toHaveCount(0);
+  await expect(page.locator('main iframe:not([data-live] iframe)')).toHaveCount(0);
+});
+
+test('the live mockup: the coded prototype, framed under the decisions', async ({ page }) => {
+  await page.goto(PAGE);
+  const live = page.locator('#live [data-live]');
+  await expect(live).toHaveCount(1);
+  await expect(live.locator('iframe')).toHaveAttribute('src', 'https://inbank-loan-app.vercel.app/');
+  await expect(live.locator('.addr')).toHaveText('inbank-loan-app.vercel.app');
+  await expect(live.locator('figcaption')).toContainText('made with Claude');
+  await expect(live.locator('img.still')).toHaveAttribute('src', '/media/projects/inbank---hire-purchase/live.jpg');
+});
+
+test('facts: Senior Product Designer, the four countries, the team and the tools', async ({ page }) => {
+  await page.goto(PAGE);
+  const dd = page.locator('[data-case-summary] [data-facts] dd');
+  await expect(dd.nth(0)).toContainText('Senior Product Designer');
+  await expect(dd.nth(1)).toContainText('Estonia, Latvia, Lithuania and Czechia');
+  await expect(dd.nth(1)).toContainText('I was the only designer');
+  await expect(dd.nth(3)).toHaveText('Figma for the design. Claude for the coded prototype.');
+  await expect(page.locator('main')).not.toContainText('NN');
+  await expect(page.locator('main')).not.toContainText('No numbers I can share');
 });
 
 test('next case study is Pipedrive App management', async ({ page }) => {

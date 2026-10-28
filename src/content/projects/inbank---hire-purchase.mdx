@@ -1,7 +1,7 @@
 ---
 name: "Inbank - Hire Purchase"
 heroTitle: "Inbank - Hire Purchase"
-heroDescription: "Hire Purchase lets customers buy now and pay over time, right from a merchant's site. After Inbank's 2023 rebrand, the checkout looked and worked differently in every market and on every device. As Inbank's first in-house designer, I led its redesign: one mobile-first flow that works across countries and their rules."
+heroDescription: "Hire Purchase lets customers buy now and pay over time, right from a merchant's site. The checkout flow was very outdated, and it looked and worked differently in every market and on every device. As Inbank's first in-house designer, I led its redesign: one mobile-first flow that works across countries and their rules."
 homeImage: "../../assets/projects/inbank---hire-purchase/inbank-epos.avif"
 homeImageAlt: ""
 tag1: "design"
@@ -17,23 +17,23 @@ cardNumber: "05"
 cardCompany: "Inbank"
 cardYear: "2023"
 cardTitle: "Hire Purchase checkout"
-cardLine: "Redesigned the checkout across 4 countries after a rebrand. Fewer support tickets, faster completion."
+cardLine: "Redesigned an outdated checkout across 4 countries. Fewer support tickets, faster completion."
 cardToCheck: false
 demoUrl: ""
 subtitle: "Inbank · 2023 · checkout redesign"
 facts:
-  role: "Lead product designer, Inbank's first in-house designer. Audit and flow maps, mobile and desktop flows, accessibility, patterns for the design system."
-  context: "Inbank's 2023 rebrand and restructuring. The checkout customers see after they pick Hire Purchase on a merchant's site, in four countries. Worked with product managers, analysts and developers."
+  role: "Senior Product Designer, Inbank's first in-house designer. Audit and flow maps, mobile and desktop flows, accessibility, patterns for the design system."
+  context: "The checkout customers see after they pick Hire Purchase on a merchant's site, in Estonia, Latvia, Lithuania and Czechia. I was the only designer. A design manager approved the visuals, one product manager per country owned its flows, and two front-end developers worked with the other developers."
   made: "A map of the full journey, mobile and desktop flows, reusable summary and offer patterns, country variants like the Estonian AIS flow, and components for the design system."
-  tools: "NN (to confirm). The live mockup: Windsurf and Claude."
+  tools: "Figma for the design. Claude for the coded prototype."
 problem: "The checkout differed by market and by device. Layouts were inconsistent, the hierarchy was unclear, and there were accessibility gaps, worst on mobile, where most customers finished the flow."
 decision: "Design flows, not screens. One mobile-first structure with a few repeatable patterns, so country rules, ID methods and offer outcomes change the content, not the layout."
-result: "A consistent, accessible journey across devices and markets, clearer on mobile, with less friction for returning customers. No numbers I can share."
+result: "Live in all four countries. A consistent, accessible journey, clearer on mobile, with fewer support tickets and faster completion."
 links:
   - label: "Open the live mockup ↗"
     href: "https://inbank-loan-app.vercel.app/"
 beforeAfter:
-  caption: "The first screen after a customer picks Hire Purchase, before and after. The money comes first, and the purchase details sit below it."
+  caption: "The first screen after a customer picks Hire Purchase, before and after. The payment plan comes first, and the purchase details sit below it."
   before:
     src: "../../assets/projects/inbank---hire-purchase/case-before.jpg"
     alt: "The old first screen of the checkout: a purple header, a step bar, three purple figures stacked in a grey card, and a bright green Continue button next to Back."
@@ -45,6 +45,7 @@ copyToCheck: true
 import CaseSection from '../../components/case/CaseSection.astro';
 import CaseBlock from '../../components/case/CaseBlock.astro';
 import InspectPins from '../../components/case/InspectPins.astro';
+import LivePage from '../../components/case/LivePage.astro';
 import Proof from '../../components/case/Proof.astro';
 import ProofSwitch from '../../components/case/ProofSwitch.astro';
 import TwoCol from '../../components/case/TwoCol.astro';
@@ -63,8 +64,8 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     Most customers finished the flow on a phone, so mobile was the main constraint. Hierarchy, actions and forms had to stay clear on a small screen first. Desktop layouts grow from the same structure, so there is one flow to build and keep, not two.
     <Proof slot="proof" caption="The main path on a phone: plan, identification, details, offer, down payment, done." media={img(mobilePath, "Six phone screens of the checkout in a row: Pay in parts, Identify yourself, Hello!, Your personal credit offer, Down payment, and You're all set!")} />
   </CaseBlock>
-  <CaseBlock label="decision 2 of 3" data-decision="2" title="The money comes first">
-    People who choose financing want to know what it costs. So the screen leads with the most important figures, groups the related ones, and keeps strong colour for the action that moves the customer forward. It is less to read before a decision.
+  <CaseBlock label="decision 2 of 3" data-decision="2" title="The payment plan comes first">
+    People already know the price before they start Hire Purchase. Here they want a payment plan: how much to pay each month, for how long, and when. So I grouped the data to make the plan the main information. The final total is still there, lower down.
     <InspectPins slot="proof" width={1085} height={1684}
       light={{ src: summaryCard.src, alt: 'The payment summary card: 12.64 euro times 48 months at the top, down payment and payment day below, an Edit conditions button, the purchase details, and a dark Continue button.' }}
       pins={[
@@ -78,6 +79,10 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     New and returning customers, different ID methods, different offers, and different laws in each country. Instead of a screen for each case, I defined patterns that adapt. The summary card is one: the same card shows the plan, a changed value or a rental. The logic can change without breaking the UI.
     <Proof slot="proof" caption="Variants of one summary card. Changed values get a badge, and a rental shows its first payment." media={img(cardVariants, 'Variants of the summary card: some with Changed badges on the down payment and financed amount, one for a rental with the first payment today, and versions with Edit conditions.')} />
   </CaseBlock>
+</CaseSection>
+
+<CaseSection title="Try the flow" subtitle="the live mockup" id="live" gap={48}>
+  <LivePage src="https://inbank-loan-app.vercel.app/" title="Hire Purchase checkout, live mockup" poster="/media/projects/inbank---hire-purchase/live.jpg" caption="The live mockup, scaled to fit. A coded prototype of the new checkout, made with Claude." />
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
@@ -106,15 +111,17 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 <CaseSection title="What changed" subtitle="the outcome, and what comes next" id="result" gap={48}>
   <TwoCol
     left={{ label: 'outcome', items: [
+      'Live in all four countries, at different times, because each country has its own flows',
       'A consistent and accessible journey across devices and markets',
       'Clearer and easier to use, most of all on mobile',
       'Less friction for returning customers',
+      'Fewer support tickets and faster completion, as seen by the customer service team and in Mixpanel',
       'Patterns that scale to new products and markets',
       "Strong foundations for Inbank's design system",
-      'No numbers I can share',
     ] }}
     right={{ label: 'what I learned', items: [
-      "NN (to confirm): Rock's own learning. The old page has none.",
+      'A clear map of the flow, in swim lanes, showed the scope and gave us a roadmap. It made the project easier to manage with product managers and developers.',
+      'I used the same idea in the design file: a clear order, and arrows from each action to the next, so others could follow it.',
       'Next: telemetry to measure drop-off, usability and accessibility tests, more shared patterns, and faster mobile performance.',
     ] }} />
 </CaseSection>
