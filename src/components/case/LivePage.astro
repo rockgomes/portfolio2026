@@ -5,10 +5,12 @@
 // the iframe is too small to use, so a screen recording shows instead, playing in view as every proof video does;
 // there Reload starts the recording again. A page without a recording shows its still picture (poster) there, and no
 // Reload. Without JS, or before JS runs, the recording (or the still) shows: nothing is ever blank or wider than the page.
+// embed={false}: the site does not allow other pages to show it in a frame (X-Frame-Options), so the still shows at
+// every size, under the same browser bar, with no Reload.
 import Proof from './Proof.astro';
 import IconRotateCw from '../IconRotateCw.astro';
-interface Props { src: string; video?: string; poster: string; caption: string; title: string; videoLabel?: string }
-const { src, video, poster, caption, title, videoLabel } = Astro.props;
+interface Props { src: string; video?: string; poster: string; caption: string; title: string; videoLabel?: string; embed?: boolean }
+const { src, video, poster, caption, title, videoLabel, embed = true } = Astro.props;
 const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
 ---
 <div class="live" data-live data-phone data-still={!video || undefined}>
@@ -19,7 +21,7 @@ const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
       <button type="button" class="btn btn-icon reload" data-live-reload aria-label="Reload the live page"><IconRotateCw /></button>
     </div>
     <div class="view" data-live-view>
-      <iframe src={src} title={title} loading="lazy"></iframe>
+      {embed && <iframe src={src} title={title} loading="lazy"></iframe>}
       {video
         ? <video muted loop playsinline controls preload="none" poster={poster} aria-label={videoLabel}><source src={video} type="video/mp4" /></video>
         : <img class="still" src={poster} alt={`${title}, a still picture`} width="1440" height="900" loading="lazy" decoding="async" />}
@@ -47,7 +49,9 @@ const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
   const W = 1440, H = 900;
   document.querySelectorAll<HTMLElement>('[data-live]').forEach((fig) => {
     const view = fig.querySelector<HTMLElement>('[data-live-view]')!;
-    const frame = fig.querySelector('iframe')!;
+    const frame = fig.querySelector('iframe');
+    // No frame (embed={false}): the still stays at every size
+    if (!frame) return;
     const video = fig.querySelector('video');
     const fit = () => {
       const s = view.clientWidth / W;

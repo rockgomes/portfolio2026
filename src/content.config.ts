@@ -31,8 +31,9 @@ const caseFields = (image: SchemaContext['image']) => ({
   result: z.string().default(''),
   links: z.array(z.object({ label: z.string(), href: z.string().url() })).default([]),
   // The live page in the summary (an iframe). On phones it is too small to use, so a screen recording (video) shows
-  // instead, or, without a recording, the still picture (poster).
-  live: z.object({ src: z.string().url(), title: z.string(), video: z.string().optional(), videoLabel: z.string().default(''), poster: z.string(), caption: z.string() }).optional(),
+  // instead, or, without a recording, the still picture (poster). embed: false = the site does not allow being shown in
+  // a frame, so the still shows at every size.
+  live: z.object({ src: z.string().url(), title: z.string(), video: z.string().optional(), videoLabel: z.string().default(''), poster: z.string(), caption: z.string(), embed: z.boolean().default(true) }).optional(),
   // The main picture in the summary, with its caption. Without it (and without live or beforeAfter), the summary shows
   // the card picture.
   caseImage: z.object({ src: image(), alt: z.string(), caption: z.string() }).optional(),
