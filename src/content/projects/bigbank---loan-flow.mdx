@@ -1,0 +1,96 @@
+---
+name: "Bigbank - Loan flow"
+heroTitle: "Bigbank - Loan flow"
+heroDescription: "One of my first projects at Bigbank. The old loan flows had no real personality, and each country made its own decisions. We brought them all together under one design language, with shorter forms and clearer steps."
+homeImage: "../../assets/projects/bigbank---loan-flow/bigbank-loan.avif"
+homeImageAlt: ""
+tag1: "design"
+tag2: ""
+type: "client"
+industry: ["B2C", "Fintech"]
+focus: ["Checkout"]
+tagsToCheck: true
+private: false
+webflowId: "69386753ffaae2c82a6bc289"
+cardOrder: 9
+cardNumber: "09"
+cardCompany: "Bigbank"
+cardYear: "2019"
+cardTitle: "Loan flow"
+cardLine: "Redesigned loan application flows for a better experience and a modern look."
+cardToCheck: false
+demoUrl: ""
+subtitle: "Bigbank · 2019 · loan application flow"
+facts:
+  role: "Product Designer at Bigbank. First with one other designer, then alone, I worked on every part: wireframes, visual design, stakeholder interviews, design reviews with PMs and developers, the build, and a design system at the same time."
+  context: "Bigbank, a bank specialised in loans in several European countries. The team: 2 designers, a PM for each country and a couple of analysts."
+  made: "The new loan application for 5 countries, responsive and mobile-first: personal details, the offer, additional data and the contract."
+  tools: "Figma, InVision, Miro"
+problem: "The old application had a basic design, did not focus on users and was different in each country. Approval took a long time and many applicants left before the end."
+decision: "One application for all countries, with shorter forms and clearer steps."
+result: "Loan answers came faster, the NPS score went up, and support had fewer manual tasks."
+caseImage:
+  src: "../../assets/projects/bigbank---loan-flow/bigbank-loan.avif"
+  alt: "Five phones on a blue background, each showing a screen of the new loan application: two personal details screens, the offer, the payment details and the contract."
+  caption: "The new application on mobile: personal details, the offer, additional data and the contract."
+copyToCheck: true
+---
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import Proof from '../../components/case/Proof.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import details from '../../assets/projects/bigbank---loan-flow/case-s1-details.jpg';
+import offer from '../../assets/projects/bigbank---loan-flow/case-s2-offer.jpg';
+import additional from '../../assets/projects/bigbank---loan-flow/case-s3-additional.jpg';
+import contract from '../../assets/projects/bigbank---loan-flow/case-s4-contract.jpg';
+import editOffer from '../../assets/projects/bigbank---loan-flow/case-edit-offer.jpg';
+import form from '../../assets/projects/bigbank---loan-flow/case-form.jpg';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="What I made" subtitle="the new flow, screen by screen" id="made">
+  <CaseBlock label="the steps" title="Four steps, always in view">
+    The applicant always sees where they are: Fill in application, Review offer, Additional data, Sign contract. A finished step gets a check mark.
+    <ProofSwitch slot="proof" kind="tabs" id="steps" label="step of the application" selected={1} items={[
+      { label: 'Fill in application', caption: 'Step 1: personal details. The loan amount and a 1/3 counter stay at the top.', media: img(details, 'A phone screen titled Personal Details with fields for first name, last name, ID code, email, phone number and loan purpose, and a checkbox for offers. The loan amount and a 1/3 counter are at the top.') },
+      { label: 'Review offer', caption: 'Step 2: the offer. Amount, monthly payment and period first, the rates below.', media: img(offer, 'A phone screen that says Dear Zita, you are approved preliminary for: a 6 000 euro loan in a circle, a monthly payment of 277,55 euro, a period of 62 months, and a list of rates and fees below.') },
+      { label: 'Additional data', caption: 'Step 3: payment and ID details. The applicant picks the repayment day with one tap.', media: img(additional, 'A phone screen with a field for the bank account number, buttons to pick the repayment day (1, 5, 10, 15, 20), and fields for the identification document.') },
+      { label: 'Sign contract', caption: 'Step 4: a short loan summary, the main conditions, then Sign contract.', media: img(contract, 'A phone screen with a summary of the loan (5 000 euro, 133 euro a month, 72 months) and the contract main conditions: contract number, IBAN, repayment day and APR.') },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="the offer" title="Change the offer without starting over">
+    The offer card tells the applicant they can tap it to edit the offer. A tap opens two sliders, one for the amount and one for the period, with the monthly payment under them.
+    <Proof slot="proof" caption="Editing the offer: amount and period on sliders, the monthly payment under them." media={img(editOffer, 'A pop-up over the offer screen with a slider for the offer amount (8 000 euro, from 1 000 to 10 000), a slider for the loan period (62 months, from 6 to 72), the monthly payment, and an Update my offer button.')} />
+  </CaseBlock>
+  <CaseBlock label="the forms" title="Short forms, one topic per screen">
+    Each screen asks a few questions on one topic. When a question has up to about 7 short options, they show as buttons, because that makes choosing faster. Long lists stay as drop-downs.
+    <Proof slot="proof" caption="Personal details, part 2 of 3: residency and education are buttons." media={img(form, 'A phone screen, step 2 of 3 of Personal Details: family status, dependants, and residency type and education as rows of buttons.')} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="How I got there" subtitle="the process, short" id="process">
+  <CaseBlock label="research" title="Enough data, as fast as possible" pills={['clients', 'country managers', 'Legal', 'Accounting']}>
+    A bank sells money. It must follow regulations and do risk checks, so it needs a lot of data. Each country has its own laws and required checks.
+
+    Clients want what the money pays for: a new TV, a broken appliance, a family trip. They have to wait for the bank before they can get it, so they want a fast yes or no. At that time, many loans took days to answer.
+
+    We designed each step to collect enough information for the bank to start its decision early. We kept the flow as clear and short as possible. Lawyers, accountants and other teams checked that every question was needed and that none was missing.
+  </CaseBlock>
+  <CaseBlock label="scope" title="One design for every country">
+    Before, each country made its own decisions about its flow. Now 5 countries share one design. We did Finland, Estonia and Sweden together, then I did Latvia and Lithuania alone. Everything is responsive and mobile-first.
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'outcome', items: [
+      'Faster loan answers: a shorter application and an improved back-end',
+      'A higher NPS score. Some clients who got a no still gave a 10, because the answer came fast and did not waste their time',
+      'Fewer manual tasks for customer support',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'A designer connects all parts of the company. I had to understand what country managers needed, compare it with the limits from Legal and Accounting, and help everyone agree on one plan, even when their goals were different',
+      'At the same time, I had to speak for the customer inside the bank',
+    ] }} />
+</CaseSection>

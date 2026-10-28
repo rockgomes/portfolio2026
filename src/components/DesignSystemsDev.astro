@@ -9,7 +9,7 @@ const chevron = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" ari
 
 const systems = [
   { name: 'Inbank', when: '2023 - 2025', scope: 'Built from scratch right after the rebrand. One system for checkout in four countries and the back-office.' },
-  { name: 'Bigbank', when: '2016 - 2020', scope: 'Built with one other designer. A coded component library, so the system is what ships.' },
+  { name: 'Bigbank', when: '2016 - 2020', scope: 'Built with one other designer. A component library in code, used directly in the product.' },
   { name: 'Well', when: 'Contract', scope: 'Rebuilt the back-office design system. Colour tokens updated to meet AAA contrast.' },
 ];
 const tree = [
@@ -29,7 +29,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
 ---
 <section class="dsd" id="design-systems-dev" data-engineer aria-labelledby="dsd-title">
   <div class="wrap inner section-top">
-    <SectionHeader title="Design systems" titleId="dsd-title" subtitle="two built from zero, one rebuilt · this page runs on a fourth" />
+    <SectionHeader title="Design systems" titleId="dsd-title" subtitle="two built from zero, one rebuilt · this page uses a fourth" />
 
     <div class="win" data-sb>
       <div class="navbar">
@@ -68,7 +68,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
         <div class="page" data-sb-page="intro">
           <div class="docs" data-sb-panel="docs">
             <h3 class="ph">Design systems</h3>
-            <p class="lede">I have built design systems from scratch at Inbank and Bigbank, and rebuilt one at Well. Each one had to survive real products, real deadlines and a real dev team. This page is the fourth: every story below renders the real components and tokens of rockgomes.com.</p>
+            <p class="lede">I have built design systems from scratch at Inbank and Bigbank, and rebuilt one at Well. Dev teams used each one in live products, on real deadlines. This page is the fourth: every story below renders the real components and tokens of rockgomes.com.</p>
             <table class="tbl sys">
               <thead><tr><th>System</th><th>Years</th><th>Scope</th></tr></thead>
               <tbody>{systems.map((s) => <tr><th scope="row">{s.name}</th><td class="mono">{s.when}</td><td>{s.scope}</td></tr>)}</tbody>
@@ -90,7 +90,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
                   <ul class="render swatches">{preview.map((c) => <li><i class="sw" style={`background: var(--color-${c})`}></i><code>--color-{c}</code><span class="val" data-sb-val={c}></span></li>)}</ul>
                   <details class="code"><summary>Show code</summary><pre><code>{`.btn-primary {\n  background: var(--color-annotation-measure);\n}`}</code></pre></details>
                 </div>
-                <p class="cap">Figma variables are exported to tokens.css with the same names. A token in the spec is the token in the code.</p>
+                <p class="cap">Figma variables are exported to tokens.css with the same names, so the spec and the code use the same tokens.</p>
               </div>
               <div class="story">
                 <h4>Modes</h4>
@@ -98,7 +98,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
                   <div class="render"><Segmented label="Theme of this page" data-sb-theme-seg options={[{ label: 'Light - Dev', attrs: { 'data-sb-set-theme': 'light' } }, { label: 'Dark - Dev', attrs: { 'data-sb-set-theme': 'dark' } }]} /></div>
                   <details class="code"><summary>Show code</summary><pre><code>{`<html data-view="engineer" data-theme="dark">`}</code></pre></details>
                 </div>
-                <p class="cap">This switch changes the theme of this page. The components do not change, only the token values do.</p>
+                <p class="cap">This switch changes the theme of this page. Only the token values change.</p>
               </div>
               <div class="story">
                 <h4>Status pill</h4>
@@ -106,7 +106,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
                   <div class="render">{statuses.map((s) => <span class={`pill pill-${s.toLowerCase()}`}><i></i>{s}</span>)}</div>
                   <details class="code"><summary>Show code</summary><pre><code>{`<span class="pill pill-customer"><i></i>Customer</span>`}</code></pre></details>
                 </div>
-                <p class="cap">One property with four values, not four components.</p>
+                <p class="cap">One component with a Status property that has four values.</p>
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
         <div class="page" data-sb-page="modes" hidden>
           <div class="docs" data-sb-panel="docs">
             <h3 class="ph">Modes</h3>
-            <p class="lede">One set of components, six modes. The view switch sets data-view and the theme sets data-theme. Each pair picks one Figma mode, and only the token values change.</p>
+            <p class="lede">One set of components has six modes. The view switch sets data-view and the theme sets data-theme. Each pair picks one Figma mode, and only the token values change.</p>
             <table class="tbl modes-t">
               <thead><tr><th>View</th><th>data-view</th><th>Light</th><th>Dark</th></tr></thead>
               <tbody>

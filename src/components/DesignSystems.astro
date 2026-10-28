@@ -4,7 +4,7 @@ import SectionHeader from './SectionHeader.astro';
 import Glyph from './Glyph.astro';
 const systems = [
   { label: 'Inbank DS', name: 'Inbank', when: '2023 - 2025', facts: ['Built from scratch right after the rebrand', 'One system for checkout in four countries and the back-office', 'WCAG built in ahead of an audit'], tags: ['Tokens', 'Components', 'Accessibility'] },
-  { label: 'Bigbank DS', name: 'Bigbank', when: '2016 - 2020', facts: ['Built together with one other designer', 'A coded component library, so the system is what ships', 'One system for every branch and market'], tags: ['Components', 'Code', 'Research'] },
+  { label: 'Bigbank DS', name: 'Bigbank', when: '2016 - 2020', facts: ['Built together with one other designer', 'A component library in code, used directly in the product', 'One system for every branch and market'], tags: ['Components', 'Code', 'Research'] },
   { label: 'Well DS', name: 'Well', when: 'Contract', facts: ['Rebuilt the back-office design system', 'Colour tokens updated to meet AAA contrast', 'Worked side by side with the dev team'], tags: ['Tokens', 'AAA contrast', 'Handoff'] },
 ];
 const variants = [{ name: 'Primary', cls: 'pri' }, { name: 'Secondary', cls: 'sec' }, { name: 'Ghost', cls: 'gho' }];
@@ -19,13 +19,13 @@ const chains = [
   <div class="wrap inner section-top">
     <div class="head">
       <p class="fig t-mono-label"><Glyph kind="master" /> Section / Design systems</p>
-      <SectionHeader anchor title="Design systems" titleId="ds-title" subtitle="two built from zero, one rebuilt · this page runs on a fourth" />
+      <SectionHeader anchor title="Design systems" titleId="ds-title" subtitle="two built from zero, one rebuilt · this page uses a fourth" />
     </div>
 
     <div class="intro">
       <div class="lede">
-        <p><strong>I have built design systems from scratch at Inbank and Bigbank, and rebuilt one at Well.</strong> Each one had to survive real products, real deadlines and a real dev team.</p>
-        <p>The work that matters is not the UI kit. It is the logic underneath: how tokens are layered, how components are split, which properties exist, and what happens when the brand or the theme changes.</p>
+        <p><strong>I have built design systems from scratch at Inbank and Bigbank, and rebuilt one at Well.</strong> Dev teams used each one in live products, on real deadlines.</p>
+        <p>Most of the work is in the logic under the UI kit: how tokens are layered, how components are split, which properties exist, and what happens when the brand or the theme changes.</p>
       </div>
       <div class="systems">
         {systems.map((s) => (
@@ -45,7 +45,7 @@ const chains = [
       <p class="how t-mono-label">how I build them</p>
       <div class="spec-grid">
         <article class="spec">
-          <h3 class="spec-h"><span class="t-heading-item">Variants, not copies</span></h3>
+          <h3 class="spec-h"><span class="t-heading-item">One button set with variants</span></h3>
           <div class="area">
             <div class="set-wrap">
             <p class="fig t-mono-label"><Glyph kind="master" /> Button<span class="pick" data-pick></span></p>
@@ -56,11 +56,11 @@ const chains = [
             </div>
             </div>
           </div>
-          <p class="cap t-body-small">One component set with Variant, State and Size. Teams pick a combination, nobody copies and tweaks a button.</p>
+          <p class="cap t-body-small">One component set with Variant, State and Size. Teams pick a combination, so nobody copies a button and changes it.</p>
         </article>
 
         <article class="spec">
-          <h3 class="spec-h"><span class="t-heading-item">Properties that make sense</span></h3>
+          <h3 class="spec-h"><span class="t-heading-item">Properties for small changes</span></h3>
           <div class="area" data-drag-bounds>
             <div class="ip">
               <div class="inst" data-draggable>
@@ -78,7 +78,7 @@ const chains = [
               </div>
             </div>
           </div>
-          <p class="cap t-body-small">Text, boolean and instance-swap properties do the work. Variants stay for real visual changes, so the set does not explode.</p>
+          <p class="cap t-body-small">Text, boolean and instance-swap properties handle small changes. I use variants only for real visual changes, so the set stays small.</p>
         </article>
 
         <article class="spec">
@@ -94,11 +94,11 @@ const chains = [
             </div>
             <p class="hint t-mono-label">click the first swatch to rebrand the buttons above</p>
           </div>
-          <p class="cap t-body-small">Primitives hold values, semantic tokens give them a job, components only use the semantic layer. A rebrand is a token change.</p>
+          <p class="cap t-body-small">Primitives hold the raw values. Semantic tokens say where each value is used. Components use only semantic tokens, so a rebrand changes only tokens.</p>
         </article>
 
         <article class="spec">
-          <h3 class="spec-h"><span class="t-heading-item">Modes, not duplicates</span></h3>
+          <h3 class="spec-h"><span class="t-heading-item">Dark and light modes</span></h3>
           <div class="area">
             <div class="modes" aria-hidden="true">
               <div class="mode" data-theme-sample="dark"><p class="ml t-mono-label">mode: dark<span class="here" data-here="dark"> · this page</span></p><div class="sample"><p class="st">Dynamic Lists</p><p class="sd t-body-small">One list, many views.</p><span class="stag ui-tag">Data, SaaS</span></div></div>
@@ -106,7 +106,7 @@ const chains = [
             </div>
             <button type="button" class="btn" data-mode-switch>Switch this page to dark</button>
           </div>
-          <p class="cap t-body-small">One set of components with a Dark and a Light mode. This page switches between them without a single copied frame.</p>
+          <p class="cap t-body-small">One set of components with a Dark and a Light mode. This page switches between them, and no frame is copied.</p>
         </article>
       </div>
     </div>

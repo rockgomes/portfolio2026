@@ -1,0 +1,104 @@
+---
+name: "Pipedrive - Floating Iframe"
+heroTitle: "Pipedrive - Floating Iframe"
+heroDescription: "A floating window that gives integrations more ways to work inside Pipedrive, starting with calling apps. I ran the interviews, the design rounds and the prototype tests. It was my last project at Pipedrive before the layoffs. It shipped, and the calling app JustCall uses it."
+homeImage: "../../assets/projects/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
+homeImageAlt: ""
+tag1: "Dev"
+tag2: ""
+type: "client"
+industry: []
+focus: []
+tagsToCheck: true
+private: false
+webflowId: "693867544becfc843648ccf3"
+cardOrder: 7
+cardNumber: "07"
+cardCompany: "Pipedrive"
+cardYear: ""
+cardTitle: "Floating Iframe"
+cardLine: "A floating window that lets integrations, like calling apps, work inside Pipedrive."
+cardToCheck: true
+demoUrl: ""
+subtitle: "Pipedrive · 2022 · integration"
+facts:
+  role: "Senior Product Designer. Interviews, design rounds, prototypes and tests."
+  context: "Pipedrive integrations. Two kinds of users: partner companies, and the people who use Pipedrive every day."
+  made: "Partner and user interviews, many design rounds, four test prototypes, one winning prototype."
+  tools: "Figma, Miro"
+problem: "Calling integrations are used a lot, but they had no good way to sync call data with Pipedrive."
+decision: "A floating window for the integration: always one click away, easy to move or minimise, and it links back into Pipedrive."
+result: "Four prototypes tested with users, and one clear winner. It shipped, and JustCall uses it for its Quick access feature."
+links:
+  - label: "Figma prototype ↗"
+    href: "https://www.figma.com/proto/SCXg3AbVLFUSlZsD1HJFfP/Pipedrive?page-id=802%3A6719&node-id=802-32024&starting-point-node-id=802%3A32024&scaling=contain&content-scaling=fixed"
+  - label: "Developer docs ↗"
+    href: "https://pipedrive.readme.io/docs/custom-ui-extensions-floating-window"
+  - label: "JustCall app ↗"
+    href: "https://www.pipedrive.com/en/marketplace/app/just-call/d401831fa27bdb38"
+live:
+  src: "https://embed.figma.com/proto/SCXg3AbVLFUSlZsD1HJFfP/Pipedrive?page-id=802%3A6719&node-id=802-32024&node-type=frame&viewport=1300%2C-1582%2C0.25&scaling=contain&content-scaling=fixed&starting-point-node-id=802%3A32024&embed-host=share"
+  title: "The winning prototype in Figma"
+  poster: "/embeds/pipedrive---floating-iframe/pipedrive-floating-iframe.avif"
+  caption: "The winning prototype: a calling app floats over a deal page in Pipedrive. Answer a call, move the window or minimise it."
+copyToCheck: true
+---
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import InspectPins from '../../components/case/InspectPins.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
+import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.jpg';
+import menu from '../../assets/projects/pipedrive---floating-iframe/case-p-menu.png';
+import inUse from '../../assets/projects/pipedrive---floating-iframe/case-p-open.png';
+import minimised from '../../assets/projects/pipedrive---floating-iframe/case-p-minimised.png';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="Two decisions I would defend" subtitle="where to start, and what to build" id="decisions">
+  <CaseBlock label="decision 1 of 2" data-decision="1" title="Start with calling apps" pills={['used a lot', 'no good way to sync call data']}>
+    The data showed that people use calling integrations a lot, and these integrations had no good way to sync call data. We looked at a few kinds of integrations to start with. Calling apps were the best first test of the idea. Also, Pipedrive had just dropped its plan for its own calling feature, so we wanted to make the calling integrations better.
+  </CaseBlock>
+  <CaseBlock label="decision 2 of 2" data-decision="2" title="A floating window that users can move or minimise">
+    Users wanted quick access to the integration that is always there, and also a way to hide it. They wanted alerts. They also wanted links from the app into Pipedrive, for example to open the page of the person who is calling. So we put the app in a floating window. Users can move it anywhere on the page or minimise it.
+    <InspectPins slot="proof" width={980} height={930}
+      light={{ src: closeUp.src, alt: 'Close-up: the Aircall window with a call in progress over a deal page, and the installed integrations menu open from the top bar.' }}
+      pins={[
+        { name: 'Top bar', kind: 'The integrations sit in the top bar, one click away on every page.', x: 638, y: 6, w: 128, h: 42 },
+        { name: 'Installed integrations', kind: 'The installed integrations menu. A badge on Aircall shows there is something new.', x: 672, y: 130, w: 108, h: 40 },
+        { name: 'Minimise', kind: 'Minimise the window to hide it, and open it again from the top bar. Users can also move it anywhere on the page.', x: 460, y: 180, w: 58, h: 34 },
+        { name: 'Call controls', kind: 'Answer, deny and end calls without leaving the deal page.', x: 286, y: 634, w: 80, h: 80 },
+      ]} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="How I got there" subtitle="the process, short" id="process">
+  <CaseBlock label="interviews" title="Talk to partners and users" pills={['4 or 5 partner calls', '10 to 12 user interviews']}>
+    With partners, my team and I talked about the data they could share, pricing models and their experience with other CRMs. With users, I guided the conversation so they answered my questions without me asking them directly.
+  </CaseBlock>
+  <CaseBlock label="design rounds" title="Work with the whole design team">
+    The idea changed the core product, so the whole design team had to agree on it. I shared drafts with engineers, the product manager and other designers all the time. It took many design rounds.
+  </CaseBlock>
+  <CaseBlock label="testing" title="Four prototypes, two per interview" pills={['4 prototypes', '2 per interview', 'order changed each time']}>
+    Each prototype tested a different idea, for example a different entry point. In each interview, users did the same task in two prototypes and compared them. The order changed in every interview.
+    <ProofSwitch slot="proof" kind="segmented" id="winner" label="the winning prototype, step by step" selected={0} items={[
+      { label: '1. Open', caption: 'Users open the app from the installed integrations menu in the top bar.', media: img(menu, 'A Pipedrive deal page with the installed integrations menu open from the top bar: Aircall, Asana and Xero.') },
+      { label: '2. Use', caption: 'The app opens in a window over the deal page, so users do not leave the deal.', media: img(inUse, 'A Pipedrive deal page with the Aircall window open on the right, showing a to-do list of calls and voicemails.') },
+      { label: '3. Minimise', caption: 'Users minimise the window to a small bar at the bottom of the page.', media: img(minimised, 'A Pipedrive deal page with Aircall minimised to a small bar at the bottom right.') },
+    ]} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="What I would measure" subtitle="and what I learned" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'what I would measure', items: [
+      'How many calls are logged in Pipedrive through the floating window',
+      'How often users open a Pipedrive page from the window',
+      'How many calling partners adopt it',
+      'Fewer switches between the calling app and Pipedrive (from interviews or session data)',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'A change to the core product needs the whole design team involved from the start.',
+      'Showing two prototypes in one session, in a different order each time, let users compare the ideas directly.',
+    ] }} />
+</CaseSection>

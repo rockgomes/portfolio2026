@@ -1,6 +1,6 @@
 ---
 name: "Fieldset - Filter builder"
-summary: "A filter builder over 50,000 rows. Most demos show the happy path. This one is about what comes after: never lose the user's work, and never guess what they meant."
+summary: "A filter builder over 50,000 rows. It keeps your edits, and it asks you before it changes what you selected."
 cardImage: "../../assets/experiments/fieldset/fieldset-1.png"
 heroImage: "../../assets/experiments/fieldset/screenshot-2026-09-01-at-02-21-42.png"
 date: "2026-08-31"
@@ -21,22 +21,22 @@ cardNumber: "e.01"
 cardCompany: "Fieldset"
 cardYear: "live"
 cardTitle: "Filter builder"
-cardLine: "A filter builder over 50,000 rows. Never lose the user's work, never guess what they meant."
+cardLine: "A filter builder over 50,000 rows. It keeps your edits, and it asks you before it changes what you selected."
 cardToCheck: false
 subtitle: "Fieldset · 2026 · experiment"
 facts:
-  role: "NN (to confirm)"
+  role: "Solo side project. I made the product and design decisions and directed the build"
   context: "Experiment, live demo, no backend"
   made: "A filter builder with saved views, over 50,000 rows"
   tools: "React, TypeScript, Vite, Vitest, Netlify, Claude Code"
-problem: "When a filter changes, most apps quietly guess what you meant, or throw away your edits."
+problem: "When you change a filter, most apps guess what you meant or throw away your edits."
 decision: "When the app cannot know what you meant, it asks. Your edits stay until you save them or drop them."
-result: "A working demo you can try. The tricky logic sits in plain functions, with tests."
+result: "A working demo you can try. I kept the hard logic apart from the screen code, and it has tests."
 live:
   src: "https://fieldset-filter-builder.netlify.app"
   title: "Fieldset filter builder, live demo"
   poster: "/media/experiments/fieldset/live.jpg"
-  caption: "The live demo. Flip 5k to 50k and scroll."
+  caption: "The live demo. Switch from 5k to 50k rows, then scroll."
 copyToCheck: true
 ---
 
@@ -52,23 +52,23 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="Four things it does differently" subtitle="try each one in the demo" id="differently">
   <CaseBlock label="1 of 4" title="206 selected, 173 still match">
-    You select all 206 matching rows, then tighten the filter. Only 173 still match. The app cannot know which one you meant, so it asks: keep all 206, trim to 173, or start over.
+    You select all 206 matching rows, then make the filter stricter. Now only 173 of them match. The app cannot know if you still want all 206, so it asks: keep all 206, trim to 173, or start over.
     <ProofSwitch slot="proof" kind="segmented" id="selection" label="Show the selection before or after the filter changed" selected={1} items={[
-      { label: 'Selected', caption: 'All 206 matching rows selected, in the bar at the bottom.', media: img(selected, 'The Fieldset table with every row ticked and a bar at the bottom: 206 rows selected.') },
+      { label: 'Selected', caption: 'All 206 matching rows are selected. The bar at the bottom shows the count.', media: img(selected, 'The Fieldset table with every row ticked and a bar at the bottom: 206 rows selected.') },
       { label: 'Filter changed', caption: 'Headcount changed from 200 to 900. The app shows both numbers and asks.', media: img(filterChanged, 'Headcount is now more than 900. A bar over the table says 173 of the 206 selected rows still match, with Keep all 206 and Trim to 173 matching.') },
     ]} />
   </CaseBlock>
-  <CaseBlock label="2 of 4" title="Edits survive a switch">
-    Edit a saved view, switch to another, then come back. Your edits are still there, marked unsaved, with the saved version one click away.
+  <CaseBlock label="2 of 4" title="Edits stay when you switch views">
+    Edit a saved view, switch to another, then come back. Your edits are still there, marked unsaved. One click brings back the saved version.
   </CaseBlock>
   <CaseBlock label="3 of 4" title="A deleted field does not break a view">
-    A saved view can point at a field that no longer exists. The view still works: it flags the dead condition, skips it, and lets you point it somewhere else.
+    A saved view can use a field that was deleted. The view still works. It marks that condition as ignored and skips it. You can then pick a different field for it.
     <Proof slot="proof" caption="EMEA legacy: one condition is ignored because its field was deleted." media={img(emea, 'The EMEA legacy view: its first condition uses region_emea (deleted) and is marked as ignored. The table still shows 3100 rows.')} />
   </CaseBlock>
-  <CaseBlock label="4 of 4" title="A way back that cannot break">
-    “All companies” cannot be renamed, deleted or saved over. It is the way back. I added it after I saved over it by accident.
+  <CaseBlock label="4 of 4" title="One view that cannot be changed">
+    Nobody can rename, delete or save over the “All companies” view, so you can always go back to it. I added this lock after I saved over that view by accident.
   </CaseBlock>
-  <CaseBlock label="how it is built" title="The logic has no React near it" pills={['React', 'TypeScript', 'Vitest', 'no backend']}>
-    React and TypeScript, no backend. The 50,000 rows are made in your browser, the same every time, and only about 30 exist at once. Filtering, sorting, selection and saved views are plain functions, so the tricky parts have tests.
+  <CaseBlock label="how it is built" title="The logic is separate from the screen code" pills={['React', 'TypeScript', 'Vitest', 'no backend']}>
+    I built it with React and TypeScript, with no server. Your browser makes the 50,000 rows, the same rows every time. Only about 30 rows are on the page at once. Filtering, sorting, selection and saved views are plain functions, apart from the React code, so the hard parts have tests.
   </CaseBlock>
 </CaseSection>

@@ -15,7 +15,7 @@ const facts = [
 ];
 // Short lines from Figma; title, company, year and image come from each project's content file.
 const picks: [string, string][] = [
-  ['dealfront-ai-company-profile', 'An AI layer that answers sales questions. Shipped in two weeks.'],
+  ['dealfront-ai-company-profile', 'AI answers to sales questions, inside the Company Profile. Shipped in two weeks.'],
   ['dealfront-dynamic-lists', 'Saved filter and column views on one list.'],
   ['inbank---customer-service-backoffice', 'Rebuilt the internal support tool from scratch.'],
   ['inbank---hire-purchase', 'Checkout redesign across 4 countries. Fewer support tickets.'],
@@ -43,7 +43,7 @@ const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => i
         <li class="ui-pill ui-pill-positive"><i aria-hidden="true"></i>Open to work</li>
         {pills.map((p) => <li class="ui-pill">{p}</li>)}
       </ul>
-      <p class="lede">Ten years designing software people use all day at work: loan back-offices, support tools, data-heavy CRM lists and checkouts across four countries. I also build working prototypes, so teams can test the real thing before anyone writes a ticket.</p>
+      <p class="lede">Ten years designing software people use all day at work: loan back-offices, support tools, data-heavy CRM lists and checkouts across four countries. I also build working prototypes, so teams can test the design before anyone writes a ticket.</p>
       <dl class="facts">
         {facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
       </dl>
