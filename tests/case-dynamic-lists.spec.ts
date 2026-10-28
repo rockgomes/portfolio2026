@@ -34,7 +34,7 @@ test('live demo: iframe on desktop, still picture on phones', async ({ page, vie
   await page.goto(PAGE);
   const live = page.locator('[data-live]');
   await expect(live.locator('.addr')).toHaveText('dealfront-dynamic-lists-cd-7c276e015d.netlify.app');
-  await expect(live.locator('figcaption')).toHaveText('A working copy of the design, built with AI from the real Figma files. Not the real product. Filter the list, change columns, save views and switch between them.');
+  await expect(live.locator('figcaption')).toHaveText('A working copy of the design, built with AI from the real Figma files. It is not the real product. Filter the list, change columns, save views and switch between them.');
   await expect(live.locator('video')).toHaveCount(0);
   const reload = live.getByRole('button', { name: 'Reload the live page' });
   if ((viewport?.width ?? 0) >= 1200) {
@@ -53,10 +53,10 @@ test('live demo: iframe on desktop, still picture on phones', async ({ page, vie
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Three decisions I would defend', 'How I got there', 'What changed']);
-  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Views belong to one list', 'Filters and columns are one idea', 'The state is always honest']);
+  await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Views belong to one list', 'Save filters and columns together', 'Always show which view and filters are on']);
   await expect(page.locator('#decisions [data-case-block] .label')).toHaveText(['decision 1 of 3', 'decision 2 of 3', 'decision 3 of 3']);
   await expect(page.locator('#decisions .pills li')).toHaveText(['dropped: a new list every time', 'dropped: views shared across lists', 'chosen: views inside their list']);
-  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Five places for the controls', 'Filtering, kept simple', 'Something to try, not only to read']);
+  await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Five places for the controls', 'A short Filter window', 'A working copy you can try']);
   await expect(page.locator('#process .pills li')).toHaveText(['sidebar', 'flyout', 'popup', 'side panel', 'tabbed modal', 'built with AI', 'guided tour']);
 });
 
@@ -68,7 +68,7 @@ test('decision 2: the switch starts on Shipped, and Explored shows the tabbed mo
   await expect(sw.locator('[data-proof-panel]:visible img')).toHaveAttribute('alt', /Save as new view modal/);
   await sw.getByRole('radio', { name: 'Explored' }).click();
   await expect(sw.getByRole('radio', { name: 'Explored' })).toHaveAttribute('aria-checked', 'true');
-  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('A road not taken');
+  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('one tab for table setup');
   await expect(sw.locator('[data-proof-panel]:visible')).toHaveCount(1);
 });
 
