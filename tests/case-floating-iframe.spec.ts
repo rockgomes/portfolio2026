@@ -7,7 +7,7 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await page.goto(PAGE);
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Floating Iframe');
-  await expect(s.locator('.sub')).toHaveText('Pipedrive · 2022 · integration concept');
+  await expect(s.locator('.sub')).toHaveText('Pipedrive · 2022 · integration');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
   await expect(s.locator('[data-facts] dd').last()).toHaveText('Figma, Miro');
   await expect(s.locator('[data-pdr]')).toContainText('JustCall uses it for its Quick access feature');
