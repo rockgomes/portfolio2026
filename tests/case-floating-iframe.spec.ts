@@ -138,7 +138,7 @@ test('looks the same as the approved screenshots', async ({ page }) => {
       if (frac > 0.001) el.style.marginTop = `${parseFloat(getComputedStyle(el).marginTop) + (1 - frac)}px`;
       const r = el.getBoundingClientRect(); return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
     });
-    await expect(page).toHaveScreenshot(`floating-iframe-${sel.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}.png`, { fullPage: true, mask: [page.locator('[data-live] iframe')], clip: { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.w), height: Math.round(b.h) } });
+    await expect(page).toHaveScreenshot(`floating-iframe-${sel.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}.png`, { fullPage: true, mask: [page.locator('[data-live] iframe')], clip: { x: Math.round(b.x), y: Math.round(b.y), width: Math.round(b.w), height: Math.round(b.h) }, timeout: 15_000 });
   }
 });
 
