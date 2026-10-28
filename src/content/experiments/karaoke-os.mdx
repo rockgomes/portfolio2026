@@ -1,0 +1,61 @@
+---
+name: "Karaoke OS"
+summary: "The karaoke bar I go to has a QR code that opens a PDF with thousands of songs. You scroll until you give up. I built what that QR code should have opened, and it grew into a small SaaS."
+cardImage: "../../assets/experiments/karaoke-os/karaoke.png"
+heroImage: "../../assets/experiments/karaoke-os/experiment-karaoke-os-venue-and-guest.png"
+date: "2026-08-30"
+tools: "Next.js, Supabase, Postgres, Tailwind, Netlify, Claude Code"
+liveDemoUrl: "https://karaoke-os.netlify.app"
+sourceCodeUrl: "https://github.com/rockgomes/karaoke-os"
+featured: false
+category: "Code"
+readTime: "2 min read"
+type: "experiment"
+industry: ["B2C"]
+focus: ["Code"]
+tagsToCheck: true
+private: false
+webflowId: "6a946eecf979c245ce6165be"
+cardOrder: 12
+cardNumber: "e.02"
+cardCompany: "Side project"
+cardYear: "site"
+cardTitle: "Karaoke OS"
+cardLine: "The karaoke bar's QR code opened a PDF with thousands of songs. I built what it should have opened."
+cardToCheck: false
+subtitle: "Side project · 2026 · experiment"
+facts:
+  role: "Product and design decisions, directed the build"
+  context: "Side project, live demo"
+  made: "A song list for guests, a backoffice for bars, a screen for the service"
+  tools: "Next.js, Supabase, Postgres, Tailwind, Netlify, Claude Code"
+problem: "Guests scroll a PDF of thousands of songs on a phone, then give up and ask the DJ."
+decision: "A song list you can search on a phone, with no app and no account. The bar keeps it up to date from its own screen."
+result: "A working demo. Press the button on the front page and you get your own copy of a bar."
+live:
+  src: "https://karaoke-os.netlify.app"
+  title: "Karaoke OS, live demo"
+  poster: "/media/experiments/karaoke-os/live.jpg"
+  caption: "The live demo. Your copy of a bar is deleted overnight, so change anything."
+copyToCheck: true
+---
+
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import Proof from '../../components/case/Proof.astro';
+import parts from '../../assets/experiments/karaoke-os/experiment-karaoke-os-venue-and-guest.png';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="How it is built" subtitle="three parts, one database" id="built">
+  <CaseBlock label="the interesting part" title="One search page became three parts" pills={['guests', 'bar staff', 'service operator']}>
+    The search page was the easy part. Keeping the songs up to date has to be the bar's job, so the bar needs a backoffice. And once bars have one, someone has to look after all the bars.
+    <Proof slot="proof" caption="The bar's backoffice, with the guest song list on a phone." media={img(parts, 'The backoffice of The Anchor in dark mode: a Songs page with counts (55 songs, 12 genres), an Add a song field and a table of songs with artwork. A phone in front shows the guest view: The Anchor, a search box for 55 songs, genre filters and the same songs as a list.')} />
+  </CaseBlock>
+  <CaseBlock label="who sees what" title="The database decides who sees what" pills={['Next.js', 'Supabase', 'Netlify']}>
+    Guests see the song list. Bar staff see their own bar and nothing else. Whoever runs the service sees every bar, and still cannot open one unless they work there. A bug in a screen cannot show one bar's songs to another.
+  </CaseBlock>
+  <CaseBlock label="why I could build it" title="I knew the problem, AI wrote the code">
+    I go to that bar, so I knew the problem, and I knew how to design the answer. I made the product and design decisions and directed the build. Claude Code wrote the code.
+  </CaseBlock>
+</CaseSection>
