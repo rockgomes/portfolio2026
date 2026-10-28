@@ -1,7 +1,7 @@
 ---
 name: "Dealfront - Dynamic Lists"
 heroTitle: "Dealfront - Dynamic Lists"
-heroDescription: "Dealfront's lists pull matching companies from a pool of millions and keep updating as new matches appear. But a smaller group inside a list meant creating another full list. I designed Views: saved filter and column setups on top of a list. One list, many lenses."
+heroDescription: "Dealfront lists find matching companies and update every hour. I designed Views, so people can see part of a list without making a new one."
 homeImage: "../../assets/projects/dealfront-dynamic-lists/homepage-illustration-v5.png"
 homeImageAlt: ""
 tag1: "Design"
@@ -23,12 +23,12 @@ demoUrl: "https://dealfront-dynamic-lists-cd-7c276e015d.netlify.app"
 subtitle: "Dealfront · 2025 · product feature"
 facts:
   role: "Senior Product Designer, contract. Problem framing, exploration, final UI, and a working demo of the design."
-  context: "Lists in Dealfront Target, a platform that helps B2B teams find and reach companies. Lists feed exports, alerts, ad campaigns and LinkedIn audiences. Team: NN (to confirm)."
+  context: "Lists in Dealfront Target, a platform that helps B2B teams find and reach companies. Lists feed exports, alerts, ad campaigns and LinkedIn audiences. Team: me, 1 PM and several developers."
   made: "Explorations of where filters live, the Filter window, Save as new view, the state details, and a working copy of the design."
-  tools: "Figma, AI tools for the working copy: NN (to confirm)."
-problem: "A smaller group inside a list meant a whole new list. The criteria were copied, the copies stopped matching, and sidebars filled up."
-decision: "Views live inside their own list. Filters and columns are saved together, because together they answer one question: what am I looking at?"
-result: "One list, many views that always match it. Views also gave alerts and workflows something precise to point to. No numbers I can share."
+  tools: "Figma. Claude for the working copy."
+problem: "To see part of a list, people made a new list. They said it was a lot of work. And automations on the first list did not work on the copy."
+decision: "Views live inside the list. Each view saves its own filters and columns. Nothing is copied, so automations keep working."
+result: "Views shipped to customers. You can also make new automations based on a view."
 links:
   - label: "Open the live demo ↗"
     href: "https://dealfront-dynamic-lists-cd-7c276e015d.netlify.app"
@@ -100,12 +100,10 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     left={{ label: 'outcome', items: [
       'One list, one set of criteria, and views like "Low engagement" and "Manufacturing" that always match it. They are not copies: the same list, seen differently.',
       'No duplicated work, no lists that drift apart, and a sidebar that stays easy to use.',
-      'Beyond the brief: views gave alerts and workflows something precise to point to, like "notify me when a company enters this view".',
-      'No numbers I can share.',
+      'You keep the automations of the list. And you can make new automations based on a view, like "notify me when a company enters this view".',
     ] }}
     right={{ label: 'what I learned', items: [
-      'Users asked for more lists, but they wanted more ways to look at one list.',
-      'Two controls can be one idea. Filters and columns only made sense once they were saved together.',
-      'A working copy lets people try a design instead of reading about it.',
+      'Users were not asking for more lists. The new lists were a workaround.',
+      'Filters and columns only made sense once they were saved together.',
     ] }} />
 </CaseSection>

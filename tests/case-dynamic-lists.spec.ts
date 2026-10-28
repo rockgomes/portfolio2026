@@ -113,7 +113,7 @@ test('decision 3: notes of parts on the right stay inside the picture', async ({
 test('result: outcome and what I learned', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('#result [data-two-col] .k')).toHaveText(['outcome', 'what I learned']);
-  await expect(page.locator('#result [data-two-col] li')).toHaveCount(7);
+  await expect(page.locator('#result [data-two-col] li')).toHaveCount(5);
 });
 
 test('the old Webflow body is gone', async ({ page }) => {
