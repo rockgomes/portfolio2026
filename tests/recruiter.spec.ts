@@ -54,9 +54,9 @@ test('the recruiter view uses the violet accent', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/?view=recruiter');
   const accent = () => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--color-annotation-measure').trim());
-  expect(await accent()).toBe('#6e5be8');
+  expect(await accent()).toBe('#6854e0');
   await page.locator('[data-view-option="design"]').click();
-  expect(await accent()).toBe('#1b6fe3');
+  expect(await accent()).toBe('#0a62d4');
 });
 
 // In dark mode each view keeps its own accent: cyan, light green, light violet.

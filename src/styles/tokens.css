@@ -11,28 +11,28 @@
   --color-surface-stage: #f5f5f5;
   --color-text-primary: #1d1d1f;
   --color-text-secondary: #4e5157;
-  --color-text-muted: #8b8e94;
-  --color-text-accent: #ee5a36;
+  --color-text-muted: #6e7076;
+  --color-text-accent: #c8370d;
   --color-border-strong: rgba(0, 0, 0, 0.16);
   --color-border-subtle: rgba(0, 0, 0, 0.09);
-  --color-border-control: rgba(16, 24, 40, 0.24);
-  --color-annotation-redline: #ee5a36;
+  --color-border-control: rgba(16, 24, 40, 0.47);
+  --color-annotation-redline: #c8370d;
   --color-annotation-redline-soft: rgba(238, 90, 54, 0.1);
-  --color-annotation-measure: #1b6fe3;
+  --color-annotation-measure: #0a62d4;
   --color-annotation-measure-soft: rgba(27, 111, 227, 0.14);
-  --color-cursor-client: #1faf6b;
-  --color-cursor-pm: #6e5be8;
+  --color-cursor-client: #188752;
+  --color-cursor-pm: #6854e0;
   --color-selection-handle: #ffffff;
-  --color-figma-component: #9747ff;
+  --color-figma-component: #8c38f2;
   --color-figma-component-soft: rgba(151, 71, 255, 0.12);
-  --color-status-positive: #13804f;
+  --color-status-positive: #0d7b4b;
   --color-status-positive-soft: rgba(31, 175, 107, 0.13);
   --color-status-negative-text: #c2421f;
-  --color-view-design: #1b6fe3;
+  --color-view-design: #0a62d4;
   --color-view-design-soft: rgba(27, 111, 227, 0.14);
-  --color-view-recruiter: #6e5be8;
+  --color-view-recruiter: #6854e0;
   --color-view-recruiter-soft: rgba(110, 91, 232, 0.13);
-  --color-view-engineer: #0a7d44;
+  --color-view-engineer: #097640;
   --color-view-engineer-soft: rgba(20, 174, 92, 0.13);
   color-scheme: light;
 }
@@ -44,11 +44,11 @@
   --color-surface-stage: #1e2126;
   --color-text-primary: #e8eaee;
   --color-text-secondary: #b0b5bd;
-  --color-text-muted: #7c828b;
+  --color-text-muted: #828891;
   --color-text-accent: #ff6a58;
   --color-border-strong: rgba(232, 234, 238, 0.14);
   --color-border-subtle: rgba(232, 234, 238, 0.08);
-  --color-border-control: rgba(232, 234, 238, 0.3);
+  --color-border-control: rgba(232, 234, 238, 0.37);
   --color-annotation-redline: #ff6a58;
   --color-annotation-redline-soft: rgba(255, 106, 88, 0.16);
   --color-annotation-measure: #4fd3ea;
@@ -78,11 +78,11 @@
     --color-surface-stage: #1e2126;
     --color-text-primary: #e8eaee;
     --color-text-secondary: #b0b5bd;
-    --color-text-muted: #7c828b;
+    --color-text-muted: #828891;
     --color-text-accent: #ff6a58;
     --color-border-strong: rgba(232, 234, 238, 0.14);
     --color-border-subtle: rgba(232, 234, 238, 0.08);
-    --color-border-control: rgba(232, 234, 238, 0.3);
+    --color-border-control: rgba(232, 234, 238, 0.37);
     --color-annotation-redline: #ff6a58;
     --color-annotation-redline-soft: rgba(255, 106, 88, 0.16);
     --color-annotation-measure: #4fd3ea;
@@ -107,7 +107,7 @@
 
 /* Engineer view: Dev Mode green replaces the annotation blue */
 :root[data-view="engineer"]:not([data-theme="dark"]) {
-  --color-annotation-measure: #0a7d44;
+  --color-annotation-measure: #097640;
   --color-annotation-measure-soft: rgba(20, 174, 92, 0.13);
 }
 :root[data-view="engineer"][data-theme="dark"] {
@@ -123,7 +123,7 @@
 
 /* Recruiter view: violet replaces the annotation blue */
 :root[data-view="recruiter"]:not([data-theme="dark"]) {
-  --color-annotation-measure: #6e5be8;
+  --color-annotation-measure: #6854e0;
   --color-annotation-measure-soft: rgba(110, 91, 232, 0.13);
 }
 :root[data-view="recruiter"][data-theme="dark"] {
