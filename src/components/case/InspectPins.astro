@@ -13,6 +13,11 @@ interface Pic { src: string; alt: string }
 interface Props { pins: Pin[]; tokens?: Record<string, [string, string]>; spaces?: Record<string, string>; light: Pic; dark?: Pic; width: number; height: number }
 const { pins, tokens, spaces = {}, light, dark, width, height } = Astro.props;
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
+// The note under a part: a part in the right half of the picture lines its note up with its right edge, so the note has room
+const noteStyle = (p: Pin) => {
+  const side = p.x > width / 2 ? ['right', pct(width - p.x - p.w, width)] : ['left', pct(p.x, width)];
+  return `--l:${side[1]};${side[0]}:${side[1]};top:calc(${pct(p.y + p.h, height)} + 8px)`;
+};
 // One line per prop: a swatch (or glyph), the token name, and what it is with its value per mode
 const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? []).map(([k, name, note]) => {
   if (k === 'c') return { swatch: tokens[name], glyph: '', name, what: note ?? 'fill', values: tokens[name] };
@@ -34,7 +39,7 @@ const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? [
         </span>
       ))}
       {!tokens && pins.map((p, i) => (
-        <div class="part-note" data-note={i} hidden aria-hidden="true" style={`--l:${pct(p.x, width)};left:${pct(p.x, width)};top:calc(${pct(p.y + p.h, height)} + 8px)`}>
+        <div class="part-note" data-note={i} hidden aria-hidden="true" style={noteStyle(p)}>
           <span class="ui-callout"><span class="ui-pin ui-pin-callout">{i + 1}</span>{p.kind}</span>
         </div>
       ))}
