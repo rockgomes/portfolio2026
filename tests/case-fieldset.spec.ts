@@ -34,7 +34,7 @@ test('live demo: iframe on desktop, still picture on phones', async ({ page, vie
   await page.goto(PAGE);
   const live = page.locator('[data-live]');
   await expect(live.locator('.addr')).toHaveText('fieldset-filter-builder.netlify.app');
-  await expect(live.locator('figcaption')).toHaveText('The live demo. Flip 5k to 50k and scroll.');
+  await expect(live.locator('figcaption')).toHaveText('The live demo. Switch from 5k to 50k rows, then scroll.');
   await expect(live.locator('video')).toHaveCount(0);
   const reload = live.getByRole('button', { name: 'Reload the live page' });
   if ((viewport?.width ?? 0) >= 1200) {
@@ -52,7 +52,7 @@ test('live demo: iframe on desktop, still picture on phones', async ({ page, vie
 test('one section, in the order of the sketch', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Four things it does differently']);
-  await expect(page.locator('#differently [data-case-block] h3')).toHaveText(['206 selected, 173 still match', 'Edits survive a switch', 'A deleted field does not break a view', 'A way back that cannot break', 'The logic has no React near it']);
+  await expect(page.locator('#differently [data-case-block] h3')).toHaveText(['206 selected, 173 still match', 'Edits stay when you switch views', 'A deleted field does not break a view', 'One view that cannot be changed', 'The logic is separate from the screen code']);
   await expect(page.locator('#differently .pills li')).toHaveText(['React', 'TypeScript', 'Vitest', 'no backend']);
 });
 
@@ -62,7 +62,7 @@ test('the selection switch starts on Filter changed, and Selected shows the sele
   await expect(sw.getByRole('radio', { name: 'Filter changed' })).toHaveAttribute('aria-checked', 'true');
   await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('The app shows both numbers and asks');
   await sw.getByRole('radio', { name: 'Selected' }).click();
-  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('All 206 matching rows selected');
+  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('All 206 matching rows are selected');
   await expect(sw.locator('[data-proof-panel]:visible')).toHaveCount(1);
 });
 
