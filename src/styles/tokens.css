@@ -32,7 +32,7 @@
   --color-view-design-soft: rgba(27, 111, 227, 0.14);
   --color-view-recruiter: #6854e0;
   --color-view-recruiter-soft: rgba(110, 91, 232, 0.13);
-  --color-view-engineer: #0a7d44;
+  --color-view-engineer: #097640;
   --color-view-engineer-soft: rgba(20, 174, 92, 0.13);
   color-scheme: light;
 }
@@ -107,7 +107,7 @@
 
 /* Engineer view: Dev Mode green replaces the annotation blue */
 :root[data-view="engineer"]:not([data-theme="dark"]) {
-  --color-annotation-measure: #0a7d44;
+  --color-annotation-measure: #097640;
   --color-annotation-measure-soft: rgba(20, 174, 92, 0.13);
 }
 :root[data-view="engineer"][data-theme="dark"] {

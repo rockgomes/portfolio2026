@@ -207,9 +207,7 @@ const chains = [
   .stag { background: var(--s-soft); color: var(--s-measure); } /* the shared Tag, in the demo's own colours */
   /* The two samples always show their own mode, whatever the page theme is (Figma values). */
   [data-theme-sample='dark'] { --s-page: #111316; --s-border: rgba(232,234,238,0.14); --s-primary: #e8eaee; --s-secondary: #b0b5bd; --s-measure: #4fd3ea; --s-soft: rgba(79,211,234,0.14); }
-  [data-theme-sample='dark'] .ml { color: #a879ff; }
   [data-theme-sample='light'] { --s-page: #ffffff; --s-border: rgba(0,0,0,0.1); --s-primary: #1d1d1f; --s-secondary: #4e5157; --s-measure: #0a62d4; --s-soft: rgba(27,111,227,0.14); }
-  [data-theme-sample='light'] .ml { color: #8c38f2; }
   @media (max-width: 1240px) { .intro { flex-direction: column; gap: var(--space-32); } .lede { width: min(560px, 100%); } }
   @media (max-width: 1040px) { .spec-grid { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 860px) { .systems { grid-template-columns: minmax(0, 1fr); } }

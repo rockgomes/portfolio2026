@@ -65,7 +65,7 @@ test.describe('storybook (desktop)', () => {
     const root = page.locator(sb);
     await root.locator('[data-sb-go="colour"]').click();
     const val = root.locator('[data-sb-page="colour"] [data-sb-val="annotation-measure"]');
-    await expect(val).toHaveText('#0a7d44');
+    await expect(val).toHaveText('#097640');
     const theme = root.getByRole('button', { name: 'Theme: Light - Dev' });
     await theme.click();
     await root.getByRole('menuitemradio', { name: 'Dark - Dev' }).click();

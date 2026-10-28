@@ -21,11 +21,7 @@ const KNOWN = [
   // Filter tags are under 24px tall. The "Filter mode" tab list also holds the live project count.
   { name: 'filter panel', where: '[data-side]', rules: ['target-size', 'aria-required-children'], url: '/?view=design', desktopOnly: true, scheme: null },
   // The Variant / State / Size buttons in the design system section are under 24px tall.
-  { name: 'component property buttons', where: '[data-prop]', rules: ['target-size'], url: '/?view=design', desktopOnly: false, scheme: null },
-  // The "mode: dark" / "mode: light" labels sit on the page, but use the other mode's purple.
-  { name: 'theme sample labels', where: '[data-theme-sample] > .ml', rules: ['color-contrast'], url: '/?view=design', desktopOnly: true, scheme: null },
-  // The chosen Storybook option is green on its green tint: 4.21:1 in light mode.
-  { name: 'Storybook options', where: '[data-sb-go]', rules: ['color-contrast'], url: '/?view=engineer', desktopOnly: true, scheme: 'light' },
+  { name: 'component property buttons', where: '[data-prop]', rules: ['target-size'], url: '/?view=design', desktopOnly: false, scheme: null as string | null },
 ];
 type Known = (typeof KNOWN)[number];
 // Disabled-state samples in the design system section. WCAG does not ask disabled controls to pass contrast.
