@@ -34,7 +34,7 @@ test('live demo: iframe on desktop, still picture on phones', async ({ page, vie
   await page.goto(PAGE);
   const live = page.locator('[data-live]');
   await expect(live.locator('.addr')).toHaveText('moving-out-demo.netlify.app');
-  await expect(live.locator('figcaption')).toHaveText('The live demo. Anything you make there will not survive the night.');
+  await expect(live.locator('figcaption')).toHaveText('The live demo. Anything you add there is deleted at night.');
   await expect(live.locator('video')).toHaveCount(0);
   const reload = live.getByRole('button', { name: 'Reload the live page' });
   if ((viewport?.width ?? 0) >= 1200) {
@@ -52,7 +52,7 @@ test('live demo: iframe on desktop, still picture on phones', async ({ page, vie
 test('one section, in the order of the sketch', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['How it is built']);
-  await expect(page.locator('#built [data-case-block] h3')).toHaveText(['One moving sale, not fourteen posts', 'Clickable in public, without the real data', 'Reset only when something changed', 'The rules live in the database']);
+  await expect(page.locator('#built [data-case-block] h3')).toHaveText(['One moving sale for each seller', 'A public demo that cannot reach real data', 'Reset only when something changed', 'The database checks who can see what']);
   await expect(page.locator('#built .pills li')).toHaveText(['Next.js', 'Supabase', 'Playwright']);
 });
 
