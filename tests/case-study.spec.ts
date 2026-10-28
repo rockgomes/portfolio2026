@@ -138,7 +138,7 @@ test('a stored recruiter or engineer view does not change the case page', async 
 test('the old Webflow page is gone: no embeds, and the sections of the sketch in order', async ({ page }) => {
   await page.goto(FLEX);
   await expect(page.locator('.fa-mount, script[src*="flex-academy-embeds"], .prose')).toHaveCount(0);
-  await expect(page.locator('main h2:not(.label)')).toHaveText(['Three decisions I would defend', 'How I got there', 'The design system behind it', 'Built, not just drawn', 'If it shipped']);
+  await expect(page.locator('main h2:not(.label)')).toHaveText(['Three decisions I would defend', 'How I got there', 'The design system behind it', 'Built as a working prototype', 'If it shipped']);
 });
 
 test('method: seven steps, solo and team', async ({ page }) => {

@@ -1,7 +1,7 @@
 ---
 name: "Flex Academy"
 heroTitle: "Flex Academy - One landing page, two readers"
-heroDescription: "A design challenge from The Flex. Flex Academy teaches people to start and grow a short-term rental business. The page had to work for someone with a 9-to-5 job who has never rented out a flat, and for an operator who already runs a few. I designed one page with a switch between them, built it on a token-based design system in Figma, and shipped a working prototype with automated accessibility tests, in light and dark."
+heroDescription: "A design challenge from The Flex. Flex Academy teaches people to start and grow a short-term rental business. The page had to work for someone with a 9-to-5 job who has never rented out a flat, and for an operator who already runs a few. I designed one page with a switch between the two readers and built it on a token-based design system in Figma. I also shipped a working prototype in light and dark, with automated accessibility tests."
 homeImage: "../../assets/projects/flex-academy/flex-academy-hero.jpg"
 homeImageAlt: "Flex Academy landing page hero: a calendar showing your first unit and the units you add next"
 tag1: "Design challenge"
@@ -26,7 +26,7 @@ facts:
   context: "Take-home challenge for a Product / Brand Designer role at The Flex, October 2026."
   made: "Desktop and mobile pages, both booking flows, dark mode, design notes, Loom, Figma prototype, coded prototype."
   tools: "Figma (variables, components, Motion), HTML, CSS, JavaScript, Playwright, axe, Netlify, Claude."
-problem: "One page for two very different readers. Both are tired of \"guru\" courses, and a new company has no students and no reviews to prove it."
+problem: "One page had to work for two very different readers. Both are tired of \"guru\" courses. A new company has no students and no reviews to show it can be trusted."
 decision: "The hero is a calendar. The first row is your first unit, the rows below are the units you add next: the path from Launch to Scale in a tool operators already know."
 result: "Desktop and mobile pages, both booking flows with no dead ends, dark mode, and a coded prototype that checks accessibility on every push. No launch numbers: it was a take-home."
 links:
@@ -59,52 +59,52 @@ import references from '../../assets/projects/flex-academy/flex-academy-referenc
 
 <CaseSection title="Three decisions I would defend" subtitle="the ideas that made the page work" id="decisions">
   <CaseBlock label="decision 1 of 3" data-decision="1" title="The calendar is the main idea">
-    Operators live in a calendar all day: bookings, check-ins, cleanings. So the hero is a calendar. It passes the 5-second test without a slogan: the visitor sees their own first unit and the units after it. The "You are here" marker moves when the reader switches path.
+    Operators use a calendar all day: bookings, check-ins, cleanings. So the hero is a calendar. It passes the 5-second test without a slogan: the visitor sees their own first unit and the units after it. The "You are here" marker moves when the reader switches path.
     <ProofSwitch slot="proof" kind="segmented" id="d1" label="Reader path" selected={1} items={[
       { label: 'Starting out', caption: 'The hero for someone starting out: the headline, the button and the calendar lead to the free webinar and the first unit.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-hero-launch.jpg', alt: 'The Flex Academy hero for someone starting out: "Learn the business behind every booking", a webinar button and a calendar with the first unit.', width: 1440, height: 900 } },
       { label: 'I run units', caption: 'The same hero for an operator: "I run units" changes the headline, the button and the calendar, and moves the "You are here" marker.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-hero-operator.jpg', alt: 'The Flex Academy hero for an operator: "Run the company behind every booking", a strategy call button and a calendar with several units.', width: 1440, height: 900 } },
     ]} />
   </CaseBlock>
   <CaseBlock label="decision 2 of 3" data-decision="2" title="The call to action is a booking">
-    The free webinar sits on the calendar as an event, with a date, a length and the hosts. Signing up feels like booking one hour, not joining a funnel. The strategy call asks four short questions first. Answer "no units yet" and it offers the free webinar instead: nobody hits a dead end.
+    The free webinar sits on the calendar as an event, with a date, a length and the hosts. So signing up feels like booking one hour of your time. The strategy call asks four short questions first. If you answer "no units yet", it offers the free webinar instead, so every reader has a next step.
     <ProofSwitch slot="proof" kind="tabs" id="d2" label="Booking flow" items={[
       { label: 'Launch · webinar', caption: 'Launch: name and email, then the confirmation. 26 seconds.', media: { kind: 'video', src: '/embeds/flex-academy/flex-academy-booking-launch.mp4', poster: '/embeds/flex-academy/flex-academy-booking-launch.jpg', label: 'Screen recording of the webinar sign-up: name and email, then the confirmation.', width: 1440, height: 900 } },
       { label: 'Scale · strategy call', caption: 'Scale: four questions, a day and a time, then the confirmation. 27 seconds.', media: { kind: 'video', src: '/embeds/flex-academy/flex-academy-booking-scale.mp4', poster: '/embeds/flex-academy/flex-academy-booking-scale.jpg', label: 'Screen recording of the strategy call booking: four questions, a day and a time, then the confirmation.', width: 1440, height: 900 } },
     ]} />
   </CaseBlock>
-  <CaseBlock label="decision 3 of 3" data-decision="3" title="Proof without promises" pills={['since 2019', '7 cities', '150+ corporate partners', '130+ booking channels']}>
-    No income claims, no countdowns, no fake testimonials: only facts I can source. Instead of promises, "The hard truth" shows one real day across three units, first without a system and then with one.
-    <Proof slot="proof" caption="Scrolling turns the same day from chaos into order." media={{ kind: 'video', src: '/embeds/flex-academy/flex-academy-hard-truth.mp4', poster: '/embeds/flex-academy/flex-academy-hard-truth.jpg', label: 'Screen recording: scrolling through The hard truth. Twelve tasks pile up on one day, then the same day with a system falls into order.', width: 1440, height: 900 }} />
+  <CaseBlock label="decision 3 of 3" data-decision="3" title="Only facts I can source" pills={['since 2019', '7 cities', '150+ corporate partners', '130+ booking channels']}>
+    I used no income claims, no countdowns and no fake testimonials. A section called "The hard truth" shows one real day across three units, first without a system and then with one.
+    <Proof slot="proof" caption="As you scroll, the same day shows first without a system, then with one." media={{ kind: 'video', src: '/embeds/flex-academy/flex-academy-hard-truth.mp4', poster: '/embeds/flex-academy/flex-academy-hard-truth.jpg', label: 'Screen recording: scrolling through The hard truth. Twelve tasks pile up on one day, then the same day with a system falls into order.', width: 1440, height: 900 }} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="method · seven steps" title="Seven steps, solo or with a team">
-    The same steps, two ways: what I did alone in the timebox, and how I would run each step as a lead, with a PM, an engineer and a researcher.
+    The same steps, two ways: what I did alone in the time I had, and how I would run each step as a lead, with a PM, an engineer and a researcher.
     <MethodStepper slot="proof" steps={steps} />
   </CaseBlock>
-  <CaseBlock label="research" title="A board of reasons, not screenshots">
+  <CaseBlock label="research" title="45 references, each with a reason">
     I went through theflex.global and base360.ai for every public fact. Then I collected 45 references from Mobbin, Awwwards, Codrops and others. Every card ends with "Take:", the one thing I use from it.
     <Proof slot="proof" media={{ kind: 'image', src: references, alt: 'Part of the References board in Figma: webinar sign-up patterns and art direction references, each with a written takeaway', width: 1472, height: 852 }} />
   </CaseBlock>
-  <CaseBlock label="structure first" title="The wireframe was right and still felt wrong">
-    Ten sections, each with one job, and both booking flows with every state. The structure worked. The look did not: it was a page of boxes and lines.
+  <CaseBlock label="structure first" title="The wireframe had the right structure">
+    The wireframe had ten sections, each with one job, and both booking flows with every state. The structure worked, but the page was only boxes and lines.
     <CompareSlider slot="proof" label="Compare the wireframe and the final hero" beforeLabel="wireframe" afterLabel="final" width={1440} height={905}
       before={{ src: '/embeds/flex-academy/flex-academy-wireframe-hero.jpg', alt: 'Wireframe of the hero: boxes and lines' }}
       after={{ src: '/embeds/flex-academy/flex-academy-hero.jpg', alt: 'Final hero with the calendar' }} />
   </CaseBlock>
-  <CaseBlock label="art directions" title="Same content, three ideas">
-    I explored art directions side by side with identical content, so only the idea changed. Each one was judged against the three tests of the brief and the four principles.
+  <CaseBlock label="art directions" title="Three art directions with the same content">
+    I explored art directions side by side with identical content, so only the idea changed. I judged each one against the three tests of the brief and the four principles.
     <ProofSwitch slot="proof" kind="tabs" id="dirs" label="Art directions" items={[
       { label: 'Lights On', caption: 'Lights On. The Flex cities light up one by one from London. Strong proof and a real "wow", but the night mood felt far from a practical business.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-dir-lights-on.jpg', alt: 'Lights On: a night map where The Flex cities light up', width: 1200, height: 683 } },
-      { label: 'Your Next Unit', caption: 'Your Next Unit. The hero asks how many units you run, and routes you. The best conversion idea, but a question slows down people who want a quick answer.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-dir-next-unit.jpg', alt: 'Your Next Unit: the hero asks how many units you run', width: 1200, height: 682 } },
+      { label: 'Your Next Unit', caption: 'Your Next Unit. The hero asks how many units you run, and sends you to your path. The best conversion idea, but a question slows down people who want a quick answer.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-dir-next-unit.jpg', alt: 'Your Next Unit: the hero asks how many units you run', width: 1200, height: 682 } },
       { label: 'The Calendar · chosen', caption: 'The Calendar, chosen. It keeps the routing idea (a switch for the two readers) and the honest proof, inside a picture operators already understand.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-hero.jpg', alt: "The Calendar: the visitor's next months as a calendar", width: 1440, height: 905 } },
     ]} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="The design system behind it" subtitle="every layer on a token, in Light and Dark" id="system" gap={64}>
-  <CaseBlock label="inspect" title="Claims are easy, so inspect it">
+  <CaseBlock label="inspect" title="Inspect the tokens on the hero">
     47 primitives, 30 semantic tokens with a Light and a Dark mode, 20 spacing steps and 8 radii. Each pin is a real layer in the Figma hero. A click on a pin lists its tokens, and Dark shows the same layers with new values.
     <InspectPins slot="proof" pins={pins} tokens={tokenValues} spaces={spaceValues} width={1440} height={905}
       light={{ src: '/embeds/flex-academy/flex-academy-hero.jpg', alt: 'Desktop hero in Light mode' }}
@@ -119,15 +119,15 @@ import references from '../../assets/projects/flex-academy/flex-academy-referenc
   <p class="coverage">coverage, measured by a script over all 785 layers of the desktop page<br />77/77 strokes on a token · 329/329 text on a style · 118/118 radii on a token · 1,182/1,182 gaps and padding</p>
 </CaseSection>
 
-<CaseSection title="Built, not just drawn" subtitle="a prototype held to production habits" id="built" gap={48}>
+<CaseSection title="Built as a working prototype" subtitle="a prototype built with production habits" id="built" gap={48}>
   <TwoCol
     left={{ label: 'production habits', items: [
       'Same names in design and code: the CSS properties use the Figma token names.',
-      'Dark mode for real: it follows the system, a toggle overrides it.',
+      'Real dark mode: it follows the system setting, and a toggle overrides it.',
       'Checks on every push: HTML validation, axe in light and dark, no sideways scroll from 320 to 1920 pixels, both booking flows end to end.',
       'Every change through a pull request with its own preview link.',
     ] }}
-    right={{ label: 'how I worked with AI', text: 'I used Claude as a fast pair, not as the designer. I made the calls: who the page talks to first, the calendar idea, what counts as proof, which directions to kill. Claude helped me research faster, gave me options to react to, wrote most of the prototype code from my specs and ran the checks. I reviewed everything on the page.' }} />
+    right={{ label: 'how I worked with AI', text: 'I used Claude as a fast helper. I made the decisions: who the page talks to first, the calendar idea, what counts as proof, which directions to drop. Claude helped me research faster, gave me options to react to, wrote most of the prototype code from my specs and ran the checks. I reviewed everything on the page.' }} />
 </CaseSection>
 
 <CaseSection title="If it shipped" subtitle="how I would measure it, and what I learned" id="result" gap={48}>
@@ -138,8 +138,8 @@ import references from '../../assets/projects/flex-academy/flex-academy-referenc
       'Guardrails: wrong-path bookings, form drop-off per step, accessibility regressions in CI.',
     ] }}
     right={{ label: 'what I learned', items: [
-      'Structure first, look second, but not for long. Comparing directions with the same content made the choice about the idea.',
-      'Constraints build trust. Saying no to fake proof forced a better idea.',
-      'A system pays off at the edges: dark mode took tokens and one toggle.',
+      'Do the structure first and the look second, but start the look early. Comparing directions with the same content let me judge the idea itself.',
+      'Saying no to fake proof made me find a better idea.',
+      'With the token system, dark mode needed only the Dark token values and one toggle.',
     ] }} />
 </CaseSection>

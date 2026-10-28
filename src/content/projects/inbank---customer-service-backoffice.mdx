@@ -1,7 +1,7 @@
 ---
 name: "Inbank - Customer Service Back-office"
 heroTitle: "Inbank - Customer Service Backoffice"
-heroDescription: "Inbank was growing fast and launching new Hire Purchase products. The back-office its support team used every day could not keep up. As Inbank's first in-house designer, I redesigned it from the ground up: one clear, modular tool that helps agents work faster and has room for the next product."
+heroDescription: "Inbank was growing fast and launching new Hire Purchase products. The back-office that its support team used every day did not fit the new products. As Inbank's first in-house designer, I redesigned it from scratch: one clear, modular tool that helps agents work faster and has room for the next product."
 homeImage: "../../assets/projects/inbank---customer-service-backoffice/nbank-cs-backoffice.avif"
 homeImageAlt: ""
 tag1: ""
@@ -26,8 +26,8 @@ facts:
   context: "Inbank's 2024 restructuring and new Hire Purchase products. Used all day by support agents and their team leads."
   made: "A map of the old tool, interviews, a moodboard, a modular component set, the core back-office screens."
   tools: "Figma, Mixpanel, NN (to confirm)"
-problem: "The tool grew one screen at a time, with no shared patterns. It was hard to learn, easy to misuse, and the new products did not fit."
-decision: "Rebuild it from a small set of parts: data cards, tables, status pills, side panels and one search. A new product adds data, not new screens."
+problem: "Screens were added one at a time, with no shared patterns. The tool was hard to learn and easy to misuse, and the new products did not fit."
+decision: "Rebuild it from a small set of parts: data cards, tables, status pills, side panels and one search. So a new product reuses the same screens with its own data."
 result: "Key screens shipped, including flows for the new product lines. Layouts are predictable and new agents learn the tool faster. No numbers I can share."
 beforeAfter:
   caption: "The customer page, before and after. The old page is blurred to hide customer data. Six coloured buttons became three menus."
@@ -56,11 +56,11 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="Three decisions I would defend" subtitle="what makes the tool faster to use" id="decisions">
   <CaseBlock label="decision 1 of 3" data-decision="1" title="Records open beside the customer">
-    An agent on a call often needs a contract or an application while the customer's details stay in view. So a record opens in a side panel over the customer page, not on a new page. Close it, and the agent is back where they were.
+    An agent on a call often needs a contract or an application while the customer's details stay in view. So a record opens in a side panel over the customer page. When the agent closes it, they are back where they were.
     <Proof slot="proof" caption="A credit application open in the side panel, with the customer page still behind it." media={img(panel, 'The customer page with a credit application open in a side panel on the right: product, identification and contact details.')} />
   </CaseBlock>
   <CaseBlock label="decision 2 of 3" data-decision="2" title="Every status sits next to its fix">
-    Problems show as status pills at the top of the record: Unsigned, Unidentified, Required. The action that fixes each one sits on the same line, like Identify or Check PEP, so the next step is always in sight.
+    Problems show as status pills at the top of the record: Unsigned, Unidentified, Required. The action that fixes each one sits on the same line, like Identify or Check PEP, so the agent always sees the next step.
     <Proof slot="proof" caption="A contract: three statuses next to the title, and Identify next to the customer status." media={img(contract, 'A contract page: Unsigned, Unidentified and Required pills next to the title, and an Identify link next to the customer status.')} />
   </CaseBlock>
   <CaseBlock label="decision 3 of 3" data-decision="3" title="One search for every number">
@@ -71,25 +71,25 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="audit" title="Map every screen before drawing one">
-    I listed every screen of the old tool and tagged each part: a table, a state, an action, a filter or a pop-up. The same few parts came back on every screen. They became the component list.
+    I listed every screen of the old tool and tagged each part: a table, a state, an action, a filter or a pop-up. The same few parts appeared on every screen. These parts became the component list.
     <Proof slot="proof" caption="Part of the map: each screen with its tables, states, actions and filters." media={img(screenMap, 'A map of the old back-office: Billing, Contracts, Customers, Home and Offer screens, each part tagged as a table, state, action or filter.')} />
   </CaseBlock>
   <CaseBlock label="research" title="Ask the people who use it, then check the data" pills={['support agents', 'team leads', 'product managers', 'developers']}>
-    I interviewed the people on every side of the tool. Mixpanel showed which screens and actions they used most, so those were redesigned first.
+    I interviewed the people who use the tool or work on it. Mixpanel showed which screens and actions they used most, so I redesigned those first.
   </CaseBlock>
   <CaseBlock label="visual direction" title="A moodboard before the screens">
-    Before any screen, I made a moodboard that followed Inbank's new visual identity. It set the tone, the hierarchy and the level of consistency early.
+    Before any screen, I made a moodboard that followed Inbank's new visual identity. I used it to set the tone, the hierarchy and the level of consistency early.
     <Proof slot="proof" caption="The moodboard: data-heavy tools with a calm, clear hierarchy." media={img(moodboard, 'A moodboard of about twenty dashboards, tables, search panels and profile pages.')} />
   </CaseBlock>
-  <CaseBlock label="delivery" title="Stay close to the build">
-    Weekly syncs with the developers, a review of each build, and design changes when a technical limit came up. Several key screens shipped, including flows for the new product lines.
+  <CaseBlock label="delivery" title="Work with the developers during the build">
+    I had weekly syncs with the developers and reviewed each build. When a technical limit came up, I changed the design. Several key screens shipped, including flows for the new product lines.
     <Proof slot="proof" caption="Shipped screens: a contract, a customer with a credit application open, the search, and the parts they share." media={img(shipped, 'Shipped back-office screens on a purple background: a contract on desktop and tablet, a customer page with a side panel, the search, and four cards.')} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="The parts behind it" subtitle="one set of parts for every product" id="parts" gap={64}>
-  <CaseBlock label="components" title="Built from parts, not pages">
-    Flexible tables, customer data blocks, status pills, action panels, and search and filter patterns. Each part adapts to different products and data, so a new product line mostly reuses them.
+  <CaseBlock label="components" title="A set of shared parts">
+    The parts are flexible tables, customer data blocks, status pills, action panels, and search and filter patterns. Each part works with different products and data, so a new product line mostly reuses them.
     <InspectPins slot="proof" width={1583} height={1644}
       light={{ src: parts.src, alt: 'Back-office parts: Identification, Contact and Additional info cards, a Reminders table, an Attachments table and a Payment schedule.' }}
       pins={[
@@ -101,7 +101,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   </CaseBlock>
 </CaseSection>
 
-<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+<CaseSection title="What changed" subtitle="the outcome, and what I learned" id="result" gap={48}>
   <TwoCol
     left={{ label: 'outcome', items: [
       'Faster daily work through predictable layouts and patterns',
@@ -112,6 +112,6 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     ] }}
     right={{ label: 'what I learned', items: [
       'Internal tools deserve the same design care as the product customers see.',
-      'Next: telemetry to find friction, usability tests with agents, more parts for new use cases, and automation for repetitive tasks.',
+      'Next: usage data to find problems, usability tests with agents, more parts for new use cases, and automation for repetitive tasks.',
     ] }} />
 </CaseSection>
