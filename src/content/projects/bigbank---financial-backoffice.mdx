@@ -1,0 +1,101 @@
+---
+name: "Bigbank - Financial Back-office"
+heroTitle: "Bigbank - Financial Backoffice"
+heroDescription: "Bigbank's accountants used a generic third-party tool that was slow and hard to use. The goal was to build a Financial Back-office in-house and replace it. I studied the old system and designed the new one together with the accountants who use it."
+homeImage: "../../assets/projects/bigbank---financial-backoffice/bigbank-fbo.avif"
+homeImageAlt: ""
+tag1: "design"
+tag2: ""
+type: "client"
+industry: ["B2B", "Fintech"]
+focus: ["Back-office", "Data"]
+tagsToCheck: true
+private: false
+webflowId: "69386753676af78f8fa45624"
+cardOrder: 10
+cardNumber: "10"
+cardCompany: "Bigbank"
+cardYear: "2018"
+cardTitle: "Financial Back-office"
+cardLine: "A system made for the bank's accountants, built in-house."
+cardToCheck: false
+demoUrl: ""
+subtitle: "Bigbank · 2018 · internal tool"
+facts:
+  role: "Product Designer at Bigbank. I also designed the Baltic loan applications, their back-offices and partner systems."
+  context: "Bigbank, a bank specialised in loans in several European countries, mainly Nordic and Baltic. The users were the bank's own accountants."
+  made: "The screens of the new Financial Back-office: lookup values, transactions, incoming invoices and cost reports."
+  tools: "Figma, InVision"
+problem: "The accountants used a generic third-party tool. It had many features they did not use, and that made it slow and hard to use. They needed a system made for their work."
+decision: "Build it in-house. Design it with the accountants: talk to them often and get their feedback on new ideas early."
+result: "The new system went live. It shows the accountants the data they need, the way they want it."
+caseImage:
+  src: "../../assets/projects/bigbank---financial-backoffice/bigbank-fbo.avif"
+  alt: "Screens of the Financial Back-office at an angle on orange and yellow bands: Lookup values with and without the search panel, an invoice, a cost report and the Transactions table."
+  caption: "Screens of the Financial Back-office: lookup values, an invoice, a cost report and transactions."
+copyToCheck: true
+---
+
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import InspectPins from '../../components/case/InspectPins.astro';
+import Proof from '../../components/case/Proof.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import lists from '../../assets/projects/bigbank---financial-backoffice/fbo-lookup-values-1920px-01.avif';
+import search from '../../assets/projects/bigbank---financial-backoffice/fbo-lookup-values-search-open.jpg';
+import cost from '../../assets/projects/bigbank---financial-backoffice/fbo-cost-report-02.avif';
+import invoice from '../../assets/projects/bigbank---financial-backoffice/fbo-incoming-invoice-1920px-03b.avif';
+import transactions from '../../assets/projects/bigbank---financial-backoffice/fbo-transactions-1920px-04.avif';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="What I made" subtitle="the main screens" id="made">
+  <CaseBlock label="lists" title="Every list works the same way">
+    Lookup values, transactions and the other lists share one layout. Active filters show as chips above the table. Page actions are top right, row actions are on the selected row, and page numbers are at the bottom.
+    <InspectPins slot="proof" width={1920} height={1024}
+      light={{ src: lists.src, alt: 'The Lookup values screen: filter chips above a long table, Add, Export to CSV, More actions and Search buttons top right, view, edit and delete icons on one row, and page numbers at the bottom.' }}
+      pins={[
+        { name: 'Filter chips', kind: 'Active filters as chips. Remove one, or delete all filters.', x: 92, y: 184, w: 800, h: 56 },
+        { name: 'Page actions', kind: 'Page actions in one place: add, export to CSV, more actions, search.', x: 1100, y: 108, w: 805, h: 54 },
+        { name: 'Row actions', kind: 'Row actions on the selected row: view, edit, delete.', x: 1755, y: 380, w: 112, h: 42 },
+        { name: 'Pages', kind: 'Pages and items per page, the same on every list.', x: 820, y: 964, w: 1050, h: 46 },
+      ]} />
+  </CaseBlock>
+  <CaseBlock label="search" title="Search opens beside the table">
+    The search button opens a panel on the right. The accountants wanted to see all the data at once, so the panel never covers the table.
+    <ProofSwitch slot="proof" kind="segmented" id="search" label="search panel" selected={1} items={[
+      { label: 'Closed', caption: 'Search closed: the table uses the full width.', media: img(lists, 'The Lookup values table with the Lookup value search button top right.') },
+      { label: 'Open', caption: 'Search open: the fields are next to the table.', media: img(search, 'The Lookup values table with a search panel open on the right: lookup code, code, name, additional info, valid, and a green Search button.') },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="forms" title="Long documents in clear groups">
+    A cost report or an invoice has many fields. Each document is split into labelled groups. The totals and the main actions are always visible.
+    <ProofSwitch slot="proof" kind="tabs" id="document" label="document" items={[
+      { label: 'Cost report', caption: 'A cost report: three groups, a document upload on each cost row, totals at the bottom.', media: img(cost, 'A cost report in three groups: Personal info, Use of personal car, and Costs, with editable rows, an Upload document button on each row, totals, and a bar at the bottom with the amounts to pay.') },
+      { label: 'Incoming invoice', caption: 'An invoice: header, rows and total on the left, its documents on the right.', media: img(invoice, 'An invoice preview page: the invoice header fields, the invoice rows with a total, and an Invoice documents panel on the right with active and deleted documents and a drop zone.') },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="transactions" title="Many transactions on one screen">
+    The accountants wanted as many rows on screen as possible, so the rows are compact. Each transaction takes two rows: D for debit and C for credit. Light and white bands separate one transaction from the next.
+    <Proof slot="proof" caption="Transactions: two rows per transaction, D for debit and C for credit." media={img(transactions, 'The Transactions table: a two-line blue header, rows in pairs marked D (debit) and C (credit), with amounts, customer, ledger, business code, account code and balance.')} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="How I got there" subtitle="the process, short" id="process">
+  <CaseBlock label="team" title="Working with the accountants every week" pills={['developers', 'analysts', 'PMs', 'accountants']}>
+    I worked closely with developers, analysts and PMs. The users were our own accountants. We met them in person every week. They tested the new system step by step and got used to it. They also told us what should or should not be there.
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="What changed" subtitle="the outcome, and what I learned" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'outcome', items: [
+      'The new system fully replaced the old third-party tool.',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'People see their work in very different ways. A simpler, cleaner design can make a system worse for them.',
+      'The accountants did not accept my first clean designs. They wanted all the data on screen. Seeing many numbers made them trust the system.',
+      'I learned to understand how users think about their work before I design for them.',
+    ] }} />
+</CaseSection>
