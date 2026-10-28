@@ -20,15 +20,18 @@ cardTitle: "Interactive Panels"
 cardLine: "Act on a third-party app or a piece of data right where it shows in Pipedrive."
 cardToCheck: true
 demoUrl: ""
-subtitle: "Pipedrive · 20NN · integration platform"
+subtitle: "Pipedrive · 2022 · integration platform"
 facts:
-  role: "Product Designer. Interaction patterns, prototypes and design details during the build. Worked with PMs, engineers and other designers."
+  role: "Senior Product Designer. Interaction patterns, prototypes and design details during the build. Worked with PMs, engineers and other designers."
   context: "Pipedrive Marketplace. For end users of integrations, and for the partners who build them."
   made: "Interaction patterns for object, field and global actions, animated prototypes, design support during the build."
-  tools: "Figma (animated prototypes), NN (to confirm)"
+  tools: "Figma"
 problem: "Panels were read-only, and actions were hard to find or hidden. Only around 30 percent of users found the actions before release."
 decision: "Put actions next to the data, on three levels: actions for an object in its header, actions for a field next to it, and global actions under one main button."
 result: "Action discovery went from around 30 percent to around 50 percent in the first month. Integrations that used the new patterns saw action usage above 68 percent."
+links:
+  - label: "Pipedrive docs for app panels ↗"
+    href: "https://pipedrive.readme.io/docs/app-extensions-json-panels"
 beforeAfter:
   caption: "An app panel before and after. Before, all actions hid in one menu. After, the new parts (in green) put actions next to the data."
   before:
@@ -80,8 +83,8 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       'App panels became an active part of the product, not only a place to read data',
     ] }}
     right={{ label: 'what I learned', items: [
-      'Motion is key to explain small interaction changes. A still screen does not show them.',
-      'Platform patterns pay off twice: for users, and for every partner who builds on them.',
-      'Next: patterns for more complex integrations, and clearer guidelines for partners.',
+      'Many of the changes were small. A still screen could not show how they work, so I used animated prototypes to explain them.',
+      'Partners build very different apps. Each pattern had to work for any app and any type of data, so I tried it on many panel variants first.',
+      'Next steps: patterns for more complex integrations, and clearer guidelines for partners.',
     ] }} />
 </CaseSection>

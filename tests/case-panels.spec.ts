@@ -3,15 +3,20 @@ import { test, expect } from '@playwright/test';
 // The Pipedrive Interactive Panels case study (Figma sketch 457:669), on the case study template.
 const PAGE = '/project/pipedrive---interactive-panels';
 
-test('summary: title, subtitle, facts, problem, decision, result, and no buttons', async ({ page }) => {
+test('summary: title, subtitle, facts, problem, decision, result, and the docs button', async ({ page }) => {
   await page.goto(PAGE);
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Interactive Panels');
-  await expect(s.locator('.sub')).toHaveText('Pipedrive · 20NN · integration platform');
+  await expect(s.locator('.sub')).toHaveText('Pipedrive · 2022 · integration platform');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
-  // No public link yet
-  await expect(s.locator('[data-case-links]')).toHaveCount(0);
+  await expect(s.locator('[data-facts] dd').last()).toHaveText('Figma');
+  // One button: the Pipedrive developer docs for app panels, in a new tab
+  const docs = s.locator('[data-case-links] a');
+  await expect(docs).toHaveCount(1);
+  await expect(docs).toHaveText('Pipedrive docs for app panels ↗');
+  await expect(docs).toHaveAttribute('href', 'https://pipedrive.readme.io/docs/app-extensions-json-panels');
+  await expect(docs).toHaveAttribute('target', '_blank');
 });
 
 test('summary is in the first screen on desktop', async ({ page, viewport }) => {
