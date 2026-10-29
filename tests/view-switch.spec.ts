@@ -1,13 +1,14 @@
 import { test, expect } from '@playwright/test';
+import { chooseView } from './view';
 
 test('audience switch sets the view and the URL', async ({ page }) => {
   await page.goto('/');
-  await page.click('[data-view-option="engineer"]');
+  await chooseView(page, 'engineer');
   await expect(page.locator('html')).toHaveAttribute('data-view', 'engineer');
   await expect(page).toHaveURL(/view=engineer/);
   await page.goto('/?view=recruiter');
   await expect(page.locator('html')).toHaveAttribute('data-view', 'recruiter');
-  await expect(page.locator('[data-view-option="recruiter"]')).toHaveAttribute('aria-checked', 'true');
+  await expect(page.locator('[data-view-option="recruiter"]').first()).toHaveAttribute('aria-checked', 'true');
 });
 
 // The switch motion (src/lib/view-switch.ts). The other tests run with reduced motion, where the switch is instant.
@@ -28,7 +29,7 @@ test.describe('view switch motion', () => {
       await page.waitForLoadState('load');
       let widest = 0;
       const watch = setInterval(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth).then((w) => { widest = Math.max(widest, w); }).catch(() => {}), 40);
-      await page.click(`[data-view-option="${to}"]`);
+      await chooseView(page, to);
       await expect(page.locator('html')).toHaveAttribute('data-view', to);
       await settled(page);
       clearInterval(watch);
@@ -42,10 +43,10 @@ test.describe('view switch motion', () => {
   test('fast clicks end in the last view chosen', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('load');
-    for (const v of ['recruiter', 'engineer', 'design', 'recruiter']) await page.click(`[data-view-option="${v}"]`);
+    for (const v of ['recruiter', 'engineer', 'design', 'recruiter']) await chooseView(page, v);
     await expect(page.locator('html')).toHaveAttribute('data-view', 'recruiter');
     await settled(page);
-    await expect(page.locator('[data-view-option="recruiter"]')).toHaveAttribute('aria-checked', 'true');
+    await expect(page.locator('[data-view-option="recruiter"]').first()).toHaveAttribute('aria-checked', 'true');
     await expect(page.locator('[data-recruiter]')).toBeVisible();
     await expect(page.locator('.hero')).toBeHidden();
     expect(await leftovers(page)).toEqual([]);
@@ -76,7 +77,7 @@ test.describe('view switch motion', () => {
     expect(await page.evaluate(() => (window as unknown as { low: number }).low)).toBeLessThan(0.5);
   });
 
-  // Something always moves: from Engineer to Design lead at the top (and back) the hero is in both views and stays in
+  // Something always moves: from Engineer to Designer at the top (and back) the hero is in both views and stays in
   // place, so it rises
   for (const [from, to] of [['engineer', 'design'], ['design', 'engineer']]) test(`${from} to ${to} at the top moves the hero`, async ({ page }) => {
     await page.goto(`/?view=${from}`);
@@ -93,7 +94,7 @@ test.describe('view switch motion', () => {
     const exp = page.locator('#experience');
     await exp.evaluate((e) => scrollTo(0, e.getBoundingClientRect().top + scrollY - 200));
     const before = await exp.evaluate((e) => e.getBoundingClientRect().top);
-    await page.click('[data-view-option="recruiter"]');
+    await chooseView(page, 'recruiter');
     await settled(page);
     const after = await exp.evaluate((e) => e.getBoundingClientRect().top);
     expect(Math.abs(after - before)).toBeLessThan(2);
@@ -103,7 +104,7 @@ test.describe('view switch motion', () => {
     await page.goto('/');
     await page.waitForLoadState('load');
     await page.locator('#work').evaluate((e) => scrollTo(0, e.getBoundingClientRect().top + scrollY - 200));
-    await page.click('[data-view-option="recruiter"]');
+    await chooseView(page, 'recruiter');
     await settled(page);
     expect(await page.evaluate(() => scrollY)).toBe(0);
   });

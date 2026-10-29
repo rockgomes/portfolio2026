@@ -2,9 +2,11 @@
 // Figma: Header (96:6775) with the audience switch (96:7322).
 import CopyEmail from './CopyEmail.astro';
 import Segmented from './Segmented.astro';
+import SbDropdown from './SbDropdown.astro';
 interface Props { showSwitch?: boolean }
 const { showSwitch = true } = Astro.props;
-const views = [['design', 'Design lead'], ['recruiter', 'Recruiter'], ['engineer', 'Engineer']];
+const views = [['design', 'Designer'], ['recruiter', 'Recruiter'], ['engineer', 'Engineer']];
+const viewOptions = views.map(([v, label]) => ({ label, attrs: { 'data-view-option': v } }));
 // Projects: client work and experiments in one list. The recruiter view has no Projects section, so no Projects link.
 // `in`: the views that show the link.
 const links = [
@@ -17,9 +19,11 @@ const links = [
   <div class="wrap inner">
     <a class="brand" href="/"><span class="name">Rock Gomes</span></a>
     {showSwitch && (
-      <div class="switch">
-        <span class="lab">I'm a</span>
-        <Segmented label="Show this page for" options={views.map(([v, label]) => ({ label, attrs: { 'data-view-option': v } }))} />
+      <div class="switch" data-switch>
+        <span class="lab">View as</span>
+        <Segmented label="View as" options={viewOptions} />
+        <!-- Less room (Figma 500:10264): the same choice as a dropdown -->
+        <div class="vdd" data-view-dd><SbDropdown name="view" label="View as" options={views.map(([, l]) => l)} value={views[0][1]} /></div>
       </div>
     )}
     <div class="end">
@@ -33,6 +37,8 @@ const links = [
       <!-- Below 1040px the nav links move into this panel, right under the button (same style as the filter panel) -->
       <nav class="mpanel" id="site-menu" aria-label="Main" data-menu hidden>
         {links.map((l) => <a href={l.href} data-in={l.in} data-menu-link>{l.label}</a>)}
+        <!-- Smallest screens (Figma 504:10288): the switch moves here, full width -->
+        {showSwitch && <div class="mview"><span class="lab">View as</span><Segmented label="View as" options={viewOptions} /></div>}
         <div class="mcopy"><span class="t-mono-label lab2">rock@rockgomes.com</span><CopyEmail variant="short" /></div>
       </nav>
     </div>
@@ -50,12 +56,13 @@ const links = [
   .name { font: var(--type-ui-brand); color: var(--color-text-primary); }
   .switch { grid-column: 2; display: flex; align-items: center; gap: 10px; }
   .lab { font: 400 11.5px/1 var(--font-mono); color: var(--color-text-muted); white-space: nowrap; }
+  .vdd, .mview { display: none; } /* the switch on smaller screens: see the media queries at the end */
   /* The chosen option shows its own view's colour (tokens color/view/*), so it changes on the click, not after the
      page has switched. It also stays out of the colour fade of the switch (base.css, .view-fading). */
-  .switch :global([data-view-option='design'][aria-checked='true']) { background: var(--color-view-design-soft); color: var(--color-view-design); }
-  .switch :global([data-view-option='recruiter'][aria-checked='true']) { background: var(--color-view-recruiter-soft); color: var(--color-view-recruiter); }
-  .switch :global([data-view-option='engineer'][aria-checked='true']) { background: var(--color-view-engineer-soft); color: var(--color-view-engineer); }
-  :global(html.view-fading) .switch :global([data-view-option]) { transition: none !important; }
+  .hdr :global([data-view-option='design'][aria-checked='true']) { background: var(--color-view-design-soft); color: var(--color-view-design); }
+  .hdr :global([data-view-option='recruiter'][aria-checked='true']) { background: var(--color-view-recruiter-soft); color: var(--color-view-recruiter); }
+  .hdr :global([data-view-option='engineer'][aria-checked='true']) { background: var(--color-view-engineer-soft); color: var(--color-view-engineer); }
+  :global(html.view-fading) .hdr :global([data-view-option]) { transition: none !important; }
   .nav { display: flex; align-items: center; gap: var(--space-24); white-space: nowrap; }
   .nav a:not(.btn) { font: var(--type-ui-nav); color: var(--color-text-secondary); text-decoration: none; }
   .nav a:not(.btn):hover { color: var(--color-text-primary); }
@@ -87,28 +94,42 @@ const links = [
   @media (prefers-reduced-motion: reduce) { .menu-btn svg { transition: none; } }
   @media (max-width: 1040px) { .nav a { display: none; } .menu-wrap { display: block; } .menu-btn { display: inline-flex; } }
   @media (max-width: 720px) {
-    /* Phones: the switch gets its own row. The first row keeps the Menu button's height, so the switch never moves up. */
-    .nav { display: none; } .inner { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(30px, auto) auto; row-gap: var(--space-12); }
-    .end { grid-column: 2; } .switch { grid-column: 1 / -1; grid-row: 2; }
-    /* Phones: the panel spans the content width (gutter to gutter), with bigger tap targets */
+    /* Phones: one row. The switch sits next to the Menu button instead of in the middle. */
+    .nav { display: none; } .inner { grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--space-12); }
+    .end { grid-column: 3; }
+    /* The panel spans the content width (gutter to gutter), with bigger tap targets */
     .mpanel { width: calc(100vw - 2 * max(var(--gutter), env(safe-area-inset-left, 0px))); }
     .mpanel a { padding: 14px 12px; font-size: 17px; }
   }
-  @media (max-width: 420px) { .lab { display: none; } .switch :global(.ui-seg button) { padding: var(--space-4) var(--space-8); } }
-  /* Just above the two breakpoints the centred switch comes close to the buttons on the right: "I'm a" makes way */
+  /* The view switch gets smaller step by step as the room runs out:
+     less room, a "View as" dropdown (Figma 500:10264); smallest screens, in the menu after the links (Figma 504:10288) */
+  @media (max-width: 520px) { .switch > :global(.ui-seg) { display: none; } .vdd { display: block; } }
+  @media (max-width: 380px) {
+    .switch { display: none; }
+    .mview { display: flex; flex-direction: column; gap: var(--space-8); margin-top: 6px; padding: 12px 12px 14px; border-top: 1px solid var(--color-border-subtle); }
+    .mview :global(.ui-seg) { display: flex; }
+    .mview :global(.ui-seg button) { flex: 1; }
+  }
+  /* Just above the two breakpoints the centred switch comes close to the buttons on the right: "View as" makes way */
   @media (min-width: 721px) and (max-width: 820px), (min-width: 1041px) and (max-width: 1100px) { .lab { display: none; } }
 </style>
 <script>
   import { switchView } from '../lib/view-switch';
   import { bindChoice, mark } from '../lib/choice';
+  import { bindDropdowns, setDropdownValue } from '../lib/dropdown';
 
   // View switch: sets <html data-view> (with the switch motion, src/lib/view-switch.ts), keeps it in the URL (?view=)
   // and in localStorage. The switch itself shows the new choice at once.
   const VIEWS = ['design', 'recruiter', 'engineer'];
-  const options = [...document.querySelectorAll<HTMLButtonElement>('[data-view-option]')];
+  // The same choice in three places, one shown at a time: the header radio group, the dropdown (less room) and the
+  // radio group in the menu (smallest screens). All three always show the current view.
+  const groups = [...document.querySelectorAll<HTMLElement>('.hdr .ui-seg')].map((g) => [...g.querySelectorAll<HTMLButtonElement>('[data-view-option]')]);
+  const dd = document.querySelector<HTMLElement>('[data-view-dd] [data-sb-dd]');
+  const label = (v: string) => groups[0].find((b) => b.dataset.viewOption === v)!.textContent!;
   const apply = (v: string, push: boolean) => {
     if (!VIEWS.includes(v)) v = 'design';
-    mark(options, options.findIndex((b) => b.dataset.viewOption === v));
+    groups.forEach((g) => mark(g, g.findIndex((b) => b.dataset.viewOption === v)));
+    if (dd) setDropdownValue(dd, label(v));
     try { localStorage.setItem('rg-view', v); } catch {}
     if (push) {
       const u = new URL(location.href);
@@ -117,18 +138,18 @@ const links = [
     }
     switchView(v, push);
   };
-  const group = document.querySelector('.switch .ui-seg');
   // Only pages with the switch (the homepage) take the chosen view. Case study pages are the same for every visitor,
   // so a view chosen on the homepage does not follow the visitor there (it stays stored for the way back).
-  if (group) {
+  if (groups.length) {
     const fromUrl = new URL(location.href).searchParams.get('view');
     let stored: string | null = null; try { stored = localStorage.getItem('rg-view'); } catch {}
     apply(fromUrl || stored || 'design', false);
+    groups.forEach((g) => bindChoice({ options: g, onSelect: (i) => apply(g[i].dataset.viewOption!, true) }));
   }
-  if (group) bindChoice({ options, onSelect: (i) => apply(options[i].dataset.viewOption!, true) });
+  if (dd) bindDropdowns([dd], (_, l) => apply(groups[0].find((b) => b.textContent === l)!.dataset.viewOption!, true), true);
 
   // Mobile menu (below 1040px): a panel under the Menu button over a dimmed page. A link, Escape, or a tap on the
-  // backdrop closes it.
+  // backdrop closes it. On the smallest screens it also holds the view switch.
   const menuBtn = document.querySelector<HTMLButtonElement>('[data-menu-btn]');
   const menu = document.querySelector<HTMLElement>('[data-menu]');
   const backdrop = document.querySelector<HTMLElement>('[data-menu-backdrop]');
@@ -143,7 +164,8 @@ const links = [
       if (open && focus) [...menu.querySelectorAll<HTMLElement>('[data-menu-link]')].find((a) => a.getClientRects().length)?.focus(); // the first link this view shows
     };
     menuBtn.addEventListener('click', () => setMenu(menu.hidden !== false, true));
-    menu.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('[data-menu-link]')) setMenu(false); });
+    // A link or a view picked in the menu (smallest screens) closes it, so the visitor sees the page change
+    menu.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('[data-menu-link], [data-view-option]')) setMenu(false); });
     backdrop.addEventListener('click', () => setMenu(false));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { setMenu(false); menuBtn.focus(); } });
     addEventListener('resize', () => { if (!menuBtn.getClientRects().length && !menu.hidden) setMenu(false); }); // the Menu button is gone at this width

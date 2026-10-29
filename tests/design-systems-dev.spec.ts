@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { chooseView } from './view';
 
 // Engineer view: Design systems as a small Storybook (Figma 218:2, phone 243:15).
 const sb = '#design-systems-dev';
@@ -10,7 +11,7 @@ test.describe('storybook (desktop)', () => {
     await page.goto('/?view=engineer');
     await expect(page.locator(sb)).toBeVisible();
     await expect(page.locator('#design-systems')).toBeHidden();
-    await page.locator('[data-view-option="design"]').click();
+    await chooseView(page, 'design');
     await expect(page.locator(sb)).toBeHidden();
     await expect(page.locator('#design-systems')).toBeVisible();
   });

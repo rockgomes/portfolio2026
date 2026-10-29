@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { chooseView } from './view';
 
 // The "Engineer" view (Figma 97:7542): Dev Mode inspect panel on the hero table, and repo cards.
 test.use({ viewport: { width: 1440, height: 900 } });
@@ -10,7 +11,7 @@ test('the engineer view adds the repo cards, with real links', async ({ page }) 
   await expect(cards.first().locator('.name')).toHaveText('filter-builder');
   await expect(cards.first().locator('a.src')).toHaveAttribute('href', 'https://github.com/rockgomes/filter-builder');
   await expect(cards.first().getByRole('link', { name: /Live demo/ })).toHaveAttribute('href', 'https://fieldset-filter-builder.netlify.app');
-  await page.locator('[data-view-option="design"]').click();
+  await chooseView(page, 'design');
   await expect(page.locator('.repos')).toBeHidden();
 });
 

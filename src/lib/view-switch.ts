@@ -1,7 +1,7 @@
 // View switch motion (motion plan, moment 04, "on view switch"). The page fades out, the view changes, and while the
 // page fades back in, sections that change place slide to their new place (the same move as the Projects filter:
 // 0.55s, power3.inOut) and every other section on screen rises 16px into place. So something always moves, also
-// when no section changes place (Design lead to Engineer at the top: the hero is in both views).
+// when no section changes place (Designer to Engineer at the top: the hero is in both views).
 // The colours of the new view fade in (base.css, .view-fading), and the section being read stays where it is on the
 // screen; if the new view does not have it, the page goes to the top. With reduced motion the switch is instant.
 // The slide is measured on the screen, not on the page: GSAP Flip measures page positions, so it would undo the
