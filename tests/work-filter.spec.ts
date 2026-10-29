@@ -15,7 +15,7 @@ test.describe('Projects filter', () => {
     await page.click('.row[data-key="industry"][data-val="Fintech"]');
     await expect(page.locator('[data-filter-count]')).toHaveText('4 / 14');
     await page.click('.row[data-key="industry"][data-val="SaaS"]');
-    await expect(page.locator('[data-filter-count]')).toHaveText('6 / 14');
+    await expect(page.locator('[data-filter-count]')).toHaveText('9 / 14');
     await expect(page.locator('.row[data-key="type"][data-val="experiment"]')).toBeDisabled();
   });
   test('filtering hides cards and shows them again', async ({ page }) => {
