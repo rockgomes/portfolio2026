@@ -53,7 +53,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
    - `public/embeds/flex-academy-embeds.js` is no longer used by any page. Deleting it is Rock's call.
    - Update sketch C in Figma to the copy changed in code, and fix its Work card file name.
 2. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
-3. **Launch**: make the repo public, point rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback.
+3. **Launch**: point rockgomes.com and www.rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback. Done already: the repo is public (29 Oct), and the launch basics PR adds the browser icons, the link preview image (`public/og.png`, remake with `scripts/make-share-image.mjs`), `robots.txt`, `/sitemap.xml` and canonical addresses without `.html`. The preview image URL points at rockgomes.com, so link previews only show it after the domain switch.
 
 ## Open questions for Rock (do not guess)
 - **Romeo** (Independent client tab): business line, text, whether to name the work.
