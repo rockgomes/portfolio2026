@@ -1,4 +1,4 @@
-// Flex Academy case study content that the old Webflow embeds held in JavaScript (public/embeds/flex-academy-embeds.js,
+// Flex Academy case study content that the old Webflow embeds held in JavaScript (public/embeds/flex-academy-embeds.js, now deleted;
 // fa-method and fa-ins), copied, then edited for plain language (October 2026). The hex values describe the Flex design system as content; they are not
 // this site's styles.
 
