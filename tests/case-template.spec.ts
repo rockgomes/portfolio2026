@@ -67,7 +67,7 @@ test('the old Webflow body is gone', async ({ page }) => {
 
 test('next case study goes back to card 01', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/dealfront-ai-company-profile');
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/flex-academy');
 });
 
 test('no Figma layer on the page', async ({ page }) => {

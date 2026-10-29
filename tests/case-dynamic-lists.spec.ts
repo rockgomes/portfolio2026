@@ -123,9 +123,9 @@ test('the old Webflow body is gone', async ({ page }) => {
   await expect(page.locator('main')).not.toContainText('Try it yourself');
 });
 
-test('next case study is Flex Academy', async ({ page }) => {
+test('next case study is Customer Service Back-office', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/flex-academy');
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/inbank---customer-service-backoffice');
 });
 
 test('no Figma layer on the page', async ({ page }) => {
