@@ -12,11 +12,11 @@
   --color-text-primary: #1d1d1f;
   --color-text-secondary: #4e5157;
   --color-text-muted: #6e7076;
-  --color-text-accent: #c8370d;
+  --color-text-accent: #ee5a36;
   --color-border-strong: rgba(0, 0, 0, 0.16);
   --color-border-subtle: rgba(0, 0, 0, 0.09);
   --color-border-control: rgba(16, 24, 40, 0.47);
-  --color-annotation-redline: #c8370d;
+  --color-annotation-redline: #ee5a36;
   --color-annotation-redline-soft: rgba(238, 90, 54, 0.1);
   --color-annotation-measure: #0a62d4;
   --color-annotation-measure-soft: rgba(27, 111, 227, 0.14);
