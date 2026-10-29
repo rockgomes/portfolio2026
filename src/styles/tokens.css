@@ -172,6 +172,7 @@
   --type-body-row: 400 14.5px / 1.5 var(--font-sans);
   --type-body-small: 400 13px / 1.45 var(--font-sans);
   --type-ui-nav: 400 14px / 1.4 var(--font-sans);
+  --type-ui-nav-large: 400 17px / 1.4 var(--font-sans);
   --type-ui-brand: 600 15px / 1.4 var(--font-sans);
   --type-ui-table: 400 13px / 1.4 var(--font-sans);
   --type-ui-button: 500 13px / 1.4 var(--font-sans);
