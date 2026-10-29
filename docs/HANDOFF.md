@@ -1,4 +1,4 @@
-# Handoff - October 27, 2026 (updated after the Flex Academy case study page)
+# Handoff - October 30, 2026 (updated after the launch, the arrow icons and the template live frame)
 
 Where the rockgomes.com rebuild stands, and what comes next. Written for a new Claude Code session working on this repo. Read `CLAUDE.md` first.
 
@@ -45,6 +45,16 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 
 23. **"View as" switch, one header row at every width** (Figma sketch section `500:10185` on Explorations). The label says "View as" and the first view is "Designer". The header is one row everywhere; as room runs out the switch steps down: the radio group (above 520px), a "View as" dropdown (381 to 520px, the shared SbDropdown, behaviour in `src/lib/dropdown.ts`), then a full-width radio group at the bottom of the Menu (380px and below). All three show the current view. Tests pick a view with `tests/view.ts`, which uses whichever form the width shows.
 
+24. **Every case study and experiment on the template** (PRs 56 to 69, 72). Each page was built from its own Figma sketch on the "Case studies" page (`450:10281`). Work card pictures are made with Shotkit (#73).
+
+25. **Copy confirmed by Rock** (29 Oct 2026, PRs 78 to 82): card years and copy, projects newest first (Flex Academy is card 01), final filter tags, the Romeo tab and every Experience text. No `cardToCheck` or `tagsToCheck` flags are left. Dealfront keeps its name; its line says "now called Leadfeeder" (Rock, 30 Oct). Do not rename it.
+
+26. **Darker colour tokens** (#70) so text passes WCAG AA, and an automated axe test (#58, `tests/a11y.spec.ts`).
+
+27. **Arrow icon instead of the ↗ character** (#86). iPhones showed ↗ as an emoji. Links that open in a new tab now end with `IconArrowUpRight.astro` (Lucide arrow-up-right, Figma component "Icon / Arrow up-right" `512:84`). Case study buttons use it as the Button's trailing icon. `tests/arrows.spec.ts` fails if a ↗ comes back. ↔ keeps U+FE0E, and `font-variant-emoji: text` on the body is a second guard.
+
+28. **The template case study shows the live site in a frame** (#87). `LivePage.astro` has an `embed` prop (default true): desktop shows the scaled iframe, phones show the still picture or the video. The template site's own `netlify.toml` allows the frame (`frame-ancestors` for rockgomes.com, www, `*.netlify.app` and localhost). Screenshot tests share `shoot()` from `tests/shoot.ts`.
+
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
 - That bot commit does not trigger CI. To get a check on it, close and reopen the PR.
@@ -53,16 +63,19 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 - Before you pick the next task from this file, check `git log` and the merged PRs: this list can be behind.
 
 ## Next, in this order
-1. **Done: every case study and experiment uses the new template.** Keep one `h1` per page (a smoke test checks it). The unused `public/embeds/flex-academy-embeds.js` was deleted (Rock, 29 Oct).
-   - Update sketch C in Figma to the copy changed in code, and fix its Work card file name.
-2. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
-3. **Done: launch** (29 Oct 2026). rockgomes.com and www point to Netlify; HTTPS from Let's Encrypt; all 14 old Webflow addresses work. Done already: the repo is public (29 Oct), and the launch basics PR adds the browser icons, the link preview image (`public/og.png`, remake with `scripts/make-share-image.mjs`), `robots.txt`, `/sitemap.xml` and canonical addresses without `.html`. The preview image URL points at rockgomes.com, so link previews only show it after the domain switch.
+1. **Per-project password protection** (started 30 Oct 2026). Frontmatter `private: true` protects nothing yet. Plan: a Netlify Edge Function in front of `/project/<slug>` for private files, a gate page sketched in Figma first, the password in a Netlify environment variable that Rock sets himself.
+2. **Figma cleanup** (started 30 Oct 2026):
+   - Link the Pressed and Disabled labels of the Button component.
+   - Add a 17px text style for the phone menu links.
+   - Bring Figma up to the site where the site is ahead: sketch C copy and its Work card file name, no section numbers (#54), token row 1 is grey.900, hero cursors hidden at rest, the footer is a grey zone.
 
 ## Open questions for Rock (do not guess)
-- **Romeo** (Independent client tab): business line, text, whether to name the work.
-- Final filter tags per project (`tagsToCheck: true`).
-- Card copy and years for Flex Academy and the 3 Pipedrive projects (`cardToCheck: true`).
-- Project order in Projects (currently as in Figma, newest client work first).
+- **CV vs site.** The CV (`public/Rock_Gomes_CV.pdf`) and the Experience section do not agree:
+  - Dealfront: the CV has it as its own job (Jan 2025 - Oct 2025); the site has it as a client tab under Independent.
+  - Independent: the CV starts it in Oct 2025; the site says "2025 - now".
+  - Bigbank: the CV says 7 markets and 7 countries; the site (Experience and the Loan flow case study) says 5 countries.
+  - Romeo: on the site, not on the CV.
 - Design systems cards use long-dash bullets as in Figma. Keep or change to "-"?
+
+## Known differences from Figma (Rock's choice)
 - **Engineer view vs Figma `187:1648`:** the panel uses the real names from the repo (`ConditionRow` with `cond`, `isFirst`, `joinerOp`, `dispatch`), not Figma's `FilterCondition` sample; the code box scrolls at Figma's height because real call sites are longer; the Numbers section stays (Figma's frame has none). The panel covers the last two table columns, as in Figma; it collapses to a small "Inspect" tab (remembered in the browser).
-- Figma is behind the site in a few places Rock chose: section numbers hang in the margin, token row 1 is grey.900, hero cursors are hidden at rest, the footer is a grey zone. Update Figma or not.
