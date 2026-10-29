@@ -130,6 +130,23 @@ test.describe('engineer view', () => {
     await expect(page.locator('.nf-dev [data-path]').first()).toHaveText(MISSING);
   });
 
+  test('the terminal is ready to type in when the page opens, and typing anywhere goes there', async ({ page }) => {
+    await page.goto(`${MISSING}?view=engineer`);
+    await expect(term(page)).toBeFocused();
+    await page.keyboard.type('help');
+    await page.keyboard.press('Enter');
+    await expect(out(page)).toContainText('list the case studies');
+    // Focus moves away (a click on the page outside the terminal); typing still lands in the terminal.
+    await page.locator('body').click({ position: { x: 5, y: 5 } });
+    await page.keyboard.type('ls');
+    await expect(term(page)).toHaveValue('ls');
+  });
+
+  test('the other views do not take the keyboard', async ({ page }) => {
+    await page.goto(`${MISSING}?view=design`);
+    await expect(term(page)).not.toBeFocused();
+  });
+
   test('the view also comes from the last choice saved in the browser', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('rg-view', 'engineer'));
     await page.goto(MISSING);

@@ -207,6 +207,16 @@ const groups = ['Case studies', 'Experiments'];
     });
     requestAnimationFrame(draw);
     dev.querySelector('.term')!.addEventListener('click', (e) => { if (!(e.target as HTMLElement).closest('a') && !getSelection()?.toString()) input.focus(); });
+    // The caret blinks, so the terminal is ready to type in: focus it on load, and send typing there when the
+    // visitor is not in another field or on a link.
+    if (dev.offsetParent) {
+      input.focus({ preventScroll: true });
+      addEventListener('keydown', (e) => {
+        const t = e.target as HTMLElement;
+        if (e.key.length !== 1 || e.metaKey || e.ctrlKey || e.altKey || t === input || t.closest('input, textarea, select, button, a, [contenteditable]')) return;
+        input.focus({ preventScroll: true });
+      });
+    }
   }
 
   const root = document.querySelector<HTMLElement>('[data-nf]');
