@@ -31,15 +31,19 @@ test('buttons open the live demo and the source code', async ({ page }) => {
 
 // No screen recording: on phones the still picture shows, and there is nothing to reload
 // The template site sends X-Frame-Options: DENY, so it cannot show in a frame: the still picture shows at every size
-test('live demo: a still picture under the browser bar, at every size', async ({ page }) => {
+test('live demo: the live site in a frame on desktop, the still picture on phones', async ({ page, viewport }) => {
   await page.goto(PAGE);
   const live = page.locator('[data-live]');
   await expect(live.locator('.addr')).toHaveText('rockgomes-portfolio-template.netlify.app');
   await expect(live.locator('figcaption')).toHaveText('The live template. Open it, scroll down and open a chapter.');
-  await expect(live.locator('iframe')).toHaveCount(0);
   await expect(live.locator('video')).toHaveCount(0);
-  await expect(live.locator('.still')).toBeVisible();
-  await expect(live.getByRole('button', { name: 'Reload the live page' })).toBeHidden();
+  if ((viewport?.width ?? 0) >= 1200) {
+    await expect(live.locator('iframe')).toBeVisible();
+    await expect(live.getByRole('button', { name: 'Reload the live page' })).toBeVisible();
+  } else {
+    await expect(live.locator('.still')).toBeVisible();
+    await expect(live.getByRole('button', { name: 'Reload the live page' })).toBeHidden();
+  }
 });
 
 test('one section, in the order of the sketch', async ({ page }) => {
