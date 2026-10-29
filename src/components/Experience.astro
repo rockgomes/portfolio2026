@@ -4,13 +4,13 @@ import SectionHeader from './SectionHeader.astro';
 import IconGitBranch from './IconGitBranch.astro';
 import Tabs from './Tabs.astro';
 // Independent work (from 2025) is one entry with a tab per client. Facts from Rock's CV (Oct 2026).
-type Client = { id: string; name: string; about: string; text: string; todo?: boolean }; // about: one line on the business (no dates: projects run about 6 months)
+type Client = { id: string; name: string; about: string; text: string }; // about: one line on the business (no dates: projects run about 6 months)
 type Item = { years: string; company: string; role: string; text?: string; clients?: Client[] };
 const items: Item[] = [
   { years: '2025 - now', company: 'Independent', role: 'Senior Product Designer · contract', clients: [
     { id: 'well', name: 'Well', about: "Bestway Group · the UK's second-largest pharmacy chain, ~700 branches", text: 'Care Homes, an NHS dispensing platform for care home medication. Redesigned how staff run 28-day medication cycles. Designed onboarding and the group and unit hierarchy with the developers. Rebuilt the design system to meet AAA contrast.' },
-    { id: 'dealfront', name: 'Dealfront', about: 'B2B sales intelligence SaaS', text: 'Platform projects, user management and AI features: an AI assistant for prospect research, Dynamic Lists, and permissions with SSO for enterprise clients. Worked with three PMs at the same time.' },
-    { id: 'romeo', name: 'Romeo', about: 'Business line to come (placeholder)', text: 'Details to come (placeholder, Rock to write).', todo: true },
+    { id: 'dealfront', name: 'Dealfront', about: 'B2B sales intelligence SaaS, used by 15,000+ companies · now called Leadfeeder', text: 'Platform projects, user management and AI features: an AI assistant for prospect research, Dynamic Lists, and permissions with SSO for enterprise clients. Worked with three PMs at the same time.' },
+    { id: 'romeo', name: 'Romeo', about: 'Dating app with 3M+ users, online since 2001 · Amsterdam and Berlin', text: 'Updating the web app to the new design system, which I help manage. Brainstorming and designing new products with the team, and following up with developers while they build them.' },
   ] },
   { years: '2023 - 2024', company: 'Inbank', role: 'Senior Product Designer', text: 'Redesigned the hire-purchase checkout in four countries, rebuilt the customer service back-office, and built the design system from scratch right after a rebrand.' },
   { years: '2020 - 2022', company: 'Pipedrive', role: 'Senior Product Designer', text: 'Integrations and developer experience team. I did a lot of user research and designed tools for developers.' },
@@ -38,7 +38,7 @@ const items: Item[] = [
                   {(name: string) => <><IconGitBranch data-engineer /><span data-not-engineer>{name}</span><span data-engineer>{name.toLowerCase()}</span></>}
                 </Tabs>
                 {it.clients.map((c, i) => (
-                  <div class:list={['cpanel', c.todo && 'todo']} role="tabpanel" id={`client-panel-${c.id}`} aria-labelledby={`client-tab-${c.id}`} hidden={i !== 0}>
+                  <div class="cpanel" role="tabpanel" id={`client-panel-${c.id}`} aria-labelledby={`client-tab-${c.id}`} hidden={i !== 0}>
                     <p class="cmeta t-mono-small">{c.about}</p>
                     <p class="text">{c.text}</p>
                   </div>
@@ -69,7 +69,6 @@ const items: Item[] = [
   .clients { display: flex; flex-direction: column; gap: var(--space-12); padding-top: 6px; }
   .cpanel { display: flex; flex-direction: column; gap: 6px; }
   .cmeta { margin: 0; color: var(--color-text-muted); }
-  .todo .text { color: var(--color-text-muted); font-style: italic; }
   .corow { display: flex; align-items: center; gap: var(--space-12); flex-wrap: wrap; }
   /* Recruiter view (Figma: Timeline item, View=Recruiter): a round 9px dot centred on the 1px line; the current role
      fills its dot. */
