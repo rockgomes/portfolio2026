@@ -20,7 +20,8 @@ test.describe('shared pieces have one source', () => {
     expect(where(/class(:list)?=[^>]*\bui-tab\b(?!s)/).filter((f) => !f.startsWith('src/components/Tabs.astro'))).toEqual([]);
   });
   test('arrow keys for tabs and segmented controls only in choice.ts', () => {
-    expect(where(/ArrowRight/).filter((f) => !f.startsWith('src/lib/choice.ts'))).toEqual([]);
+    // The 404 terminal uses the right arrow to accept a completion, as shells do. That is not a tab or segmented control.
+    expect(where(/ArrowRight/).filter((f) => !f.startsWith('src/lib/choice.ts') && !f.startsWith('src/pages/404.astro'))).toEqual([]);
   });
   test('video play and pause in view only in autoplay.ts', () => {
     expect(where(/\.play\(\)\.catch|v\.pause\(\)|video\.pause\(\)/).filter((f) => !f.startsWith('src/lib/autoplay.ts'))).toEqual([]);
