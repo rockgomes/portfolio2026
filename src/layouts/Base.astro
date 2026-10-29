@@ -4,8 +4,9 @@ import '../styles/base.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 
-interface Props { title: string; description?: string; noindex?: boolean; showSwitch?: boolean }
-const { title, description = '', noindex = false, showSwitch = false } = Astro.props;
+// readView: use the visitor's chosen view without showing the switch (the 404 page).
+interface Props { title: string; description?: string; noindex?: boolean; showSwitch?: boolean; readView?: boolean }
+const { title, description = '', noindex = false, showSwitch = false, readView = false } = Astro.props;
 // The build writes pages as files (astro.config.mjs), so the path ends in .html at build time. The real
 // addresses have no .html (same as Webflow): /project/flex-academy, and / for the homepage.
 const canonical = new URL(Astro.url.pathname.replace(/(\/index)?\.html$/, '') || '/', Astro.site);
@@ -39,7 +40,7 @@ const shareImage = new URL('/og.png', Astro.site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" />
-    {showSwitch && (
+    {(showSwitch || readView) && (
       <script is:inline>
         // Set the audience view before first paint so the page does not flash.
         (function () {

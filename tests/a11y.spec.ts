@@ -22,6 +22,9 @@ const KNOWN = [
   { name: 'filter panel', where: '[data-side]', rules: ['target-size', 'aria-required-children'], url: '/?view=design', desktopOnly: true, scheme: null },
   // The Variant / State / Size buttons in the design system section are under 24px tall.
   { name: 'component property buttons', where: '[data-prop]', rules: ['target-size'], url: '/?view=design', desktopOnly: false, scheme: null as string | null },
+  // White "Rock" on the orange cursor name tag is 3.4:1 in light mode (4.5:1 needed). The colours come from Figma.
+  // The homepage has the same tag, but it only shows there during the hero story, so the scan does not see it.
+  { name: 'Rock cursor name tag', where: '.c-rock', rules: ['color-contrast'], url: '/404', desktopOnly: true, scheme: 'light' },
 ];
 type Known = (typeof KNOWN)[number];
 // Disabled-state samples in the design system section. WCAG does not ask disabled controls to pass contrast.

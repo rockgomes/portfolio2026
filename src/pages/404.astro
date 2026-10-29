@@ -1,14 +1,348 @@
 ---
+// The 404 page, one version per audience view. There is no view switch here: the page uses the view the visitor
+// chose last (Base reads it, see readView).
+// Design view: the missing page is an instance whose main component was deleted. An empty frame carries the address
+// as its name; Rock's cursor asks who deleted it. "Swap instance" previews another page in the slot and opens it;
+// Undo (button or Cmd/Ctrl+Z) fills the frame with the homepage and goes there.
+// Engineer view: a small fake shell (help, ls, cd, whoami, contact, clear; Tab completes). Recruiter view: plain text.
 import Base from '../layouts/Base.astro';
+import Cursor from '../components/Cursor.astro';
+import Comment from '../components/Comment.astro';
+import Glyph from '../components/Glyph.astro';
+import { getImage } from 'astro:assets';
+import { workItems } from '../lib/work';
+const items = await workItems();
+// Each page as a component you can swap into the empty slot (card picture for the preview).
+const comps = await Promise.all(items.map(async (it) => ({ href: it.href, title: it.d.cardTitle, group: it.href.startsWith('/project/') ? 'Case studies' : 'Experiments', src: it.img ? (await getImage({ src: it.img, width: 960, format: 'webp' })).src : '' })));
+const groups = ['Case studies', 'Experiments'];
 ---
-<Base title="Page not found - Rock Gomes" noindex>
-  <article class="article">
+<Base title="Page not found - Rock Gomes" noindex readView>
+  <!-- Design view -->
+  <section class="nf" data-not-engineer data-nf>
+    <div class="wrap">
+      <div class="canvas">
+      <div>
+      <p class="frame-name t-mono-label"><span class="gl"><Glyph kind="variant" /></span> <span data-frame-name><span data-path>/missing-page</span></span></p>
+      <div class="frame" data-frame>
+        <img class="ghost" src="/404-home.jpg" alt="" width="1200" height="680" decoding="async" data-ghost />
+        <img class="swap-img" alt="" data-swap-img />
+        <div class="empty">
+          <p class="code t-mono-label">404 · empty frame</p>
+          <h1 class="t-heading-item">This page does not exist.</h1>
+          <p class="lead">The address may be wrong, or the page moved. Swap in another component, or <a href="/">go to the homepage</a>.</p>
+        </div>
+        <Cursor name="Rock" color="rock" class="k" style="left: 0; top: 0;">
+          <Comment who="Rock" initial="R" color="rock" when="just now" class="say" data-say="1">Who deleted this page?</Comment>
+        </Cursor>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn" data-undo>Undo <span class="kbd t-mono-label">⌘Z</span></button>
+        <a class="btn btn-primary" href="/">Go to the homepage</a>
+      </div>
+      </div>
+      <aside class="ipanel" aria-labelledby="swap-title">
+        <p class="ph t-mono-label">Instance</p>
+        <div class="missing">
+          <span class="warn" aria-hidden="true">!</span>
+          <div><p class="mt">Missing component</p><p class="ms t-body-small">The main component for <span data-path>/missing-page</span> was deleted.</p></div>
+        </div>
+        <p class="ph t-mono-label" id="swap-title">Swap instance</p>
+        <div class="list" data-swap-list>
+          {groups.map((g) => (
+            <>
+              <p class="gh t-mono-label">{g}</p>
+              {comps.filter((c) => c.group === g).map((c) => (
+                <a class="opt" href={c.href} data-swap={c.src} data-title={c.title}><span class="gl"><Glyph kind="master" /></span><span class="on">{c.title}</span></a>
+              ))}
+            </>
+          ))}
+        </div>
+      </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Engineer view -->
+  <section class="nf-dev" data-engineer data-pages={JSON.stringify(items.map((it) => ({ href: it.href, title: it.d.cardTitle })))}>
+    <div class="wrap">
+      <div class="term t-mono-body">
+        <div class="thead"><span class="t-mono-label">zsh</span></div>
+        <div class="tbody">
+          <p><span class="u">rock@portfolio</span> <span class="d">~</span> <span class="p">%</span> <span class="cmd">cd</span> <span data-path>/missing-page</span></p>
+          <p><span class="p">cd:</span> <span class="err">no such file or directory:</span> <span data-path>/missing-page</span></p>
+          <p><span class="u">rock@portfolio</span> <span class="d">~</span> <span class="p">%</span> <span class="cmd">ls</span></p>
+          <p><a href="/">index</a></p>
+          {items.map((it) => { const [dir, name] = it.href.slice(1).split("/"); return <p><a href={it.href}><span class="d">{dir}/</span>{name}</a></p>; })}
+          <div data-out aria-live="polite"><p><span class="p">Type </span><span class="cmd">help</span><span class="p"> to see the commands. Tab completes, Up shows the last command.</span></p></div>
+          <form class="prompt" data-term-form>
+            <span class="u">rock@portfolio</span>&nbsp;<span class="d">~</span>&nbsp;<span class="p">%</span><label class="sr-only" for="term-in">Type a command. Type help to see the commands.</label>
+            <span class="field"><input id="term-in" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" data-term-in /><span class="sug" aria-hidden="true" data-sug></span><span class="bcaret" aria-hidden="true" data-bcaret></span></span>
+          </form>
+        </div>
+      </div>
+      <h1 class="sr-only">Page not found</h1>
+    </div>
+  </section>
+
+  <!-- Recruiter view -->
+  <article class="article nf-rec" data-recruiter>
     <div class="eyebrow">404</div>
     <h1>This page does not exist.</h1>
     <p class="lead">It may have moved. <a href="/">Go to the homepage</a>.</p>
   </article>
 </Base>
+
+<script>
+  const path = decodeURIComponent(location.pathname);
+  document.querySelectorAll('[data-path]').forEach((n) => (n.textContent = path));
+
+  // Engineer view: a small fake shell. Only reads the site's own page list; cd and open go to real pages.
+  const dev = document.querySelector<HTMLElement>('[data-pages]');
+  if (dev) {
+    const pages: { href: string; title: string }[] = JSON.parse(dev.dataset.pages!);
+    const out = dev.querySelector<HTMLElement>('[data-out]')!;
+    const form = dev.querySelector<HTMLFormElement>('[data-term-form]')!;
+    const input = dev.querySelector<HTMLInputElement>('[data-term-in]')!;
+    const body = dev.querySelector<HTMLElement>('.tbody')!;
+    const hist: string[] = [];
+    let hi = 0;
+    const span = (cls: string, text: string) => { const s = document.createElement('span'); if (cls) s.className = cls; s.textContent = text; return s; };
+    const line = (...kids: (Node | string)[]) => { const p = document.createElement('p'); p.append(...kids); out.append(p); return p; };
+    const link = (href: string) => { const a = document.createElement('a'); a.href = href; const [dir, name] = href.slice(1).split('/'); if (name) a.append(span('d', dir + '/'), name); else a.textContent = href === '/' ? 'index' : dir; return a; };
+    const prompt = (cmd: string) => line(span('u', 'rock@portfolio'), ' ', span('d', '~'), ' ', span('p', '%'), ' ', ...(cmd ? [span('cmd', cmd.split(' ')[0]), cmd.slice(cmd.split(' ')[0].length)] : []));
+    const dirs = ['project', 'experiments'];
+    const norm = (a: string) => a.trim().replace(/^~\/?/, '').replace(/^\/+|\/+$/g, '');
+    const find = (a: string) => { const n = norm(a); if (n === '' || n === 'index') return '/'; return pages.find((p) => p.href.slice(1) === n || p.href.split('/')[2] === n)?.href; };
+    const go = (href: string) => { line(span('p', 'opening ' + href + ' ...')); setTimeout(() => (location.href = href), 350); };
+    const cmds: Record<string, (arg: string) => void> = {
+      help: () => {
+        [['ls', 'list the pages'], ['ls project', 'list the case studies'], ['cd <page>', 'open a page (Tab completes the name)'], ['whoami', 'who made this site'], ['contact', 'how to reach Rock'], ['clear', 'clear the screen']]
+          .forEach(([c, d]) => line(span('cmd', c.padEnd(12)), span('p', d)));
+      },
+      ls: (arg) => {
+        const n = norm(arg);
+        if (!n) { line(link('/')); dirs.forEach((d) => line(span('d', d + '/'))); return; }
+        if (!dirs.includes(n)) { line(span('p', 'ls:'), ' ', span('err', 'no such file or directory:'), ' ' + arg); return; }
+        pages.filter((p) => p.href.startsWith('/' + n + '/')).forEach((p) => line(link(p.href), span('p', '  # ' + p.title)));
+      },
+      cd: (arg) => {
+        const n = norm(arg);
+        if (dirs.includes(n)) { line(span('p', 'cd:'), ' ' + n + ' is a folder. Try ', span('cmd', 'ls ' + n)); return; }
+        const href = find(arg);
+        if (href) go(href); else line(span('p', 'cd:'), ' ', span('err', 'no such file or directory:'), ' ' + arg.trim());
+      },
+      whoami: () => line('Rock Gomes. Senior Product Designer in Tallinn, open to contract and full-time projects.'),
+      contact: () => { const a = document.createElement('a'); a.href = 'mailto:rock@rockgomes.com'; a.textContent = 'rock@rockgomes.com'; line(a); },
+      sudo: () => line(span('err', 'Nice try.')),
+      exit: () => go('/'),
+    };
+    cmds.open = cmds.cd;
+    cmds.email = cmds.contact;
+    cmds.clear = () => { body.querySelectorAll(':scope > p').forEach((p) => p.remove()); out.replaceChildren(); };
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const raw = input.value.trim();
+      input.value = '';
+      prompt(raw);
+      if (raw) { hist.push(raw); hi = hist.length; }
+      const [name, ...rest] = raw.split(/\s+/);
+      if (!name) return;
+      const fn = cmds[name.toLowerCase()];
+      if (fn) fn(rest.join(' '));
+      else { line(span('p', 'zsh:'), ' ', span('err', 'command not found:'), ' ' + name); line(span('p', 'Type '), span('cmd', 'help'), span('p', ' to see the commands.')); }
+      input.scrollIntoView({ block: 'nearest' });
+    });
+    // Completion: command names first, then page paths (a page also matches by its own name, without the folder).
+    const names = ['help', 'ls', 'cd', 'open', 'whoami', 'contact', 'clear'];
+    const paths = [...dirs.map((d) => d + '/'), ...pages.map((p) => p.href.slice(1))];
+    const hitsFor = (v: string) => {
+      const m = v.match(/^(\S*)$|^(\S+\s+)(\S*)$/);
+      if (!m) return { head: '', hits: [] as string[] };
+      if (m[1] !== undefined) return { head: '', hits: m[1] ? names.filter((n) => n.startsWith(m[1].toLowerCase())) : [] };
+      const a = norm(m[3]);
+      const pool = m[2].trim() === 'ls' ? dirs.map((d) => d + '/') : paths;
+      return { head: m[2], hits: pool.filter((x) => x.startsWith(a) || (a && x.split('/')[1]?.startsWith(a))) };
+    };
+    const common = (xs: string[]) => xs.reduce((a, b) => { let i = 0; while (i < a.length && a[i] === b[i]) i++; return a.slice(0, i); });
+    // The fat block caret and the grey suggestion are drawn over the input, at the measured text width.
+    const sug = dev.querySelector<HTMLElement>('[data-sug]')!;
+    const bcaret = dev.querySelector<HTMLElement>('[data-bcaret]')!;
+    // Measured with a hidden copy of the text, so letter spacing counts too.
+    const meter = document.createElement('span');
+    meter.className = 'meter';
+    meter.setAttribute('aria-hidden', 'true');
+    input.after(meter);
+    const w = (s: string) => { meter.textContent = s; return meter.getBoundingClientRect().width; };
+    const draw = () => {
+      const v = input.value;
+      const at = input.selectionStart ?? v.length;
+      bcaret.style.transform = `translateX(${w(v.slice(0, at)) - input.scrollLeft}px)`;
+      const { head, hits } = hitsFor(v);
+      const typed = v.slice(head.length);
+      // The grey rest of the first match: of its full path, or of its own name when that is what was typed.
+      const tn = norm(typed);
+      const best = tn ? hits.map((h) => (h.startsWith(tn) ? h : h.split('/')[1] ?? '')).find((h) => h.startsWith(tn) && h !== tn) : undefined;
+      const rest = best && at === v.length ? best.slice(tn.length) : '';
+      sug.textContent = rest;
+      sug.style.transform = `translateX(${w(v) - input.scrollLeft}px)`;
+      bcaret.classList.remove('typing'); void bcaret.offsetWidth; bcaret.classList.add('typing');
+    };
+    ['input', 'keyup', 'click', 'focus', 'blur', 'select'].forEach((ev) => input.addEventListener(ev, draw));
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp' && hi > 0) { e.preventDefault(); input.value = hist[--hi]; }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); hi = Math.min(hist.length, hi + 1); input.value = hist[hi] ?? ''; }
+      else if (e.key === 'ArrowRight' && sug.textContent && input.selectionStart === input.value.length) { e.preventDefault(); input.value += sug.textContent; }
+      else if (e.key === 'Tab') {
+        e.preventDefault(); // stay in the terminal, like a real shell
+        const { head, hits } = hitsFor(input.value);
+        if (hits.length === 1) input.value = head + hits[0] + (head ? '' : ' ');
+        else if (hits.length > 1) {
+          const typed = norm(input.value.slice(head.length));
+          const pre = common(hits);
+          if (pre.length > typed.length && hits.every((h) => h.startsWith(typed))) input.value = head + pre;
+          else { prompt(input.value); line(span('p', hits.join('   '))); }
+        }
+      }
+      requestAnimationFrame(draw);
+    });
+    requestAnimationFrame(draw);
+    dev.querySelector('.term')!.addEventListener('click', (e) => { if (!(e.target as HTMLElement).closest('a') && !getSelection()?.toString()) input.focus(); });
+  }
+
+  const root = document.querySelector<HTMLElement>('[data-nf]');
+  if (root) {
+    const frame = root.querySelector<HTMLElement>('[data-frame]')!;
+    const ks = [...root.querySelectorAll<HTMLElement>('.k')];
+    const says = [...root.querySelectorAll<HTMLElement>('[data-say]')];
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Rock's cursor: rest spot as a share of the frame (x, y), and where it glides in from (a short move).
+    const rest = [[0.04, 0.6]];
+    const paths = [[[0.12, 0.74], [0.04, 0.6]]];
+    const px = (p: number[]) => `translate(${p[0] * frame.clientWidth}px, ${p[1] * frame.clientHeight}px)`;
+    const place = () => ks.forEach((k, i) => (k.style.transform = px(rest[i])));
+    let undone = false;
+
+    if (still) { place(); says.forEach((s) => s.classList.add('on')); }
+    else {
+      ks.forEach((k, i) => {
+        k.style.transform = px(paths[i][0]);
+        const a = k.animate(paths[i].map((p, j) => ({ transform: px(p), opacity: j ? 1 : 0 })), { duration: 900, delay: 500, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' });
+        a.onfinish = () => { a.commitStyles(); a.cancel(); };
+      });
+      setTimeout(() => says[0].classList.add('on'), 1700);
+    }
+    addEventListener('resize', () => { if (!undone) place(); });
+
+    const undo = () => {
+      if (undone) return;
+      undone = true;
+      says.forEach((s) => s.classList.remove('on'));
+      if (still) { location.href = '/'; return; }
+      ks.forEach((k) => k.animate([{ transform: k.style.transform }, { transform: px([0.5, 0.5]) }], { duration: 450, easing: 'cubic-bezier(.5,0,.2,1)', fill: 'forwards' }));
+      setTimeout(() => frame.classList.add('restored'), 350);
+      setTimeout(() => (location.href = '/'), 1500);
+    };
+    root.querySelector('[data-undo]')!.addEventListener('click', undo);
+
+    // Swap instance: point at a component to preview it in the slot; choose it to fill the slot and open that page.
+    const swapImg = root.querySelector<HTMLImageElement>('[data-swap-img]')!;
+    const fname = root.querySelector<HTMLElement>('[data-frame-name]')!;
+    const fnameHtml = fname.innerHTML;
+    const preview = (o: HTMLAnchorElement | null) => {
+      if (undone) return;
+      frame.classList.toggle('previewing', !!o);
+      if (o) { swapImg.src = o.dataset.swap!; fname.textContent = o.dataset.title!; } else fname.innerHTML = fnameHtml;
+    };
+    // Load the card pictures once the visitor reaches the list, so the first preview shows at once.
+    const list = root.querySelector<HTMLElement>('[data-swap-list]')!;
+    const preload = () => list.querySelectorAll<HTMLAnchorElement>('[data-swap]').forEach((o) => { if (o.dataset.swap) new Image().src = o.dataset.swap; });
+    list.addEventListener('pointerenter', preload, { once: true });
+    list.addEventListener('focusin', preload, { once: true });
+    root.querySelectorAll<HTMLAnchorElement>('[data-swap]').forEach((o) => {
+      o.addEventListener('pointerenter', () => preview(o));
+      o.addEventListener('focus', () => preview(o));
+      o.addEventListener('pointerleave', () => preview(null));
+      o.addEventListener('blur', () => preview(null));
+      o.addEventListener('click', (e) => {
+        if (still || e.metaKey || e.ctrlKey || e.shiftKey) return;
+        e.preventDefault();
+        preview(o);
+        undone = true;
+        says.forEach((s) => s.classList.remove('on'));
+        frame.classList.add('swapped');
+        ks.forEach((k) => k.animate([{ transform: k.style.transform }, { transform: px([0.5, 0.5]) }], { duration: 450, easing: 'cubic-bezier(.5,0,.2,1)', fill: 'forwards' }));
+        setTimeout(() => (location.href = o.href), 1100);
+      });
+    });
+    addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && document.documentElement.dataset.view === 'design') { e.preventDefault(); undo(); } });
+  }
+</script>
+
 <style>
-  /* Small text: the redline orange is too light here, so the label uses the muted grey (like the recruiter view). */
+  .nf { padding-block: var(--space-64); }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-inline: var(--space-24); }
+  .frame-name { margin: 0 0 6px; color: var(--color-annotation-measure); }
+  .frame { position: relative; height: clamp(360px, 55vh, 520px); border: 1.5px dashed var(--color-annotation-measure); background: var(--color-surface-page); border-radius: 2px; }
+  .empty { position: absolute; inset: 0; display: grid; place-content: center; gap: var(--space-8); padding: var(--space-24); text-align: center; transition: opacity 0.3s; }
+  .empty h1 { margin: 0; }
+  .empty .lead { margin: 0; color: var(--color-text-secondary); }
+  .code { margin: 0; color: var(--color-text-muted); }
+  .ghost { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top left; opacity: 0; transform: scale(0.96); transition: opacity 0.5s, transform 0.6s cubic-bezier(.2,.8,.2,1); }
+  .canvas { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: var(--space-24); align-items: start; }
+  @media (max-width: 999px) { .canvas { grid-template-columns: minmax(0, 1fr); } }
+  .gl { display: inline-flex; vertical-align: -1px; }
+  .swap-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.2s; }
+  .frame.previewing .swap-img { opacity: 1; }
+  .frame.previewing .empty, .frame.previewing :global(.say) { opacity: 0; }
+  .frame.previewing, .frame.swapped { border-style: solid; }
+  .ipanel { background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 10px; box-shadow: var(--shadow-panel); padding: 12px 0 8px; margin-top: 22px; }
+  .ph { margin: 0; padding: 4px 14px; color: var(--color-text-primary); }
+  .missing { display: flex; gap: 10px; margin: 6px 14px 14px; padding: 10px; border-radius: 6px; background: var(--color-annotation-redline-soft); }
+  .warn { flex: none; display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--color-status-negative-text); color: var(--color-surface-page); font: 600 12px/1 var(--font-sans); }
+  .mt { margin: 0; font: var(--type-ui-button); color: var(--color-text-primary); }
+  .ms { margin: 2px 0 0; color: var(--color-text-secondary); overflow-wrap: anywhere; }
+  .list { max-height: 340px; overflow: auto; padding-bottom: 4px; }
+  .gh { margin: 8px 0 2px; padding: 0 14px; color: var(--color-text-muted); }
+  .opt { display: flex; align-items: center; gap: 8px; padding: 5px 14px; color: var(--color-text-primary); text-decoration: none; font-size: 13px; }
+  .opt .gl { color: var(--color-figma-component); }
+  .opt:hover, .opt:focus-visible { background: var(--color-figma-component-soft); }
+  .opt:focus-visible { outline: 2px solid var(--color-figma-component); outline-offset: -2px; }
+  .frame.restored { border-style: solid; }
+  .frame.restored .ghost { opacity: 1; transform: none; }
+  .frame.restored .empty { opacity: 0; }
+  .k { will-change: transform; }
+  .say { left: 12px; top: 44px; width: 250px; opacity: 0; transform: translateY(4px); transition: opacity 0.3s, transform 0.3s; }
+  .say:global(.on) { opacity: 1; transform: none; }
+  .actions { display: flex; gap: var(--space-8); justify-content: center; margin-top: var(--space-24); }
+  .kbd { margin-left: 6px; color: var(--color-text-muted); }
+  /* Overlays hide below 1200px, as on the homepage */
+  @media (max-width: 1199px) { .frame :global([data-overlay]) { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .say, .ghost, .empty, .swap-img { transition: none; } }
+
+  .nf-dev { padding-block: var(--space-64); }
+  .term { background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 10px; box-shadow: var(--shadow-panel); overflow: hidden; }
+  .thead { padding: 10px 14px; border-bottom: 1px solid var(--color-border-subtle); color: var(--color-text-primary); }
+  .tbody { padding: 12px 14px; overflow-x: auto; }
+  .tbody :global(.p) { color: var(--color-text-muted); }
+  /* zsh colours, from the tokens the inspector code already uses */
+  .tbody :global(.u) { color: var(--color-view-engineer); }
+  .tbody :global(.d) { color: var(--color-annotation-measure); }
+  .tbody :global(.cmd) { color: var(--color-figma-component); }
+  .tbody :global(.err) { color: var(--color-status-negative-text); }
+  .tbody :global(a) { color: var(--color-text-primary); }
+  .prompt { display: flex; align-items: center; margin: 0; line-height: 1.6; white-space: pre; }
+  .field { position: relative; flex: 1 1 0; min-width: 0; margin-left: 1ch; display: flex; align-items: center; }
+  .prompt input { flex: 1 1 0; min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; font: inherit; letter-spacing: inherit; color: var(--color-text-primary); caret-color: transparent; }
+  /* Fat block caret: blinks when idle, solid while typing */
+  .bcaret { position: absolute; left: 0; top: 50%; width: 0.62em; height: 1.15em; margin-top: -0.6em; background: var(--color-text-primary); animation: blink 1.1s steps(1) infinite; pointer-events: none; }
+  .bcaret:global(.typing) { animation: blink 1.1s steps(1) 0.6s infinite; }
+  @media (prefers-reduced-motion: reduce) { .bcaret, .bcaret:global(.typing) { animation: none; } }
+  .field :global(.meter) { position: absolute; visibility: hidden; white-space: pre; font: inherit; letter-spacing: inherit; }
+  .sug { position: absolute; left: 0; top: 0; bottom: 0; display: flex; align-items: center; color: var(--color-text-muted); white-space: pre; pointer-events: none; }
+  .prompt:focus-within { box-shadow: inset 2px 0 0 var(--color-annotation-measure); margin-left: -14px; padding-left: 14px; }
+  .tbody :global(p) { margin: 0; white-space: pre; line-height: 1.6; }
+  @keyframes blink { 50% { opacity: 0; } }
   .eyebrow { color: var(--color-text-muted); }
+  /* Recruiter: enough room that the message is not shorter than the footer */
+  .nf-rec { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; }
 </style>
