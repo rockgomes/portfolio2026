@@ -3,7 +3,7 @@
 Where the rockgomes.com rebuild stands, and what comes next. Written for a new Claude Code session working on this repo. Read `CLAUDE.md` first.
 
 ## Where things are
-- **Live:** https://rockgomes.com (since 29 Oct 2026; www forwards to it). Also https://rockgomes-portfolio2026.netlify.app. Netlify site `rockgomes-portfolio2026`, connected to this repo. Every PR gets a deploy preview (`deploy-preview-<N>--rockgomes-portfolio2026.netlify.app`). Netlify builds only `main` and PRs into `main`; for a stacked PR, add its base branch in Netlify's branch settings while it is open.
+- **Live:** https://www.rockgomes.com (since 29 Oct 2026). www is the main address, as on Webflow: rockgomes.com forwards to it. Keep it that way, or browsers that remember Webflow's forward loop (ERR_TOO_MANY_REDIRECTS). Also https://rockgomes-portfolio2026.netlify.app. Netlify site `rockgomes-portfolio2026`, connected to this repo. Every PR gets a deploy preview (`deploy-preview-<N>--rockgomes-portfolio2026.netlify.app`). Netlify builds only `main` and PRs into `main`; for a stacked PR, add its base branch in Netlify's branch settings while it is open.
 - **Domain:** DNS stays at GoDaddy (Rock's account; email is Microsoft 365 there, never touch MX or TXT). A `@` = 75.2.60.5, CNAME `www` = rockgomes-portfolio2026.netlify.app. To roll back to Webflow: A `@` = 198.202.211.1, CNAME `www` = cdn.webflow.com.
 - **Motion plan** (approved, with live demos): https://claude.ai/artifact/Y6JDGyVGEaNW7wKC5PDyjP
 
