@@ -105,11 +105,10 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .ui-tag-component { background: var(--color-figma-component-soft); color: var(--color-figma-component); }
 .ui-tag-selected { border-color: var(--color-annotation-measure); background: var(--color-annotation-measure-soft); color: var(--color-text-primary); cursor: pointer; }
 /* People in the Figma layer (Figma: Cursor set 44:562, Comment 44:575): each person has a colour, set as --c by
-   .c-client, .c-pm, .c-rock, .c-dev (.c-you is the visitor). Cursors, avatars and comments read --c.
-   The Rock cursor arrow reads --c-line: it has no text on it, so it can use the lighter redline. */
+   .c-client, .c-pm, .c-rock, .c-dev (.c-you is the visitor). Cursors, avatars and comments read --c. */
 .c-client { --c: var(--color-cursor-client); }
 .c-pm, .c-you { --c: var(--color-cursor-pm); }
-.c-rock { --c: var(--color-annotation-redline); --c-line: var(--color-annotation-redline-line); }
+.c-rock { --c: var(--color-annotation-redline); }
 .c-dev { --c: var(--color-annotation-measure); }
 /* Avatar (part of Figma Comment 44:575): the person's initial in a circle of their colour. .ui-avatar-sm is the
    smaller one in the footer "Copied" bubble. Use with .t-mono-label and a .c-* colour. */

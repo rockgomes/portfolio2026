@@ -5,7 +5,7 @@ interface Props { name: string; color: 'client' | 'pm' | 'rock' | 'dev' | 'you';
 const { name, color, style, class: cls } = Astro.props;
 ---
 <span class:list={['cursor', `c-${color}`, cls]} style={style} data-overlay aria-hidden="true">
-  <svg class="arrow" width="14" height="18" viewBox="0 0 14 18" fill="none"><path d="M1 1L13 10.5L7.2 11.2L4.4 16.8L1 1Z" fill="var(--c-line, var(--c))" stroke="var(--color-text-primary)" stroke-width="1.2" stroke-linejoin="round" /></svg><span class="tag t-mono-label">{name}</span><slot />
+  <svg class="arrow" width="14" height="18" viewBox="0 0 14 18" fill="none"><path d="M1 1L13 10.5L7.2 11.2L4.4 16.8L1 1Z" fill="var(--c)" stroke="var(--color-text-primary)" stroke-width="1.2" stroke-linejoin="round" /></svg><span class="tag t-mono-label">{name}</span><slot />
 </span>
 <style>
   .cursor { position: absolute; z-index: 5; pointer-events: none; width: 0; height: 0; }

@@ -12,16 +12,14 @@
   --color-text-primary: #1d1d1f;
   --color-text-secondary: #4e5157;
   --color-text-muted: #6e7076;
-  --color-text-accent: #c8370d;
-  --color-text-accent-display: #ee5a36;
+  --color-text-accent: #ee5a36;
   --color-border-strong: rgba(0, 0, 0, 0.16);
   --color-border-subtle: rgba(0, 0, 0, 0.09);
   --color-border-control: rgba(16, 24, 40, 0.47);
-  --color-annotation-redline: #c8370d;
+  --color-annotation-redline: #ee5a36;
   --color-annotation-redline-soft: rgba(238, 90, 54, 0.1);
   --color-annotation-measure: #0a62d4;
   --color-annotation-measure-soft: rgba(27, 111, 227, 0.14);
-  --color-annotation-redline-line: #ee5a36;
   --color-cursor-client: #188752;
   --color-cursor-pm: #6854e0;
   --color-selection-handle: #ffffff;
@@ -48,7 +46,6 @@
   --color-text-secondary: #b0b5bd;
   --color-text-muted: #828891;
   --color-text-accent: #ff6a58;
-  --color-text-accent-display: #ff6a58;
   --color-border-strong: rgba(232, 234, 238, 0.14);
   --color-border-subtle: rgba(232, 234, 238, 0.08);
   --color-border-control: rgba(232, 234, 238, 0.37);
@@ -56,7 +53,6 @@
   --color-annotation-redline-soft: rgba(255, 106, 88, 0.16);
   --color-annotation-measure: #4fd3ea;
   --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
-  --color-annotation-redline-line: #ff6a58;
   --color-cursor-client: #f2c14e;
   --color-cursor-pm: #a98bfa;
   --color-selection-handle: #e8eaee;
@@ -84,7 +80,6 @@
     --color-text-secondary: #b0b5bd;
     --color-text-muted: #828891;
     --color-text-accent: #ff6a58;
-    --color-text-accent-display: #ff6a58;
     --color-border-strong: rgba(232, 234, 238, 0.14);
     --color-border-subtle: rgba(232, 234, 238, 0.08);
     --color-border-control: rgba(232, 234, 238, 0.37);
@@ -92,7 +87,6 @@
     --color-annotation-redline-soft: rgba(255, 106, 88, 0.16);
     --color-annotation-measure: #4fd3ea;
     --color-annotation-measure-soft: rgba(79, 211, 234, 0.14);
-    --color-annotation-redline-line: #ff6a58;
     --color-cursor-client: #f2c14e;
     --color-cursor-pm: #a98bfa;
     --color-selection-handle: #e8eaee;
