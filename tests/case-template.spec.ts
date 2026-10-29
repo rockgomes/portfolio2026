@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { shoot, loadImages } from './shoot';
 
 // The Portfolio presentation template experiment (Figma sketch 14, 463:1958), on the lighter experiment template:
 // summary with the live demo, one section, no "How I got there" or "What changed".
@@ -31,15 +32,19 @@ test('buttons open the live demo and the source code', async ({ page }) => {
 
 // No screen recording: on phones the still picture shows, and there is nothing to reload
 // The template site sends X-Frame-Options: DENY, so it cannot show in a frame: the still picture shows at every size
-test('live demo: a still picture under the browser bar, at every size', async ({ page }) => {
+test('live demo: the live site in a frame on desktop, the still picture on phones', async ({ page, viewport }) => {
   await page.goto(PAGE);
   const live = page.locator('[data-live]');
   await expect(live.locator('.addr')).toHaveText('rockgomes-portfolio-template.netlify.app');
   await expect(live.locator('figcaption')).toHaveText('The live template. Open it, scroll down and open a chapter.');
-  await expect(live.locator('iframe')).toHaveCount(0);
   await expect(live.locator('video')).toHaveCount(0);
-  await expect(live.locator('.still')).toBeVisible();
-  await expect(live.getByRole('button', { name: 'Reload the live page' })).toBeHidden();
+  if ((viewport?.width ?? 0) >= 1200) {
+    await expect(live.locator('iframe')).toBeVisible();
+    await expect(live.getByRole('button', { name: 'Reload the live page' })).toBeVisible();
+  } else {
+    await expect(live.locator('.still')).toBeVisible();
+    await expect(live.getByRole('button', { name: 'Reload the live page' })).toBeHidden();
+  }
 });
 
 test('one section, in the order of the sketch', async ({ page }) => {
@@ -96,7 +101,8 @@ for (const width of [320, 400]) {
 // Screenshots, made by CI on the pull request (never commit local ones). The live demo is another site, so it is masked.
 test('looks the same as the approved screenshots', async ({ page }) => {
   await page.goto(PAGE);
-  await page.evaluate(async () => { await document.fonts.ready; for (const img of Array.from(document.images)) { img.loading = 'eager'; if (!img.complete) await new Promise((r) => { img.onload = img.onerror = r; }); } });
+  await loadImages(page);
+  // shoot() starts each section on a whole pixel and rounds its size, so the live frame's height can not move it by 1px
   for (const sel of ['[data-case-summary]', '#built', '[data-next-case]'])
-    await expect(page.locator(sel)).toHaveScreenshot(`template-${sel.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}.png`, { mask: [page.locator('[data-live] iframe')] });
+    await shoot(page, sel, `template-${sel.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}.png`, ['[data-live] iframe']);
 });
