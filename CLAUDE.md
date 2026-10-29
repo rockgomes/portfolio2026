@@ -10,7 +10,7 @@ Rock is a senior product designer, not a developer. He reads code and makes smal
 - Never commit to `main` directly. One branch and one pull request per piece of work, small enough to review.
 - Every PR must pass CI: `npm run check`, `npm run build`, `npm test` (Playwright).
 - Every PR gets a Netlify deploy preview. Rock reviews there and merges.
-- Production deploys only from `main`. The rockgomes.com domain still points at Webflow until Rock says to switch.
+- Production deploys only from `main`, live at www.rockgomes.com (DNS at GoDaddy, see `docs/HANDOFF.md`).
 
 ## Design rules
 - **Tokens come from Figma.** `src/styles/tokens.css` is exported from the tokens variable collection in that Figma file (modes: Light - Crisp = light, Dark, Light - Dev = engineer view). Do not hand-edit values; change Figma and re-export. Use `var(--color-...)`, `var(--type-...)`, `var(--shadow-...)` only, never raw hex in components.

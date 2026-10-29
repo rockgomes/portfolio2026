@@ -3,8 +3,8 @@
 Where the rockgomes.com rebuild stands, and what comes next. Written for a new Claude Code session working on this repo. Read `CLAUDE.md` first.
 
 ## Where things are
-- **Live (Netlify, not the real domain yet):** https://rockgomes-portfolio2026.netlify.app. Netlify site `rockgomes-portfolio2026`, connected to this repo. Every PR gets a deploy preview (`deploy-preview-<N>--rockgomes-portfolio2026.netlify.app`). Netlify builds only `main` and PRs into `main`; for a stacked PR, add its base branch in Netlify's branch settings while it is open.
-- **rockgomes.com** still points at Webflow. Do not touch the domain until Rock says so.
+- **Live:** https://www.rockgomes.com (since 29 Oct 2026). www is the main address, as on Webflow: rockgomes.com forwards to it. Keep it that way, or browsers that remember Webflow's forward loop (ERR_TOO_MANY_REDIRECTS). Also https://rockgomes-portfolio2026.netlify.app. Netlify site `rockgomes-portfolio2026`, connected to this repo. Every PR gets a deploy preview (`deploy-preview-<N>--rockgomes-portfolio2026.netlify.app`). Netlify builds only `main` and PRs into `main`; for a stacked PR, add its base branch in Netlify's branch settings while it is open.
+- **Domain:** DNS stays at GoDaddy (Rock's account; email is Microsoft 365 there, never touch MX or TXT). A `@` = 75.2.60.5, CNAME `www` = rockgomes-portfolio2026.netlify.app. To roll back to Webflow: A `@` = 198.202.211.1, CNAME `www` = cdn.webflow.com.
 - **Motion plan** (approved, with live demos): https://claude.ai/artifact/Y6JDGyVGEaNW7wKC5PDyjP
 
 ## Done
@@ -56,7 +56,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 1. **Done: every case study and experiment uses the new template.** Keep one `h1` per page (a smoke test checks it). The unused `public/embeds/flex-academy-embeds.js` was deleted (Rock, 29 Oct).
    - Update sketch C in Figma to the copy changed in code, and fix its Work card file name.
 2. **Per-project password protection.** Frontmatter `private: true` protects nothing yet; needs a Netlify Edge Function (or similar).
-3. **Launch**: point rockgomes.com and www.rockgomes.com to Netlify, keep Webflow 2-4 weeks as fallback. Done already: the repo is public (29 Oct), and the launch basics PR adds the browser icons, the link preview image (`public/og.png`, remake with `scripts/make-share-image.mjs`), `robots.txt`, `/sitemap.xml` and canonical addresses without `.html`. The preview image URL points at rockgomes.com, so link previews only show it after the domain switch.
+3. **Done: launch** (29 Oct 2026). rockgomes.com and www point to Netlify; HTTPS from Let's Encrypt; all 14 old Webflow addresses work. Done already: the repo is public (29 Oct), and the launch basics PR adds the browser icons, the link preview image (`public/og.png`, remake with `scripts/make-share-image.mjs`), `robots.txt`, `/sitemap.xml` and canonical addresses without `.html`. The preview image URL points at rockgomes.com, so link previews only show it after the domain switch.
 
 ## Open questions for Rock (do not guess)
 - **Romeo** (Independent client tab): business line, text, whether to name the work.
