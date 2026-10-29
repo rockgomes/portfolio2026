@@ -24,7 +24,7 @@ const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? [
   if (k === 'x') return { swatch: null, shadow: true, glyph: '', name, what: 'effect', values: tokens[name] };
   if (k === 't') return { swatch: null, glyph: 'Aa', name, what: 'text style', values: [note ?? '', note ?? ''] };
   const v = `${spaces[name]} px`;
-  return { swatch: null, glyph: name.startsWith('radius') ? '◜' : '↔', name, what: note ?? 'corner radius', values: [v, v] };
+  return { swatch: null, glyph: name.startsWith('radius') ? '◜' : '↔\uFE0E', name, what: note ?? 'corner radius', values: [v, v] };
 });
 ---
 <div class="inspect" data-inspect data-mode="light">

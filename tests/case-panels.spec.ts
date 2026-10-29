@@ -14,7 +14,7 @@ test('summary: title, subtitle, facts, problem, decision, result, and the docs b
   // One button: the Pipedrive developer docs for app panels, in a new tab
   const docs = s.locator('[data-case-links] a');
   await expect(docs).toHaveCount(1);
-  await expect(docs).toHaveText('Pipedrive docs for app panels ↗');
+  await expect(docs).toHaveText('Pipedrive docs for app panels');
   await expect(docs).toHaveAttribute('href', 'https://pipedrive.readme.io/docs/app-extensions-json-panels');
   await expect(docs).toHaveAttribute('target', '_blank');
 });
