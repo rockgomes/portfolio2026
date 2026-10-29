@@ -25,8 +25,8 @@ const topics = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' 
   <p class="foot">
     {cardTag && <span class="tag ui-tag ui-tag-accent" data-not-engineer>{cardTag}</span>}
     {topics.map((t) => <span class="topic" data-engineer>{t}</span>)}
-    {demo && <a class="demo t-mono-label" href={demo} target="_blank" rel="noopener" data-not-engineer>+ Open live demo ↗</a>}
-    {demo && <a class="demo-dev" href={demo} target="_blank" rel="noopener" data-engineer>Live demo ↗</a>}
+    {demo && <a class="demo t-mono-label" href={demo} target="_blank" rel="noopener" data-not-engineer>+ Open live demo ↗&#xFE0E;</a>}
+    {demo && <a class="demo-dev" href={demo} target="_blank" rel="noopener" data-engineer>Live demo ↗&#xFE0E;</a>}
   </p>
 </li>
 <style>

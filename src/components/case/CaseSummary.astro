@@ -5,6 +5,8 @@ interface Facts { role: string; context: string; made: string; tools: string }
 interface Props { title: string; subtitle: string; lead: string; facts?: Facts; problem: string; decision: string; result: string; links: { label: string; href: string }[] }
 const { title, subtitle, lead, facts, problem, decision, result, links } = Astro.props;
 const factRows = facts ? (['role', 'context', 'made', 'tools'] as const).map((k) => [k, facts[k]] as const) : [];
+// "\uFE0E" after an arrow asks for the plain text arrow, so phones do not swap it for an emoji (labels come from the content files)
+const label = (s: string) => s.replace(/([↗↔])\uFE0E?/g, '$1\uFE0E');
 const pdr = [['problem', problem], ['decision', decision], ['result', result]].filter(([, v]) => v);
 ---
 <header class="summary wrap" data-case-summary>
@@ -22,7 +24,7 @@ const pdr = [['problem', problem], ['decision', decision], ['result', result]].f
       )}
       {links.length > 0 && (
         <p class="links" data-case-links>
-          {links.map((l, i) => <a class:list={['btn', i === 0 && 'btn-primary']} href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
+          {links.map((l, i) => <a class:list={['btn', i === 0 && 'btn-primary']} href={l.href} target="_blank" rel="noopener">{label(l.label)}</a>)}
         </p>
       )}
     </div>

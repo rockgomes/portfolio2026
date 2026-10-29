@@ -17,8 +17,8 @@ const d = entry.data;
 const isProject = entry.collection === 'projects';
 const lead = 'heroDescription' in d ? d.heroDescription : d.summary;
 const links = d.links.length || isProject ? d.links : [
-  ...('liveDemoUrl' in d && d.liveDemoUrl ? [{ label: 'Open the live demo ↗', href: d.liveDemoUrl }] : []),
-  ...('sourceCodeUrl' in d && d.sourceCodeUrl ? [{ label: 'Source code ↗', href: d.sourceCodeUrl }] : []),
+  ...('liveDemoUrl' in d && d.liveDemoUrl ? [{ label: 'Open the live demo ↗\uFE0E', href: d.liveDemoUrl }] : []),
+  ...('sourceCodeUrl' in d && d.sourceCodeUrl ? [{ label: 'Source code ↗\uFE0E', href: d.sourceCodeUrl }] : []),
 ];
 const wide = '(min-width: 1440px) 1280px, 100vw';
 // Before / After in the summary starts on After (sketch D 442:10216)

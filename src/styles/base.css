@@ -9,6 +9,7 @@ body {
   font: var(--type-body-default);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-variant-emoji: text; /* arrows like ↗ stay plain text, not emoji, on phones */
 }
 a { color: inherit; }
 img { max-width: 100%; }

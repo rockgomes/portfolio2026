@@ -26,7 +26,7 @@ test('summary is in the first screen on desktop', async ({ page, viewport }) => 
 test('one button opens the live demo', async ({ page }) => {
   await page.goto(PAGE);
   const a = page.locator('[data-case-links] a');
-  await expect(a).toHaveText(['Open the live demo ↗']);
+  await expect(a).toHaveText(['Open the live demo ↗\uFE0E']);
   await expect(a.nth(0)).toHaveAttribute('href', LIVE);
   await expect(a.nth(0)).toHaveClass(/btn-primary/);
 });

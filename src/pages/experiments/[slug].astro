@@ -23,8 +23,8 @@ const isCase = !!d.problem;
       {d.summary && <p class="lead">{d.summary}</p>}
       <div class="meta">
         {d.tools && <span>{d.tools}</span>}
-        {d.liveDemoUrl && <a href={d.liveDemoUrl} target="_blank" rel="noopener">Live demo ↗</a>}
-        {d.sourceCodeUrl && <a href={d.sourceCodeUrl} target="_blank" rel="noopener">Source ↗</a>}
+        {d.liveDemoUrl && <a href={d.liveDemoUrl} target="_blank" rel="noopener">Live demo ↗&#xFE0E;</a>}
+        {d.sourceCodeUrl && <a href={d.sourceCodeUrl} target="_blank" rel="noopener">Source ↗&#xFE0E;</a>}
       </div>
       {d.heroImage && <Image class="hero-img" src={d.heroImage} alt="" widths={[768, 1536]} sizes="(min-width: 800px) 768px, 100vw" loading="eager" />}
       <div class="prose"><Content /></div>

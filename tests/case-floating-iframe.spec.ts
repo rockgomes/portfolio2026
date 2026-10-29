@@ -24,7 +24,7 @@ test('summary is in the first screen on desktop', async ({ page, viewport }) => 
 test('buttons open the Figma prototype, the developer docs and the JustCall app', async ({ page }) => {
   await page.goto(PAGE);
   const a = page.locator('[data-case-links] a');
-  await expect(a).toHaveText(['Figma prototype ↗', 'Developer docs ↗', 'JustCall app ↗']);
+  await expect(a).toHaveText(['Figma prototype ↗\uFE0E', 'Developer docs ↗\uFE0E', 'JustCall app ↗\uFE0E']);
   await expect(a.nth(0)).toHaveAttribute('href', /^https:\/\/www\.figma\.com\/proto\/SCXg3AbVLFUSlZsD1HJFfP\/Pipedrive\?/);
   await expect(a.nth(0)).toHaveClass(/btn-primary/);
   await expect(a.nth(1)).toHaveAttribute('href', 'https://pipedrive.readme.io/docs/custom-ui-extensions-floating-window');
