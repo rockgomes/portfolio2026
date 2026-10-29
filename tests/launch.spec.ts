@@ -5,7 +5,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 // They only fetch files, so this runs once (desktop project); the pages look the same to them at every width.
 test.skip(({ viewport }) => (viewport?.width ?? 0) < 1200, 'files only: one run is enough');
 
-const SITE = 'https://rockgomes.com';
+const SITE = 'https://www.rockgomes.com';
 const slugs = (dir: string) => readdirSync(`src/content/${dir}`).map((f) => f.replace(/\.mdx?$/, ''));
 const isPrivate = (dir: string, slug: string) =>
   /^private:\s*true\s*$/m.test(readFileSync(`src/content/${dir}/${readdirSync(`src/content/${dir}`).find((f) => f.startsWith(`${slug}.`))}`, 'utf8'));
