@@ -102,9 +102,9 @@ test('the old Webflow body is gone', async ({ page }) => {
   await expect(page.locator('main')).not.toContainText('Problem Statement');
 });
 
-test('next case study is Floating iframe', async ({ page }) => {
+test('next case study is Loan flow', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/pipedrive---floating-iframe');
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/bigbank---loan-flow');
 });
 
 test('no Figma layer on the page', async ({ page }) => {

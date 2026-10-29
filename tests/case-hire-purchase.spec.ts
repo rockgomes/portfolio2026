@@ -127,9 +127,9 @@ test('facts: Senior Product Designer, the four countries, the team and the tools
   await expect(page.locator('main')).not.toContainText('No numbers I can share');
 });
 
-test('next case study is Pipedrive App management', async ({ page }) => {
+test('next case study is Pipedrive Floating iframe', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/pipedrive---app-management');
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/pipedrive---floating-iframe');
 });
 
 test('no Figma layer on the page', async ({ page }) => {

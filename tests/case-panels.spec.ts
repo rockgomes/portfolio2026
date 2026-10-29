@@ -73,9 +73,9 @@ test('result: outcome and what I learned', async ({ page }) => {
   await expect(page.locator('#result [data-two-col] .k')).toHaveText(['outcome', 'what I learned']);
 });
 
-test('next case study is Loan flow', async ({ page }) => {
+test('next case study is Pipedrive App management', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/bigbank---loan-flow');
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/pipedrive---app-management');
 });
 
 test('no Figma layer on the page', async ({ page }) => {
