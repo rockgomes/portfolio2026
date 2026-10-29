@@ -63,7 +63,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 - Before you pick the next task from this file, check `git log` and the merged PRs: this list can be behind.
 
 ## Next, in this order
-1. **Per-project password protection** (started 30 Oct 2026). Frontmatter `private: true` protects nothing yet. Plan: a Netlify Edge Function in front of `/project/<slug>` for private files, a gate page sketched in Figma first, the password in a Netlify environment variable that Rock sets himself.
+1. **Per-project password protection** (started 30 Oct 2026). Frontmatter `private: true` protects nothing yet. Rock decided: it is for new NDA projects added later (no current project changes), one password opens every private project, and a private card stays on the homepage with a lock line. Sketch: section `530:12153` on Explorations (password page, wrong password, locked card; new icon "Icon / Lock" `530:129`). Waiting for Rock to approve the sketch. Plan: a Netlify Edge Function in front of private `/project/<slug>` pages, the password in a Netlify environment variable that Rock sets himself, a cookie for 30 days, private pages out of the sitemap and marked noindex.
 2. **Figma cleanup** (started 30 Oct 2026):
    - Link the Pressed and Disabled labels of the Button component.
    - Add a 17px text style for the phone menu links.
