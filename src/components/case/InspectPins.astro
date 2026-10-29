@@ -74,7 +74,7 @@ const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? [
   .stage img { display: block; width: 100%; height: auto; }
   .inspect[data-mode='light'] .dark, .inspect[data-mode='dark'] .light { display: none; }
   .layer { position: absolute; border: 1.5px solid transparent; border-radius: 6px; pointer-events: none; }
-  .layer.on { border-color: var(--color-annotation-redline); }
+  .layer.on { border-color: var(--color-annotation-redline-line); }
   .layer .ui-pin { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); border: 0; padding: 0; cursor: pointer; pointer-events: auto; }
   /* The note under the chosen part: the Callout in a panel like the menu panel, kept inside the picture */
   .part-note { position: absolute; z-index: 1; width: max-content; max-width: min(320px, calc(100% - var(--l) - 8px)); padding: var(--space-8) var(--space-12); background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: var(--radius-control); box-shadow: var(--shadow-panel); }

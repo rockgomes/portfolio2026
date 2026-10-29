@@ -55,7 +55,7 @@ const says = (color: string) => messages.map((m, i) => ({ ...m, i })).filter((m)
   /* The headline box wraps the letters (Overlays.astro measures the text lines), and its label shows that size */
   /* Rock's cursor only shows while it draws the selection (Motion.astro), then leaves */
   .h1-box :global(.h1-cursor) { left: 0; top: 0; visibility: hidden; }
-  .accent { color: var(--color-text-accent); }
+  .accent { color: var(--color-text-accent-display); }
   /* Engineer view (Figma: Hero C + 2B): code tags instead of the type label, selection and redline.
      The h1 tags sit 25px from the letters: above the capitals, below the last baseline. */
   .tag { margin: 0; color: var(--color-annotation-measure); white-space: nowrap; }
