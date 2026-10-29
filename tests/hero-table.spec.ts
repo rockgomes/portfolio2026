@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { chooseView } from './view';
 
 test.describe('hero table', () => {
   test.beforeEach(async ({ page }) => { await page.goto('/'); await page.evaluate(() => localStorage.clear()); await page.reload(); });
@@ -114,7 +115,7 @@ test.describe('hero story', () => {
     const thread = page.locator('[data-story-thread]');
     await expect(thread).toHaveAttribute('data-state', 'story', { timeout: 10_000 });
     await page.waitForTimeout(2500); // the PM is on the table
-    await page.click('[data-view-option="engineer"]');
+    await chooseView(page, 'engineer');
     // The story jumps to its end, as a click on the table does: the condition is added and the view is saved
     await expect(thread).toHaveAttribute('data-state', 'end');
     await expect(page.locator('[data-count]')).toHaveText('28');

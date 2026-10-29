@@ -1,6 +1,7 @@
 ---
-// Dropdown button for the engineer Storybook. Same look as the Columns button and menu in HeroTable.astro
-// (Figma 154:21266, "tab / Columns"). DesignSystemsDev.astro handles opening and picking.
+// Dropdown button and menu (Figma Dropdown 262:133, Dropdown menu 262:141): the engineer Storybook and the header's
+// "View as" switch on small screens. Same look as the Columns button and menu in HeroTable.astro (Figma 154:21266).
+// Opening and picking: src/lib/dropdown.ts.
 interface Props { name: string; label: string; options: string[]; value: string }
 const { name, label, options, value } = Astro.props;
 const chevron = '<svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2.5 4l2.5 2.5L7.5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { chooseView } from './view';
 
 // Experience: independent work is one entry with a tab per client.
 test('client tabs switch the details, with mouse and arrow keys', async ({ page }) => {
@@ -20,7 +21,7 @@ test.describe('timeline after a view switch', () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } });
   test('engineer to design lead: the timeline still draws to the last role', async ({ page }) => {
     await page.goto('/?view=engineer');
-    await page.click('[data-view-option="design"]');
+    await chooseView(page, 'design');
     // Wait for the switch motion to end (a scroll by script in the middle of it is not a visitor's scroll)
     await page.waitForFunction(() => !('switching' in document.documentElement.dataset));
     await page.evaluate(() => { const items = document.querySelectorAll('[data-timeline] .item'); const last = items[items.length - 1]; scrollTo(0, scrollY + last.getBoundingClientRect().top - innerHeight * 0.4); });

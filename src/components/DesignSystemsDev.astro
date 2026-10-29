@@ -134,7 +134,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
             <table class="tbl modes-t">
               <thead><tr><th>View</th><th>data-view</th><th>Light</th><th>Dark</th></tr></thead>
               <tbody>
-                <tr><th scope="row">Design lead</th><td class="mono">"design"</td><td class="mono">Light - Crisp</td><td class="mono">Dark</td></tr>
+                <tr><th scope="row">Designer</th><td class="mono">"design"</td><td class="mono">Light - Crisp</td><td class="mono">Dark</td></tr>
                 <tr><th scope="row">Recruiter</th><td class="mono">"recruiter"</td><td class="mono">Light - Recruiter</td><td class="mono">Dark - Recruiter</td></tr>
                 <tr class="here"><th scope="row">Engineer</th><td class="mono">"engineer"</td><td class="mono" data-sb-mode-cell="light">Light - Dev</td><td class="mono" data-sb-mode-cell="dark">Dark - Dev</td></tr>
               </tbody>
@@ -374,6 +374,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
 <script>
   import { reduceMotion } from '../lib/motion';
   import { bindChoice, mark } from '../lib/choice';
+  import { bindDropdowns, setDropdownValue } from '../lib/dropdown';
 
   const root = document.getElementById('design-systems-dev')!;
   const win = root.querySelector<HTMLElement>('[data-sb]')!;
@@ -435,34 +436,10 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
     if (e.key === '/' && !t.matches('input, select, textarea')) { e.preventDefault(); if (phone.matches) setMenu(true); find.focus(); }
   });
 
-  // Dropdowns (SbDropdown.astro): open on click, close on Escape or a click outside, arrow keys move in the menu
-  const dds = [...root.querySelectorAll<HTMLElement>('[data-sb-dd]')];
+  // Dropdowns (SbDropdown.astro, behaviour in src/lib/dropdown.ts)
   const pickers: Record<string, (v: string) => void> = {};
   function onPick(name: string, fn: (v: string) => void) { pickers[name] = fn; }
-  const ddParts = (dd: HTMLElement) => ({ btn: dd.querySelector<HTMLButtonElement>('[data-sb-dd-btn]')!, menu: dd.querySelector<HTMLElement>('[role="menu"]')!, items: [...dd.querySelectorAll<HTMLButtonElement>('[role="menuitemradio"]')] });
-  function setDd(dd: HTMLElement, open: boolean, focus = false) {
-    const { btn, menu, items } = ddParts(dd);
-    menu.hidden = !open; btn.setAttribute('aria-expanded', String(open));
-    if (open && focus) (items.find((i) => i.getAttribute('aria-checked') === 'true') ?? items[0]).focus();
-  }
-  function setDdValue(dd: HTMLElement, v: string) {
-    const { btn, items } = ddParts(dd);
-    items.forEach((i) => i.setAttribute('aria-checked', String(i.dataset.value === v)));
-    dd.querySelector('[data-sb-dd-value]')!.textContent = v;
-    btn.setAttribute('aria-label', `${ddParts(dd).menu.getAttribute('aria-label')}: ${v}`);
-  }
-  dds.forEach((dd) => {
-    const { btn, menu, items } = ddParts(dd);
-    btn.addEventListener('click', () => { const open = btn.getAttribute('aria-expanded') !== 'true'; dds.forEach((d) => d !== dd && setDd(d, false)); setDd(dd, open); });
-    btn.addEventListener('keydown', (e) => { if (e.key === 'ArrowDown') { e.preventDefault(); setDd(dd, true, true); } else if (e.key === 'Escape') setDd(dd, false); });
-    items.forEach((i) => i.addEventListener('click', () => { setDdValue(dd, i.dataset.value!); setDd(dd, false); btn.focus(); pickers[dd.dataset.sbDd!]?.(i.dataset.value!); }));
-    menu.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { setDd(dd, false); btn.focus(); return; }
-      const n = items.indexOf(document.activeElement as HTMLButtonElement);
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); items[(n + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].focus(); }
-    });
-  });
-  document.addEventListener('click', (e) => dds.forEach((dd) => { if (!dd.contains(e.target as Node)) setDd(dd, false); }));
+  bindDropdowns([...root.querySelectorAll<HTMLElement>('[data-sb-dd]')], (dd, v) => pickers[dd.dataset.sbDd!]?.(v));
 
   // Theme: one switch for this page (this visit only), shown in the toolbar, the Modes story and the Modes page
   const html = document.documentElement; const dark = matchMedia('(prefers-color-scheme: dark)');
@@ -481,7 +458,7 @@ const statuses = ['Lead', 'Trial', 'Customer', 'Churned'];
   function paintMode() {
     const t = theme(); const name = t === 'dark' ? 'Dark - Dev' : 'Light - Dev';
     root.querySelectorAll('[data-sb-mode-name]').forEach((el) => (el.textContent = name));
-    setDdValue(root.querySelector<HTMLElement>('[data-sb-dd="theme"]')!, name);
+    setDropdownValue(root.querySelector<HTMLElement>('[data-sb-dd="theme"]')!, name);
     mark(themeOpts, themeOpts.findIndex((b) => b.dataset.sbSetTheme === t));
     root.querySelectorAll<HTMLElement>('[data-sb-mode-cell]').forEach((c) => c.toggleAttribute('data-sb-active', c.dataset.sbModeCell === t));
     root.querySelector('[data-sb-theme-btn2]')!.textContent = `Switch this page to ${t === 'dark' ? 'light' : 'dark'}`;

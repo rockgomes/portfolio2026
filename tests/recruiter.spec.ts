@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { chooseView } from './view';
 
 // The "Recruiter" view: a one-page summary instead of the homepage content.
 test('the recruiter view replaces the homepage', async ({ page }) => {
@@ -35,7 +36,7 @@ test('all the work is in the recruiter view: a scroll box on wide screens, the f
 test('the header switch opens the recruiter view', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('[data-recruiter]')).toBeHidden();
-  await page.locator('[data-view-option="recruiter"]').click();
+  await chooseView(page, 'recruiter');
   await expect(page.locator('[data-recruiter]')).toBeVisible();
   await expect(page).toHaveURL(/view=recruiter/);
 });
@@ -55,7 +56,7 @@ test('the recruiter view uses the violet accent', async ({ page }) => {
   await page.goto('/?view=recruiter');
   const accent = () => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--color-annotation-measure').trim());
   expect(await accent()).toBe('#6854e0');
-  await page.locator('[data-view-option="design"]').click();
+  await chooseView(page, 'design');
   expect(await accent()).toBe('#0a62d4');
 });
 
