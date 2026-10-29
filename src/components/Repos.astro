@@ -4,6 +4,7 @@
 // The short lines are from Figma.
 import { getCollection } from 'astro:content';
 import repoIcon from '../assets/icons/repo.svg';
+import IconArrowUpRight from './IconArrowUpRight.astro';
 
 const picks: [string, string][] = [
   ['fieldset', 'Fieldset. A filter builder over 50,000 rows that never loses your work.'],
@@ -42,8 +43,8 @@ const repos = picks
           <p class="line">{r.line}</p>
           <ul class="stack" aria-label="Built with">{r.stack.map((s: string) => <li class="ui-tag">{s}</li>)}</ul>
           <p class="links">
-            {r.demo && <a href={r.demo} target="_blank" rel="noopener">Live demo <span aria-hidden="true">↗&#xFE0E;</span></a>}
-            <a class="src" href={r.source} target="_blank" rel="noopener">Source <span aria-hidden="true">↗&#xFE0E;</span></a>
+            {r.demo && <a href={r.demo} target="_blank" rel="noopener">Live demo<IconArrowUpRight /></a>}
+            <a class="src" href={r.source} target="_blank" rel="noopener">Source<IconArrowUpRight /></a>
           </p>
         </li>
       ))}

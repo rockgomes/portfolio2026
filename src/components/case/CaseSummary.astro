@@ -1,12 +1,11 @@
 ---
 // Figma: Summary (30 seconds) 375:10126 in sketch C (Flex Academy). The part a recruiter reads in 30 seconds:
 // title, lead, facts, problem / decision / result, links to the real thing, then the main picture or live page (slot).
+import IconArrowUpRight from '../IconArrowUpRight.astro';
 interface Facts { role: string; context: string; made: string; tools: string }
 interface Props { title: string; subtitle: string; lead: string; facts?: Facts; problem: string; decision: string; result: string; links: { label: string; href: string }[] }
 const { title, subtitle, lead, facts, problem, decision, result, links } = Astro.props;
 const factRows = facts ? (['role', 'context', 'made', 'tools'] as const).map((k) => [k, facts[k]] as const) : [];
-// "\uFE0E" after an arrow asks for the plain text arrow, so phones do not swap it for an emoji (labels come from the content files)
-const label = (s: string) => s.replace(/([↗↔])\uFE0E?/g, '$1\uFE0E');
 const pdr = [['problem', problem], ['decision', decision], ['result', result]].filter(([, v]) => v);
 ---
 <header class="summary wrap" data-case-summary>
@@ -24,7 +23,7 @@ const pdr = [['problem', problem], ['decision', decision], ['result', result]].f
       )}
       {links.length > 0 && (
         <p class="links" data-case-links>
-          {links.map((l, i) => <a class:list={['btn', i === 0 && 'btn-primary']} href={l.href} target="_blank" rel="noopener">{label(l.label)}</a>)}
+          {links.map((l, i) => <a class:list={['btn', i === 0 && 'btn-primary']} href={l.href} target="_blank" rel="noopener"><span>{l.label}<IconArrowUpRight /></span></a>)}
         </p>
       )}
     </div>
@@ -49,6 +48,7 @@ const pdr = [['problem', problem], ['decision', decision], ['result', result]].f
   .facts dt { flex: none; width: 56px; color: var(--color-annotation-measure); }
   .facts dd { margin: 0; flex: 1 1 0; min-width: 0; color: var(--color-text-secondary); }
   .links { margin: 0; padding-top: var(--space-8); display: flex; flex-wrap: wrap; gap: var(--space-8); }
+  .links :global(.au) { margin-left: 6px; } /* the Button component's trailing icon gap */
   .pdr { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
   .pdr > div { display: flex; flex-direction: column; gap: 6px; padding-block: var(--space-16); border-top: 1px solid var(--color-border-subtle); }
   .pdr p { margin: 0; }

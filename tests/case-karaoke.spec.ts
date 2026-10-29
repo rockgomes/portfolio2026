@@ -24,7 +24,7 @@ test('summary is in the first screen on desktop', async ({ page, viewport }) => 
 test('buttons open the live demo and the source code', async ({ page }) => {
   await page.goto(PAGE);
   const a = page.locator('[data-case-links] a');
-  await expect(a).toHaveText(['Open the live demo ↗\uFE0E', 'Source code ↗\uFE0E']);
+  await expect(a).toHaveText(['Open the live demo', 'Source code']);
   await expect(a.nth(0)).toHaveAttribute('href', 'https://karaoke-os.netlify.app');
   await expect(a.nth(0)).toHaveClass(/btn-primary/);
   await expect(a.nth(1)).toHaveAttribute('href', 'https://github.com/rockgomes/karaoke-os');

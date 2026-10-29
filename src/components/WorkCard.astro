@@ -4,6 +4,7 @@
 import type { CollectionEntry } from 'astro:content';
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
+import IconArrowUpRight from './IconArrowUpRight.astro';
 
 type Data = CollectionEntry<'projects'>['data'] | CollectionEntry<'experiments'>['data'];
 interface Props { id: string; href: string; img?: ImageMetadata; alt: string; demo: string; d: Data }
@@ -25,8 +26,8 @@ const topics = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' 
   <p class="foot">
     {cardTag && <span class="tag ui-tag ui-tag-accent" data-not-engineer>{cardTag}</span>}
     {topics.map((t) => <span class="topic" data-engineer>{t}</span>)}
-    {demo && <a class="demo t-mono-label" href={demo} target="_blank" rel="noopener" data-not-engineer>+ Open live demo ↗&#xFE0E;</a>}
-    {demo && <a class="demo-dev" href={demo} target="_blank" rel="noopener" data-engineer>Live demo ↗&#xFE0E;</a>}
+    {demo && <a class="demo t-mono-label" href={demo} target="_blank" rel="noopener" data-not-engineer>+ Open live demo<IconArrowUpRight /></a>}
+    {demo && <a class="demo-dev" href={demo} target="_blank" rel="noopener" data-engineer>Live demo<IconArrowUpRight /></a>}
   </p>
 </li>
 <style>

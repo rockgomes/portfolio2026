@@ -22,7 +22,7 @@ test('summary is in the first screen on desktop', async ({ page, viewport }) => 
 test('one button opens the live mockup', async ({ page }) => {
   await page.goto(PAGE);
   const a = page.locator('[data-case-links] a');
-  await expect(a).toHaveText(['Open the live mockup ↗\uFE0E']);
+  await expect(a).toHaveText(['Open the live mockup']);
   await expect(a.first()).toHaveAttribute('href', 'https://inbank-loan-app.vercel.app/');
   await expect(a.first()).toHaveClass(/btn-primary/);
 });

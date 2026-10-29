@@ -5,6 +5,7 @@
 import CopyEmail from './CopyEmail.astro';
 import Cursor from './Cursor.astro';
 import IconGitBranch from './IconGitBranch.astro';
+import IconArrowUpRight from './IconArrowUpRight.astro';
 import { execSync } from 'node:child_process';
 // Engineer view: the build line. Netlify gives the branch (HEAD) and commit (COMMIT_REF), GitHub Actions gives
 // GITHUB_HEAD_REF / GITHUB_REF_NAME and GITHUB_SHA; locally, ask git.
@@ -35,8 +36,8 @@ const built = new Date().toISOString().slice(0, 10);
       </div>
       <div class="links">
         <p class="lab t-mono-label">links</p>
-        <a href="https://www.linkedin.com/in/rockgomes" target="_blank" rel="noopener">LinkedIn ↗&#xFE0E;</a>
-        <a href="https://github.com/rockgomes" target="_blank" rel="noopener">GitHub ↗&#xFE0E;</a>
+        <a href="https://www.linkedin.com/in/rockgomes" target="_blank" rel="noopener">LinkedIn<IconArrowUpRight /></a>
+        <a href="https://github.com/rockgomes" target="_blank" rel="noopener">GitHub<IconArrowUpRight /></a>
         <a href="#top">Back to top ↑</a>
       </div>
     </div>
