@@ -22,8 +22,6 @@ const KNOWN = [
   { name: 'filter panel', where: '[data-side]', rules: ['target-size', 'aria-required-children'], url: '/?view=design', desktopOnly: true, scheme: null },
   // The Variant / State / Size buttons in the design system section are under 24px tall.
   { name: 'component property buttons', where: '[data-prop]', rules: ['target-size'], url: '/?view=design', desktopOnly: false, scheme: null as string | null },
-  // The small "404" label uses the redline orange #ee5a36 (3.41 on white). Rock chose this orange over a darker one.
-  { name: '404 label', where: '.eyebrow', rules: ['color-contrast'], url: '/404', desktopOnly: false, scheme: 'light' },
 ];
 type Known = (typeof KNOWN)[number];
 // Disabled-state samples in the design system section. WCAG does not ask disabled controls to pass contrast.
