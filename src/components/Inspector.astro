@@ -4,6 +4,7 @@
 // the real call site (copied from the repo, linked to its lines), the props this table has right now, and live layout and tokens.
 // The hero table is a smaller rebuild of Fieldset, so the panel links to the source; it does not claim this table is that code.
 // Lives inside the Specimen, so it moves with the table. Hidden below 1200px, like the other overlays.
+import IconArrowUpRight from './IconArrowUpRight.astro';
 ---
 <div class="insp" data-engineer data-inspector>
   <span class="dsel hover" data-dsel-hover aria-hidden="true"><span class="dlab t-mono-label" data-dlab></span></span>
@@ -33,7 +34,7 @@
     <div role="tabpanel" id="insp-p-tokens" aria-labelledby="insp-t-tokens" data-pane="tokens" hidden>
       <dl class="rows" data-tokens></dl>
     </div>
-    <p class="source"><span class="repo t-mono-label" data-file>rockgomes/filter-builder</span><a data-gh href="https://github.com/rockgomes/filter-builder" target="_blank" rel="noopener">Open on GitHub ↗</a></p>
+    <p class="source"><span class="repo t-mono-label" data-file>rockgomes/filter-builder</span><a data-gh href="https://github.com/rockgomes/filter-builder" target="_blank" rel="noopener">Open on GitHub<IconArrowUpRight /></a></p>
     </div>
   </aside>
 </div>

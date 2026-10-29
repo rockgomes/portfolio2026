@@ -1,0 +1,10 @@
+---
+// Lucide "arrow-up-right". 12px with a 1.25px line (Figma: Icon / Arrow up-right). Goes after the text of links that
+// open in a new tab. It is a drawing, not the ↗ character, so phones can not turn it into an emoji.
+interface Props { class?: string }
+const { class: cls } = Astro.props;
+---
+<svg class:list={['au', cls]} aria-hidden="true" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10" /><path d="M7 17 17 7" /></svg>
+<style>
+  .au { display: inline-block; flex: none; margin-left: 3px; vertical-align: -1px; }
+</style>

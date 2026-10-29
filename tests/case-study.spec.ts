@@ -22,7 +22,7 @@ test('summary is in the first screen on desktop', async ({ page, viewport }) => 
 test('buttons link to the live page, the prototype and the source', async ({ page }) => {
   await page.goto(FLEX);
   const a = page.locator('[data-case-links] a');
-  await expect(a).toHaveText(['Open the live page ↗', 'Figma prototype ↗', 'Source code ↗']);
+  await expect(a).toHaveText(['Open the live page', 'Figma prototype', 'Source code']);
   await expect(a.nth(0)).toHaveAttribute('href', 'https://flex-academy-prototype.netlify.app');
   await expect(a.nth(0)).toHaveClass(/btn-primary/);
   await expect(a.nth(2)).toHaveAttribute('href', 'https://github.com/rockgomes/flex-academy-prototype');
