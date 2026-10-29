@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-  site: 'https://rockgomes.com',
+  site: 'https://www.rockgomes.com',
   // Match Webflow: /project/slug, no trailing slash.
   trailingSlash: 'never',
   build: { format: 'file' },
