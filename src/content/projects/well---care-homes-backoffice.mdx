@@ -39,9 +39,7 @@ import table from '../../assets/projects/well---care-homes-backoffice/cycle-tabl
 import addNew from '../../assets/projects/well---care-homes-backoffice/add-new.png';
 import unitRounds from '../../assets/projects/well---care-homes-backoffice/unit-rounds-inherited.png';
 import qa from '../../assets/projects/well---care-homes-backoffice/qa-cycle-dates.png';
-import mapOrders from '../../assets/projects/well---care-homes-backoffice/map-order-stages.png';
-import mapPatients from '../../assets/projects/well---care-homes-backoffice/map-patient-states.png';
-import mapProfile from '../../assets/projects/well---care-homes-backoffice/map-care-home-profile.png';
+import { orderStages, patientStates, careHomeProfile } from '../../components/case/maps/well';
 import orderDetails from '../../assets/projects/well---care-homes-backoffice/order-details.png';
 
 export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
@@ -69,9 +67,9 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   <CaseBlock label="mapping" title="Map the system before drawing">
     Care home groups, homes, units, patients, GPs and orders all connect. With Claude, I turned what I knew into three maps in FigJam: the care home profile, patient states and order stages. Then I checked them with the team. The order stages became the columns of the cycle view.
     <ProofSwitch slot="proof" kind="segmented" label="Map" id="well-maps" items={[
-      { label: 'Order stages', caption: 'Order stages, from request to delivery. An exception goes back to FlowRX once it is resolved.', media: img(mapOrders, 'A flow: Requested, Labelling and checking, FlowRX, Ready to dispatch, Dispatched, Delivered. Issue found sends an order from FlowRX to Exceptions, and resolved brings it back. An issue after Delivered leads to Claim failed.') },
-      { label: 'Patient states', caption: 'Patient states. Each change also changes what happens to the patient\'s orders.', media: img(mapPatients, 'A flow: a new patient is Active. From Active: move to hospital, move to care home, no longer in home, or mark as deceased. Patient returns goes from Hospitalised back to Active.') },
-      { label: 'Care home profile', caption: 'The care home profile and its tabs. The Units tab leads to a unit profile with its own tabs.', media: img(mapProfile, 'A flow: the care homes list opens a care home profile with the tabs Cycle, Items, Patients, Activity, Contacts, GP surgeries and Units. Drill into unit leads from Units to a unit profile with the same tabs except Units.') },
+      { label: 'Order stages', caption: 'Order stages, from request to delivery. An exception goes back to FlowRX once it is resolved.', media: { kind: 'map', map: orderStages } },
+      { label: 'Patient states', caption: 'Patient states. Each change also changes what happens to the patient\'s orders.', media: { kind: 'map', map: patientStates } },
+      { label: 'Care home profile', caption: 'The care home profile and its tabs. The Units tab leads to a unit profile with its own tabs.', media: { kind: 'map', map: careHomeProfile } },
     ]} />
   </CaseBlock>
   <CaseBlock label="delivery" title="Ship as we go">
