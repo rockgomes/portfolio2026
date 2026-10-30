@@ -48,8 +48,11 @@ import CaseSection from '../../components/case/CaseSection.astro';
 import CaseBlock from '../../components/case/CaseBlock.astro';
 import InspectPins from '../../components/case/InspectPins.astro';
 import TwoCol from '../../components/case/TwoCol.astro';
-import ProofSwitch from '../../components/case/ProofSwitch.astro';
-import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2.jpg';
+import Proof from '../../components/case/Proof.astro';
+import ProofStrip from '../../components/case/ProofStrip.astro';
+import closeUp from '../../assets/projects/pipedrive---floating-iframe/case-d2-flat.png';
+import rounds from '../../assets/projects/pipedrive---floating-iframe/case-rounds.png';
+import docs from '../../assets/projects/pipedrive---floating-iframe/case-docs.png';
 import menu from '../../assets/projects/pipedrive---floating-iframe/case-p-menu.png';
 import inUse from '../../assets/projects/pipedrive---floating-iframe/case-p-open.png';
 import minimised from '../../assets/projects/pipedrive---floating-iframe/case-p-minimised.png';
@@ -62,13 +65,13 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   </CaseBlock>
   <CaseBlock label="decision 2 of 2" data-decision="2" title="A floating window that users can move or minimise">
     Users wanted quick access to the integration that is always there, and also a way to hide it. They wanted alerts. They also wanted links from the app into Pipedrive, for example to open the page of the person who is calling. So we put the app in a floating window. Users can move it anywhere on the page or minimise it.
-    <InspectPins slot="proof" width={980} height={930}
-      light={{ src: closeUp.src, alt: 'Close-up: the Aircall window with a call in progress over a deal page, and the installed integrations menu open from the top bar.' }}
+    <InspectPins slot="proof" width={closeUp.width} height={closeUp.height}
+      light={{ src: closeUp.src, alt: 'A Pipedrive deal page with the Aircall window open during a call with Margot Chen, and the installed integrations menu open from the top bar: Aircall with a badge, Asana and Xero.' }}
       pins={[
-        { name: 'Top bar', kind: 'The integrations sit in the top bar, one click away on every page.', x: 638, y: 6, w: 128, h: 42 },
-        { name: 'Installed integrations', kind: 'The installed integrations menu. A badge on Aircall shows there is something new.', x: 672, y: 130, w: 108, h: 40 },
-        { name: 'Minimise', kind: 'Minimise the window to hide it, and open it again from the top bar. Users can also move it anywhere on the page.', x: 460, y: 180, w: 58, h: 34 },
-        { name: 'Call controls', kind: 'Answer, deny and end calls without leaving the deal page.', x: 286, y: 634, w: 80, h: 80 },
+        { name: 'Top bar', kind: 'The integrations sit in the top bar, one click away on every page.', x: 584, y: 8, w: 144, h: 40 },
+        { name: 'Installed integrations', kind: 'The installed integrations menu. A badge on Aircall shows there is something new.', x: 656, y: 132, w: 120, h: 36 },
+        { name: 'Minimise', kind: 'Minimise the window to hide it, and open it again from the top bar. Users can also move it anywhere on the page.', x: 574, y: 92, w: 30, h: 32 },
+        { name: 'Call controls', kind: 'Answer, deny and end calls without leaving the deal page.', x: 268, y: 628, w: 350, h: 84 },
       ]} />
   </CaseBlock>
 </CaseSection>
@@ -79,18 +82,23 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   </CaseBlock>
   <CaseBlock label="design rounds" title="Work with the whole design team">
     The idea changed the core product, so the whole design team had to agree on it. I shared drafts with engineers, the product manager and other designers all the time. It took many design rounds.
+    <Proof slot="proof" caption="Part of the shared design file. The team wrote questions in big type right next to the mockups." media={img(rounds, 'Part of the Figma file: Pipedrive deal page mockups with the Aircall window, and big notes next to them: "new deal, call starts, modal over call?", "action call a modal?" and "call open, new deal, modal over call?".')} />
   </CaseBlock>
   <CaseBlock label="testing" title="Four prototypes, two per interview" pills={['4 prototypes', '2 per interview', 'order changed each time']}>
     Each prototype tested a different idea, for example a different entry point. In each interview, users did the same task in two prototypes and compared them. The order changed in every interview.
-    <ProofSwitch slot="proof" kind="segmented" id="winner" label="the winning prototype, step by step" selected={0} items={[
-      { label: '1. Open', caption: 'Users open the app from the installed integrations menu in the top bar.', media: img(menu, 'A Pipedrive deal page with the installed integrations menu open from the top bar: Aircall, Asana and Xero.') },
-      { label: '2. Use', caption: 'The app opens in a window over the deal page, so users do not leave the deal.', media: img(inUse, 'A Pipedrive deal page with the Aircall window open on the right, showing a to-do list of calls and voicemails.') },
-      { label: '3. Minimise', caption: 'Users minimise the window to a small bar at the bottom of the page.', media: img(minimised, 'A Pipedrive deal page with Aircall minimised to a small bar at the bottom right.') },
+    <ProofStrip slot="proof" caption="The winning prototype: open the app from the top bar, use it over the deal, minimise it." items={[
+      { src: menu, label: '1. Open', alt: 'A Pipedrive deal page with the installed integrations menu open from the top bar: Aircall, Asana and Xero.' },
+      { src: inUse, label: '2. Use', alt: 'A Pipedrive deal page with the Aircall window open on the right, showing a to-do list of calls and voicemails.' },
+      { src: minimised, label: '3. Minimise', alt: 'A Pipedrive deal page with Aircall minimised to a small bar at the bottom right.' },
     ]} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="What I would measure" subtitle="and what I learned" id="result" gap={48}>
+  <CaseBlock label="after launch" title="It shipped, with a part for calling apps">
+    Pipedrive's developer docs describe the floating window, with a part just for calling apps. JustCall uses it for its Quick access feature.
+    <Proof slot="proof" caption="Pipedrive's developer docs for the custom floating window." media={img(docs, 'The Pipedrive developer docs page "Custom floating window". It explains what the window is and its sizes, and the page menu lists a part called "Custom floating window for calling apps".')} />
+  </CaseBlock>
   <TwoCol
     left={{ label: 'what I would measure', items: [
       'How many calls are logged in Pipedrive through the floating window',

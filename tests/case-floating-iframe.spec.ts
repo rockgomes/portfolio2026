@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// The Pipedrive Floating Iframe case study (Figma sketch 456:595), on the case study template.
+// The Pipedrive Floating Iframe case study (Figma sketch 540:1271), on the case study template.
 const PAGE = '/project/pipedrive---floating-iframe';
 
 test('summary: title, subtitle, facts, problem, decision, result', async ({ page }) => {
@@ -144,10 +144,25 @@ test('looks the same as the approved screenshots', async ({ page }) => {
 
 test('testing: the winning prototype in three steps, from Figma', async ({ page }) => {
   await page.goto(PAGE);
-  const sw = page.locator('[data-switch="winner"]');
-  await expect(sw.getByRole('radio')).toHaveText(['1. Open', '2. Use', '3. Minimise']);
-  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('installed integrations menu');
-  await sw.getByRole('radio', { name: '3. Minimise' }).click();
-  await expect(sw.locator('[data-proof-panel]:visible figcaption')).toContainText('small bar');
-  await expect(sw.locator('[data-proof-panel]:visible')).toHaveCount(1);
+  const strip = page.locator('#process [data-proof-strip]');
+  await expect(strip.locator('.label')).toHaveText(['1. Open', '2. Use', '3. Minimise']);
+  await expect(strip.locator('figcaption')).toHaveText('The winning prototype: open the app from the top bar, use it over the deal, minimise it.');
+  for (const img of await strip.locator('img').all()) {
+    await img.scrollIntoViewIfNeeded();
+    await expect.poll(() => img.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
+  }
+});
+
+test('design rounds: the real design file with the team notes', async ({ page }) => {
+  await page.goto(PAGE);
+  const proof = page.locator('#process [data-case-block]').nth(1).locator('[data-proof]');
+  await expect(proof.locator('figcaption')).toHaveText(/^Part of the shared design file\./);
+  await expect(proof.locator('img')).toHaveAttribute('alt', /modal over call/);
+});
+
+test('result: it shipped, with the developer docs', async ({ page }) => {
+  await page.goto(PAGE);
+  const block = page.locator('#result [data-case-block]');
+  await expect(block.locator('h3')).toHaveText('It shipped, with a part for calling apps');
+  await expect(block.locator('figcaption')).toHaveText("Pipedrive's developer docs for the custom floating window.");
 });
