@@ -8,7 +8,7 @@ To make them again, from a Shotkit checkout:
 
 - `cards.json` lists each card: its screenshot (or up to three phone screens) and where the picture goes. All cards share one background, sampled from the AI in the Company Profile screenshot (`groundFrom`).
 - `sources/` holds the screenshots that are not already in `src/assets`: phone screens cut out of case study pictures, the cleaned Interactive Panels picture, the App Management crop, and the side project screenshots.
-- `overlays/` adds things on top of a Shotkit picture. Formalist is the only one: Shotkit makes `sources/formalist-card.jpg`, then `formalist-store.html` puts the Chrome Web Store listing on it (Figma 571:10446). From the repo root:
+- `overlays/` adds things on top of a Shotkit picture. Formalist is the only one: Shotkit makes `sources/formalist-card.jpg`, then `formalist-store.html` puts Google's official Chrome Web Store badge on it (Figma 576:35071). From the repo root:
 
       node thumbnails/overlays/render.mjs thumbnails/overlays/formalist-store.html src/assets/cards/formalist.jpg
 

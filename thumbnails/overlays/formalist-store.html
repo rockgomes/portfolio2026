@@ -1,23 +1,11 @@
 <!doctype html>
-<!-- Formalist card: the Chrome Web Store listing on the top of the Shotkit picture, centred, where Rock placed it (Figma 571:10446).
-     Sizes are the Figma sketch x2, because the card picture is the 485 x 394 card at 4x. Colours are Formalist's own; the badge is Google's. -->
+<!-- Formalist card: Google's official "Available in the Chrome Web Store" badge on the Shotkit picture, top right,
+     where Rock placed it (Figma 576:35071). The badge is the large PNG with border from
+     developer.chrome.com/docs/webstore/branding, only resized. Sizes are the Figma frame x2 (the card picture is 4x). -->
 <html><head><meta charset="utf-8"><style>
-  @font-face { font-family: 'Geist'; src: url('geist.woff2') format('woff2'); font-weight: 100 900; }
   html, body { margin: 0; }
-  .shot { position: relative; width: 1940px; height: 1576px; background: url('../sources/formalist-card.jpg') 0 0 / 100% 100%; font-family: 'Geist', sans-serif; }
-  .listing { position: absolute; left: 50%; top: 78px; transform: translateX(-50%); display: flex; align-items: center; gap: 32px; padding: 36px; border-radius: 40px; background: #fff; white-space: nowrap;
-    box-shadow: 0 36px 96px rgba(26, 36, 77, .18), 0 4px 12px rgba(26, 36, 77, .08); }
-  .icon { width: 120px; height: 120px; display: block; }
-  .name { margin: 0; font-size: 40px; font-weight: 600; color: #101828; letter-spacing: -.01em; }
-  .where { margin: 4px 0 0; font-size: 26px; color: #667085; }
-  /* Google's official badge (developer.chrome.com/docs/webstore/branding, large PNG). Only resized, never changed. */
-  .badge { height: 120px; display: block; }
+  .shot { position: relative; width: 1940px; height: 1576px; background: url('../sources/formalist-card.jpg') 0 0 / 100% 100%; }
+  .badge { position: absolute; left: 1406px; top: 56px; width: 454px; height: auto; display: block; }
 </style></head><body>
-  <div class="shot">
-    <div class="listing">
-      <svg class="icon" viewBox="0 0 128 128"><rect width="128" height="128" rx="32" fill="#2E5BFF"/><path d="M44.94 92V35.2H85.26V46.56H51.02L58.86 38.48V64.48L51.02 58.56H83.82V69.92H51.02L58.86 64V92H44.94Z" fill="#fff"/></svg>
-      <div><p class="name">Formalist</p><p class="where">Chrome extension · Free</p></div>
-      <img class="badge" src="chrome-web-store-badge.png" alt="">
-    </div>
-  </div>
+  <div class="shot"><img class="badge" src="chrome-web-store-badge.png" alt=""></div>
 </body></html>
