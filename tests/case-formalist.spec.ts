@@ -45,6 +45,13 @@ test('demo steps, then the five blocks of "How it is built"', async ({ page }) =
   await expect(page.locator('img[alt*="Ana"]')).toHaveCount(0);
 });
 
+test('card 02: Flex Academy leads here, and the next case study is AI Company Profile', async ({ page }) => {
+  await page.goto('/project/flex-academy');
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/experiments/formalist');
+  await page.goto(PAGE);
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/dealfront-ai-company-profile');
+});
+
 test('no sideways scroll', async ({ page }) => {
   await page.goto(PAGE);
   const w = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
