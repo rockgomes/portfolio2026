@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 test('every work card picture has the shape of its frame, so nothing is cut', async ({ page }) => {
   await page.goto('/');
   const thumbs = page.locator('[data-grid] .thumb');
-  await expect(thumbs).toHaveCount(14);
+  await expect(thumbs).toHaveCount(15);
   for (const thumb of await thumbs.all()) {
     await thumb.scrollIntoViewIfNeeded();
     const img = thumb.locator('img');

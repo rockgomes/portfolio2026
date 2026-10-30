@@ -15,8 +15,8 @@ test('the recruiter view replaces the homepage', async ({ page }) => {
 test('all the work is in the recruiter view: a scroll box on wide screens, the full list on small ones', async ({ page }) => {
   await page.goto('/?view=recruiter');
   const list = page.locator('#rec-list');
-  await expect(page.locator('[data-recruiter] .count')).toHaveText('14 projects');
-  await expect(list.locator('li')).toHaveCount(14);
+  await expect(page.locator('[data-recruiter] .count')).toHaveText('15 projects');
+  await expect(list.locator('li')).toHaveCount(15);
   // Experiments link to their own pages
   await expect(list.locator('a[href="/experiments/fieldset"]')).toHaveCount(1);
   const box = await list.evaluate((l) => ({ h: l.clientHeight, sh: l.scrollHeight }));

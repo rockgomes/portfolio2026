@@ -105,6 +105,8 @@ test('method steps: the side note goes under the text when the column is narrow'
 test('next case study is the next project by card order', async ({ page }) => {
   await page.goto(FLEX);
   const next = page.locator('[data-next-case]');
+  await expect(next.locator('.title a')).toHaveAttribute('href', '/project/well---care-homes-backoffice');
+  await page.goto('/project/well---care-homes-backoffice');
   await expect(next.locator('.title a')).toHaveAttribute('href', '/project/dealfront-ai-company-profile');
 });
 

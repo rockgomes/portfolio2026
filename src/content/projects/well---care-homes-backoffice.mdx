@@ -1,0 +1,95 @@
+---
+name: "Well - Care homes backoffice"
+heroTitle: "Well - Care homes backoffice"
+heroDescription: "Well, a UK pharmacy, was building a backoffice for the care homes it supplies. The project was big, it had one designer, and go-live was close. I joined to own the backoffice and the design system, so the other designer could focus on another area."
+cardImage: "../../assets/cards/well---care-homes-backoffice.jpg"
+type: "client"
+industry: ["B2B", "Healthcare"]
+focus: ["Back-office", "Design systems"]
+tagsToCheck: true
+private: false
+cardOrder: 2
+cardNumber: "02"
+cardCompany: "Well"
+cardYear: "2026"
+cardTitle: "Care homes backoffice"
+cardLine: "Owned the care homes backoffice and its design system. It went live on time."
+cardToCheck: true
+subtitle: "Well · 2026 · internal tool"
+facts:
+  role: "Senior Product Designer, contract. Owned the care homes backoffice and the design system."
+  context: "Well (Bestway Group), a UK pharmacy. Used every day by the pharmacy team that serves care homes."
+  made: "Maps of the system, three onboarding flows, the 28-day cycle view, and the design system parts behind them."
+  tools: "Figma, FigJam, Claude"
+problem: "One designer on a big project. The design system was falling behind, and the go-live date was close."
+decision: "Map the system first, then design and ship flow by flow, fixing the design system as each flow needed it."
+result: "Went live on time. The pharmacy team said the new 28-day cycle view made their daily work faster."
+caseImage:
+  src: "../../assets/projects/well---care-homes-backoffice/cycle-board.png"
+  alt: "The 28-day cycle of a care home as a board: columns for Labelling and checking, FlowRX, Exceptions and Ready to dispatch, each with a count, a progress bar and order cards."
+  caption: "The 28-day cycle for one care home. One column per order stage, and exceptions get their own column."
+copyToCheck: true
+---
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import Proof from '../../components/case/Proof.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import table from '../../assets/projects/well---care-homes-backoffice/cycle-table.png';
+import addNew from '../../assets/projects/well---care-homes-backoffice/add-new.png';
+import unitRounds from '../../assets/projects/well---care-homes-backoffice/unit-rounds-inherited.png';
+import qa from '../../assets/projects/well---care-homes-backoffice/qa-cycle-dates.png';
+import mapOrders from '../../assets/projects/well---care-homes-backoffice/map-order-stages.png';
+import mapPatients from '../../assets/projects/well---care-homes-backoffice/map-patient-states.png';
+import mapProfile from '../../assets/projects/well---care-homes-backoffice/map-care-home-profile.png';
+import orderDetails from '../../assets/projects/well---care-homes-backoffice/order-details.png';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="Three decisions I would defend" subtitle="what made the backoffice easier to use" id="decisions">
+  <CaseBlock label="decision 1 of 3" data-decision="1" title="Two views on the same orders">
+    The cycle only had a board. The board is right when the stage matters most, so people who work on one or two stages kept it. A table is easier to scan, sort by patient and search. With a board, search results scatter across columns. So I designed both on the same data, and people can switch.
+    <Proof slot="proof" caption="The same cycle as a table: sort, filter and search by patient." media={img(table, 'The 28-day cycle as a table: patient name, date of birth, item, received date and a status pill on each row, with search and sorting above.')} />
+  </CaseBlock>
+  <CaseBlock label="decision 2 of 3" data-decision="2" title="Three ways to add, one place to start">
+    Well works with care homes at three levels: a group that owns homes, a single home, and a unit inside a home. Each needs its own flow. All three start from the same "Add new" choice, so staff don't need to know which form to look for.
+    <Proof slot="proof" caption={'The "Add new" choice: care home group, care home or care home unit.'} media={img(addNew, 'A page asking "What would you like to add?" with three cards: Care home group, Care home and Care home unit.')} />
+  </CaseBlock>
+  <CaseBlock label="decision 3 of 3" data-decision="3" title="A unit takes what its home already knows">
+    A unit lives inside a care home, so most of its data is already known. The unit flow reuses the home's details, like round times, instead of asking again. Less typing, and fewer chances to enter something that doesn't match.
+    <Proof slot="proof" caption="Adding a unit: the round times come from the care home, and can still be changed for this unit." media={img(unitRounds, 'The Round times step of adding a care home unit: a note says the rounds were inherited from the care home, above six rounds from Morning to Before bed.')} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="How I got there" subtitle="the process, short" id="process">
+  <CaseBlock label="audit" title="Two audits in the first days">
+    I went through the live backoffice screen by screen and left notes on everything that looked off. The design lead audited what the devs built on staging. Together, the audits split the problems in two: design issues came to me, build issues went to the devs.
+    <Proof slot="proof" caption="From my QA page: the cycle dates step, with my notes on what to fix." media={img(qa, 'The cycle dates step of adding a care home, with a calendar and three date fields, next to a yellow note listing what to fix.')} />
+  </CaseBlock>
+  <CaseBlock label="mapping" title="Map the system before drawing">
+    Care home groups, homes, units, patients, GPs and orders all connect. With Claude, I turned what I knew into three maps in FigJam: the care home profile, patient states and order stages. Then I checked them with the team. The order stages became the columns of the cycle view.
+    <ProofSwitch slot="proof" kind="segmented" label="Map" id="well-maps" items={[
+      { label: 'Order stages', caption: 'Order stages, from request to delivery. An exception goes back to FlowRX once it is resolved.', media: img(mapOrders, 'A flow: Requested, Labelling and checking, FlowRX, Ready to dispatch, Dispatched, Delivered. Issue found sends an order from FlowRX to Exceptions, and resolved brings it back. An issue after Delivered leads to Claim failed.') },
+      { label: 'Patient states', caption: 'Patient states. Each change also changes what happens to the patient\'s orders.', media: img(mapPatients, 'A flow: a new patient is Active. From Active: move to hospital, move to care home, no longer in home, or mark as deceased. Patient returns goes from Hospitalised back to Active.') },
+      { label: 'Care home profile', caption: 'The care home profile and its tabs. The Units tab leads to a unit profile with its own tabs.', media: img(mapProfile, 'A flow: the care homes list opens a care home profile with the tabs Cycle, Items, Patients, Activity, Contacts, GP surgeries and Units. Drill into unit leads from Units to a unit profile with the same tabs except Units.') },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="delivery" title="Ship as we go">
+    There was no big handoff at the end. Each flow went to the devs and shipped, one by one. When a flow needed a better badge, button or table, I fixed it in the design system first, then used it in the flow.
+    <Proof slot="proof" caption="Order details: click any order in the cycle to see its full history of events." media={img(orderDetails, 'An order details window over the cycle: the patient, the package events from ASN received to Delivered, and the item with its quantity and dosage.')} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'outcome', items: [
+      'Went live on time.',
+      'The pharmacy team said the new 28-day cycle view helped them get through their work faster.',
+      'The team praised the table view. Before, they only had the board.',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'You can fix a design system while you use it. I cleaned up each part when a flow needed it, so every fix had a real reason.',
+      "The risk lives in the states. Orders and patients change state often, and these are older people's medicines. Every state needed a clear name and a clear next step.",
+      'Talking to the people who use the backoffice showed me where they get stuck. It also showed me what clear means to them: one name for one thing, and nothing left to guess.',
+    ] }} />
+</CaseSection>
