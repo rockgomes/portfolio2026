@@ -9,6 +9,7 @@ export interface MapNode {
   end?: boolean; // the flow can stop here
   tabs?: string[]; // a profile: its tabs, stepped through when the flow arrives
   tabEnd?: number; // the tab the flow leaves from (default: the last one)
+  note?: string; // what the case says about this state (facts only)
 }
 export interface MapEdge {
   from: string;
@@ -22,7 +23,8 @@ export interface StateMapDef {
   description: string; // the whole map in words
   nodes: MapNode[];
   edges: MapEdge[];
-  runs: string[][]; // what plays on its own, one run after the other: each run is a path of state ids from the start
+  sample: string; // the label of the button that plays a run, like "Play a sample order"
+  runs: string[][]; // what the sample button plays, one run per press: each run is a path of state ids from the start
 }
 export const MAP_W = 798;
 export const MAP_H = 398;

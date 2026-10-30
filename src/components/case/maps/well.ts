@@ -7,10 +7,10 @@ export const orderStages: StateMapDef = {
   description: 'A flow: Requested, Labelling and checking, FlowRX, Ready to dispatch, Dispatched, Delivered. Issue found sends an order from FlowRX to Exceptions, and resolved brings it back. An issue after Delivered leads to Claim failed.',
   nodes: [
     { id: 'requested', label: 'Requested', x: 64, y: 186, w: 99, h: 29, start: true },
-    { id: 'labelling', label: 'Labelling and checking', x: 219, y: 180, w: 168, h: 40 },
-    { id: 'flowrx', label: 'FlowRX', x: 443, y: 180, w: 77, h: 40 },
-    { id: 'exceptions', label: 'Exceptions', x: 433, y: 54, w: 97, h: 40 },
-    { id: 'ready', label: 'Ready to dispatch', x: 596, y: 180, w: 137, h: 40 },
+    { id: 'labelling', label: 'Labelling and checking', x: 219, y: 180, w: 168, h: 40, note: 'A column on the cycle board.' },
+    { id: 'flowrx', label: 'FlowRX', x: 443, y: 180, w: 77, h: 40, note: 'A column on the cycle board.' },
+    { id: 'exceptions', label: 'Exceptions', x: 433, y: 54, w: 97, h: 40, note: 'Exceptions get their own column on the cycle board. Once resolved, the order goes back to FlowRX.' },
+    { id: 'ready', label: 'Ready to dispatch', x: 596, y: 180, w: 137, h: 40, note: 'A column on the cycle board.' },
     { id: 'dispatched', label: 'Dispatched', x: 219, y: 304, w: 98, h: 40 },
     { id: 'delivered', label: 'Delivered', x: 374, y: 304, w: 87, h: 40, end: true },
     { id: 'claim', label: 'Claim failed', x: 558, y: 304, w: 101, h: 40, end: true },
@@ -25,6 +25,7 @@ export const orderStages: StateMapDef = {
     { from: 'dispatched', to: 'delivered', d: 'M322,324 H370' },
     { from: 'delivered', to: 'claim', d: 'M466,324 H554', chip: { text: 'issue', x: 510, y: 324 } },
   ],
+  sample: 'Play a sample order',
   runs: [
     ['requested', 'labelling', 'flowrx', 'ready', 'dispatched', 'delivered'],
     ['requested', 'labelling', 'flowrx', 'exceptions', 'flowrx', 'ready', 'dispatched', 'delivered', 'claim'],
@@ -37,7 +38,7 @@ export const patientStates: StateMapDef = {
   description: 'A flow: a new patient is Active. From Active: move to hospital, move to care home, no longer in home, or mark as deceased. Patient returns goes from Hospitalised back to Active.',
   nodes: [
     { id: 'added', label: 'Patient added', x: 60, y: 216, w: 118, h: 29, start: true },
-    { id: 'active', label: 'Active', x: 234, y: 210, w: 68, h: 40 },
+    { id: 'active', label: 'Active', x: 234, y: 210, w: 68, h: 40, note: "Each change also changes what happens to the patient's orders." },
     { id: 'hospital', label: 'Hospitalised', x: 596, y: 110, w: 106, h: 40 },
     { id: 'moved', label: 'Moved care homes', x: 596, y: 180, w: 142, h: 40, end: true },
     { id: 'gone', label: 'No longer in home', x: 596, y: 250, w: 139, h: 40, end: true },
@@ -51,6 +52,7 @@ export const patientStates: StateMapDef = {
     { from: 'active', to: 'deceased', d: 'M306,230 H338 Q350,230 350,242 V328 Q350,340 362,340 H592', chip: { text: 'mark as deceased', x: 481, y: 340 } },
     { from: 'hospital', to: 'active', d: 'M649,106 V60 Q649,48 637,48 H280 Q268,48 268,60 V206', chip: { text: 'patient returns', x: 459, y: 48 } },
   ],
+  sample: 'Play a sample patient',
   runs: [
     ['added', 'active', 'hospital', 'active', 'moved'],
     ['added', 'active', 'gone'],
@@ -64,12 +66,13 @@ export const careHomeProfile: StateMapDef = {
   description: 'A flow: the care homes list opens a care home profile with the tabs Cycle, Items, Patients, Activity, Contacts, GP surgeries and Units. Drill into unit leads from Units to a unit profile with the same tabs except Units.',
   nodes: [
     { id: 'list', label: 'Care homes list', x: 20, y: 100, w: 127, h: 29, start: true },
-    { id: 'home', label: 'Care home profile', x: 203, y: 84, w: 526, h: 61, tabs: ['Cycle', 'Items', 'Patients', 'Activity', 'Contacts', 'GP surgeries', 'Units'] },
-    { id: 'unit', label: 'Unit profile', x: 323, y: 254, w: 454, h: 61, tabs: ['Cycle', 'Items', 'Patients', 'Activity', 'Contacts', 'GP surgery'], end: true },
+    { id: 'home', label: 'Care home profile', x: 203, y: 84, w: 526, h: 61, tabs: ['Cycle', 'Items', 'Patients', 'Activity', 'Contacts', 'GP surgeries', 'Units'], note: 'Seven tabs. The Units tab leads to the unit profile.' },
+    { id: 'unit', label: 'Unit profile', x: 323, y: 254, w: 454, h: 61, tabs: ['Cycle', 'Items', 'Patients', 'Activity', 'Contacts', 'GP surgery'], end: true, note: 'The same tabs as the care home, without Units. A unit takes what its home already knows, like round times.' },
   ],
   edges: [
     { from: 'list', to: 'home', d: 'M153,114 H199' },
     { from: 'home', to: 'unit', d: 'M700,149 V188 Q700,200 688,200 H562 Q550,200 550,212 V250', chip: { text: 'drill into unit', x: 625, y: 200 } },
   ],
+  sample: 'Play a sample visit',
   runs: [['list', 'home', 'unit']],
 };
