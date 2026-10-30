@@ -43,17 +43,41 @@ copyToCheck: true
 import CaseSection from '../../components/case/CaseSection.astro';
 import CaseBlock from '../../components/case/CaseBlock.astro';
 import Proof from '../../components/case/Proof.astro';
+import ProofStrip from '../../components/case/ProofStrip.astro';
+import ProofRows from '../../components/case/ProofRows.astro';
 import parts from '../../assets/experiments/karaoke-os/experiment-karaoke-os-venue-and-guest.png';
+import guestList from '../../assets/experiments/karaoke-os/guest-list.png';
+import guestSearch from '../../assets/experiments/karaoke-os/guest-search.png';
+import whoGuest from '../../assets/experiments/karaoke-os/who-guest.png';
+import whoStaff from '../../assets/experiments/karaoke-os/who-staff.png';
+import whoOperator from '../../assets/experiments/karaoke-os/who-operator.png';
+import demo from '../../assets/experiments/karaoke-os/demo-backoffice.png';
 
 export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
 
 <CaseSection title="How it is built" subtitle="three parts that share one database" id="built">
+  <CaseBlock label="the guest view" title="Search first, on a phone">
+    Guests scan the code on the table and the search box is the first thing they see. No app and no account. Type an artist and only their songs stay.
+    <ProofStrip slot="proof" phones caption="The guest view of the demo bar, The Anchor. Real screens from the live demo." items={[
+      { src: guestList, label: 'open', alt: 'The guest view of The Anchor on a phone: a search box for 55 songs, genre filters and a list of songs with artwork, starting with Take On Me by a-ha.' },
+      { src: guestSearch, label: 'type \u201cadele\u201d', alt: 'The same view after typing adele in the search box: only the two songs by Adele are left.' },
+    ]} />
+  </CaseBlock>
   <CaseBlock label="the interesting part" title="One search page became three parts" pills={['guests', 'bar staff', 'service operator']}>
     The search page was the easy part. Only bar staff can keep the song list up to date, so each bar needs a backoffice. When many bars use the service, someone also has to manage all the bars, so there is a third screen for that.
     <Proof slot="proof" caption="The bar's backoffice, with the guest song list on a phone." media={img(parts, 'The backoffice of The Anchor in dark mode: a Songs page with counts (55 songs, 12 genres), an Add a song field and a table of songs with artwork. A phone in front shows the guest view: The Anchor, a search box for 55 songs, genre filters and the same songs as a list.')} />
   </CaseBlock>
   <CaseBlock label="who sees what" title="Database rules control who sees what" pills={['Next.js', 'Supabase', 'Netlify']}>
     Guests see the song list. Bar staff see their own bar and nothing else. The person who runs the service sees the list of all bars, but cannot open a bar's data unless they work there. The rules are in the database, so a bug in a screen cannot show one bar's songs to another bar.
+    <ProofRows slot="proof" caption="One bar, The Anchor, seen by three people. The database decides what each one gets, not the screens." rows={[
+      { label: 'Guest at the table', text: 'Scans the code and sees The Anchor\u2019s song list. No sign-in, and nothing else.', src: whoGuest, width: 300, part: { x: 31, y: 159, w: 525, h: 94 }, alt: 'The top of the guest view on a phone: The Anchor, a search box for 55 songs and genre filters.' },
+      { label: 'Bar staff at The Anchor', text: 'Signs in and runs this one bar: songs, import, QR code. Other bars do not exist for them.', src: whoStaff, part: { x: 32, y: 35, w: 287, h: 81 }, alt: 'The backoffice of The Anchor: the bar name at the top of the menu, with Songs, Import a CSV, QR code and What guests see, and the Songs page with counts.' },
+      { label: 'The person who runs the service', text: 'Sees every bar and its numbers, and can suspend one. The songs stay closed: the row says Not staff.', src: whoOperator, part: { x: 783, y: 329, w: 175, h: 54 }, alt: 'The All venues screen for the person who runs the service: a row for The Anchor with 55 songs, Karaoke on, the words Not staff and a Suspend button.' },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="the demo" title="Your own copy of a bar">
+    Press the button on the front page and you get a private copy of a bar, with its backoffice. You can change anything. The copy is deleted at night.
+    <Proof slot="proof" caption="The backoffice of a private demo copy of The Anchor." media={img(demo, 'The backoffice of a private demo copy of The Anchor. A pink note at the top says the copy is yours, nobody else can see it, and it is deleted tonight. Below it, the Songs page with counts and the song table.')} />
   </CaseBlock>
   <CaseBlock label="why I could build it" title="I designed it, and Claude Code wrote the code">
     I go to that bar, so I knew the problem well and knew how to design for it. I made the product and design decisions and directed the build. Claude Code wrote the code.

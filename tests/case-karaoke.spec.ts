@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// The Karaoke OS experiment (Figma 463:915), on the lighter experiment template: summary with the live demo,
+// The Karaoke OS experiment (Figma 542:1353), on the lighter experiment template: summary with the live demo,
 // one section, no "How I got there" or "What changed".
 const PAGE = '/experiments/karaoke-os';
 
@@ -53,22 +53,44 @@ test('live demo: iframe on desktop, still picture on phones', async ({ page, vie
 test('one section, in the order of the sketch', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['How it is built']);
-  await expect(page.locator('#built [data-case-block] .label')).toHaveText(['the interesting part', 'who sees what', 'why I could build it']);
-  await expect(page.locator('#built [data-case-block] h3')).toHaveText(['One search page became three parts', 'Database rules control who sees what', 'I designed it, and Claude Code wrote the code']);
-  await expect(page.locator('#built [data-case-block]').nth(0).locator('.pills li')).toHaveText(['guests', 'bar staff', 'service operator']);
-  await expect(page.locator('#built [data-case-block]').nth(1).locator('.pills li')).toHaveText(['Next.js', 'Supabase', 'Netlify']);
-  await expect(page.locator('#built [data-case-block]').nth(2).locator('.pills')).toHaveCount(0);
+  const blocks = page.locator('#built [data-case-block]');
+  await expect(blocks.locator('> .text > .label')).toHaveText(['the guest view', 'the interesting part', 'who sees what', 'the demo', 'why I could build it']);
+  await expect(blocks.locator('h3')).toHaveText(['Search first, on a phone', 'One search page became three parts', 'Database rules control who sees what', 'Your own copy of a bar', 'I designed it, and Claude Code wrote the code']);
+  await expect(blocks.nth(1).locator('.pills li')).toHaveText(['guests', 'bar staff', 'service operator']);
+  await expect(blocks.nth(2).locator('.pills li')).toHaveText(['Next.js', 'Supabase', 'Netlify']);
+  await expect(blocks.nth(4).locator('.pills')).toHaveCount(0);
 });
 
 test('the three parts picture shows the backoffice and the guest list', async ({ page }) => {
   await page.goto(PAGE);
-  const proof = page.locator('#built [data-proof]');
-  await expect(proof).toHaveCount(1);
+  const proof = page.locator('#built [data-case-block]').nth(1).locator('[data-proof]');
   await expect(proof.locator('figcaption')).toHaveText("The bar's backoffice, with the guest song list on a phone.");
   const img = proof.locator('img');
   await img.scrollIntoViewIfNeeded();
   await expect(img).toHaveAttribute('alt', /backoffice of The Anchor/);
   await expect.poll(() => img.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
+});
+
+test('the guest view: two real phone screens, open and search', async ({ page }) => {
+  await page.goto(PAGE);
+  const strip = page.locator('#built [data-proof-strip]');
+  await expect(strip.locator('.label')).toHaveText(['open', 'type \u201cadele\u201d']);
+  await expect(strip.locator('figcaption')).toHaveText('The guest view of the demo bar, The Anchor. Real screens from the live demo.');
+});
+
+test('who sees what: one bar, three people, each with a pinned part of a real screen', async ({ page }) => {
+  await page.goto(PAGE);
+  const rows = page.locator('#built [data-proof-rows]');
+  await expect(rows.locator('.who .label')).toHaveText(['Guest at the table', 'Bar staff at The Anchor', 'The person who runs the service']);
+  await expect(rows.locator('.part .ui-pin')).toHaveText(['1', '2', '3']);
+  await expect(rows.locator('img').nth(2)).toHaveAttribute('alt', /Not staff/);
+  // Each outline sits inside its own screen
+  for (let i = 0; i < 3; i++) {
+    const screen = rows.locator('.screen').nth(i);
+    await screen.scrollIntoViewIfNeeded();
+    const s = (await screen.boundingBox())!; const p = (await screen.locator('.part').boundingBox())!;
+    expect(p.x >= s.x && p.y >= s.y && p.x + p.width <= s.x + s.width + 1 && p.y + p.height <= s.y + s.height + 1, `outline ${i + 1}`).toBe(true);
+  }
 });
 
 test('the old Webflow body is gone', async ({ page }) => {
