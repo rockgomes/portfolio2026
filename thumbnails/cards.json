@@ -71,7 +71,7 @@
       "web": "../src/assets/experiments/portfolio-presentation-template/experiment-portfolio-presentation-template.png"
     },
     {
-      "out": "../src/assets/cards/formalist.jpg",
+      "out": "sources/formalist-card.jpg",
       "web": "sources/formalist.png"
     }
   ]
