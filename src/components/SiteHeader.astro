@@ -99,7 +99,7 @@ const links = [
     .end { grid-column: 3; }
     /* The panel spans the content width (gutter to gutter), with bigger tap targets */
     .mpanel { width: calc(100vw - 2 * max(var(--gutter), env(safe-area-inset-left, 0px))); }
-    .mpanel a { padding: 14px 12px; font-size: 17px; }
+    .mpanel a { padding: 14px 12px; font: var(--type-ui-nav-large); }
   }
   /* The view switch gets smaller step by step as the room runs out:
      less room, a "View as" dropdown (Figma 500:10264); smallest screens, in the menu after the links (Figma 504:10288) */
