@@ -1,0 +1,342 @@
+---
+// A state map you can drive (Figma maps 586:1336, 586:1368, 586:1397, in the prototype style): states are real
+// buttons, the moves between them are SVG lines. Below the map, a panel says where you are (the state and a short
+// note), lists what can happen next as buttons (the events, like "issue found"), and logs every step, like the order
+// history in the backoffice. Fire an event, or click a state with a dashed border, and a dot travels the line; the
+// line and its chip light up and stay lit, so the path shows. "Play a sample ..." plays one run for you; nothing moves
+// on its own. With reduced motion a step lands at once. Without JS it is the still map, with no panel.
+// The canvas is 798 x 398 and scales down to the box; below 62% it scrolls inside the box.
+import { arrowHead, MAP_W, MAP_H, type StateMapDef } from './state-map';
+interface Props { map: StateMapDef }
+const { map } = Astro.props;
+---
+<div class="smap" data-state-map role="group" aria-label={`${map.label}, a state map`}>
+  <p class="sr-only">{map.description}</p>
+  <div class="scroll" data-scroll>
+    <div class="fit" data-fit>
+      <div class="stage" data-stage>
+        <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} width={MAP_W} height={MAP_H} aria-hidden="true">
+          {map.edges.map((e, i) => (
+            <g class="edge" data-edge={i} data-from={e.from} data-to={e.to} data-event={e.chip?.text}>
+              <path class="line" d={e.d} />
+              <path class="line" d={arrowHead(e.d)} />
+              <path class="trace" d={e.d} />
+            </g>
+          ))}
+          <circle class="dot" data-dot r="5" cx="0" cy="0" />
+        </svg>
+        {map.edges.map((e, i) => e.chip && (
+          <span class="chip" data-chip={i} aria-hidden="true" style={`left:${e.chip.x}px;top:${e.chip.y}px`}>{e.chip.text}</span>
+        ))}
+        {map.nodes.map((n) => (
+          <button type="button" class:list={['node', { start: n.start, profile: n.tabs }]} data-node={n.id} data-start={n.start ? '' : undefined} data-end={n.end ? '' : undefined} data-note={n.note} data-tab-end={n.tabs ? n.tabEnd ?? n.tabs.length - 1 : undefined} aria-disabled="true" tabindex="-1" style={`left:${n.x}px;top:${n.y}px;width:${n.w}px;height:${n.h}px`}>
+            {n.start && <svg class="play" width="8" height="9" viewBox="0 0 8 9" aria-hidden="true"><path d="M0 0L8 4.5L0 9Z" /></svg>}
+            <span class="name">{n.label}</span>
+            {n.tabs && <span class="tabs">{n.tabs.map((t) => <span class="tab">{t}</span>)}</span>}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+  <div class="panel" data-panel hidden>
+    <div class="col">
+      <div class="block">
+        <p class="label t-mono-label">now</p>
+        <p class="state" data-now aria-live="polite"></p>
+        <p class="note" data-now-note></p>
+      </div>
+      <div class="block">
+        <p class="label t-mono-label">what can happen next</p>
+        <div class="events" data-events></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="block log-block">
+        <p class="label t-mono-label">log</p>
+        <ol class="log" data-log></ol>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" data-play>{map.sample}</button>
+        <button type="button" class="btn" data-restart>Start again</button>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" data-runs set:html={JSON.stringify({ runs: map.runs, sample: map.sample })} />
+</div>
+<style>
+  .smap { display: flex; flex-direction: column; container-type: inline-size; }
+  .scroll { overflow-x: auto; overflow-y: hidden; }
+  .fit { position: relative; width: 798px; height: 398px; }
+  .stage { position: absolute; inset: 0 auto auto 0; width: 798px; height: 398px; transform-origin: 0 0; }
+  .stage > svg { position: absolute; inset: 0; overflow: visible; }
+
+  /* Lines: the Figma connector, 2px blue with a chevron. Once the panel is on, lines not used yet are faint, the
+     used ones stay lit (the path so far), and the ones you can take next are clear. */
+  .line, .trace { fill: none; stroke: var(--color-annotation-measure); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .trace { opacity: 0; }
+  .line { transition: opacity 0.3s ease; }
+  .dot { fill: var(--color-annotation-measure); stroke: var(--color-surface-page); stroke-width: 2; opacity: 0; }
+  .live .edge .line { opacity: 0.25; }
+  .live .edge.can .line { opacity: 0.6; }
+  .live .edge.lit .line, .live .edge.peek .line { opacity: 1; }
+
+  .chip { position: absolute; transform: translate(-50%, -50%); padding: 2px 6px; border-radius: var(--radius-tag); background: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-pill-small); white-space: nowrap; transition: opacity 0.3s ease, box-shadow 0.2s ease; }
+  .live .chip { opacity: 0.4; }
+  .live .chip.can { opacity: 0.75; }
+  .live .chip.lit, .live .chip.peek { opacity: 1; }
+  .chip.peek { box-shadow: 0 0 0 3px var(--color-annotation-measure-soft); }
+
+  /* States: the white frame of the Figma maps. The current one gets a blue border and a soft ring; the ones you can
+     go to next get a dashed border and can be clicked. */
+  .node { position: absolute; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 0; margin: 0; background: var(--color-surface-raised); border: 1px solid var(--color-border-subtle); border-radius: 0; color: var(--color-text-primary); font: var(--type-ui-table-strong); white-space: nowrap; cursor: default; transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease; }
+  .node[aria-current='true'] { border-color: var(--color-annotation-measure); box-shadow: 0 0 0 4px var(--color-annotation-measure-soft); }
+  .node.next { border: 1px dashed var(--color-annotation-measure); cursor: pointer; }
+  .node.next:hover, .node.peek { background: color-mix(in srgb, var(--color-annotation-measure-soft) 40%, var(--color-surface-raised)); }
+  .node:focus-visible { outline: 2px solid var(--color-annotation-measure); outline-offset: 3px; }
+  .start { border-color: var(--color-annotation-measure); border-radius: var(--radius-control); background: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-pill); }
+  .start.next:hover, .start.peek { background: var(--color-annotation-measure); }
+  .play { fill: currentColor; }
+  .profile { flex-direction: column; align-items: flex-start; gap: 4px; padding: 0 15px; }
+  .tabs { display: flex; font: var(--type-mono-small); color: var(--color-text-muted); }
+  .tab + .tab::before { content: '·'; padding-inline: 8px; color: var(--color-text-muted); }
+  .tab { transition: color 0.2s ease; }
+  .tab.on { color: var(--color-annotation-measure); }
+
+  /* The panel: where you are and what can happen (left), the log and the sample run (right) */
+  .panel { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--color-border-subtle); background: var(--color-surface-page); }
+  .col { display: flex; flex-direction: column; gap: var(--space-16); padding: var(--space-16); min-width: 0; }
+  .col + .col { border-left: 1px solid var(--color-border-subtle); }
+  .block { display: flex; flex-direction: column; gap: var(--space-8); }
+  .label { margin: 0; color: var(--color-text-muted); }
+  .state { margin: 0; font: var(--type-ui-brand); color: var(--color-text-primary); }
+  .note { margin: 0; font: var(--type-body-small); color: var(--color-text-secondary); }
+  .events { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-8); }
+  /* The event buttons and log rows are made by the script, so their rules are :global (inside this component only) */
+  .events :global(.btn) { max-width: 100%; white-space: normal; text-align: left; }
+  .events :global(.ev) { font: var(--type-mono-label); color: var(--color-annotation-measure); }
+  .events :global(p) { margin: 0; font: var(--type-body-small); color: var(--color-text-muted); }
+  .log-block { flex: 1; min-height: 0; }
+  .log { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; max-height: 168px; overflow-y: auto; counter-reset: step; }
+  .log :global(li) { display: flex; gap: var(--space-8); align-items: baseline; font: var(--type-ui-table); color: var(--color-text-primary); counter-increment: step; }
+  .log :global(li)::before { content: counter(step); min-width: 18px; font: var(--type-mono-count); color: var(--color-text-muted); }
+  .log :global(li span) { font: var(--type-mono-label); color: var(--color-annotation-measure); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+  @container (max-width: 560px) {
+    .panel { grid-template-columns: 1fr; }
+    .col + .col { border-left: 0; border-top: 1px solid var(--color-border-subtle); }
+  }
+</style>
+<script>
+  import { gsap, reduceMotion } from '../../lib/motion';
+
+  const W = 798, H = 398, MIN = 0.62;
+  const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five'];
+
+  document.querySelectorAll<HTMLElement>('[data-state-map]').forEach((root) => {
+    // Fit the canvas to the box
+    const scroll = root.querySelector<HTMLElement>('[data-scroll]')!;
+    const fit = root.querySelector<HTMLElement>('[data-fit]')!;
+    const stage = root.querySelector<HTMLElement>('[data-stage]')!;
+    const fitTo = () => {
+      if (!scroll.clientWidth) return;
+      const s = Math.min(1, Math.max(MIN, scroll.clientWidth / W));
+      stage.style.transform = `scale(${s})`;
+      fit.style.width = `${W * s}px`;
+      fit.style.height = `${H * s}px`;
+    };
+    new ResizeObserver(fitTo).observe(scroll);
+    fitTo();
+
+    const nodes = new Map([...root.querySelectorAll<HTMLButtonElement>('[data-node]')].map((n) => [n.dataset.node!, n]));
+    const edges = [...root.querySelectorAll<SVGGElement>('[data-edge]')].map((g) => ({
+      g, from: g.dataset.from!, to: g.dataset.to!, event: g.dataset.event,
+      trace: g.querySelector<SVGPathElement>('.trace')!,
+      chip: root.querySelector<HTMLElement>(`[data-chip="${g.dataset.edge}"]`),
+    }));
+    type Edge = (typeof edges)[number];
+    const { runs, sample } = JSON.parse(root.querySelector('[data-runs]')!.textContent!) as { runs: string[][]; sample: string };
+    const start = [...nodes.values()].find((n) => n.hasAttribute('data-start'))!.dataset.node!;
+    const dot = root.querySelector<SVGCircleElement>('[data-dot]')!;
+    const panel = root.querySelector<HTMLElement>('[data-panel]')!;
+    const nowEl = root.querySelector<HTMLElement>('[data-now]')!;
+    const noteEl = root.querySelector<HTMLElement>('[data-now-note]')!;
+    const eventsEl = root.querySelector<HTMLElement>('[data-events]')!;
+    const logEl = root.querySelector<HTMLOListElement>('[data-log]')!;
+    const playBtn = root.querySelector<HTMLButtonElement>('[data-play]')!;
+    const restartBtn = root.querySelector<HTMLButtonElement>('[data-restart]')!;
+
+    let current = start;
+    let busy = false; // a dot is on its way
+    let playing = false; // a sample run is playing
+    let run = 0;
+    let epoch = 0; // goes up on every restart, so a step still on its way stops there
+    let tween: ReturnType<typeof gsap.to> | undefined;
+    let target = start; // where the dot is going
+
+    const outs = (id: string) => edges.filter((e) => e.from === id);
+    const name = (id: string) => nodes.get(id)!.querySelector('.name')!.textContent!;
+    const setTabs = (n: HTMLElement, upTo: number) => n.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('on', i === upTo));
+    const peek = (e: Edge, on: boolean) => { e.g.classList.toggle('peek', on); e.chip?.classList.toggle('peek', on); nodes.get(e.to)!.classList.toggle('peek', on); };
+
+    // What the panel says: where you are, a note (facts from the case, then how many ways on), and the events
+    const note = (id: string) => {
+      const n = nodes.get(id)!;
+      const k = outs(id).length;
+      const ways = k === 0 ? 'The flow ends here.' : n.hasAttribute('data-end') ? `The flow can end here. ${WORDS[k]} way${k > 1 ? 's' : ''} on.` : `${WORDS[k]} way${k > 1 ? 's' : ''} on from here.`;
+      return [n.dataset.note, ways].filter(Boolean).join(' ');
+    };
+
+    const refresh = () => {
+      const can = busy || playing ? [] : outs(current);
+      nodes.forEach((n, id) => {
+        const on = can.some((e) => e.to === id);
+        n.classList.toggle('next', on);
+        n.setAttribute('aria-disabled', String(!on));
+        n.tabIndex = on ? 0 : -1;
+        if (on) n.setAttribute('aria-label', `Go to ${name(id)}`); else n.removeAttribute('aria-label');
+        if (id === current) n.setAttribute('aria-current', 'true'); else n.removeAttribute('aria-current');
+      });
+      edges.forEach((e) => { const on = can.includes(e); e.g.classList.toggle('can', on); e.chip?.classList.toggle('can', on); });
+      nowEl.textContent = name(current);
+      noteEl.textContent = note(current);
+      const hadFocus = eventsEl.contains(document.activeElement);
+      eventsEl.replaceChildren();
+      if (playing) eventsEl.append(Object.assign(document.createElement('p'), { textContent: 'Playing a sample. Pause to take over.' }));
+      else if (busy) eventsEl.append(Object.assign(document.createElement('p'), { textContent: `Moving to ${name(target)}.` }));
+      else if (!can.length) eventsEl.append(Object.assign(document.createElement('p'), { textContent: 'Nothing more can happen. Start again to go back.' }));
+      for (const e of can) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'btn';
+        if (e.event) b.append(Object.assign(document.createElement('span'), { className: 'ev', textContent: e.event }), ' → ');
+        else b.append('→ ');
+        b.append(name(e.to));
+        b.addEventListener('click', () => step(e));
+        b.addEventListener('pointerenter', () => peek(e, true));
+        b.addEventListener('pointerleave', () => peek(e, false));
+        b.addEventListener('focus', () => peek(e, true));
+        b.addEventListener('blur', () => peek(e, false));
+        eventsEl.append(b);
+      }
+      // Keyboard users stay in the panel: focus moves to the first new event, or to Start again at the end
+      if (hadFocus) (eventsEl.querySelector('button') ?? restartBtn).focus();
+      playBtn.textContent = playing ? 'Pause' : sample;
+      playBtn.setAttribute('aria-pressed', String(playing));
+    };
+
+    const log = (e: Edge | null, to: string) => {
+      const li = document.createElement('li');
+      if (e) li.append(Object.assign(document.createElement('span'), { textContent: `${e.event ?? ''} →` }), ' ');
+      li.append(name(to));
+      logEl.append(li);
+      logEl.scrollTop = logEl.scrollHeight;
+    };
+
+    // On small screens the map scrolls inside its box: keep the state the dot goes to in view
+    const follow = (id: string, smooth: boolean) => {
+      if (scroll.scrollWidth <= scroll.clientWidth) return;
+      const n = nodes.get(id)!;
+      const s = fit.offsetWidth / W;
+      const mid = (parseFloat(n.style.left) + parseFloat(n.style.width) / 2) * s;
+      scroll.scrollTo({ left: mid - scroll.clientWidth / 2, behavior: smooth ? 'smooth' : 'auto' });
+    };
+
+    // Take one step. With motion: the dot travels, the line draws in, the chip pulses, the profile tabs light up one
+    // by one. With reduced motion it all lands at once.
+    const travel = async (e: Edge) => {
+      const ep = epoch;
+      const animate = !reduceMotion();
+      busy = true;
+      target = e.to;
+      follow(e.to, animate);
+      edges.forEach((x) => peek(x, false));
+      refresh();
+      e.g.classList.add('lit');
+      e.chip?.classList.add('lit');
+      if (animate) {
+        const len = e.trace.getTotalLength();
+        const p = { t: 0 };
+        gsap.set(e.trace, { opacity: 1, strokeDasharray: len, strokeDashoffset: len });
+        gsap.set(dot, { opacity: 1 });
+        if (e.chip) gsap.fromTo(e.chip, { scale: 1.15 }, { scale: 1, duration: 0.5, ease: 'back.out(3)', clearProps: 'scale' });
+        tween = gsap.to(p, {
+          t: 1, duration: Math.max(0.45, len / 300), ease: 'power1.inOut',
+          onUpdate: () => {
+            const pt = e.trace.getPointAtLength(p.t * len);
+            dot.setAttribute('cx', String(pt.x));
+            dot.setAttribute('cy', String(pt.y));
+            e.trace.style.strokeDashoffset = String(len * (1 - p.t));
+          },
+        });
+        await tween;
+        if (ep !== epoch) return;
+        gsap.to(dot, { opacity: 0, duration: 0.2 });
+        gsap.set(e.trace, { opacity: 0 });
+      }
+      current = e.to;
+      log(e, current);
+      const n = nodes.get(current)!;
+      if (n.dataset.tabEnd) {
+        const end = Number(n.dataset.tabEnd);
+        if (animate) for (let i = 0; i <= end; i++) { setTabs(n, i); await wait(220); if (ep !== epoch) return; }
+        else setTabs(n, end);
+      }
+      busy = false;
+      refresh();
+    };
+
+    const step = (e: Edge) => { if (!busy && !playing) travel(e); };
+
+    const reset = () => {
+      epoch++;
+      tween?.kill();
+      busy = false;
+      playing = false;
+      gsap.set(dot, { opacity: 0 });
+      edges.forEach((e) => { e.g.classList.remove('lit'); e.chip?.classList.remove('lit'); peek(e, false); gsap.set(e.trace, { opacity: 0 }); });
+      nodes.forEach((n) => setTabs(n, -1));
+      current = start;
+      scroll.scrollLeft = 0;
+      logEl.replaceChildren();
+      log(null, start);
+      refresh();
+    };
+
+    // One sample run per press, from the start. Pause stops after the step on its way.
+    const play = async () => {
+      reset();
+      const ep = epoch;
+      playing = true;
+      refresh();
+      const path = runs[run];
+      run = (run + 1) % runs.length;
+      for (let i = 0; i < path.length - 1; i++) {
+        await wait(i === 0 ? 300 : reduceMotion() ? 700 : 450);
+        if (ep !== epoch || !playing) return;
+        await travel(edges.find((x) => x.from === path[i] && x.to === path[i + 1])!);
+        if (ep !== epoch) return;
+      }
+      playing = false;
+      refresh();
+    };
+
+    playBtn.addEventListener('click', () => {
+      if (playing) { playing = false; refresh(); } else play();
+    });
+    restartBtn.addEventListener('click', reset);
+    nodes.forEach((n, id) => n.addEventListener('click', () => {
+      const e = outs(current).find((x) => x.to === id);
+      if (e) step(e);
+    }));
+
+    // Stop a sample when the map leaves the screen or its panel is switched away
+    new IntersectionObserver((entries) => {
+      if (playing && !entries.some((en) => en.isIntersecting)) { playing = false; refresh(); }
+    }).observe(root);
+
+    root.classList.add('live');
+    panel.hidden = false;
+    reset();
+  });
+</script>
