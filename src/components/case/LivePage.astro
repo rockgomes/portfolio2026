@@ -7,13 +7,17 @@
 // Reload. Without JS, or before JS runs, the recording (or the still) shows: nothing is ever blank or wider than the page.
 // embed={false}: the site does not allow other pages to show it in a frame (X-Frame-Options), so the still shows at
 // every size, under the same browser bar, with no Reload.
+// clickToLoad: a heavy prototype (a Figma embed) does not load with the page. On desktop the still picture shows in
+// the frame with a "Load the prototype" button; the iframe gets its address only after the click, and the picture stays
+// until the prototype has loaded. Reload is hidden until then. Phones show the still, as before.
 import Proof from './Proof.astro';
 import IconRotateCw from '../IconRotateCw.astro';
-interface Props { src: string; video?: string; poster: string; caption: string; title: string; videoLabel?: string; embed?: boolean }
-const { src, video, poster, caption, title, videoLabel, embed = true } = Astro.props;
+interface Props { src: string; video?: string; poster: string; caption: string; title: string; videoLabel?: string; embed?: boolean; clickToLoad?: boolean }
+const { src, video, poster, caption, title, videoLabel, embed = true, clickToLoad = false } = Astro.props;
+const cover = embed && clickToLoad;
 const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
 ---
-<div class="live" data-live data-phone data-still={!video || undefined}>
+<div class="live" data-live data-phone data-still={!video || undefined} data-cover={cover || undefined}>
   <Proof caption={caption}>
     <div class="bar">
       <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -21,10 +25,11 @@ const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
       <button type="button" class="btn btn-icon reload" data-live-reload aria-label="Reload the live page"><IconRotateCw /></button>
     </div>
     <div class="view" data-live-view>
-      {embed && <iframe src={src} title={title} loading="lazy"></iframe>}
+      {embed && <iframe src={cover ? undefined : src} data-src={cover ? src : undefined} title={title} loading="lazy"></iframe>}
       {video
         ? <video muted loop playsinline controls preload="none" poster={poster} aria-label={videoLabel}><source src={video} type="video/mp4" /></video>
         : <img class="still" src={poster} alt={`${title}, a still picture`} width="1440" height="900" loading="lazy" decoding="async" />}
+      {cover && <button type="button" class="btn btn-primary load" data-live-load>Load the prototype</button>}
     </div>
   </Proof>
 </div>
@@ -41,6 +46,12 @@ const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
   .live[data-phone] :is(video, .still) { display: block; }
   .live[data-phone][data-still] .reload { visibility: hidden; }
   .live[data-phone] .view { height: auto !important; }
+  /* clickToLoad: on desktop the still covers the frame, with the button in the middle, until the prototype has loaded */
+  .load { display: none; }
+  .live[data-cover]:not([data-phone]) .still { display: block; position: absolute; inset: 0; z-index: 1; height: 100%; object-fit: contain; background: var(--color-surface-stage); }
+  .live[data-cover]:not([data-phone]) .view::after { content: ''; position: absolute; inset: 0; z-index: 1; background: color-mix(in srgb, var(--color-surface-page) 45%, transparent); pointer-events: none; }
+  .live[data-cover]:not([data-phone]) .load { display: inline-flex; position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%); box-shadow: var(--shadow-panel); }
+  .live[data-cover] .reload { visibility: hidden; }
   @media (max-width: 560px) { .dots { display: none; } .bar { grid-template-columns: minmax(0, 1fr) auto; } .addr { justify-self: start; } }
 </style>
 <script>
@@ -67,10 +78,20 @@ const address = src.replace(/^https?:\/\//, '').replace(/\/$/, '');
     new ResizeObserver(fit).observe(view);
     // Phones: the recording plays in view (src/lib/autoplay.ts); on desktop it is hidden, so it never plays
     if (video) autoplay(video);
+    // clickToLoad: the prototype gets its address on the click; the picture goes once the frame has loaded. Figma sends no
+    // "ready" message, so after that its own loading screen shows until the prototype is drawn.
+    const load = fig.querySelector<HTMLButtonElement>('[data-live-load]');
+    load?.addEventListener('click', () => {
+      load.disabled = true;
+      load.textContent = 'Loading the prototype…';
+      frame.addEventListener('load', () => fig.removeAttribute('data-cover'), { once: true });
+      frame.loading = 'eager';
+      frame.src = frame.dataset.src!;
+    });
     // Reload: the prototype starts again from the top (phones: the recording starts again)
     fig.querySelector('[data-live-reload]')!.addEventListener('click', () => {
       if (fig.hasAttribute('data-phone')) { if (video) restart(video); }
-      else frame.src = frame.src;
+      else if (frame.getAttribute('src')) frame.src = frame.src;
     });
   });
 </script>
