@@ -1,0 +1,110 @@
+---
+name: "Formalist"
+summary: "A Chrome extension that fills forms from answers you save once. Your answers stay on your own computer. It is free, and built to help first."
+cardImage: "../../assets/cards/formalist.jpg"
+date: "2026-09-07"
+tools: "TypeScript, Preact, WXT, Vitest, Playwright, Figma, Claude Code"
+liveDemoUrl: "https://formalist-demo.netlify.app"
+featured: false
+category: "Code"
+readTime: "3 min read"
+type: "experiment"
+industry: ["B2C"]
+focus: ["Code"]
+tagsToCheck: true
+private: false
+cardOrder: 2
+cardNumber: "02"
+cardCompany: "Side project"
+cardYear: "2026"
+cardTitle: "Formalist"
+cardLine: "A Chrome extension that fills forms from answers you save once. Your answers stay on your computer."
+cardToCheck: true
+subtitle: "Side project · 2026 · Chrome extension"
+facts:
+  role: "Design and build, solo"
+  context: "Side project, live in the Chrome Web Store"
+  made: "A browser extension (version 1.2.1) and its website, formalist.app"
+  tools: "TypeScript, Preact, WXT, Vitest, Playwright, Figma, Claude Code"
+problem: "Forms ask for the same answers again and again. Browser autofill knows your address, but not your notice period or your portfolio link."
+decision: "Save each answer once, on your device. Show a small Fill badge in each field. Never submit the form for the person."
+result: "Live and free in the Chrome Web Store. No account, no servers, no tracking."
+links:
+  - label: "Get it for Chrome"
+    href: "https://chromewebstore.google.com/detail/formalist/bnnfokenogbmmjkpallkfmfkibbbbfhb"
+  - label: "Open the live demo"
+    href: "https://formalist-demo.netlify.app"
+live:
+  src: "https://formalist-demo.netlify.app"
+  title: "Formalist demo"
+  poster: "/media/experiments/formalist/live.jpg"
+  caption: "The live demo. Press Fill 9 fields in the Formalist window, or click the Fill badge in any field. Nothing you type is saved."
+copyToCheck: true
+---
+
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import ProofStrip from '../../components/case/ProofStrip.astro';
+import ProofList from '../../components/case/ProofList.astro';
+import BadgeLayers from '../../components/case/BadgeLayers.astro';
+import empty from '../../assets/experiments/formalist/empty.png';
+import picker from '../../assets/experiments/formalist/picker.png';
+import filled from '../../assets/experiments/formalist/filled.png';
+import popupDetected from '../../assets/experiments/formalist/popup-detected.png';
+import popupFilled from '../../assets/experiments/formalist/popup-filled.png';
+
+<div class="wrap after-live">
+  <ProofStrip caption="Real screens from the live demo. A badge opens a picker for its field. From the Formalist window, one click fills every field, and Undo puts the page back." items={[
+    { src: empty, label: '1 · open a form', alt: 'A job application form for a Product Designer role. Each empty field has a small blue Fill badge. The Formalist window on the right says Form detected, 9 of 9 fields matched, with a Fill 9 fields button.' },
+    { src: picker, label: '2 · click a badge', alt: 'The same form with the picker open under the Email field: two saved emails for Alex Taylor, the first marked Default, and the links Manage values and Use another field.' },
+    { src: filled, label: '3 · fill all, undo any time', alt: 'The form filled with Alex Taylor’s answers. Each field now has a green Filled badge. The Formalist window says Filled 9 fields, with an Undo button.' },
+  ]} />
+</div>
+
+<CaseSection title="How it is built" subtitle="the part that was interesting" id="built">
+  <CaseBlock label="the idea" title="Save it once, fill any form">
+    Formalist finds the fields it can fill and puts a Fill badge in each one. Fill them all at once, or pick a value for one field. Undo puts everything back.
+    <ProofStrip slot="proof" phones caption="The Formalist window: the fields it found on this page, then the same list after one click." items={[
+      { src: popupDetected, label: 'form found', alt: 'The Formalist window: Form detected, 9 of 9 fields matched, a Fill 9 fields button, and the list of detected fields with Alex Taylor’s saved answers.' },
+      { src: popupFilled, label: 'after Fill 9 fields', alt: 'The Formalist window after the fill: Filled 9 fields with an Undo button, and the line Nothing is submitted. You still press the form’s own button.' },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="the hard part" title="Badges that stay with their field, even in pop-up windows">
+    Real forms open in pop-up windows, sit in frames, and trap the keyboard inside a dialog. The badges must stay next to their field there too, without breaking the page. InvestEngine and Teamtailor were the test cases.
+    <BadgeLayers slot="proof" caption="Real sites that shaped it: LinkedIn Easy Apply (#42), forms inside frames (#40), Greenhouse phone boxes (#44), InvestEngine and Teamtailor (#51)." />
+  </CaseBlock>
+  <CaseBlock label="a hard lesson" title="Safe by design, and open about the limits">
+    Before launch I ran a security audit and proved each attack on test pages. Version 1.2.1 fixes three of the four problems. The fourth is written down openly in the repo.
+    <ProofList slot="proof" heading="security audit, 2026-10-16 · each attack proved on test pages" items={[
+      { key: 'fixed', tone: 'positive', text: 'A page could hide fields and read what was filled. Now only visible fields get filled.' },
+      { key: 'fixed', tone: 'positive', text: 'A page could read the picker’s text with window.find(). Now it cannot.' },
+      { key: 'fixed', tone: 'positive', text: 'The extension’s font worked as a tracking ID across sites. Now it uses the system font.' },
+      { key: 'fixed', tone: 'positive', text: 'A broken backup file could stop the extension. Now settings are checked.' },
+      { key: 'known limit', tone: 'neutral', text: 'A page can hide a badge under its own button. Written down in SECURITY.md.' },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="how it was made" title="Built with AI, reviewed like a team">
+    I designed in Figma and built with Claude Code. Every change, more than 50 so far, went through a branch, a pull request, tests in CI, and my review.
+    <ProofList slot="proof" caption="8 of the merged pull requests, from the first commit on 7 September to the security update on 29 October." items={[
+      { key: '#1  2026-09-07', text: 'Foundation: scaffold, CI, data model, popup vault' },
+      { key: '#5  2026-09-07', text: 'Content script, detection, fill and undo' },
+      { key: '#17  2026-09-20', text: 'Backup to a file, and restore from it' },
+      { key: '#32  2026-09-28', text: 'Rename the product to Formalist' },
+      { key: '#40  2026-10-12', text: 'Forms inside iframes (1.1.0)' },
+      { key: '#51  2026-10-15', text: 'Badges inside aria-modal and focus-trapped windows' },
+      { key: '#52  2026-10-15', text: 'Release 1.2.0' },
+      { key: '#53  2026-10-29', text: 'Security update 1.2.1' },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="the stack" title="Small, and fully offline" pills={['TypeScript', 'Preact', 'Playwright']}>
+    TypeScript and Preact on WXT, as a Manifest V3 extension. It makes no network requests at all. Vitest for unit tests, Playwright for checks in a real browser, and CI on every pull request.
+    <ProofList slot="proof" kind="checks" heading=".github/workflows/ci.yml · every pull request" caption="The last check makes sure no test data ships in the store package." items={[
+      { text: 'pnpm typecheck' },
+      { text: 'node scripts/check-icons.mjs' },
+      { text: 'pnpm test' },
+      { text: 'pnpm build' },
+      { text: 'pnpm zip' },
+      { text: 'node scripts/check-no-sample-data.mjs' },
+    ]} />
+  </CaseBlock>
+</CaseSection>

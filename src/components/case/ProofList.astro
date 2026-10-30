@@ -1,0 +1,47 @@
+---
+// A list as proof (Figma, Formalist sketch 519:19766: Audit results 530:1434, Pull request timeline 530:1457, CI checks
+// 530:1484): an optional mono heading, then rows inside a Proof frame, with the Proof caption below.
+// kind "rows": a key on the left (a small Pill when it has a tone, else a muted mono label), the text next to it.
+// kind "checks": a green tick and a mono line, like a CI run.
+import Proof from './Proof.astro';
+interface Item { key?: string; tone?: 'positive' | 'neutral'; text: string }
+interface Props { kind?: 'rows' | 'checks'; heading?: string; items: Item[]; caption?: string }
+const { kind = 'rows', heading, items, caption } = Astro.props;
+---
+<Proof caption={caption}>
+  <div class:list={['list', kind]} data-proof-list>
+    {heading && <p class="heading t-mono-label">{heading}</p>}
+    <ul>
+      {items.map((it) => (
+        <li>
+          {kind === 'checks'
+            ? <span class="tick" aria-hidden="true">✓</span>
+            : it.tone
+              ? <span class:list={['ui-pill ui-pill-sm', it.tone === 'positive' && 'ui-pill-positive']}>{it.key}</span>
+              : <span class="key t-mono-label">{it.key}</span>}
+          <span class="text">{it.text}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Proof>
+<style>
+  .list { padding: var(--space-32); }
+  .heading { margin: 0; color: var(--color-text-muted); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  .rows li { display: flex; gap: var(--space-16); align-items: baseline; padding-block: 14px; border-top: 1px solid var(--color-border-subtle); }
+  .rows .heading { padding-bottom: var(--space-8); }
+  .key { flex: 0 0 150px; color: var(--color-text-muted); }
+  .rows .ui-pill { flex: none; }
+  .rows .text { flex: 1 1 0; min-width: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  .checks { display: flex; flex-direction: column; gap: 10px; }
+  .checks ul { display: flex; flex-direction: column; gap: 10px; }
+  .checks li { display: flex; gap: var(--space-12); font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); }
+  .tick { color: var(--color-status-positive); }
+  .checks .text { color: var(--color-text-primary); overflow-wrap: anywhere; }
+  @media (max-width: 720px) {
+    .list { padding: var(--space-16); }
+    .rows li { flex-direction: column; gap: 6px; }
+    .key { flex-basis: auto; }
+  }
+</style>
