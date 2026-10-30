@@ -70,8 +70,10 @@ test('the old Webflow body is gone', async ({ page }) => {
   await expect(page.locator('main')).not.toContainText('So I built the alternative');
 });
 
-test('next case study goes back to card 01', async ({ page }) => {
+test('next case study goes on to Formalist, and from the last card back to card 01', async ({ page }) => {
   await page.goto(PAGE);
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/experiments/formalist');
+  await page.goto('/experiments/formalist');
   await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/flex-academy');
 });
 
