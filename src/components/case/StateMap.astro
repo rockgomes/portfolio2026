@@ -104,7 +104,6 @@ const { map } = Astro.props;
 
   /* The panel: where you are and what can happen (left), the log and the sample run (right) */
   .panel { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--color-border-subtle); background: var(--color-surface-page); }
-  .panel[hidden] { display: none; }
   .col { display: flex; flex-direction: column; gap: var(--space-16); padding: var(--space-16); min-width: 0; }
   .col + .col { border-left: 1px solid var(--color-border-subtle); }
   .block { display: flex; flex-direction: column; gap: var(--space-8); }
