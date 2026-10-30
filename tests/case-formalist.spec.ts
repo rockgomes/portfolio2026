@@ -13,12 +13,13 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 
-test('buttons open the live demo and the website', async ({ page }) => {
+test('buttons open the Chrome Web Store and the live demo', async ({ page }) => {
   await page.goto(PAGE);
   const a = page.locator('[data-case-links] a');
-  await expect(a).toHaveText(['Open the live demo', 'formalist.app']);
-  await expect(a.nth(0)).toHaveAttribute('href', 'https://formalist-demo.netlify.app');
+  await expect(a).toHaveText(['Get it for Chrome', 'Open the live demo']);
+  await expect(a.nth(0)).toHaveAttribute('href', 'https://chromewebstore.google.com/detail/formalist/bnnfokenogbmmjkpallkfmfkibbbbfhb');
   await expect(a.nth(0)).toHaveClass(/btn-primary/);
+  await expect(a.nth(1)).toHaveAttribute('href', 'https://formalist-demo.netlify.app');
 });
 
 test('live demo: iframe on desktop, still picture on phones', async ({ page, viewport }) => {
