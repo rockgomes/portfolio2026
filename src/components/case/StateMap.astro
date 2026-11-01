@@ -46,8 +46,10 @@ const { map } = Astro.props;
   .live .edge:not(.lit) .line { stroke: var(--color-border-strong); }
   .dot { fill: var(--color-annotation-measure); opacity: 0; }
 
-  .chip { position: absolute; transform: translate(-50%, -50%); padding: 2px 6px; border-radius: var(--radius-tag); background: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-pill-small); white-space: nowrap; transition: opacity 0.3s ease; }
-  .live .chip:not(.lit) { opacity: 0.35; }
+  /* Chips are solid, so the line never shows through them. Before the dot reaches a chip's line it is the quiet
+     outline version. */
+  .chip { position: absolute; transform: translate(-50%, -50%); padding: 1px 5px; border: 1px solid var(--color-annotation-measure); border-radius: var(--radius-tag); background: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-pill-small); white-space: nowrap; transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+  .live .chip:not(.lit) { background: var(--color-surface-raised); border-color: var(--color-border-strong); color: var(--color-text-muted); }
 
   /* States. The one the dot is in gets a 2px blue border. */
   .node { position: absolute; display: flex; align-items: center; justify-content: center; background: var(--color-surface-raised); border: 1px solid var(--color-border-subtle); color: var(--color-text-primary); font: var(--type-ui-table-strong); white-space: nowrap; transition: border-color 0.25s ease; }

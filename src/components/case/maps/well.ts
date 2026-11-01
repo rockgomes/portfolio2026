@@ -1,4 +1,4 @@
-// The two Well maps, from the Figma sketch (frame 582:1292, maps 586:1336 and 586:1368), at 1x.
+// The Well order stages map, from the Figma sketch (frame 582:1292, maps 586:1336 and 586:1368), at 1x.
 import type { StateMapDef } from '../state-map';
 
 export const orderStages: StateMapDef = {
@@ -26,27 +26,4 @@ export const orderStages: StateMapDef = {
     { from: 'delivered', to: 'claim', d: 'M466,324 H554', chip: { text: 'issue', x: 510, y: 324 } },
   ],
   tour: ['requested', 'labelling', 'flowrx', 'exceptions', 'flowrx', 'ready', 'dispatched', 'delivered', 'claim'],
-};
-
-export const patientStates: StateMapDef = {
-  id: 'well-patients',
-  label: 'Patient states',
-  description: 'A flow: a new patient is Active. From Active: move to hospital, move to care home, no longer in home, or mark as deceased. Patient returns goes from Hospitalised back to Active.',
-  nodes: [
-    { id: 'added', label: 'Patient added', x: 60, y: 216, w: 118, h: 29 },
-    { id: 'active', label: 'Active', x: 234, y: 210, w: 68, h: 40 },
-    { id: 'hospital', label: 'Hospitalised', x: 596, y: 110, w: 106, h: 40 },
-    { id: 'moved', label: 'Moved care homes', x: 596, y: 180, w: 142, h: 40 },
-    { id: 'gone', label: 'No longer in home', x: 596, y: 250, w: 139, h: 40 },
-    { id: 'deceased', label: 'Deceased', x: 596, y: 320, w: 88, h: 40 },
-  ],
-  edges: [
-    { from: 'added', to: 'active', d: 'M184,230 H230' },
-    { from: 'active', to: 'hospital', d: 'M306,230 H338 Q350,230 350,218 V142 Q350,130 362,130 H592', chip: { text: 'move to hospital', x: 481, y: 130 } },
-    { from: 'active', to: 'moved', d: 'M306,230 H338 Q350,230 350,218 V212 Q350,200 362,200 H592', chip: { text: 'move to care home', x: 481, y: 200 } },
-    { from: 'active', to: 'gone', d: 'M306,230 H338 Q350,230 350,242 V258 Q350,270 362,270 H592', chip: { text: 'no longer in home', x: 481, y: 270 } },
-    { from: 'active', to: 'deceased', d: 'M306,230 H338 Q350,230 350,242 V328 Q350,340 362,340 H592', chip: { text: 'mark as deceased', x: 481, y: 340 } },
-    { from: 'hospital', to: 'active', d: 'M649,106 V60 Q649,48 637,48 H280 Q268,48 268,60 V206', chip: { text: 'patient returns', x: 459, y: 48 } },
-  ],
-  tour: ['added', 'active', 'hospital', 'active', 'moved'],
 };

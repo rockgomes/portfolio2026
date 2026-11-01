@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// The Well case study (Figma sketch 582:1292). Its two maps play by themselves (StateMap.astro). Tests run with
+// The Well case study (Figma sketch 582:1292). Its order stages map plays by itself (StateMap.astro). Tests run with
 // reduced motion, so they see the still map.
 const PAGE = '/project/well---care-homes-backoffice';
 
@@ -13,15 +13,14 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 
-test('the maps switch; each is a still map, with no controls', async ({ page }) => {
+test('the story is about the cycle: the map comes first, then the decision', async ({ page }) => {
   await page.goto(PAGE);
-  const sw = page.locator('[data-switch="well-maps"]');
-  await expect(sw.locator('.ctrl button')).toHaveText(['Order stages', 'Patient states']);
-  const map = sw.locator('[data-state-map]:visible');
+  await expect(page.locator('main h2:not(.label)')).toHaveText(['How I got there', 'A decision I would defend', 'What changed']);
+  await expect(page.locator('#process h3').first()).toHaveText('Map the system before drawing');
+  const map = page.locator('[data-state-map]');
+  await expect(map).toHaveCount(1);
   await expect(map.locator('[data-node]')).toHaveCount(8);
   await expect(map.locator('button')).toHaveCount(0);
-  await sw.locator('.ctrl button').nth(1).click();
-  await expect(sw.locator('[data-state-map]:visible [data-node]')).toHaveCount(6);
 });
 
 test('with motion on, the map plays by itself', async ({ browser }) => {
