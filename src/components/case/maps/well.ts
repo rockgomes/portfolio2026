@@ -1,5 +1,4 @@
 // The two Well maps, from the Figma sketch (frame 582:1292, maps 586:1336 and 586:1368), at 1x.
-// The buttons follow the interactive map (Figma 589:1385).
 import type { StateMapDef } from '../state-map';
 
 export const orderStages: StateMapDef = {
@@ -7,7 +6,7 @@ export const orderStages: StateMapDef = {
   label: 'Order stages',
   description: 'A flow: Requested, Labelling and checking, FlowRX, Ready to dispatch, Dispatched, Delivered. Issue found sends an order from FlowRX to Exceptions, and resolved brings it back. An issue after Delivered leads to Claim failed.',
   nodes: [
-    { id: 'requested', label: 'Requested', x: 64, y: 186, w: 99, h: 29, start: true },
+    { id: 'requested', label: 'Requested', x: 64, y: 186, w: 99, h: 29 },
     { id: 'labelling', label: 'Labelling and checking', x: 219, y: 180, w: 168, h: 40 },
     { id: 'flowrx', label: 'FlowRX', x: 443, y: 180, w: 77, h: 40 },
     { id: 'exceptions', label: 'Exceptions', x: 433, y: 54, w: 97, h: 40 },
@@ -26,12 +25,7 @@ export const orderStages: StateMapDef = {
     { from: 'dispatched', to: 'delivered', d: 'M322,324 H370' },
     { from: 'delivered', to: 'claim', d: 'M466,324 H554', chip: { text: 'issue', x: 510, y: 324 } },
   ],
-  actions: [
-    { label: 'Next stage', primary: true, moves: [['requested', 'labelling'], ['labelling', 'flowrx'], ['flowrx', 'ready'], ['ready', 'dispatched'], ['dispatched', 'delivered']] },
-    { label: 'Issue found', moves: [['flowrx', 'exceptions']] },
-    { label: 'Resolved', moves: [['exceptions', 'flowrx']] },
-    { label: 'Claim issue', moves: [['delivered', 'claim']] },
-  ],
+  tour: ['requested', 'labelling', 'flowrx', 'exceptions', 'flowrx', 'ready', 'dispatched', 'delivered', 'claim'],
 };
 
 export const patientStates: StateMapDef = {
@@ -39,7 +33,7 @@ export const patientStates: StateMapDef = {
   label: 'Patient states',
   description: 'A flow: a new patient is Active. From Active: move to hospital, move to care home, no longer in home, or mark as deceased. Patient returns goes from Hospitalised back to Active.',
   nodes: [
-    { id: 'added', label: 'Patient added', x: 60, y: 216, w: 118, h: 29, start: true },
+    { id: 'added', label: 'Patient added', x: 60, y: 216, w: 118, h: 29 },
     { id: 'active', label: 'Active', x: 234, y: 210, w: 68, h: 40 },
     { id: 'hospital', label: 'Hospitalised', x: 596, y: 110, w: 106, h: 40 },
     { id: 'moved', label: 'Moved care homes', x: 596, y: 180, w: 142, h: 40 },
@@ -54,12 +48,5 @@ export const patientStates: StateMapDef = {
     { from: 'active', to: 'deceased', d: 'M306,230 H338 Q350,230 350,242 V328 Q350,340 362,340 H592', chip: { text: 'mark as deceased', x: 481, y: 340 } },
     { from: 'hospital', to: 'active', d: 'M649,106 V60 Q649,48 637,48 H280 Q268,48 268,60 V206', chip: { text: 'patient returns', x: 459, y: 48 } },
   ],
-  actions: [
-    { label: 'Next state', primary: true, moves: [['added', 'active']] },
-    { label: 'Move to hospital', moves: [['active', 'hospital']] },
-    { label: 'Patient returns', moves: [['hospital', 'active']] },
-    { label: 'Move to care home', moves: [['active', 'moved']] },
-    { label: 'No longer in home', moves: [['active', 'gone']] },
-    { label: 'Mark as deceased', moves: [['active', 'deceased']] },
-  ],
+  tour: ['added', 'active', 'hospital', 'active', 'moved'],
 };

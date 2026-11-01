@@ -1,16 +1,14 @@
 ---
-// A state map you can drive (Figma 589:1385). The states are boxes, the moves between them are SVG lines; a chip on a
-// line names what makes that move happen. Under the map: where you are now, and one button per action. A button works
-// only when its action can happen from the current state; the others are disabled. Press one and the dot travels the
-// line to the next state. Lines already taken and lines you can take next are blue; the rest are grey. "Start again"
-// goes back to the first state. With reduced motion a move lands at once. Without JS it is the still map.
+// A state map that plays by itself. The states are boxes, the moves between them are SVG lines; a chip on a line
+// names what makes that move happen. A dot walks the map's tour on a loop: the state it is in gets a blue border, and
+// each line lights up as the dot travels it. It only plays while the map is on screen. With reduced motion, or without
+// JS, it is the still map with every line blue.
 // The canvas is 798 x 398 and scales down to the box; below 62% it scrolls inside the box.
 import { arrowHead, MAP_W, MAP_H, type StateMapDef } from './state-map';
 interface Props { map: StateMapDef }
 const { map } = Astro.props;
 ---
-<div class="smap" data-state-map role="group" aria-label={`${map.label}, a state map`}>
-  <p class="sr-only">{map.description}</p>
+<div class="smap" data-state-map role="img" aria-label={`${map.label}. ${map.description}`}>
   <div class="scroll" data-scroll>
     <div class="fit" data-fit>
       <div class="stage" data-stage>
@@ -28,58 +26,37 @@ const { map } = Astro.props;
           <span class="chip" data-chip={i} aria-hidden="true" style={`left:${e.chip.x}px;top:${e.chip.y}px`}>{e.chip.text}</span>
         ))}
         {map.nodes.map((n) => (
-          <div class:list={['node', { start: n.start }]} data-node={n.id} data-start={n.start ? '' : undefined} style={`left:${n.x}px;top:${n.y}px;width:${n.w}px;height:${n.h}px`}>
-            {n.start && <svg class="play" width="8" height="9" viewBox="0 0 8 9" aria-hidden="true"><path d="M0 0L8 4.5L0 9Z" /></svg>}
-            <span class="name">{n.label}</span>
-          </div>
+          <div class="node" data-node={n.id} aria-hidden="true" style={`left:${n.x}px;top:${n.y}px;width:${n.w}px;height:${n.h}px`}>{n.label}</div>
         ))}
       </div>
     </div>
   </div>
-  <div class="actions" data-actions hidden>
-    <p class="now" aria-live="polite">Now: <span data-now>{map.nodes.find((n) => n.start)?.label}</span></p>
-    <div class="buttons">
-      {map.actions.map((a, i) => (
-        <button type="button" class:list={['btn', { 'btn-primary': a.primary }]} data-action={i} disabled>{a.label}</button>
-      ))}
-      <button type="button" class="btn" data-restart disabled>Start again</button>
-    </div>
-  </div>
-  <script type="application/json" data-moves set:html={JSON.stringify(map.actions.map((a) => a.moves))} />
+  <script type="application/json" data-tour set:html={JSON.stringify(map.tour)} />
 </div>
 <style>
-  .smap { display: flex; flex-direction: column; gap: var(--space-16); }
-  .scroll { overflow-x: auto; overflow-y: hidden; }
+  .scroll { overflow-x: auto; overflow-y: hidden; padding-block: var(--space-16); }
   .fit { position: relative; width: 798px; height: 398px; margin-inline: auto; }
   .stage { position: absolute; inset: 0 auto auto 0; width: 798px; height: 398px; transform-origin: 0 0; }
   .stage > svg { position: absolute; inset: 0; overflow: visible; }
 
-  /* Lines: the Figma connector, 2px with a chevron. Before JS runs every line is blue (the still map). Once live, only
-     the lines taken and the lines you can take next are blue; the rest are grey. */
+  /* Lines: 2px with a chevron. The still map has every line blue. While it plays, a line is grey until the dot
+     travels it. */
   .line { fill: none; stroke: var(--color-annotation-measure); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.3s ease; }
   .path { fill: none; stroke: none; }
-  .live .edge:not(.lit, .can) .line { stroke: var(--color-border-strong); }
+  .live .edge:not(.lit) .line { stroke: var(--color-border-strong); }
   .dot { fill: var(--color-annotation-measure); opacity: 0; }
 
   .chip { position: absolute; transform: translate(-50%, -50%); padding: 2px 6px; border-radius: var(--radius-tag); background: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-pill-small); white-space: nowrap; transition: opacity 0.3s ease; }
-  .live .chip:not(.lit, .can) { opacity: 0.35; }
+  .live .chip:not(.lit) { opacity: 0.35; }
 
-  /* States: the frames of the Figma maps. The current one gets a 2px blue border. */
-  .node { position: absolute; display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--color-surface-raised); border: 1px solid var(--color-border-subtle); color: var(--color-text-primary); font: var(--type-ui-table-strong); white-space: nowrap; transition: border-color 0.25s ease; }
+  /* States. The one the dot is in gets a 2px blue border. */
+  .node { position: absolute; display: flex; align-items: center; justify-content: center; background: var(--color-surface-raised); border: 1px solid var(--color-border-subtle); color: var(--color-text-primary); font: var(--type-ui-table-strong); white-space: nowrap; transition: border-color 0.25s ease; }
   .node.current { border: 2px solid var(--color-annotation-measure); }
-  .start { border-color: var(--color-annotation-measure); border-radius: var(--radius-control); background: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-pill); }
-  .start.current { border-width: 1px; }
-  .play { fill: currentColor; }
-
-  /* Under the map: where you are, then the actions */
-  .actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-8) var(--space-24); }
-  .now { margin: 0; font: var(--type-body-small); color: var(--color-text-muted); }
-  .buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-8); }
 </style>
 <script>
   import { gsap, reduceMotion } from '../../lib/motion';
 
-  const W = 798, H = 398, MIN = 0.62;
+  const W = 798, MIN = 0.62;
 
   document.querySelectorAll<HTMLElement>('[data-state-map]').forEach((root) => {
     // Fit the canvas to the box
@@ -91,10 +68,12 @@ const { map } = Astro.props;
       const s = Math.min(1, Math.max(MIN, scroll.clientWidth / W));
       stage.style.transform = `scale(${s})`;
       fit.style.width = `${W * s}px`;
-      fit.style.height = `${H * s}px`;
+      fit.style.height = `${398 * s}px`;
     };
     new ResizeObserver(fitTo).observe(scroll);
     fitTo();
+
+    if (reduceMotion()) return;
 
     const nodes = new Map([...root.querySelectorAll<HTMLElement>('[data-node]')].map((n) => [n.dataset.node!, n]));
     const edges = [...root.querySelectorAll<SVGGElement>('[data-edge]')].map((g) => ({
@@ -102,90 +81,46 @@ const { map } = Astro.props;
       path: g.querySelector<SVGPathElement>('.path')!,
       chip: root.querySelector<HTMLElement>(`[data-chip="${g.dataset.edge}"]`),
     }));
-    type Edge = (typeof edges)[number];
-    const moves = JSON.parse(root.querySelector('[data-moves]')!.textContent!) as [string, string][][];
-    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-action]')];
-    const restart = root.querySelector<HTMLButtonElement>('[data-restart]')!;
-    const nowEl = root.querySelector<HTMLElement>('[data-now]')!;
+    const tour = JSON.parse(root.querySelector('[data-tour]')!.textContent!) as string[];
     const dot = root.querySelector<SVGCircleElement>('[data-dot]')!;
-    const start = [...nodes.values()].find((n) => n.hasAttribute('data-start'))!.dataset.node!;
 
-    let current = start;
-    let busy = false; // the dot is on its way
-    let tween: ReturnType<typeof gsap.to> | undefined;
-
-    const name = (id: string) => nodes.get(id)!.querySelector('.name')!.textContent!;
-    // The move a button makes from the current state, if it has one
-    const moveFor = (i: number) => {
-      const m = moves[i].find(([from]) => from === current);
-      return m && edges.find((e) => e.from === m[0] && e.to === m[1]);
-    };
-    const placeDot = (e: Edge, t: number) => {
-      const len = e.path.getTotalLength();
-      const pt = e.path.getPointAtLength(t * len);
-      dot.setAttribute('cx', String(pt.x));
-      dot.setAttribute('cy', String(pt.y));
-    };
-
-    const refresh = () => {
-      const can = edges.filter((e) => e.from === current);
-      edges.forEach((e) => { const on = can.includes(e); e.g.classList.toggle('can', on); e.chip?.classList.toggle('can', on); });
-      nodes.forEach((n, id) => n.classList.toggle('current', id === current));
-      nowEl.textContent = name(current);
-      if (busy) return; // the buttons wait for the dot, so focus does not drop while it travels
-      const focused = buttons.includes(document.activeElement as HTMLButtonElement) || document.activeElement === restart;
-      buttons.forEach((b, i) => { b.disabled = !moveFor(i); });
-      restart.disabled = current === start;
-      // Keep keyboard focus in the row when the button it was on stops working
-      if (focused && (document.activeElement === document.body || (document.activeElement as HTMLButtonElement).disabled)) {
-        (buttons.find((b) => !b.disabled) ?? restart).focus();
+    const setCurrent = (id: string) => {
+      nodes.forEach((n, k) => n.classList.toggle('current', k === id));
+      // On small screens the map scrolls inside its box: keep the current state in view
+      if (scroll.scrollWidth > scroll.clientWidth) {
+        const n = nodes.get(id)!;
+        const mid = (parseFloat(n.style.left) + parseFloat(n.style.width) / 2) * (fit.offsetWidth / W);
+        scroll.scrollTo({ left: mid - scroll.clientWidth / 2, behavior: 'smooth' });
       }
     };
-
-    // On small screens the map scrolls inside its box: keep the state the dot goes to in view
-    const follow = (id: string) => {
-      if (scroll.scrollWidth <= scroll.clientWidth) return;
-      const n = nodes.get(id)!;
-      const mid = (parseFloat(n.style.left) + parseFloat(n.style.width) / 2) * (fit.offsetWidth / W);
-      scroll.scrollTo({ left: mid - scroll.clientWidth / 2, behavior: reduceMotion() ? 'auto' : 'smooth' });
-    };
-
-    // One move: the line and its chip light up, and the dot travels the line to the next state
-    const go = async (e: Edge) => {
-      busy = true;
-      refresh();
-      follow(e.to);
-      e.g.classList.add('lit');
-      e.chip?.classList.add('lit');
-      gsap.set(dot, { opacity: 1 });
-      if (!reduceMotion()) {
-        const p = { t: 0 };
-        tween = gsap.to(p, { t: 1, duration: Math.max(0.45, e.path.getTotalLength() / 300), ease: 'power1.inOut', onUpdate: () => placeDot(e, p.t) });
-        await tween;
-      }
-      placeDot(e, 1);
-      current = e.to;
-      busy = false;
-      refresh();
-    };
-
-    buttons.forEach((b, i) => b.addEventListener('click', () => {
-      const e = moveFor(i);
-      if (e && !busy) go(e);
-    }));
-    restart.addEventListener('click', () => {
-      tween?.kill();
-      busy = false;
-      current = start;
-      gsap.set(dot, { opacity: 0 });
+    const reset = () => {
       edges.forEach((e) => { e.g.classList.remove('lit'); e.chip?.classList.remove('lit'); });
-      scroll.scrollLeft = 0;
-      refresh();
-      buttons[0].focus();
+      gsap.set(dot, { opacity: 0 });
+      setCurrent(tour[0]);
+    };
+
+    // One loop: rest on a state, then the line lights up and the dot travels it to the next state
+    const tl = gsap.timeline({ repeat: -1, paused: true });
+    tl.call(reset);
+    tour.slice(1).forEach((to, i) => {
+      const e = edges.find((x) => x.from === tour[i] && x.to === to)!;
+      const len = e.path.getTotalLength();
+      const p = { t: 0 };
+      tl.to({}, { duration: 0.9 });
+      tl.call(() => { e.g.classList.add('lit'); e.chip?.classList.add('lit'); gsap.set(dot, { opacity: 1 }); });
+      tl.fromTo(p, { t: 0 }, {
+        t: 1, duration: Math.max(0.5, len / 260), ease: 'power1.inOut',
+        onUpdate: () => { const pt = e.path.getPointAtLength(p.t * len); dot.setAttribute('cx', String(pt.x)); dot.setAttribute('cy', String(pt.y)); },
+      });
+      tl.call(() => setCurrent(to));
     });
+    tl.to({}, { duration: 2 });
 
     root.classList.add('live');
-    root.querySelector<HTMLElement>('[data-actions]')!.hidden = false;
-    refresh();
+    reset();
+    // Play only while the map is on screen (the hidden map in the switch has no size, so it never plays)
+    new IntersectionObserver((entries) => {
+      entries.forEach((en) => (en.isIntersecting ? tl.play() : tl.pause()));
+    }, { threshold: 0.3 }).observe(root);
   });
 </script>

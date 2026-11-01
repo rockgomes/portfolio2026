@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-// The Well case study (Figma sketch 582:1292). Its three maps are state maps you drive (StateMap.astro). Tests run
-// with reduced motion, so each step lands at once.
+// The Well case study (Figma sketch 582:1292). Its two maps play by themselves (StateMap.astro). Tests run with
+// reduced motion, so they see the still map.
 const PAGE = '/project/well---care-homes-backoffice';
 
 test('summary: title, subtitle, facts, problem, decision, result', async ({ page }) => {
@@ -13,55 +13,26 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 
-test('the maps switch, and each starts at its first state', async ({ page }) => {
+test('the maps switch; each is a still map, with no controls', async ({ page }) => {
   await page.goto(PAGE);
   const sw = page.locator('[data-switch="well-maps"]');
   await expect(sw.locator('.ctrl button')).toHaveText(['Order stages', 'Patient states']);
-  await expect(sw.locator('[data-state-map]:visible [data-now]')).toHaveText('Requested');
+  const map = sw.locator('[data-state-map]:visible');
+  await expect(map.locator('[data-node]')).toHaveCount(8);
+  await expect(map.locator('button')).toHaveCount(0);
   await sw.locator('.ctrl button').nth(1).click();
-  await expect(sw.locator('[data-state-map]:visible [data-now]')).toHaveText('Patient added');
+  await expect(sw.locator('[data-state-map]:visible [data-node]')).toHaveCount(6);
 });
 
-test('nothing moves until you press a button; only the actions that can happen work', async ({ page }) => {
+test('with motion on, the map plays by itself', async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: 'no-preference' });
+  const page = await ctx.newPage();
   await page.goto(PAGE);
   const map = page.locator('[data-state-map]').first();
-  const btn = (name: string) => map.getByRole('button', { name, exact: true });
-  await expect(map.locator('[data-now]')).toHaveText('Requested');
-  await expect(btn('Next stage')).toBeEnabled();
-  for (const name of ['Issue found', 'Resolved', 'Claim issue', 'Start again']) await expect(btn(name)).toBeDisabled();
-  await btn('Next stage').click();
-  await btn('Next stage').click();
-  await expect(map.locator('[data-now]')).toHaveText('FlowRX');
-  await expect(map.locator('[data-node="flowrx"]')).toHaveClass(/current/);
-  await expect(btn('Issue found')).toBeEnabled();
-  await expect(btn('Resolved')).toBeDisabled();
-  await btn('Issue found').click();
-  await expect(map.locator('[data-now]')).toHaveText('Exceptions');
-  await expect(btn('Next stage')).toBeDisabled();
-  await btn('Resolved').click();
-  await expect(map.locator('[data-now]')).toHaveText('FlowRX');
-  for (let i = 0; i < 3; i++) await btn('Next stage').click();
-  await expect(map.locator('[data-now]')).toHaveText('Delivered');
-  await btn('Claim issue').click();
-  await expect(map.locator('[data-now]')).toHaveText('Claim failed');
-  await expect(btn('Next stage')).toBeDisabled();
-  await btn('Start again').click();
-  await expect(map.locator('[data-now]')).toHaveText('Requested');
-  await expect(btn('Start again')).toBeDisabled();
-});
-
-test('patient states: the actions follow the map', async ({ page }) => {
-  await page.goto(PAGE);
-  const sw = page.locator('[data-switch="well-maps"]');
-  await sw.locator('.ctrl button').nth(1).click();
-  const map = sw.locator('[data-state-map]:visible');
-  const btn = (name: string) => map.getByRole('button', { name, exact: true });
-  await btn('Next state').click();
-  await btn('Move to hospital').click();
-  await expect(map.locator('[data-now]')).toHaveText('Hospitalised');
-  await expect(btn('Mark as deceased')).toBeDisabled();
-  await btn('Patient returns').click();
-  await expect(map.locator('[data-now]')).toHaveText('Active');
+  await map.scrollIntoViewIfNeeded();
+  await expect(map.locator('[data-node="requested"]')).toHaveClass(/current/);
+  await expect(map.locator('[data-node="labelling"]')).toHaveClass(/current/, { timeout: 5000 });
+  await ctx.close();
 });
 
 for (const width of [320, 400]) {
