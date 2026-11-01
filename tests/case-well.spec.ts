@@ -16,65 +16,52 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
 test('the maps switch, and each starts at its first state', async ({ page }) => {
   await page.goto(PAGE);
   const sw = page.locator('[data-switch="well-maps"]');
-  await expect(sw.locator('.ctrl button')).toHaveText(['Order stages', 'Patient states', 'Care home profile']);
+  await expect(sw.locator('.ctrl button')).toHaveText(['Order stages', 'Patient states']);
   await expect(sw.locator('[data-state-map]:visible [data-now]')).toHaveText('Requested');
   await sw.locator('.ctrl button').nth(1).click();
   await expect(sw.locator('[data-state-map]:visible [data-now]')).toHaveText('Patient added');
-  await sw.locator('.ctrl button').nth(2).click();
-  await expect(sw.locator('[data-state-map]:visible [data-now]')).toHaveText('Care homes list');
 });
 
-test('nothing moves until you act; events and dashed states take a step, the log keeps them', async ({ page }) => {
+test('nothing moves until you press a button; only the actions that can happen work', async ({ page }) => {
   await page.goto(PAGE);
   const map = page.locator('[data-state-map]').first();
-  await map.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(1000);
+  const btn = (name: string) => map.getByRole('button', { name, exact: true });
   await expect(map.locator('[data-now]')).toHaveText('Requested');
-  await expect(map.locator('[data-log] li')).toHaveText(['Requested']);
-  // The events you can fire now, as buttons
-  const events = map.locator('[data-events] button');
-  await expect(events).toHaveText(['→ Labelling and checking']);
-  await events.first().click();
-  await expect(map.locator('[data-now]')).toHaveText('Labelling and checking');
-  await expect(map.locator('[data-node="labelling"]')).toHaveAttribute('aria-current', 'true');
-  // A state with a dashed border works the same way
-  await map.getByRole('button', { name: 'Go to FlowRX' }).click();
-  await expect(map.locator('[data-now-note]')).toHaveText('A column on the cycle board. Two ways on from here.');
-  await expect(events).toHaveText(['issue found → Exceptions', '→ Ready to dispatch']);
-  await map.locator('[data-events] button', { hasText: 'issue found' }).click();
+  await expect(btn('Next stage')).toBeEnabled();
+  for (const name of ['Issue found', 'Resolved', 'Claim issue', 'Start again']) await expect(btn(name)).toBeDisabled();
+  await btn('Next stage').click();
+  await btn('Next stage').click();
+  await expect(map.locator('[data-now]')).toHaveText('FlowRX');
+  await expect(map.locator('[data-node="flowrx"]')).toHaveClass(/current/);
+  await expect(btn('Issue found')).toBeEnabled();
+  await expect(btn('Resolved')).toBeDisabled();
+  await btn('Issue found').click();
   await expect(map.locator('[data-now]')).toHaveText('Exceptions');
-  await expect(map.locator('[data-log] li')).toHaveText(['Requested', '→ Labelling and checking', '→ FlowRX', 'issue found → Exceptions']);
-  await map.getByRole('button', { name: 'Start again' }).click();
+  await expect(btn('Next stage')).toBeDisabled();
+  await btn('Resolved').click();
+  await expect(map.locator('[data-now]')).toHaveText('FlowRX');
+  for (let i = 0; i < 3; i++) await btn('Next stage').click();
+  await expect(map.locator('[data-now]')).toHaveText('Delivered');
+  await btn('Claim issue').click();
+  await expect(map.locator('[data-now]')).toHaveText('Claim failed');
+  await expect(btn('Next stage')).toBeDisabled();
+  await btn('Start again').click();
   await expect(map.locator('[data-now]')).toHaveText('Requested');
-  await expect(map.locator('[data-log] li')).toHaveCount(1);
+  await expect(btn('Start again')).toBeDisabled();
 });
 
-test('the profile map lands on the tab it leaves from', async ({ page }) => {
+test('patient states: the actions follow the map', async ({ page }) => {
   await page.goto(PAGE);
   const sw = page.locator('[data-switch="well-maps"]');
-  await sw.locator('.ctrl button').nth(2).click();
+  await sw.locator('.ctrl button').nth(1).click();
   const map = sw.locator('[data-state-map]:visible');
-  await map.locator('[data-events] button').first().click();
-  await expect(map.locator('[data-node="home"] .tab.on')).toHaveText('Units');
-});
-
-test('a sample run plays to the end, and can be paused', async ({ page }) => {
-  await page.goto(PAGE);
-  const map = page.locator('[data-state-map]').first();
-  await map.scrollIntoViewIfNeeded();
-  const play = map.locator('[data-play]');
-  await expect(play).toHaveText('Play a sample order');
-  await play.click();
-  await expect(play).toHaveText('Pause');
-  await expect(map.locator('[data-now]')).toHaveText('Delivered', { timeout: 10_000 });
-  await expect(play).toHaveText('Play a sample order');
-  await expect(map.locator('[data-events] button')).toHaveText(['issue → Claim failed']);
-  // The next sample takes the other way, and Pause hands it back to you
-  await play.click();
-  await expect(map.locator('[data-now]')).toHaveText('Labelling and checking', { timeout: 5000 });
-  await play.click();
-  await expect(play).toHaveText('Play a sample order');
-  await expect(map.locator('[data-events] button').first()).toBeVisible({ timeout: 5000 });
+  const btn = (name: string) => map.getByRole('button', { name, exact: true });
+  await btn('Next state').click();
+  await btn('Move to hospital').click();
+  await expect(map.locator('[data-now]')).toHaveText('Hospitalised');
+  await expect(btn('Mark as deceased')).toBeDisabled();
+  await btn('Patient returns').click();
+  await expect(map.locator('[data-now]')).toHaveText('Active');
 });
 
 for (const width of [320, 400]) {

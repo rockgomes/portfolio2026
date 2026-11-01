@@ -1,15 +1,11 @@
-// A state map (StateMap.astro): boxes for the states and lines for the moves between them, drawn on a fixed 798 x 398
-// canvas (the Figma maps at 1x). Positions come from the Figma frames; lines use absolute M, H, V and Q commands only,
-// so the arrow at the end can be worked out from the last command.
+// A state map (StateMap.astro, Figma 589:1385): boxes for the states and lines for the moves between them, drawn on a
+// fixed 798 x 398 canvas (the Figma maps at 1x). Positions come from the Figma frames; lines use absolute M, H, V and
+// Q commands only, so the arrow at the end can be worked out from the last command.
 export interface MapNode {
   id: string;
   label: string;
   x: number; y: number; w: number; h: number;
   start?: boolean; // the flow-start chip (Figma 551:1391)
-  end?: boolean; // the flow can stop here
-  tabs?: string[]; // a profile: its tabs, stepped through when the flow arrives
-  tabEnd?: number; // the tab the flow leaves from (default: the last one)
-  note?: string; // what the case says about this state (facts only)
 }
 export interface MapEdge {
   from: string;
@@ -17,14 +13,19 @@ export interface MapEdge {
   d: string;
   chip?: { text: string; x: number; y: number }; // the interaction chip (Figma 551:1406), centred on x, y
 }
+// One button under the map. It moves the state along one of its moves, when one starts at the current state.
+export interface MapAction {
+  label: string;
+  primary?: boolean;
+  moves: [string, string][]; // [from, to] state ids
+}
 export interface StateMapDef {
   id: string;
   label: string; // the name of the map, for screen readers
   description: string; // the whole map in words
   nodes: MapNode[];
   edges: MapEdge[];
-  sample: string; // the label of the button that plays a run, like "Play a sample order"
-  runs: string[][]; // what the sample button plays, one run per press: each run is a path of state ids from the start
+  actions: MapAction[];
 }
 export const MAP_W = 798;
 export const MAP_H = 398;

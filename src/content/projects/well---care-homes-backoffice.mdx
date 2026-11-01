@@ -39,7 +39,7 @@ import table from '../../assets/projects/well---care-homes-backoffice/cycle-tabl
 import addNew from '../../assets/projects/well---care-homes-backoffice/add-new.png';
 import unitRounds from '../../assets/projects/well---care-homes-backoffice/unit-rounds-inherited.png';
 import qa from '../../assets/projects/well---care-homes-backoffice/qa-cycle-dates.png';
-import { orderStages, patientStates, careHomeProfile } from '../../components/case/maps/well';
+import { orderStages, patientStates } from '../../components/case/maps/well';
 import orderDetails from '../../assets/projects/well---care-homes-backoffice/order-details.png';
 
 export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
@@ -69,7 +69,6 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     <ProofSwitch slot="proof" kind="segmented" label="Map" id="well-maps" items={[
       { label: 'Order stages', caption: 'Order stages, from request to delivery. An exception goes back to FlowRX once it is resolved.', media: { kind: 'map', map: orderStages } },
       { label: 'Patient states', caption: 'Patient states. Each change also changes what happens to the patient\'s orders.', media: { kind: 'map', map: patientStates } },
-      { label: 'Care home profile', caption: 'The care home profile and its tabs. The Units tab leads to a unit profile with its own tabs.', media: { kind: 'map', map: careHomeProfile } },
     ]} />
   </CaseBlock>
   <CaseBlock label="delivery" title="Ship as we go">
