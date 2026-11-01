@@ -69,6 +69,10 @@
     {
       "out": "../src/assets/cards/portfolio-presentation-template.jpg",
       "web": "../src/assets/experiments/portfolio-presentation-template/experiment-portfolio-presentation-template.png"
+    },
+    {
+      "out": "sources/formalist-card.jpg",
+      "web": "sources/formalist.png"
     }
   ]
 }
