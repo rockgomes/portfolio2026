@@ -7,8 +7,8 @@ const PAGE = '/project/well---care-homes-backoffice';
 test('summary: title, subtitle, facts, problem, decision, result', async ({ page }) => {
   await page.goto(PAGE);
   const s = page.locator('[data-case-summary]');
-  await expect(s.locator('h1')).toHaveText('Medication cycle management');
-  await expect(s.locator('.sub')).toHaveText('Well · 2026 · internal tool');
+  await expect(s.locator('h1')).toHaveText('Care home medication cycles');
+  await expect(s.locator('.sub')).toHaveText('Well · 2026 · pharmacy backoffice');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
