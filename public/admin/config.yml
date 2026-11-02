@@ -1,0 +1,118 @@
+# Sveltia CMS: a browser editor for the case studies. Open /admin on the site.
+# Fields follow the projects schema in src/content.config.ts. A front-matter key that is not listed here is dropped
+# when the editor saves, so add new keys here too.
+# The page text is shown as raw text (widget: text), so the components in it stay exactly as they are.
+
+backend:
+  name: github
+  repo: rockgomes/portfolio2026
+  branch: main
+
+# Each save goes to its own branch and pull request, never straight to main.
+publish_mode: editorial_workflow
+
+media_folder: public/media
+public_folder: /media
+
+# Empty optional fields are left out of the file instead of saved as empty values.
+output:
+  omit_empty_optional_fields: true
+
+collections:
+  - name: projects
+    label: Case studies
+    label_singular: Case study
+    folder: src/content/projects
+    extension: mdx
+    format: frontmatter
+    # New case studies and deleting are left to code for now.
+    create: false
+    delete: false
+    identifier_field: name
+    summary: "{{cardNumber}} {{name}}"
+    sortable_fields:
+      fields: [cardOrder, name]
+      default: { field: cardOrder, direction: ascending }
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: heroTitle, label: Hero title, widget: string, required: false }
+      - { name: heroDescription, label: Hero description, widget: text, required: false }
+      - { name: homeImage, label: Home image path, widget: string, required: false, hint: Do not change unless you move the file. }
+      - { name: homeImageAlt, label: Home image alt text, widget: string, required: false }
+      - { name: cardImage, label: Card image path, widget: string, required: false, hint: Do not change unless you move the file. }
+      - { name: tag1, label: Tag 1, widget: string, required: false }
+      - { name: tag2, label: Tag 2, widget: string, required: false }
+      - { name: type, label: Type, widget: select, options: [client, experiment] }
+      - { name: industry, label: Industry, widget: list, required: false }
+      - { name: focus, label: Focus, widget: list, required: false }
+      - { name: tagsToCheck, label: Tags to check, widget: boolean, required: false }
+      - { name: private, label: Private, widget: boolean, required: false }
+      - { name: webflowId, label: Webflow ID, widget: string, required: false, hint: From the old site. Leave it. }
+      - { name: cardOrder, label: Card order, widget: number, value_type: int, hint: Position on the homepage. 1 comes first. }
+      - { name: cardNumber, label: Card number, widget: string, required: false }
+      - { name: cardCompany, label: Card company, widget: string, required: false }
+      - { name: cardYear, label: Card year, widget: string, required: false }
+      - { name: cardTitle, label: Card title, widget: string, required: false }
+      - { name: cardLine, label: Card line, widget: text, required: false }
+      - { name: cardToCheck, label: Card copy to check, widget: boolean, required: false }
+      - { name: demoUrl, label: Demo URL, widget: string, required: false }
+      - { name: subtitle, label: Subtitle, widget: string, required: false }
+      - name: facts
+        label: Facts
+        widget: object
+        required: false
+        fields:
+          - { name: role, label: Role, widget: text }
+          - { name: context, label: Context, widget: text }
+          - { name: made, label: Made, widget: text }
+          - { name: tools, label: Tools, widget: text }
+      - { name: problem, label: Problem, widget: text, required: false }
+      - { name: decision, label: Decision, widget: text, required: false }
+      - { name: result, label: Result, widget: text, required: false }
+      - name: links
+        label: Links
+        widget: list
+        required: false
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: href, label: URL, widget: string }
+      - name: live
+        label: Live page
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: URL, widget: string }
+          - { name: title, label: Title, widget: string }
+          - { name: video, label: Video path, widget: string, required: false }
+          - { name: videoLabel, label: Video label, widget: string, required: false }
+          - { name: poster, label: Poster path, widget: string }
+          - { name: caption, label: Caption, widget: text }
+          - { name: embed, label: Show the live page in a frame, widget: boolean, required: false, default: true }
+      - name: caseImage
+        label: Main picture
+        widget: object
+        required: false
+        fields:
+          - { name: src, label: Image path, widget: string, hint: Do not change unless you move the file. }
+          - { name: alt, label: Alt text, widget: text }
+          - { name: caption, label: Caption, widget: text }
+      - name: beforeAfter
+        label: Before and after
+        widget: object
+        required: false
+        fields:
+          - { name: caption, label: Caption, widget: text }
+          - name: before
+            label: Before
+            widget: object
+            fields:
+              - { name: src, label: Image path, widget: string, hint: Do not change unless you move the file. }
+              - { name: alt, label: Alt text, widget: text }
+          - name: after
+            label: After
+            widget: object
+            fields:
+              - { name: src, label: Image path, widget: string, hint: Do not change unless you move the file. }
+              - { name: alt, label: Alt text, widget: text }
+      - { name: copyToCheck, label: Copy to check, widget: boolean, required: false }
+      - { name: body, label: Page text, widget: text, hint: "Raw page text. Change the words only. Leave the lines with < > and { } as they are." }
