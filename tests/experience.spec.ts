@@ -28,6 +28,22 @@ test.describe('timeline after a view switch', () => {
     const last = page.locator('[data-timeline] .item .body').last();
     await expect.poll(() => last.evaluate((e) => getComputedStyle(e).opacity)).toBe('1');
   });
+
+  // On a phone the page can change height after it loads (a visitor saw every role stay faded). The roles must still
+  // come up, and the line still draw, when they reach the screen.
+  test('the page gets shorter after load: the first role still comes up and the line draws', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('load');
+    // The tallest section above Experience that shows in this view gets shorter
+    await page.evaluate(() => {
+      const above = [...document.querySelectorAll<HTMLElement>('main > *')].filter((e) => e.compareDocumentPosition(document.querySelector('#experience')!) & Node.DOCUMENT_POSITION_FOLLOWING);
+      const s = above.sort((a, b) => b.offsetHeight - a.offsetHeight)[0]; s.style.height = '200px'; s.style.overflow = 'hidden';
+    });
+    await page.evaluate(() => { const first = document.querySelector('[data-timeline] .item')!; scrollTo(0, scrollY + first.getBoundingClientRect().top - innerHeight * 0.4); });
+    const first = page.locator('[data-timeline] .item .body').first();
+    await expect.poll(() => first.evaluate((e) => getComputedStyle(e).opacity)).toBe('1');
+    await expect.poll(() => page.locator('[data-timeline]').evaluate((e) => parseFloat(getComputedStyle(e).getPropertyValue('--draw')))).toBeGreaterThan(0);
+  });
 });
 
 // Engineer view: the timeline reads as a git log (Figma: Experience A - git log graph).

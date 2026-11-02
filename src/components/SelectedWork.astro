@@ -14,7 +14,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
 <section class="work" id="work" aria-labelledby="work-title">
   <div class="wrap inner section-top">
     <div class="sh-wrap">
-      <SectionHeader anchor title="Projects" titleId="work-title" subtitle="client work and experiments in one list · filter with the tags on the left" />
+      <SectionHeader anchor title="Projects" titleId="work-title" subtitle="client work and side projects in one list · filter with the tags on the left" />
     </div>
 
     <div class="layout">
@@ -191,7 +191,9 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   const empty = document.querySelector<HTMLElement>('[data-filter-empty]')!;
   const activeEl = document.querySelector<HTMLElement>('[data-filter-active]')!;
   const FOCUS_LIMIT = 4;
-  const TYPES: [string, string][] = [['all', 'All'], ['client', 'Client work'], ['experiment', 'Experiments']];
+  const TYPES: [string, string][] = [['all', 'All'], ['client', 'Client work'], ['experiment', 'Side projects']];
+  // The engineer terminal shows a short name per type; the value in the URL stays 'experiment' (old Webflow links)
+  const DEV_TYPE: Record<string, string> = { all: 'all', client: 'client', experiment: 'side-project' };
   const MASTER = GLYPHS.master, VARIANT = GLYPHS.variant;
   const CHECK = '<svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true"><path d="M1 4l2.6 2.5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const CARET = '<svg width="8" height="8" viewBox="0 0 8 8" aria-hidden="true"><path d="M1.5 2.5L4 5.5L6.5 2.5Z" fill="currentColor"/></svg>';
@@ -239,7 +241,7 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
 
   function renderActive() {
     const pills: string[] = [];
-    if (state.type !== 'all') pills.push(`<button type="button" class="pill ui-tag ui-tag-selected" data-pill="type">Type <i>is</i> ${state.type === 'client' ? 'Client work' : 'Experiments'} ×</button>`);
+    if (state.type !== 'all') pills.push(`<button type="button" class="pill ui-tag ui-tag-selected" data-pill="type">Type <i>is</i> ${state.type === 'client' ? 'Client work' : 'Side projects'} ×</button>`);
     for (const [k, label] of [['industry', 'Industry'], ['focus', 'Focus']] as const) if (state[k].length) pills.push(`<button type="button" class="pill ui-tag ui-tag-selected" data-pill="${k}">${label} <i>is</i> ${state[k].map(esc).join(' <i>or</i> ')} ×</button>`);
     activeEl.hidden = !pills.length;
     activeEl.innerHTML = pills.join('') + (pills.length > 1 ? '<button type="button" class="clear-all-inline" data-clear-all>Clear all</button>' : '');
@@ -297,14 +299,14 @@ const filterData = items.map((i) => ({ id: i.id, type: i.d.type, industry: i.d.i
   const sp = (cls: string, t: string) => `<span class="${cls}">${esc(t)}</span>`;
   const plain = (html: string) => `<div class="ln"><span class="code">${html}</span></div>`;
   const val = (key: string, v: string, label: string, on: boolean, n: number, multi: boolean, off = false) =>
-    `<button type="button" class="ln" role="${multi ? 'checkbox' : 'radio'}" aria-checked="${on}" aria-label="${esc(v)}, ${n} projects" data-key="${key}" data-val="${esc(v)}"${off ? ' disabled' : ''}><span class="code"><span class="f">  ${label}</span></span><span class="num">${n}</span></button>`;
+    `<button type="button" class="ln" role="${multi ? 'checkbox' : 'radio'}" aria-checked="${on}" aria-label="${esc(key === 'type' ? DEV_TYPE[v] : v)}, ${n} projects" data-key="${key}" data-val="${esc(v)}"${off ? ' disabled' : ''}><span class="code"><span class="f">  ${label}</span></span><span class="num">${n}</span></button>`;
   function renderDev() {
     const n = visible().length; const q = state.q.toLowerCase(); let h = '';
-    const flags = [`--type=${state.type}`, ...(['industry', 'focus'] as const).filter((k) => state[k].length).map((k) => `--${k}=${state[k].map(slug).join(',')}`)];
+    const flags = [`--type=${DEV_TYPE[state.type]}`, ...(['industry', 'focus'] as const).filter((k) => state[k].length).map((k) => `--${k}=${state[k].map(slug).join(',')}`)];
     h += `<div class="ln"><span class="code" style="white-space: pre-wrap">${sp('p', '$ ')}ls work ${flags.map((f) => sp('s nw', f)).join(' ')}</span></div>`;
     h += plain(sp('out', `${n} ${n === 1 ? 'project' : 'projects'}`));
     h += plain('');
-    if (!q) { h += plain('--type'); for (const [v] of TYPES) h += val('type', v, v, state.type === v, countFor('type', v), false); }
+    if (!q) { h += plain('--type'); for (const [v] of TYPES) h += val('type', v, DEV_TYPE[v], state.type === v, countFor('type', v), false); }
     let found = 0;
     for (const k of ['industry', 'focus'] as const) {
       const rows = tagRows(k).filter((o) => !q || o.t.toLowerCase().includes(q)); found += rows.length;

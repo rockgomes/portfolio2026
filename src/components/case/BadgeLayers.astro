@@ -1,0 +1,37 @@
+---
+// Formalist only (Figma: Diagram / layers 530:1416): where the Fill badges live on a job page that opens its form in a
+// dialog. The page, the dialog with two fields and their badges, and the Formalist badge layer inside the dialog.
+// In a Proof frame, with the Proof caption below.
+import Proof from './Proof.astro';
+interface Props { caption?: string }
+const { caption } = Astro.props;
+const fields = ['First name', 'Email'];
+---
+<Proof caption={caption}>
+  <div class="stage" data-badge-layers>
+    <div class="page">
+      <p class="k t-mono-label">the job page</p>
+      <div class="dialog">
+        <p class="k t-mono-label">apply window · role="dialog" · aria-modal · focus trap</p>
+        {fields.map((f) => <div class="field"><span>{f}</span><span class="ui-tag ui-tag-accent">F Fill</span></div>)}
+        <div class="layer">
+          <p class="t-mono-label">Formalist badge layer</p>
+          <p class="note">Sits inside the dialog, in a closed shadow root. The trap counts a badge click as a click inside, so the window stays open.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Proof>
+<style>
+  .stage { padding: var(--space-32); }
+  .page, .dialog { display: flex; flex-direction: column; gap: var(--space-16); padding: var(--space-24); border: 1px solid var(--color-border-strong); }
+  .page { background: var(--color-surface-page); }
+  .dialog { background: var(--color-surface-raised); }
+  p { margin: 0; }
+  .k { color: var(--color-text-muted); overflow-wrap: anywhere; }
+  .field { display: flex; gap: var(--space-12); align-items: center; padding: var(--space-12); border: 1px solid var(--color-border-control); border-radius: 6px; background: var(--color-surface-page); font: var(--type-body-default); color: var(--color-text-secondary); }
+  .field span:first-child { flex: 1 1 0; }
+  .layer { display: flex; flex-direction: column; gap: 4px; padding: var(--space-16); border: 1px dashed var(--color-annotation-measure); border-radius: 6px; color: var(--color-annotation-measure); }
+  .note { font: var(--type-body-small); color: var(--color-text-muted); }
+  @media (max-width: 720px) { .stage { padding: var(--space-12); } .page, .dialog { padding: var(--space-12); } }
+</style>

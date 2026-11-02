@@ -13,7 +13,6 @@ const tagging = {
   webflowId: z.string().optional(),
   // Homepage card (copy from Figma). cardToCheck = copy written by Claude, Rock to confirm.
   cardOrder: z.number().default(99),
-  cardNumber: z.string().default(''),
   cardCompany: z.string().default(''),
   cardYear: z.string().default(''),
   cardTitle: z.string().default(''),

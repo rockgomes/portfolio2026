@@ -13,8 +13,8 @@ import { getImage } from 'astro:assets';
 import { workItems } from '../lib/work';
 const items = await workItems();
 // Each page as a component you can swap into the empty slot (card picture for the preview).
-const comps = await Promise.all(items.map(async (it) => ({ href: it.href, title: it.d.cardTitle, group: it.href.startsWith('/project/') ? 'Case studies' : 'Experiments', src: it.img ? (await getImage({ src: it.img, width: 960, format: 'webp' })).src : '' })));
-const groups = ['Case studies', 'Experiments'];
+const comps = await Promise.all(items.map(async (it) => ({ href: it.href, title: it.d.cardTitle, group: it.href.startsWith('/project/') ? 'Case studies' : 'Side projects', src: it.img ? (await getImage({ src: it.img, width: 960, format: 'webp' })).src : '' })));
+const groups = ['Case studies', 'Side projects'];
 ---
 <Base title="Page not found - Rock Gomes" noindex readView>
   <!-- Design view -->
