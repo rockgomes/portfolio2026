@@ -9,7 +9,7 @@ import IconArrowUpRight from './IconArrowUpRight.astro';
 type Data = CollectionEntry<'projects'>['data'] | CollectionEntry<'experiments'>['data'];
 interface Props { id: string; href: string; img?: ImageMetadata; alt: string; demo: string; d: Data }
 const { id, href, img, alt, demo, d } = Astro.props;
-const cardTag = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Experiment' : '');
+const cardTag = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].join(', ') || (d.type === 'experiment' ? 'Side project' : '');
 // Engineer view: the tags as GitHub topics (lower case), the same tags as the designer card shows.
 const topics = [...d.focus.slice(0, 1), ...d.industry.filter((i) => i !== 'B2B' && i !== 'B2C').slice(0, 1)].map((t) => t.toLowerCase().replace(/\s+/g, '-'));
 ---

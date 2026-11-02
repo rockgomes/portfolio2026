@@ -8,7 +8,7 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await page.goto(PAGE);
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('MoveOutSale');
-  await expect(s.locator('.sub')).toHaveText('Side project · 2026 · experiment');
+  await expect(s.locator('.sub')).toHaveText('Side project · 2026 · marketplace');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
