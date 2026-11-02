@@ -42,3 +42,8 @@ for (const width of [320, 400]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
   });
 }
+
+test('the Well card on the homepage links to the working prototype', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('a.demo[href="https://well-medication-cycles.netlify.app/"]')).toHaveCount(1);
+});
