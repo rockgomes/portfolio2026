@@ -7,31 +7,39 @@ test.describe('Projects filter', () => {
   const cards = (page: any) => page.locator('[data-grid] > .card:not([hidden])');
   test('starts with everything, nothing selected', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('[data-filter-count]')).toHaveText('14 / 14');
-    await expect(cards(page)).toHaveCount(14);
+    await expect(page.locator('[data-filter-count]')).toHaveText('16 / 16');
+    await expect(cards(page)).toHaveCount(16);
   });
   test('same group adds, different groups narrow, zero results are disabled', async ({ page }) => {
     await page.goto('/'); await openFilters(page);
     await page.click('.row[data-key="industry"][data-val="Fintech"]');
-    await expect(page.locator('[data-filter-count]')).toHaveText('4 / 14');
+    await expect(page.locator('[data-filter-count]')).toHaveText('4 / 16');
     await page.click('.row[data-key="industry"][data-val="SaaS"]');
-    await expect(page.locator('[data-filter-count]')).toHaveText('9 / 14');
+    await expect(page.locator('[data-filter-count]')).toHaveText('9 / 16');
     await expect(page.locator('.row[data-key="type"][data-val="experiment"]')).toBeDisabled();
   });
   test('filtering hides cards and shows them again', async ({ page }) => {
     await page.goto('/'); await openFilters(page);
     await page.click('.row[data-key="type"][data-val="experiment"]');
-    await expect(cards(page)).toHaveCount(4);
+    await expect(cards(page)).toHaveCount(5);
     await expect(page.locator('.card[data-id="dealfront-dynamic-lists"]')).toBeHidden();
     await page.click('.row[data-key="type"][data-val="all"]');
-    await expect(cards(page)).toHaveCount(14);
+    await expect(cards(page)).toHaveCount(16);
     await expect(page.locator('.card[data-id="dealfront-dynamic-lists"]')).toBeVisible();
   });
   test('filters live in the URL', async ({ page }) => {
     await page.goto('/?type=experiment#work'); await openFilters(page);
-    await expect(page.locator('[data-filter-count]')).toHaveText('4 / 14');
+    await expect(page.locator('[data-filter-count]')).toHaveText('5 / 16');
     await page.click('.row[data-key="type"][data-val="all"]');
     await expect(page).not.toHaveURL(/type=/);
+  });
+  // The visible name is "Side projects"; the value in the URL stays "experiment", so old Webflow links still work
+  test('side projects: the name shows, the URL keeps type=experiment', async ({ page }) => {
+    await page.goto('/?type=experiment#work'); await openFilters(page);
+    await expect(page.locator('.row[data-key="type"][data-val="experiment"] .lab')).toHaveText('Side projects');
+    await expect(page.locator('[data-pill="type"]')).toContainText('Side projects');
+    await page.goto('/?view=engineer&type=experiment#work');
+    await expect(page.locator('[data-dev-body]')).toContainText('ls work --type=side-project');
   });
   test('on small screens the panel folds into a button, and "Show N projects" closes it', async ({ page, viewport }) => {
     test.skip((viewport?.width ?? 0) > 1040, 'small screens only');
@@ -39,8 +47,8 @@ test.describe('Projects filter', () => {
     await expect(page.locator('[data-filter-panel]')).toBeHidden();
     await page.click('[data-filter-toggle]');
     await page.click('.row[data-key="type"][data-val="experiment"]');
-    await expect(page.locator('[data-filter-panel] [data-filter-show]')).toHaveText('Show 4 projects');
-    await expect(page.locator('[data-filter-toggle-count]')).toHaveText('4 / 14');
+    await expect(page.locator('[data-filter-panel] [data-filter-show]')).toHaveText('Show 5 projects');
+    await expect(page.locator('[data-filter-toggle-count]')).toHaveText('5 / 16');
     await page.click('[data-filter-panel] [data-filter-show]');
     await expect(page.locator('[data-filter-panel]')).toBeHidden();
   });
@@ -53,7 +61,7 @@ test.describe('Projects filter', () => {
     const fintech = dev.locator('button.ln[data-key="industry"][data-val="Fintech"]');
     await fintech.click();
     await expect(fintech).toHaveAttribute('aria-checked', 'true');
-    await expect(dev.locator('[data-dev-count]')).toHaveText('4 / 14');
+    await expect(dev.locator('[data-dev-count]')).toHaveText('4 / 16');
     await expect(page).toHaveURL(/industry=fintech/);
     await expect(dev.locator('[data-dev-body]')).toContainText('ls work --type=all --industry=fintech');
     // The prompt is a real input: typing hides the values that do not match, Escape clears it
@@ -67,6 +75,6 @@ test.describe('Projects filter', () => {
     await expect(search).toHaveValue('');
     await expect(dev.locator('button.ln[data-key="type"]')).toHaveCount(3);
     await fintech.click();
-    await expect(dev.locator('[data-dev-count]')).toHaveText('14 / 14');
+    await expect(dev.locator('[data-dev-count]')).toHaveText('16 / 16');
   });
 });

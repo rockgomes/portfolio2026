@@ -1,0 +1,120 @@
+---
+name: "Well - Care home medication cycles"
+heroTitle: "Well - Care home medication cycles"
+heroDescription: "Well, a UK pharmacy, was building a backoffice for the care homes it supplies. The project was big, it had one designer, and go-live was close. I joined to own the backoffice and the design system, so the other designer could focus on another area."
+cardImage: "../../assets/cards/well---care-homes-backoffice.jpg"
+type: "client"
+industry: ["B2B", "Healthcare"]
+focus: ["Back-office", "Design systems"]
+tagsToCheck: true
+private: false
+cardOrder: 3
+cardCompany: "Well"
+cardYear: "2026"
+cardTitle: "Care home medication cycles"
+cardLine: "Owned the care homes backoffice and its design system. It went live on time."
+cardToCheck: true
+demoUrl: "https://well-medication-cycles.netlify.app/"
+subtitle: "Well · 2026 · pharmacy backoffice"
+facts:
+  role: "Senior Product Designer, contract. Owned the care homes backoffice and the design system."
+  context: "Well (Bestway Group), a UK pharmacy. The backoffice gets its prescription data from the NHS. The pharmacy team that dispenses medication for care homes uses it every day."
+  made: "A map of the order stages, the 28-day cycle view, the design system parts behind it, and a working prototype of the cycle view."
+  tools: "Figma, FigJam, Claude"
+problem: "One designer on a big project. The design system was falling behind, and the go-live date was close."
+decision: "Map the system first, then design and ship flow by flow, fixing the design system as each flow needed it."
+result: "Went live on time. The pharmacy team said the new 28-day cycle view made their daily work faster."
+caseImage:
+  src: "../../assets/projects/well---care-homes-backoffice/cycle-board.png"
+  alt: "The current cycle of a care home as a board: columns for Labelling and checking, FlowRX, Exceptions and Ready to dispatch, each with a count, a progress bar and order cards. Two exception cards have a Labeling query and a Clinical query badge."
+  caption: "The current cycle of one care home. One column per order stage, and exceptions get their own column."
+links:
+  - label: "Open the working prototype"
+    href: "https://well-medication-cycles.netlify.app/"
+live:
+  src: "https://well-medication-cycles.netlify.app/"
+  title: "Care home medication cycles, working prototype"
+  poster: "/embeds/well-medication-cycles/live.jpg"
+  caption: "The working prototype of the cycle view, scaled to fit. A short tour shows what to try."
+copyToCheck: true
+---
+import CaseSection from '../../components/case/CaseSection.astro';
+import CaseBlock from '../../components/case/CaseBlock.astro';
+import Proof from '../../components/case/Proof.astro';
+import ProofSwitch from '../../components/case/ProofSwitch.astro';
+import TwoCol from '../../components/case/TwoCol.astro';
+import board from '../../assets/projects/well---care-homes-backoffice/cycle-board.png';
+import later from '../../assets/projects/well---care-homes-backoffice/cycle-board-later.png';
+import upcoming from '../../assets/projects/well---care-homes-backoffice/cycle-next.png';
+import completed from '../../assets/projects/well---care-homes-backoffice/cycle-previous.png';
+import dates from '../../assets/projects/well---care-homes-backoffice/cycle-dates.png';
+import search from '../../assets/projects/well---care-homes-backoffice/cycle-search.png';
+import searchDone from '../../assets/projects/well---care-homes-backoffice/cycle-search-done.png';
+import sorting from '../../assets/projects/well---care-homes-backoffice/cycle-sorting.png';
+import table from '../../assets/projects/well---care-homes-backoffice/cycle-table.png';
+import orderDetails from '../../assets/projects/well---care-homes-backoffice/order-details.png';
+import orderMore from '../../assets/projects/well---care-homes-backoffice/order-details-more.png';
+import { orderStages } from '../../components/case/maps/well';
+
+export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
+
+<CaseSection title="Map the system first" subtitle="before any screen" id="process">
+  <CaseBlock label="mapping" title="Map the system before drawing">
+    An order goes through many stages before it reaches the care home, and some of them can loop back. With Claude, I turned what I knew into a map of the order stages in FigJam. Then I checked it with the team. The order stages became the columns of the cycle view.
+    <Proof slot="proof" caption="Order stages, from request to delivery. An exception goes back to FlowRX once it is resolved." media={{ kind: 'map', map: orderStages }} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="Inside the cycle view" subtitle="one care home, one cycle at a time" id="cycle">
+  <CaseBlock label="stages" title="One column per stage">
+    Each stage is a column, with the number of orders in it and a bar for its share of the cycle. The board scrolls sideways to the later stages: Dispatched, Delivered and Cancelled. An order in Exceptions gets a badge that says why, like a labelling query or a clinical query.
+    <ProofSwitch slot="proof" kind="tabs" id="well-stages" label="Stages" items={[
+      { label: 'First stages', caption: 'Labelling and checking, FlowRX, Exceptions and Ready to dispatch. The two exceptions show their reason.', media: img(board, 'The board with Labelling and checking, FlowRX, Exceptions and Ready to dispatch. Two exception cards have a Labeling query and a Clinical query badge.') },
+      { label: 'Later stages', caption: 'Scrolled to the end: Dispatched, Delivered and Cancelled.', media: img(later, 'The board scrolled sideways to Ready to dispatch, Dispatched, Delivered and Cancelled, each with a count and a progress bar.') },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="cycles" title="Every cycle in the same place">
+    Previous and Next move between cycles. A pill says if the cycle is active, upcoming or completed, and the active cycle shows its dispatch date. A past cycle is closed, so there is nothing to edit. A future cycle has nothing to act on yet, so it is read only too, with one exception: the arrival date. If there is a problem on that day, the team can move it. Both show a banner and a way back to the current cycle. A completed cycle shrinks to two columns, delivered and not delivered.
+    <ProofSwitch slot="proof" kind="tabs" id="well-cycles" label="Cycle" items={[
+      { label: 'Upcoming', caption: 'The next cycle: read only, except the arrival date. Every order is still in Labelling and checking.', media: img(upcoming, 'An upcoming cycle with a yellow Read only banner, an Edit arrival date button and Back to current cycle. All 700 orders are in Labelling and checking.') },
+      { label: 'Completed', caption: 'A finished cycle: Delivered and Not delivered. A tooltip explains an order that an interim pharmacy sent.', media: img(completed, 'A completed cycle with a Read only banner and two columns, Delivered with 800 orders and Not delivered with 200. A tooltip on one card says Interim pharmacy, not part of Well.') },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="dates" title="Change the dates of one cycle only">
+    Cycle dates can change, for example the arrival date. The edit opens in a side panel and says up front that it only changes this cycle. The calendar marks the start, dispatch and arrival dates in their own colours.
+    <Proof slot="proof" caption="Cycle dates: start, dispatch and arrival, with a warning that the edit only changes this cycle." media={img(dates, 'A Cycle dates side panel with a warning, three date fields and a two-month calendar. The start, dispatch and arrival dates each have their own colour, with a legend.')} />
+  </CaseBlock>
+  <CaseBlock label="search" title="Find a patient across all stages">
+    Search can pick more than one patient. Each result shows the date of birth and NHS number, so two people with the same name are easy to tell apart. The picked patients stay as chips above the board. Sorting goes by last update, prescription received or RX received.
+    <ProofSwitch slot="proof" kind="tabs" id="well-search" label="Search" items={[
+      { label: 'Search', caption: 'Three patients called Sienna, told apart by date of birth and NHS number.', media: img(search, 'Patient search for Sienna with three results, each with a checkbox, date of birth and NHS number.') },
+      { label: 'Results', caption: 'The picked patients stay as chips above the board, with the sort that is on.', media: img(searchDone, 'Three patient chips under the search field, the sort set to last updated, newest to oldest, and the board below.') },
+      { label: 'Sorting', caption: 'Sort by last update, prescription received or RX received.', media: img(sorting, 'The sorting menu open with six options: last updated, prescription received and RX received, each newest to oldest or oldest to newest.') },
+    ]} />
+  </CaseBlock>
+  <CaseBlock label="views" title="Two views on the same orders">
+    The cycle only had a board. The board is right when the stage matters most, so people who work on one or two stages kept it. A table is easier to scan, sort by patient and search. With a board, search results scatter across columns. So I designed both on the same data, and people can switch.
+    <Proof slot="proof" caption="A completed cycle as a table: patient, date of birth, item, RX received date and status." media={img(table, 'A completed cycle as a table: patient name, date of birth, item name, Rx received date and a Delivered or Not delivered status on each row.')} />
+  </CaseBlock>
+  <CaseBlock label="order" title="The full story of one order">
+    Click any order to see what happened to it. Each package event shows who changed it and when, from ASN received to Delivered. Next to it are the item, the dosage and the warnings, and any other items in the same order.
+    <ProofSwitch slot="proof" kind="tabs" id="well-order" label="Order" items={[
+      { label: 'Order', caption: 'The package events, with who and when, next to the item details.', media: img(orderDetails, 'An order details window: the FlowRX stage, the order ID, the patient, four package events with an email and a time, and the item with quantity, dosage, cautions and warnings.') },
+      { label: 'Other items', caption: 'Other items in the same order open below the main item.', media: img(orderMore, 'The same order details window with an open Other item in this order section under the main item.') },
+    ]} />
+  </CaseBlock>
+</CaseSection>
+
+<CaseSection title="What changed" subtitle="the outcome, and what I took from it" id="result" gap={48}>
+  <TwoCol
+    left={{ label: 'outcome', items: [
+      'Went live on time.',
+      'The pharmacy team said the new 28-day cycle view helped them get through their work faster.',
+      'The team praised the table view. Before, they only had the board.',
+    ] }}
+    right={{ label: 'what I learned', items: [
+      'You can fix a design system while you use it. I cleaned up each part when a flow needed it, so every fix had a real reason.',
+      "The risk lives in the states. Orders and patients change state often, and these are older people's medicines. Every state needed a clear name and a clear next step.",
+      'Talking to the people who use the backoffice showed me where they get stuck. It also showed me what clear means to them: one name for one thing, and nothing left to guess.',
+    ] }} />
+</CaseSection>

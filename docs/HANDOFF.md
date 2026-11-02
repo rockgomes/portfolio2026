@@ -1,4 +1,4 @@
-# Handoff - October 30, 2026 (updated after the launch, the arrow icons and the template live frame)
+# Handoff - November 2, 2026 (updated after the new case study pages and the "Side projects" name)
 
 Where the rockgomes.com rebuild stands, and what comes next. Written for a new Claude Code session working on this repo. Read `CLAUDE.md` first.
 
@@ -26,7 +26,7 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 10. **One `h1` per page** on every case study and experiment page (#16); a smoke test keeps it that way.
 11. **Columns menu** on the hero table (#17): show and hide columns, remembered.
 12. **Small screens** (#18): a Menu button and panel below 1040px; the filter panel folds into a "Filter projects" button; side comments are hidden; section links stop with the title under the header.
-13. **Recruiter view** (#19, Figma `94:6774`): the header switch on "Recruiter" (or `/?view=recruiter`) swaps the homepage for a one-page summary (`Recruiter.astro`): role, pills, facts, all 14 projects in a scroll box (5 picks first, a half row and a fade show there is more; the full list on small screens), contact card. Below it: Numbers, Experience and About, without the designer layer (no cursors, selections, comments or index numbers). The recruiter view stays sober. Facts follow the CV (10+ years; Well named). The hero story waits while it is open. "Download CV (PDF)" (header, and the contact card on phones) serves `public/Rock_Gomes_CV.pdf`, a copy of Rock's CV published with his OK; replace that file when the CV changes.
+13. **Recruiter view** (#19, Figma `94:6774`): the header switch on "Recruiter" (or `/?view=recruiter`) swaps the homepage for a one-page summary (`Recruiter.astro`): role, pills, facts, all 16 projects in a scroll box (5 picks first, a half row and a fade show there is more; the full list on small screens), contact card. Below it: Numbers, Experience and About, without the designer layer (no cursors, selections, comments or index numbers). The recruiter view stays sober. Facts follow the CV (10+ years; Well named). The hero story waits while it is open. "Download CV (PDF)" (header, and the contact card on phones) serves `public/Rock_Gomes_CV.pdf`, a copy of Rock's CV published with his OK; replace that file when the CV changes.
 14. **Engineer view** (Figma `187:1648`): the switch on "Engineer" (or `/?view=engineer`) keeps the homepage and adds two things. (a) A Dev Mode inspect panel on the hero table (`Inspector.astro`): point at or click any part (condition, saved views, Columns, match count, column header, row) to see the matching `rockgomes/filter-builder` component, its real call site (linked to the lines at a fixed commit), the props this table has right now, and live layout and tokens. The story and its comment wait in this view. Hidden below 1200px. (b) "Shipped, with source" (`Repos.astro`): four repo cards; links and stack come from the experiment files (`liveDemoUrl`, `sourceCodeUrl`, `tools`).
 15. **No sideways scroll at 1200-1300px** (#21, and the PM cursor fix after it). The comments move with their table or card. In the hero story the PM stops on the "Churned" pill, not beside it: at 1200px the table hides the Status column, and a PM beside the pill stuck out past the screen edge.
 16. **Foundations** (#29, #30, #31, #32, #33):
@@ -55,6 +55,10 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 
 28. **The template case study shows the live site in a frame** (#87). `LivePage.astro` has an `embed` prop (default true): desktop shows the scaled iframe, phones show the still picture or the video. The template site's own `netlify.toml` allows the frame (`frame-ancestors` for rockgomes.com, www, `*.netlify.app` and localhost). Screenshot tests share `shoot()` from `tests/shoot.ts`.
 
+29. **"Side projects", not "Experiments"** (Rock, 2 Nov 2026). The visible name in the filter, the card tag, the 404 list and the page subtitles is "Side projects". The code (`type: "experiment"`, `src/content/experiments/`) and the addresses (`/experiments/<slug>`, `?type=experiment`) keep the old word, so the old Webflow links still open. The unused `cardNumber` field (old "e.02" style numbers) was deleted.
+
+30. **Merged after these notes were first written** (30 Oct to 2 Nov 2026): the phone menu links use the Figma text style UI/Nav large (#89); Floating Iframe and Karaoke got real pictures from their approved sketches (#91, #92); Formalist (#93) and the Well care homes backoffice (#95, #98) are new case study pages; the Experience roles come up on phones even when the page changes height (#94, `Motion.astro` uses IntersectionObserver for the roles).
+
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
 - That bot commit does not trigger CI. To get a check on it, close and reopen the PR.
@@ -66,7 +70,6 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 1. **Per-project password protection** (started 30 Oct 2026). Frontmatter `private: true` protects nothing yet. Rock decided: it is for new NDA projects added later (no current project changes), one password opens every private project, and a private card stays on the homepage with a lock line. Sketch: section `530:12153` on Explorations (password page, wrong password, locked card; new icon "Icon / Lock" `530:129`). Waiting for Rock to approve the sketch. Plan: a Netlify Edge Function in front of private `/project/<slug>` pages, the password in a Netlify environment variable that Rock sets himself, a cookie for 30 days, private pages out of the sitemap and marked noindex.
 2. **Figma cleanup** (started 30 Oct 2026):
    - Link the Pressed and Disabled labels of the Button component.
-   - Add a 17px text style for the phone menu links.
    - Bring Figma up to the site where the site is ahead: sketch C copy and its Work card file name, no section numbers (#54), token row 1 is grey.900, hero cursors hidden at rest, the footer is a grey zone.
 
 ## Open questions for Rock (do not guess)

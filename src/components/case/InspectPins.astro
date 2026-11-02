@@ -13,10 +13,12 @@ interface Pic { src: string; alt: string }
 interface Props { pins: Pin[]; tokens?: Record<string, [string, string]>; spaces?: Record<string, string>; light: Pic; dark?: Pic; width: number; height: number }
 const { pins, tokens, spaces = {}, light, dark, width, height } = Astro.props;
 const pct = (v: number, of: number) => `${(v / of) * 100}%`;
-// The note under a part: a part in the right half of the picture lines its note up with its right edge, so the note has room
+// The note under a part: a part in the right half of the picture lines its note up with its right edge, so the note has room.
+// A part near the bottom of the picture gets its note above it instead, so the note stays inside the picture.
 const noteStyle = (p: Pin) => {
   const side = p.x > width / 2 ? ['right', pct(width - p.x - p.w, width)] : ['left', pct(p.x, width)];
-  return `--l:${side[1]};${side[0]}:${side[1]};top:calc(${pct(p.y + p.h, height)} + 8px)`;
+  const v = p.y + p.h > height * 0.75 ? `bottom:calc(${pct(height - p.y, height)} + 8px)` : `top:calc(${pct(p.y + p.h, height)} + 8px)`;
+  return `--l:${side[1]};${side[0]}:${side[1]};${v}`;
 };
 // One line per prop: a swatch (or glyph), the token name, and what it is with its value per mode
 const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? []).map(([k, name, note]) => {
