@@ -1,5 +1,5 @@
 // A state map (StateMap.astro): boxes for the states and lines for the moves between them, drawn on a
-// fixed 798 x 398 canvas (the Figma maps at 1x). Positions come from the Figma frames; lines use absolute M, H, V and
+// canvas 798 wide (the Figma maps at 1x) and `height` tall (398 by default). Positions come from the Figma frames; lines use absolute M, H, V and
 // Q commands only, so the arrow at the end can be worked out from the last command.
 export interface MapNode {
   id: string;
@@ -7,7 +7,7 @@ export interface MapNode {
   x: number; y: number; w: number; h: number;
 }
 export interface MapEdge {
-  from: string;
+  from: string; // a state id, or '*' for a move that can start from any state (it starts on the `anyStage` outline)
   to: string;
   d: string;
   chip?: { text: string; x: number; y: number }; // the interaction chip (Figma 551:1406), centred on x, y
@@ -18,7 +18,12 @@ export interface StateMapDef {
   description: string; // the whole map in words
   nodes: MapNode[];
   edges: MapEdge[];
-  tour: string[]; // the state ids the animation visits, in order; each step must be a line on the map
+  height?: number;
+  // A dashed outline around the states that a '*' move can start from (a statechart superstate)
+  anyStage?: { x: number; y: number; w: number; h: number };
+  // The runs the animation plays, one after the other: each is the state ids it visits, in order. Each step must be a
+  // line on the map, or a '*' line.
+  tour: string[][];
 }
 export const MAP_W = 798;
 export const MAP_H = 398;

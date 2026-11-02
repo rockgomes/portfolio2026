@@ -2,17 +2,21 @@
 // A state map that plays by itself. The states are boxes, the moves between them are SVG lines; a chip on a line
 // names what makes that move happen. A dot walks the map's tour on a loop: the state it is in gets a blue border, and
 // each line lights up as the dot travels it. It only plays while the map is on screen. With reduced motion, or without
-// JS, it is the still map with every line blue.
-// The canvas is 798 x 398 and scales down to the box; below 62% it scrolls inside the box.
+// JS, it is the still map with every line blue. A dashed outline groups the states a '*' move can start from (any
+// stage): the dot leaves the state it is in, appears on the outline and travels that line.
+// The canvas is 798 wide and the map's height tall, and scales down to the box; below 62% it scrolls inside the box.
 import { arrowHead, MAP_W, MAP_H, type StateMapDef } from './state-map';
 interface Props { map: StateMapDef }
 const { map } = Astro.props;
+const H = map.height ?? MAP_H;
+const any = map.anyStage;
 ---
-<div class="smap" data-state-map role="img" aria-label={`${map.label}. ${map.description}`}>
+<div class="smap" data-state-map data-h={H} role="img" aria-label={`${map.label}. ${map.description}`}>
   <div class="scroll" data-scroll>
-    <div class="fit" data-fit>
-      <div class="stage" data-stage>
-        <svg viewBox={`0 0 ${MAP_W} ${MAP_H}`} width={MAP_W} height={MAP_H} aria-hidden="true">
+    <div class="fit" data-fit style={`height:${H}px`}>
+      <div class="stage" data-stage style={`height:${H}px`}>
+        <svg viewBox={`0 0 ${MAP_W} ${H}`} width={MAP_W} height={H} aria-hidden="true">
+          {any && <rect class="any" x={any.x} y={any.y} width={any.w} height={any.h} rx="8" />}
           {map.edges.map((e, i) => (
             <g class="edge" data-edge={i} data-from={e.from} data-to={e.to}>
               <path class="line" d={e.d} />
@@ -35,8 +39,8 @@ const { map } = Astro.props;
 </div>
 <style>
   .scroll { overflow-x: auto; overflow-y: hidden; padding-block: var(--space-16); }
-  .fit { position: relative; width: 798px; height: 398px; margin-inline: auto; }
-  .stage { position: absolute; inset: 0 auto auto 0; width: 798px; height: 398px; transform-origin: 0 0; }
+  .fit { position: relative; width: 798px; margin-inline: auto; }
+  .stage { position: absolute; inset: 0 auto auto 0; width: 798px; transform-origin: 0 0; }
   .stage > svg { position: absolute; inset: 0; overflow: visible; }
 
   /* Lines: 2px with a chevron. The still map has every line blue. While it plays, a line is grey until the dot
@@ -45,6 +49,8 @@ const { map } = Astro.props;
   .path { fill: none; stroke: none; }
   .live .edge:not(.lit) .line { stroke: var(--color-border-strong); }
   .dot { fill: var(--color-annotation-measure); opacity: 0; }
+  /* Any stage: the dashed outline a '*' move starts from */
+  .any { fill: none; stroke: var(--color-border-strong); stroke-width: 1.5; stroke-dasharray: 6 5; }
 
   /* Chips are solid, so the line never shows through them. Before the dot reaches a chip's line it is the quiet
      outline version. */
@@ -65,12 +71,13 @@ const { map } = Astro.props;
     const scroll = root.querySelector<HTMLElement>('[data-scroll]')!;
     const fit = root.querySelector<HTMLElement>('[data-fit]')!;
     const stage = root.querySelector<HTMLElement>('[data-stage]')!;
+    const H = Number(root.dataset.h);
     const fitTo = () => {
       if (!scroll.clientWidth) return;
       const s = Math.min(1, Math.max(MIN, scroll.clientWidth / W));
       stage.style.transform = `scale(${s})`;
       fit.style.width = `${W * s}px`;
-      fit.style.height = `${398 * s}px`;
+      fit.style.height = `${H * s}px`;
     };
     new ResizeObserver(fitTo).observe(scroll);
     fitTo();
@@ -83,7 +90,7 @@ const { map } = Astro.props;
       path: g.querySelector<SVGPathElement>('.path')!,
       chip: root.querySelector<HTMLElement>(`[data-chip="${g.dataset.edge}"]`),
     }));
-    const tour = JSON.parse(root.querySelector('[data-tour]')!.textContent!) as string[];
+    const runs = JSON.parse(root.querySelector('[data-tour]')!.textContent!) as string[][];
     const dot = root.querySelector<SVGCircleElement>('[data-dot]')!;
 
     const setCurrent = (id: string) => {
@@ -98,25 +105,28 @@ const { map } = Astro.props;
     const reset = () => {
       edges.forEach((e) => { e.g.classList.remove('lit'); e.chip?.classList.remove('lit'); });
       gsap.set(dot, { opacity: 0 });
-      setCurrent(tour[0]);
+      setCurrent(runs[0][0]);
+    };
+    const moveDot = (e: (typeof edges)[number], t: number) => {
+      const pt = e.path.getPointAtLength(t * e.path.getTotalLength());
+      dot.setAttribute('cx', String(pt.x)); dot.setAttribute('cy', String(pt.y));
     };
 
-    // One loop: rest on a state, then the line lights up and the dot travels it to the next state
+    // One loop plays every run: rest on a state, then the line lights up and the dot travels it to the next state.
+    // A '*' line (any stage) starts on the outline, so the dot jumps there first.
     const tl = gsap.timeline({ repeat: -1, paused: true });
-    tl.call(reset);
-    tour.slice(1).forEach((to, i) => {
-      const e = edges.find((x) => x.from === tour[i] && x.to === to)!;
-      const len = e.path.getTotalLength();
-      const p = { t: 0 };
-      tl.to({}, { duration: 0.9 });
-      tl.call(() => { e.g.classList.add('lit'); e.chip?.classList.add('lit'); gsap.set(dot, { opacity: 1 }); });
-      tl.fromTo(p, { t: 0 }, {
-        t: 1, duration: Math.max(0.5, len / 260), ease: 'power1.inOut',
-        onUpdate: () => { const pt = e.path.getPointAtLength(p.t * len); dot.setAttribute('cx', String(pt.x)); dot.setAttribute('cy', String(pt.y)); },
+    runs.forEach((tour) => {
+      tl.call(reset);
+      tour.slice(1).forEach((to, i) => {
+        const e = edges.find((x) => x.from === tour[i] && x.to === to) ?? edges.find((x) => x.from === '*' && x.to === to)!;
+        const p = { t: 0 };
+        tl.to({}, { duration: 0.9 });
+        tl.call(() => { e.g.classList.add('lit'); e.chip?.classList.add('lit'); moveDot(e, 0); gsap.set(dot, { opacity: 1 }); });
+        tl.fromTo(p, { t: 0 }, { t: 1, duration: Math.max(0.5, e.path.getTotalLength() / 260), ease: 'power1.inOut', onUpdate: () => moveDot(e, p.t) });
+        tl.call(() => setCurrent(to));
       });
-      tl.call(() => setCurrent(to));
+      tl.to({}, { duration: 2 });
     });
-    tl.to({}, { duration: 2 });
 
     root.classList.add('live');
     reset();
