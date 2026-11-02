@@ -31,17 +31,29 @@ test('buttons open the Figma prototype, the developer docs and the JustCall app'
   await expect(a.nth(2)).toHaveAttribute('href', 'https://www.pipedrive.com/en/marketplace/app/just-call/d401831fa27bdb38');
 });
 
-test('the main picture is the live Figma prototype, and the laptop picture on phones', async ({ page, viewport }) => {
+test('the main picture is the prototype\'s first screen; the Figma prototype loads only after a click', async ({ page, viewport }) => {
   await page.goto(PAGE);
   const live = page.locator('[data-case-summary] [data-live]');
   await expect(live).toHaveCount(1);
-  await expect(live.locator('iframe')).toHaveAttribute('src', /^https:\/\/embed\.figma\.com\/proto\/SCXg3AbVLFUSlZsD1HJFfP\/Pipedrive\?/);
+  const frame = live.locator('iframe');
+  await expect(frame).toHaveAttribute('data-src', /^https:\/\/embed\.figma\.com\/proto\/SCXg3AbVLFUSlZsD1HJFfP\/Pipedrive\?/);
+  await expect(frame).not.toHaveAttribute('src');
   await expect(live.locator('figcaption')).toHaveText(/^The winning prototype: a calling app floats over a deal page in Pipedrive\./);
+  await expect(live.locator('img.still')).toBeVisible();
+  const load = live.getByRole('button', { name: 'Load the prototype' });
   if ((viewport?.width ?? 0) >= 1000) {
-    await expect(live.locator('iframe')).toBeVisible();
+    await expect(load).toBeVisible();
+    await expect(live.locator('[data-live-reload]')).toBeHidden();
+    await page.route('https://embed.figma.com/**', (r) => r.fulfill({ contentType: 'text/html', body: '<p>prototype</p>' }));
+    await load.click();
+    await expect(frame).toHaveAttribute('src', /^https:\/\/embed\.figma\.com\/proto\//);
+    await expect(live).not.toHaveAttribute('data-cover');
+    await expect(live.locator('img.still')).toBeHidden();
+    await expect(frame).toBeVisible();
+    await expect(live.locator('[data-live-reload]')).toBeVisible();
   } else {
     await expect(live).toHaveAttribute('data-phone', '');
-    await expect(live.locator('img.still')).toBeVisible();
+    await expect(load).toBeHidden();
   }
 });
 
