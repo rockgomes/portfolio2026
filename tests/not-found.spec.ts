@@ -31,7 +31,7 @@ test.describe('design view', () => {
     await page.goto(MISSING);
     const hrefs = await page.locator('[data-swap-list] a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
     expect([...hrefs].sort()).toEqual(pages);
-    await expect(page.locator('[data-swap-list] .gh')).toHaveText(['Case studies', 'Experiments']);
+    await expect(page.locator('[data-swap-list] .gh')).toHaveText(['Case studies', 'Side projects']);
     // Every option has a card picture for the preview.
     for (const src of await page.locator('[data-swap-list] a').evaluateAll((as) => as.map((a) => (a as HTMLElement).dataset.swap)))
       expect(src).toMatch(/\.webp$/);

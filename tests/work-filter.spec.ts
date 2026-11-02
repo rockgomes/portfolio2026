@@ -33,6 +33,14 @@ test.describe('Projects filter', () => {
     await page.click('.row[data-key="type"][data-val="all"]');
     await expect(page).not.toHaveURL(/type=/);
   });
+  // The visible name is "Side projects"; the value in the URL stays "experiment", so old Webflow links still work
+  test('side projects: the name shows, the URL keeps type=experiment', async ({ page }) => {
+    await page.goto('/?type=experiment#work'); await openFilters(page);
+    await expect(page.locator('.row[data-key="type"][data-val="experiment"] .lab')).toHaveText('Side projects');
+    await expect(page.locator('[data-pill="type"]')).toContainText('Side projects');
+    await page.goto('/?view=engineer&type=experiment#work');
+    await expect(page.locator('[data-dev-body]')).toContainText('ls work --type=side-project');
+  });
   test('on small screens the panel folds into a button, and "Show N projects" closes it', async ({ page, viewport }) => {
     test.skip((viewport?.width ?? 0) > 1040, 'small screens only');
     await page.goto('/');

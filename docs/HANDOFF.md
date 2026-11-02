@@ -45,6 +45,8 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 
 23. **"View as" switch, one header row at every width** (Figma sketch section `500:10185` on Explorations). The label says "View as" and the first view is "Designer". The header is one row everywhere; as room runs out the switch steps down: the radio group (above 520px), a "View as" dropdown (381 to 520px, the shared SbDropdown, behaviour in `src/lib/dropdown.ts`), then a full-width radio group at the bottom of the Menu (380px and below). All three show the current view. Tests pick a view with `tests/view.ts`, which uses whichever form the width shows.
 
+24. **"Side projects", not "Experiments"** (Rock, 2 Nov 2026). The visible name in the filter, the card tag, the 404 list and the page subtitles is "Side projects". The code (`type: "experiment"`, `src/content/experiments/`) and the addresses (`/experiments/<slug>`, `?type=experiment`) keep the old word, so the old Webflow links still open. The unused `cardNumber` field (old "e.02" style numbers) was deleted.
+
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
 - That bot commit does not trigger CI. To get a check on it, close and reopen the PR.
