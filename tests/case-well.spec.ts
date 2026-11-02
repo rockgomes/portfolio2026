@@ -13,9 +13,10 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 
-test('the story is about the cycle: the map comes first, then the decision', async ({ page }) => {
+test('the story is about the cycle: the map comes first, then the cycle view', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('main h2:not(.label)')).toHaveText(['How I got there', 'A decision I would defend', 'What changed']);
+  await expect(page.locator('main h2:not(.label)')).toHaveText(['Map the system first', 'Inside the cycle view', 'What changed']);
+  await expect(page.locator('#cycle [data-case-block] h3')).toHaveText(['One column per stage', 'Every cycle in the same place', 'Change the dates of one cycle only', 'Find a patient across all stages', 'Two views on the same orders', 'The full story of one order']);
   await expect(page.locator('#process h3').first()).toHaveText('Map the system before drawing');
   const map = page.locator('[data-state-map]');
   await expect(map).toHaveCount(1);
