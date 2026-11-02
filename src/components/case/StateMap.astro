@@ -1,0 +1,138 @@
+---
+// A state map that plays by itself. The states are boxes, the moves between them are SVG lines; a chip on a line
+// names what makes that move happen. A dot walks the map's tour on a loop: the state it is in gets a blue border, and
+// each line lights up as the dot travels it. It only plays while the map is on screen. With reduced motion, or without
+// JS, it is the still map with every line blue. A dashed "Any stage" box (a ghost node, id '*') starts the moves that
+// can happen from any state: the dot leaves the state it is in, the box lights up, and the dot travels that line.
+// The canvas is 798 wide and the map's height tall, and scales down to the box; below 62% it scrolls inside the box.
+import { arrowHead, MAP_W, MAP_H, type StateMapDef } from './state-map';
+interface Props { map: StateMapDef }
+const { map } = Astro.props;
+const H = map.height ?? MAP_H;
+---
+<div class="smap" data-state-map data-h={H} role="img" aria-label={`${map.label}. ${map.description}`}>
+  <div class="scroll" data-scroll>
+    <div class="fit" data-fit style={`height:${H}px`}>
+      <div class="stage" data-stage style={`height:${H}px`}>
+        <svg viewBox={`0 0 ${MAP_W} ${H}`} width={MAP_W} height={H} aria-hidden="true">
+          {map.edges.map((e, i) => (
+            <g class="edge" data-edge={i} data-from={e.from} data-to={e.to}>
+              <path class="line" d={e.d} />
+              <path class="line" d={arrowHead(e.d)} />
+              <path class="path" d={e.d} />
+            </g>
+          ))}
+          <circle class="dot" data-dot r="5" cx="0" cy="0" />
+        </svg>
+        {map.edges.map((e, i) => e.chip && (
+          <span class="chip" data-chip={i} aria-hidden="true" style={`left:${e.chip.x}px;top:${e.chip.y}px`}>{e.chip.text}</span>
+        ))}
+        {map.nodes.map((n) => (
+          <div class:list={['node', { ghost: n.ghost }]} data-node={n.id} aria-hidden="true" style={`left:${n.x}px;top:${n.y}px;width:${n.w}px;height:${n.h}px`}>{n.label}</div>
+        ))}
+      </div>
+    </div>
+  </div>
+  <script type="application/json" data-tour set:html={JSON.stringify(map.tour)} />
+</div>
+<style>
+  .scroll { overflow-x: auto; overflow-y: hidden; padding-block: var(--space-16); }
+  .fit { position: relative; width: 798px; margin-inline: auto; }
+  .stage { position: absolute; inset: 0 auto auto 0; width: 798px; transform-origin: 0 0; }
+  .stage > svg { position: absolute; inset: 0; overflow: visible; }
+
+  /* Lines: 2px with a chevron. The still map has every line blue. While it plays, a line is grey until the dot
+     travels it. */
+  .line { fill: none; stroke: var(--color-annotation-measure); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.3s ease; }
+  .path { fill: none; stroke: none; }
+  .live .edge:not(.lit) .line { stroke: var(--color-border-strong); }
+  .dot { fill: var(--color-annotation-measure); opacity: 0; }
+
+  /* Chips are solid, so the line never shows through them. Before the dot reaches a chip's line it is the quiet
+     outline version. */
+  .chip { position: absolute; transform: translate(-50%, -50%); padding: 1px 5px; border: 1px solid var(--color-annotation-measure); border-radius: var(--radius-tag); background: var(--color-annotation-measure); color: var(--color-surface-page); font: var(--type-ui-pill-small); white-space: nowrap; transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+  .live .chip:not(.lit) { background: var(--color-surface-raised); border-color: var(--color-border-strong); color: var(--color-text-muted); }
+
+  /* States. The one the dot is in gets a 2px blue border. */
+  .node { position: absolute; display: flex; align-items: center; justify-content: center; background: var(--color-surface-raised); border: 1px solid var(--color-border-subtle); color: var(--color-text-primary); font: var(--type-ui-table-strong); white-space: nowrap; transition: border-color 0.25s ease; }
+  .node.current { border: 2px solid var(--color-annotation-measure); }
+  /* Any stage: not a real state, so a dashed box with quiet text. It turns blue while a move leaves it. */
+  .ghost { background: transparent; border: 1px dashed var(--color-border-strong); color: var(--color-text-muted); font: var(--type-ui-table); transition: border-color 0.25s ease, color 0.25s ease; }
+  .ghost.lit { border-color: var(--color-annotation-measure); color: var(--color-text-primary); }
+</style>
+<script>
+  import { gsap, reduceMotion } from '../../lib/motion';
+
+  const W = 798, MIN = 0.62;
+
+  document.querySelectorAll<HTMLElement>('[data-state-map]').forEach((root) => {
+    // Fit the canvas to the box
+    const scroll = root.querySelector<HTMLElement>('[data-scroll]')!;
+    const fit = root.querySelector<HTMLElement>('[data-fit]')!;
+    const stage = root.querySelector<HTMLElement>('[data-stage]')!;
+    const H = Number(root.dataset.h);
+    const fitTo = () => {
+      if (!scroll.clientWidth) return;
+      const s = Math.min(1, Math.max(MIN, scroll.clientWidth / W));
+      stage.style.transform = `scale(${s})`;
+      fit.style.width = `${W * s}px`;
+      fit.style.height = `${H * s}px`;
+    };
+    new ResizeObserver(fitTo).observe(scroll);
+    fitTo();
+
+    if (reduceMotion()) return;
+
+    const nodes = new Map([...root.querySelectorAll<HTMLElement>('[data-node]')].map((n) => [n.dataset.node!, n]));
+    const edges = [...root.querySelectorAll<SVGGElement>('[data-edge]')].map((g) => ({
+      g, from: g.dataset.from!, to: g.dataset.to!,
+      path: g.querySelector<SVGPathElement>('.path')!,
+      chip: root.querySelector<HTMLElement>(`[data-chip="${g.dataset.edge}"]`),
+    }));
+    const runs = JSON.parse(root.querySelector('[data-tour]')!.textContent!) as string[][];
+    const dot = root.querySelector<SVGCircleElement>('[data-dot]')!;
+
+    const setCurrent = (id: string) => {
+      nodes.forEach((n, k) => n.classList.toggle('current', k === id));
+      // On small screens the map scrolls inside its box: keep the current state in view
+      if (scroll.scrollWidth > scroll.clientWidth) {
+        const n = nodes.get(id)!;
+        const mid = (parseFloat(n.style.left) + parseFloat(n.style.width) / 2) * (fit.offsetWidth / W);
+        scroll.scrollTo({ left: mid - scroll.clientWidth / 2, behavior: 'smooth' });
+      }
+    };
+    const reset = () => {
+      edges.forEach((e) => { e.g.classList.remove('lit'); e.chip?.classList.remove('lit'); });
+      nodes.get('*')?.classList.remove('lit');
+      gsap.set(dot, { opacity: 0 });
+      setCurrent(runs[0][0]);
+    };
+    const moveDot = (e: (typeof edges)[number], t: number) => {
+      const pt = e.path.getPointAtLength(t * e.path.getTotalLength());
+      dot.setAttribute('cx', String(pt.x)); dot.setAttribute('cy', String(pt.y));
+    };
+
+    // One loop plays every run: rest on a state, then the line lights up and the dot travels it to the next state.
+    // A '*' line starts on the Any stage box, so the dot jumps there first and the box lights up.
+    const tl = gsap.timeline({ repeat: -1, paused: true });
+    runs.forEach((tour) => {
+      tl.call(reset);
+      tour.slice(1).forEach((to, i) => {
+        const e = edges.find((x) => x.from === tour[i] && x.to === to) ?? edges.find((x) => x.from === '*' && x.to === to)!;
+        const p = { t: 0 };
+        tl.to({}, { duration: 0.9 });
+        tl.call(() => { e.g.classList.add('lit'); e.chip?.classList.add('lit'); if (e.from === '*') nodes.get('*')!.classList.add('lit'); moveDot(e, 0); gsap.set(dot, { opacity: 1 }); });
+        tl.fromTo(p, { t: 0 }, { t: 1, duration: Math.max(0.5, e.path.getTotalLength() / 260), ease: 'power1.inOut', onUpdate: () => moveDot(e, p.t) });
+        tl.call(() => setCurrent(to));
+      });
+      tl.to({}, { duration: 2 });
+    });
+
+    root.classList.add('live');
+    reset();
+    // Play only while the map is on screen (the hidden map in the switch has no size, so it never plays)
+    new IntersectionObserver((entries) => {
+      entries.forEach((en) => (en.isIntersecting ? tl.play() : tl.pause()));
+    }, { threshold: 0.3 }).observe(root);
+  });
+</script>

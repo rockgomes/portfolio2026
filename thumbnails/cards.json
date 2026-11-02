@@ -11,6 +11,10 @@
       "web": "../src/assets/projects/dealfront-ai-company-profile/df-ai-v8-00-fullview-contacts.png"
     },
     {
+      "out": "../src/assets/cards/well---care-homes-backoffice.jpg",
+      "web": "../src/assets/projects/well---care-homes-backoffice/cycle-board.png"
+    },
+    {
       "out": "../src/assets/cards/dealfront-dynamic-lists.jpg",
       "web": "../src/assets/projects/dealfront-dynamic-lists/list.png"
     },

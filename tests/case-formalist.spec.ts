@@ -45,11 +45,11 @@ test('demo steps, then the five blocks of "How it is built"', async ({ page }) =
   await expect(page.locator('img[alt*="Ana"]')).toHaveCount(0);
 });
 
-test('card 02: Flex Academy leads here, and the next case study is AI Company Profile', async ({ page }) => {
+test('card 02: Flex Academy leads here, and the next case study is Care home medication cycles', async ({ page }) => {
   await page.goto('/project/flex-academy');
   await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/experiments/formalist');
   await page.goto(PAGE);
-  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/dealfront-ai-company-profile');
+  await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/project/well---care-homes-backoffice');
 });
 
 test('no sideways scroll', async ({ page }) => {
