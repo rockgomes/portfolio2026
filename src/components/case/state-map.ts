@@ -5,9 +5,10 @@ export interface MapNode {
   id: string;
   label: string;
   x: number; y: number; w: number; h: number;
+  ghost?: boolean; // not a real state: the dashed "Any stage" box that '*' moves start from (id '*')
 }
 export interface MapEdge {
-  from: string; // a state id, or '*' for a move that can start from any state (it starts on the `anyStage` outline)
+  from: string; // a state id, or '*' for a move that can start from any state (it starts on the '*' node)
   to: string;
   d: string;
   chip?: { text: string; x: number; y: number }; // the interaction chip (Figma 551:1406), centred on x, y
@@ -19,8 +20,6 @@ export interface StateMapDef {
   nodes: MapNode[];
   edges: MapEdge[];
   height?: number;
-  // A dashed outline around the states that a '*' move can start from (a statechart superstate)
-  anyStage?: { x: number; y: number; w: number; h: number };
   // The runs the animation plays, one after the other: each is the state ids it visits, in order. Each step must be a
   // line on the map, or a '*' line.
   tour: string[][];

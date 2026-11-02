@@ -20,7 +20,7 @@ test('the story is about the cycle: the map comes first, then the cycle view', a
   await expect(page.locator('#process h3').first()).toHaveText('Map the system before drawing');
   const map = page.locator('[data-state-map]');
   await expect(map).toHaveCount(1);
-  await expect(map.locator('[data-node]')).toHaveCount(9);
+  await expect(map.locator('[data-node]')).toHaveCount(10);
   await expect(map.locator('button')).toHaveCount(0);
 });
 
