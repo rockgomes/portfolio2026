@@ -45,7 +45,7 @@ test('demo steps, then the five blocks of "How it is built"', async ({ page }) =
   await expect(page.locator('img[alt*="Ana"]')).toHaveCount(0);
 });
 
-test('card 02: Flex Academy leads here, and the next case study is Care homes backoffice', async ({ page }) => {
+test('card 02: Flex Academy leads here, and the next case study is Medication cycle management', async ({ page }) => {
   await page.goto('/project/flex-academy');
   await expect(page.locator('[data-next-case] .title a')).toHaveAttribute('href', '/experiments/formalist');
   await page.goto(PAGE);

@@ -1,6 +1,6 @@
 ---
-name: "Well - Care homes backoffice"
-heroTitle: "Well - Care homes backoffice"
+name: "Well - Medication cycle management"
+heroTitle: "Well - Medication cycle management"
 heroDescription: "Well, a UK pharmacy, was building a backoffice for the care homes it supplies. The project was big, it had one designer, and go-live was close. I joined to own the backoffice and the design system, so the other designer could focus on another area."
 cardImage: "../../assets/cards/well---care-homes-backoffice.jpg"
 type: "client"
@@ -12,7 +12,7 @@ cardOrder: 3
 cardNumber: "03"
 cardCompany: "Well"
 cardYear: "2026"
-cardTitle: "Care homes backoffice"
+cardTitle: "Medication cycle management"
 cardLine: "Owned the care homes backoffice and its design system. It went live on time."
 cardToCheck: true
 subtitle: "Well · 2026 · internal tool"
@@ -66,9 +66,9 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     ]} />
   </CaseBlock>
   <CaseBlock label="cycles" title="Every cycle in the same place">
-    Previous and Next move between cycles. A pill says if the cycle is active, upcoming or completed, and the active cycle shows its dispatch date. Past and future cycles are read only, with a banner and a way back to the current cycle. The next cycle still lets you edit its arrival date. A completed cycle shrinks to two columns, delivered and not delivered.
+    Previous and Next move between cycles. A pill says if the cycle is active, upcoming or completed, and the active cycle shows its dispatch date. A past cycle is closed, so there is nothing to edit. A future cycle has nothing to act on yet, so it is read only too, with one exception: the arrival date. If there is a problem on that day, the team can move it. Both show a banner and a way back to the current cycle. A completed cycle shrinks to two columns, delivered and not delivered.
     <ProofSwitch slot="proof" kind="tabs" id="well-cycles" label="Cycle" items={[
-      { label: 'Upcoming', caption: 'The next cycle: read only, every order still in Labelling and checking.', media: img(upcoming, 'An upcoming cycle with a yellow Read only banner, an Edit arrival date button and Back to current cycle. All 700 orders are in Labelling and checking.') },
+      { label: 'Upcoming', caption: 'The next cycle: read only, except the arrival date. Every order is still in Labelling and checking.', media: img(upcoming, 'An upcoming cycle with a yellow Read only banner, an Edit arrival date button and Back to current cycle. All 700 orders are in Labelling and checking.') },
       { label: 'Completed', caption: 'A finished cycle: Delivered and Not delivered. A tooltip explains an order that an interim pharmacy sent.', media: img(completed, 'A completed cycle with a Read only banner and two columns, Delivered with 800 orders and Not delivered with 200. A tooltip on one card says Interim pharmacy, not part of Well.') },
     ]} />
   </CaseBlock>
