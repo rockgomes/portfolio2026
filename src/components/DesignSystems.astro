@@ -3,7 +3,7 @@
 import SectionHeader from './SectionHeader.astro';
 import Glyph from './Glyph.astro';
 const systems = [
-  { label: 'Inbank DS', name: 'Inbank', when: '2023 - 2025', facts: ['Built from scratch right after the rebrand', 'One system for checkout in four countries and the back-office', 'WCAG built in ahead of an audit'], tags: ['Tokens', 'Components', 'Accessibility'] },
+  { label: 'Inbank DS', name: 'Inbank', when: '2023 - 2025', facts: ['Built from scratch right after the rebrand', 'One system for checkout in four countries and the back-office', 'Accessibility rules (WCAG) built in before the audit'], tags: ['Tokens', 'Components', 'Accessibility'] },
   { label: 'Bigbank DS', name: 'Bigbank', when: '2016 - 2020', facts: ['Built together with one other designer', 'A component library in code, used directly in the product', 'One system for every branch and market'], tags: ['Components', 'Code', 'Research'] },
   { label: 'Well DS', name: 'Well', when: 'Contract', facts: ['Rebuilt the back-office design system', 'Colour tokens updated to meet AAA contrast', 'Worked side by side with the dev team'], tags: ['Tokens', 'AAA contrast', 'Handoff'] },
 ];
@@ -24,8 +24,8 @@ const chains = [
 
     <div class="intro">
       <div class="lede">
-        <p><strong>I have built design systems from scratch at Inbank and Bigbank, and rebuilt one at Well.</strong> Dev teams used each one in live products, on real deadlines.</p>
-        <p>Most of the work is in the logic under the UI kit: how tokens are layered, how components are split, which properties exist, and what happens when the brand or the theme changes.</p>
+        <p><strong>I have built design systems from scratch at Inbank and Bigbank, and rebuilt one at Well.</strong> Dev teams used each one in live products.</p>
+        <p>Most of my work is the part you don't see in the UI kit. I decide how the tokens connect, how to split the components, and what changes in a rebrand.</p>
       </div>
       <div class="systems">
         {systems.map((s) => (
