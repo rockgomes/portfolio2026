@@ -1,7 +1,7 @@
 ---
 name: "Well - Care home medication cycles"
 heroTitle: "Well - Care home medication cycles"
-heroDescription: "Well, a UK pharmacy, was building a backoffice for the care homes it supplies. The project was big, it had one designer, and go-live was close. I joined to own the backoffice and the design system, so the other designer could focus on another area."
+heroDescription: "Well, a UK pharmacy, was building a back-office for the care homes it supplies. It was a big project with one designer, and go-live was close. I joined to design the back-office and the design system, so the other designer could work on another area."
 cardImage: "../../assets/cards/well---care-homes-backoffice.jpg"
 type: "client"
 industry: ["B2B", "Healthcare"]
@@ -12,17 +12,17 @@ cardOrder: 3
 cardCompany: "Well"
 cardYear: "2026"
 cardTitle: "Care home medication cycles"
-cardLine: "Owned the care homes backoffice and its design system. It went live on time."
+cardLine: "Owned the care homes back-office and its design system. It went live on time."
 cardToCheck: true
 demoUrl: "https://well-medication-cycles.netlify.app/"
-subtitle: "Well · 2026 · pharmacy backoffice"
+subtitle: "Well · 2026 · pharmacy back-office"
 facts:
-  role: "Senior Product Designer, contract. Owned the care homes backoffice and the design system."
-  context: "Well (Bestway Group), a UK pharmacy. The backoffice gets its prescription data from the NHS. The pharmacy team that dispenses medication for care homes uses it every day."
+  role: "Senior Product Designer, contract. Owned the care homes back-office and the design system."
+  context: "Well (Bestway Group), a UK pharmacy. The back-office gets its prescription data from the NHS. The pharmacy team that dispenses medication for care homes uses it every day."
   made: "A map of the order stages, the 28-day cycle view, the design system parts behind it, and a working prototype of the cycle view."
   tools: "Figma, FigJam, Claude"
-problem: "One designer on a big project. The design system was falling behind, and the go-live date was close."
-decision: "Map the system first, then design and ship flow by flow, fixing the design system as each flow needed it."
+problem: "The team had one designer for a big project. The design system was out of date, and go-live was close."
+decision: "I mapped the system first. Then I designed one flow at a time and fixed the design system parts that each flow needed."
 result: "Went live on time. The pharmacy team said the new 28-day cycle view made their daily work faster."
 caseImage:
   src: "../../assets/projects/well---care-homes-backoffice/cycle-board.png"
@@ -59,7 +59,7 @@ import { orderStages } from '../../components/case/maps/well';
 export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, height: src.height });
 
 <CaseSection title="Map the system first" subtitle="before any screen" id="process">
-  <CaseBlock label="mapping" title="Map the system before drawing">
+  <CaseBlock label="mapping" title="From request to delivery">
     An order goes through many stages before it reaches the care home, and some of them can loop back. With Claude, I turned what I knew into a map of the order stages in FigJam. Then I checked it with the team. The order stages became the columns of the cycle view.
     <Proof slot="proof" caption="Order stages, from request to delivery. An exception goes back to FlowRX once it is resolved." media={{ kind: 'map', map: orderStages }} />
   </CaseBlock>
@@ -81,11 +81,11 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     ]} />
   </CaseBlock>
   <CaseBlock label="dates" title="Change the dates of one cycle only">
-    Cycle dates can change, for example the arrival date. The edit opens in a side panel and says up front that it only changes this cycle. The calendar marks the start, dispatch and arrival dates in their own colours.
+    The team can change a cycle's dates, like the arrival date. The edit opens in a side panel, with a warning that it changes this cycle only. The calendar marks the start, dispatch and arrival dates in their own colours.
     <Proof slot="proof" caption="Cycle dates: start, dispatch and arrival, with a warning that the edit only changes this cycle." media={img(dates, 'A Cycle dates side panel with a warning, three date fields and a two-month calendar. The start, dispatch and arrival dates each have their own colour, with a legend.')} />
   </CaseBlock>
   <CaseBlock label="search" title="Find a patient across all stages">
-    Search can pick more than one patient. Each result shows the date of birth and NHS number, so two people with the same name are easy to tell apart. The picked patients stay as chips above the board. Sorting goes by last update, prescription received or RX received.
+    You can pick more than one patient in search. Each result shows the date of birth and NHS number, so two people with the same name are easy to tell apart. The picked patients stay as chips above the board. You can sort by last update, prescription received or RX received.
     <ProofSwitch slot="proof" kind="tabs" id="well-search" label="Search" items={[
       { label: 'Search', caption: 'Three patients called Sienna, told apart by date of birth and NHS number.', media: img(search, 'Patient search for Sienna with three results, each with a checkbox, date of birth and NHS number.') },
       { label: 'Results', caption: 'The picked patients stay as chips above the board, with the sort that is on.', media: img(searchDone, 'Three patient chips under the search field, the sort set to last updated, newest to oldest, and the board below.') },
@@ -93,7 +93,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     ]} />
   </CaseBlock>
   <CaseBlock label="views" title="Two views on the same orders">
-    The cycle only had a board. The board is right when the stage matters most, so people who work on one or two stages kept it. A table is easier to scan, sort by patient and search. With a board, search results scatter across columns. So I designed both on the same data, and people can switch.
+    The cycle only had a board. A board works when you care about the stage, so people who work on one or two stages kept it. But in a board, search results spread across many columns. A table is easier to scan, sort and search. So I designed both views on the same data, and people can switch.
     <Proof slot="proof" caption="A completed cycle as a table: patient, date of birth, item, RX received date and status." media={img(table, 'A completed cycle as a table: patient name, date of birth, item name, Rx received date and a Delivered or Not delivered status on each row.')} />
   </CaseBlock>
   <CaseBlock label="order" title="The full story of one order">
@@ -109,12 +109,11 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   <TwoCol
     left={{ label: 'outcome', items: [
       'Went live on time.',
-      'The pharmacy team said the new 28-day cycle view helped them get through their work faster.',
+      'The pharmacy team said the new 28-day cycle view made their daily work faster.',
       'The team praised the table view. Before, they only had the board.',
     ] }}
     right={{ label: 'what I learned', items: [
       'You can fix a design system while you use it. I cleaned up each part when a flow needed it, so every fix had a real reason.',
-      "The risk lives in the states. Orders and patients change state often, and these are older people's medicines. Every state needed a clear name and a clear next step.",
-      'Talking to the people who use the backoffice showed me where they get stuck. It also showed me what clear means to them: one name for one thing, and nothing left to guess.',
+      "The biggest risk was in the states. Orders and patients change state often, and these are older people's medicines, so every state needed a clear name and a clear next step.",
     ] }} />
 </CaseSection>
