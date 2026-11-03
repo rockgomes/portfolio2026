@@ -10,13 +10,13 @@ export const steps: Step[] = [
     name: 'Frame', short: 'Two jobs, four principles',
     solo: { lead: 'Two jobs-to-be-done, one per reader, and four principles that became the review criteria.', items: ['Found the real problem in the brief: trust', 'Wrote what each reader needs to believe', 'Set the rules: sourced facts only, AA by default'], gate: 'Gate: every later choice is checked against the principles.' },
     team: { lead: 'A one-hour kickoff with PM, engineering and research. We agree the jobs, the success metrics and what we will not do.', items: ['PM owns the metrics and the guardrails', 'Engineering flags constraints early: CMS, forms, analytics', 'Principles written down and shared, so critique has a reference'], gate: 'Gate: signed-off brief on one page.' },
-    why: 'The brief is about trust. Framing it that way changed every later choice.',
+    why: 'The real problem in the brief was trust, so I checked every choice against it.',
   },
   {
     name: 'Research', short: 'Fact bank, 45 references',
     solo: { lead: 'Audited both parent brands for facts and voice. Collected 45 references, each with the one principle to take from it.', items: ['theflex.global and base360.ai: every public fact', 'Mobbin for booking and webinar flows', 'Awwwards and Codrops for motion and craft'], gate: 'Gate: a fact bank. If a claim is not in it, it is not on the page.' },
     team: { lead: 'Same desk research, plus five short interviews per audience before high fidelity.', items: ['Research partner runs the interviews, I join as note-taker', 'Synthesis in one shared board', 'We look for the words people use, then write the copy with them'], gate: 'Gate: top three objections per audience, in their words.' },
-    why: 'Without a fact bank, "proof" turns into marketing copy.',
+    why: 'Without a fact bank, I would end up writing marketing claims, not proof.',
   },
   {
     name: 'Structure', short: 'Ten sections, every state',
@@ -26,7 +26,7 @@ export const steps: Step[] = [
   },
   {
     name: 'Diverge', short: 'Directions with the same content',
-    solo: { lead: 'Explored several art directions with identical content, so only the idea changed.', items: ['Lights On, Your Next Unit, The Calendar and others', 'Each one judged against the tests and the principles', 'Strengths written down even for directions I dropped'], gate: 'Gate: one direction, plus the best ideas taken from the others.' },
+    solo: { lead: 'Explored three art directions with identical content, so only the idea changed.', items: ['Lights On, Your Next Unit and The Calendar', 'Each one judged against the tests and the principles', 'Strengths written down even for directions I dropped'], gate: 'Gate: one direction, plus the best ideas taken from the others.' },
     team: { lead: 'Two or three designers explore in parallel for a fixed time, then we hold one critique.', items: ['Critique based on the principles', 'Silent review first, then discussion', 'The lead decides and writes down why'], gate: 'Gate: decision log entry with what we chose and what we dropped.' },
     why: 'With the same content in every direction, we judge the idea itself.',
   },
@@ -46,7 +46,7 @@ export const steps: Step[] = [
     name: 'Build and verify', short: 'Prototype with tests',
     solo: { lead: 'A coded prototype with CI: HTML validation, axe in light and dark, overflow checks, end-to-end flows, preview link per change.', items: ['Production habits on a prototype', 'Every change through a pull request', 'Dark mode tested automatically'], gate: 'Gate: CI green, preview approved.' },
     team: { lead: 'Engineering builds. I pair on the first components and review every preview link.', items: ['Definition of done includes accessibility and both themes', 'Analytics events agreed before launch', 'A launch checklist the whole team owns'], gate: 'Gate: metrics live on day one, with the guardrails.' },
-    why: 'Tests that run on every push check every change automatically.',
+    why: "Tests run on every change, so I don't have to check each one by hand.",
   },
 ];
 
