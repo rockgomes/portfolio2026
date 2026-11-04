@@ -26,9 +26,9 @@ facts:
   context: "Take-home challenge for a Product / Brand Designer role at The Flex, October 2026."
   made: "Desktop and mobile pages, both booking flows, dark mode, design notes, Loom, Figma prototype, coded prototype."
   tools: "Figma (variables, components, Motion), HTML, CSS, JavaScript, Playwright, axe, Netlify, Claude."
-problem: "One page had to work for two very different readers. Both are tired of \"guru\" courses. A new company has no students and no reviews to show it can be trusted."
-decision: "The hero is a calendar. The first row is your first unit, the rows below are the units you add next: the path from Launch to Scale in a tool operators already know."
-result: "Desktop and mobile pages, both booking flows with no dead ends, dark mode, and a coded prototype that checks accessibility on every push. No launch numbers: it was a take-home."
+problem: "One page had to work for two different readers. Both are tired of \"guru\" courses. And a new academy has no students or reviews yet, so people have no reason to trust it."
+decision: "The hero is a calendar. The first row is your first unit, and the rows below are the units you add next. It shows the path from Launch to Scale in a tool operators already use."
+result: "Desktop and mobile pages, both booking flows with no dead ends, dark mode, and a coded prototype with accessibility tests."
 links:
   - label: "Open the live page"
     href: "https://flex-academy-prototype.netlify.app"
@@ -59,7 +59,7 @@ import references from '../../assets/projects/flex-academy/flex-academy-referenc
 
 <CaseSection title="Three decisions I would defend" subtitle="the ideas that made the page work" id="decisions">
   <CaseBlock label="decision 1 of 3" data-decision="1" title="The calendar is the main idea">
-    Operators use a calendar all day: bookings, check-ins, cleanings. So the hero is a calendar. It passes the 5-second test without a slogan: the visitor sees their own first unit and the units after it. The "You are here" marker moves when the reader switches path.
+    Operators use a calendar all day: bookings, check-ins, cleanings. So the hero is a calendar. The brief asked that a visitor understands in 5 seconds who the page is for and what they get. The calendar does this with no slogan: the visitor sees their own first unit and the units after it. The "You are here" marker moves when the reader switches path.
     <ProofSwitch slot="proof" kind="segmented" id="d1" label="Reader path" selected={1} items={[
       { label: 'Starting out', caption: 'The hero for someone starting out: the headline, the button and the calendar lead to the free webinar and the first unit.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-hero-launch.jpg', alt: 'The Flex Academy hero for someone starting out: "Learn the business behind every booking", a webinar button and a calendar with the first unit.', width: 1440, height: 900 } },
       { label: 'I run units', caption: 'The same hero for an operator: "I run units" changes the headline, the button and the calendar, and moves the "You are here" marker.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-hero-operator.jpg', alt: 'The Flex Academy hero for an operator: "Run the company behind every booking", a strategy call button and a calendar with several units.', width: 1440, height: 900 } },
@@ -73,7 +73,7 @@ import references from '../../assets/projects/flex-academy/flex-academy-referenc
     ]} />
   </CaseBlock>
   <CaseBlock label="decision 3 of 3" data-decision="3" title="Only facts I can source" pills={['since 2019', '7 cities', '150+ corporate partners', '130+ booking channels']}>
-    I used no income claims, no countdowns and no fake testimonials. A section called "The hard truth" shows one real day across three units, first without a system and then with one.
+    Every fact on the page has a source. A section called "The hard truth" shows one real day across three units, first without a system and then with one.
     <Proof slot="proof" caption="As you scroll, the same day shows first without a system, then with one." media={{ kind: 'video', src: '/embeds/flex-academy/flex-academy-hard-truth.mp4', poster: '/embeds/flex-academy/flex-academy-hard-truth.jpg', label: 'Screen recording: scrolling through The hard truth. Twelve tasks pile up on one day, then the same day with a system falls into order.', width: 1440, height: 900 }} />
   </CaseBlock>
 </CaseSection>
@@ -94,9 +94,9 @@ import references from '../../assets/projects/flex-academy/flex-academy-referenc
       after={{ src: '/embeds/flex-academy/flex-academy-hero.jpg', alt: 'Final hero with the calendar' }} />
   </CaseBlock>
   <CaseBlock label="art directions" title="Three art directions with the same content">
-    I explored art directions side by side with identical content, so only the idea changed. I judged each one against the three tests of the brief and the four principles.
+    I explored three art directions side by side with identical content, so only the idea changed. I judged each one against the three tests of the brief and the four principles.
     <ProofSwitch slot="proof" kind="tabs" id="dirs" label="Art directions" items={[
-      { label: 'Lights On', caption: 'Lights On. The Flex cities light up one by one from London. Strong proof and a real "wow", but the night mood felt far from a practical business.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-dir-lights-on.jpg', alt: 'Lights On: a night map where The Flex cities light up', width: 1200, height: 683 } },
+      { label: 'Lights On', caption: 'Lights On. A dark hero where The Flex\'s cities light up one by one, starting with London. It showed real cities and real dates, so it was the strongest for trust. But the night scene felt distant from the everyday work the course teaches.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-dir-lights-on.jpg', alt: 'Lights On: a night map where The Flex cities light up', width: 1200, height: 683 } },
       { label: 'Your Next Unit', caption: 'Your Next Unit. The hero asks how many units you run, and sends you to your path. The best conversion idea, but a question slows down people who want a quick answer.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-dir-next-unit.jpg', alt: 'Your Next Unit: the hero asks how many units you run', width: 1200, height: 682 } },
       { label: 'The Calendar · chosen', caption: 'The Calendar, chosen. It keeps the routing idea (a switch for the two readers) and the honest proof, inside a picture operators already understand.', media: { kind: 'image', src: '/embeds/flex-academy/flex-academy-hero.jpg', alt: "The Calendar: the visitor's next months as a calendar", width: 1440, height: 905 } },
     ]} />
@@ -105,7 +105,7 @@ import references from '../../assets/projects/flex-academy/flex-academy-referenc
 
 <CaseSection title="The design system behind it" subtitle="every layer on a token, in Light and Dark" id="system" gap={64}>
   <CaseBlock label="inspect" title="Inspect the tokens on the hero">
-    47 primitives, 30 semantic tokens with a Light and a Dark mode, 20 spacing steps and 8 radii. Each pin is a real layer in the Figma hero. A click on a pin lists its tokens, and Dark shows the same layers with new values.
+    47 primitives, 30 semantic tokens with a Light and a Dark mode, 20 spacing steps and 8 radii. Each pin is a real layer in the Figma hero. Click a pin to see its tokens. Switch to Dark to see the same layers with new values.
     <InspectPins slot="proof" pins={pins} tokens={tokenValues} spaces={spaceValues} width={1440} height={905}
       light={{ src: '/embeds/flex-academy/flex-academy-hero.jpg', alt: 'Desktop hero in Light mode' }}
       dark={{ src: '/embeds/flex-academy/flex-academy-dark-hero.jpg', alt: 'Desktop hero in Dark mode, same layers' }} />
@@ -138,8 +138,8 @@ import references from '../../assets/projects/flex-academy/flex-academy-referenc
       'Guardrails: wrong-path bookings, form drop-off per step, accessibility regressions in CI.',
     ] }}
     right={{ label: 'what I learned', items: [
-      'Do the structure first and the look second, but start the look early. Comparing directions with the same content let me judge the idea itself.',
-      'Saying no to fake proof made me find a better idea.',
+      'Do the structure first, but start trying looks early.',
+      'With no fake proof allowed, I had to find real facts. That led to The hard truth section.',
       'With the token system, dark mode needed only the Dark token values and one toggle.',
     ] }} />
 </CaseSection>
