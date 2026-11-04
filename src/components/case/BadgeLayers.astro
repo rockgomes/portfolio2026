@@ -12,11 +12,11 @@ const fields = ['First name', 'Email'];
     <div class="page">
       <p class="k t-mono-label">the job page</p>
       <div class="dialog">
-        <p class="k t-mono-label">apply window · role="dialog" · aria-modal · focus trap</p>
+        <p class="k t-mono-label">apply window · pop-up</p>
         {fields.map((f) => <div class="field"><span>{f}</span><span class="ui-tag ui-tag-accent">F Fill</span></div>)}
         <div class="layer">
           <p class="t-mono-label">Formalist badge layer</p>
-          <p class="note">Sits inside the dialog, in a closed shadow root. The trap counts a badge click as a click inside, so the window stays open.</p>
+          <p class="note">The badge sits inside the pop-up window, so a click on it does not close the window.</p>
         </div>
       </div>
     </div>
