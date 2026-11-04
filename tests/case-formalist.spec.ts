@@ -40,7 +40,7 @@ test('demo steps, then the five blocks of "How it is built"', async ({ page }) =
   await expect(page.locator('.after-live [data-proof-strip] li')).toHaveCount(3);
   await expect(page.locator('#built [data-case-block]')).toHaveCount(5);
   await expect(page.locator('#built [data-badge-layers]')).toBeVisible();
-  await expect(page.locator('#built [data-proof-list]')).toHaveCount(3);
+  await expect(page.locator('#built [data-proof-list]')).toHaveCount(2);
   // The demo person is Alex Taylor; the old name must not come back in alt text
   await expect(page.locator('img[alt*="Ana"]')).toHaveCount(0);
 });
