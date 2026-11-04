@@ -61,13 +61,13 @@ test('one section, in the order of the sketch', async ({ page }) => {
   await expect(blocks.nth(4).locator('.pills')).toHaveCount(0);
 });
 
-test('the three parts picture shows the backoffice and the guest list', async ({ page }) => {
+test('the three parts picture shows the back-office and the guest list', async ({ page }) => {
   await page.goto(PAGE);
   const proof = page.locator('#built [data-case-block]').nth(1).locator('[data-proof]');
-  await expect(proof.locator('figcaption')).toHaveText("The bar's backoffice, with the guest song list on a phone.");
+  await expect(proof.locator('figcaption')).toHaveText("The bar's back-office, with the guest song list on a phone.");
   const img = proof.locator('img');
   await img.scrollIntoViewIfNeeded();
-  await expect(img).toHaveAttribute('alt', /backoffice of The Anchor/);
+  await expect(img).toHaveAttribute('alt', /back-office of The Anchor/);
   await expect.poll(() => img.evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
 });
 

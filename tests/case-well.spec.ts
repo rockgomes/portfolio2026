@@ -8,7 +8,7 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await page.goto(PAGE);
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Care home medication cycles');
-  await expect(s.locator('.sub')).toHaveText('Well · 2026 · pharmacy backoffice');
+  await expect(s.locator('.sub')).toHaveText('Well · 2026 · pharmacy back-office');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
@@ -17,7 +17,7 @@ test('the story is about the cycle: the map comes first, then the cycle view', a
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Map the system first', 'Inside the cycle view', 'What changed']);
   await expect(page.locator('#cycle [data-case-block] h3')).toHaveText(['One column per stage', 'Every cycle in the same place', 'Change the dates of one cycle only', 'Find a patient across all stages', 'Two views on the same orders', 'The full story of one order']);
-  await expect(page.locator('#process h3').first()).toHaveText('Map the system before drawing');
+  await expect(page.locator('#process h3').first()).toHaveText('From request to delivery');
   const map = page.locator('[data-state-map]');
   await expect(map).toHaveCount(1);
   await expect(map.locator('[data-node]')).toHaveCount(10);
