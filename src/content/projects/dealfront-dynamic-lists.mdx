@@ -23,7 +23,7 @@ demoUrl: "https://dealfront-dynamic-lists-cd-7c276e015d.netlify.app"
 subtitle: "Dealfront · 2025 · product feature"
 facts:
   role: "Senior Product Designer, contract. I defined the problem, explored options, designed the final UI and made a working demo."
-  context: "Lists in Dealfront Target, a platform that helps B2B teams find and reach companies. Lists are used for exports, alerts, ad campaigns and LinkedIn audiences. Team: me, 1 PM and several developers."
+  context: "Lists in Dealfront Target, a platform that helps B2B teams find and reach companies. Teams use lists for exports, alerts, ad campaigns and LinkedIn audiences. Team: me, 1 PM and several developers."
   made: "Explorations of where to put the filters, the Filter window, Save as new view, the signs that show the current view, and a working copy of the design."
   tools: "Figma. Claude for the working copy."
 problem: "To see part of a list, people made a new list. They said it was a lot of work. Automations on the first list did not work on the copy."
@@ -82,7 +82,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="How I got there" subtitle="a short version of the process" id="process">
   <CaseBlock label="exploration" title="Five places for the controls" pills={['sidebar', 'flyout', 'popup', 'side panel', 'tabbed modal']}>
-    Before the final design, I tried the filter controls in five places. The tabbed modal grew wider with every tab, because I tried to fit filters and table setup into one window. This showed me that filters and columns belong together.
+    Before the final design, I tried the filter controls in five places. The tabbed modal grew wider with every tab, because I tried to fit filters and table setup into one window. That is when I saw that filters and columns belong together.
   </CaseBlock>
   <CaseBlock label="filtering" title="A short Filter window">
     The filter icon opens a short Filter window. Only one category is open at a time, and each one shows the number of its active filters. Clear all and Apply filter both close the window. Applied filters then show as chips under the toolbar.
@@ -91,7 +91,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     </div>
   </CaseBlock>
   <CaseBlock label="working copy" title="A working copy you can try" pills={['built with AI', 'guided tour']}>
-    I rebuilt the design as a working copy with AI, from the real Figma files and shipped screens. I also made some improvements. A guided tour shows the decisions, or you can use it freely.
+    I rebuilt the design as a working copy with AI, from the real Figma files and shipped screens. A guided tour shows the decisions, or you can use it freely.
   </CaseBlock>
 </CaseSection>
 
@@ -99,7 +99,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   <TwoCol
     left={{ label: 'outcome', items: [
       'One list with one set of criteria. Views like "Low engagement" and "Manufacturing" always match it, because they show the same list and copy nothing.',
-      'No repeated work and no copies that get out of date. The sidebar with all the lists stays easy to use.',
+      'People stop repeating work, and no copy gets out of date. The sidebar with all the lists stays short.',
       'The list keeps its automations. You can also make new automations based on a view, like "notify me when a company enters this view".',
     ] }}
     right={{ label: 'what I learned', items: [
