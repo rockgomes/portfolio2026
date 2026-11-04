@@ -1,7 +1,7 @@
 ---
 name: "Dealfront - AI in the Company Profile"
 heroTitle: "Dealfront - AI in the Company Profile"
-heroDescription: "Dealfront already showed which companies visited your website, who worked there, and which pages they looked at. To use that data, people had to read all of it, and nobody had time. I added AI to the Company Profile. It answers the questions people were trying to answer by hand. The work shipped in two rounds within two weeks."
+heroDescription: "Dealfront already showed which companies visited your website, who worked there, and which pages they looked at. To use that data, people had to read all of it, and most people did not have the time. I added AI to the Company Profile. It answers the questions people were trying to answer by hand. We shipped it in two rounds, in two weeks."
 homeImage: "../../assets/projects/dealfront-ai-company-profile/df-ai-hero-v5-2400x1738.png"
 homeImageAlt: ""
 cardImage: "../../assets/cards/dealfront-ai-company-profile.jpg"
@@ -23,12 +23,12 @@ demoUrl: "https://dealfront-ai-company-profile.netlify.app"
 subtitle: "Dealfront · 2025 · AI feature in a live product"
 facts:
   role: "Senior Product Designer on the Company Profile team."
-  context: "The whole company had a couple of weeks to build on an AI backend that was already built and tested. We worked in two rounds, about a week each. I worked with one PM and several developers."
+  context: "The whole company had about two weeks to build features on an AI backend that was ready and tested. We worked in two rounds, about a week each. I worked with one PM and several developers."
   made: "AI blocks on Activity and Contacts, the AI Insights tab, question cards, pinning, a contacts filter and answers that show their source. Later I built the interactive replica of the profile myself, with Claude."
   tools: "v0 by Vercel to explore ideas, Figma to design, Claude to build the replica later."
 problem: "The Activity and Contacts tabs had all the data, but it was not sorted. To find the useful visits or the right person, people read everything by hand. They did company research on Google, in another tab."
 decision: "I let people ask the AI questions. Every AI block opens with ready questions that run in one click. People can also save their own questions and use them again on the next company."
-result: "Both rounds shipped in beta within two weeks. People asked questions and pinned them, which is what I designed for. I left before I could see if they kept doing it."
+result: "Both rounds shipped in beta within two weeks. People asked questions and pinned them, which is what I designed for. I stayed a few more weeks, and people kept using it in that time."
 links:
   - label: "Open the live demo"
     href: "https://dealfront-ai-company-profile.netlify.app"
@@ -119,12 +119,12 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   <TwoCol
     left={{ label: 'outcome', items: [
       'Both rounds shipped in beta within two weeks',
-      'People asked questions and also pinned them. Pinning is harder to get people to do',
+      'People asked questions and also pinned them, which is harder to get people to do',
       'I stayed a few more weeks, and people kept using it in that time',
       'I left before I could see if they kept using it for longer',
     ] }}
     right={{ label: 'what I learned', items: [
-      'One automatic summary did not answer people\'s questions. One person wants buying signals, the next wants to know who to call.',
+      'One automatic summary did not answer people\'s questions. One person wants buying signals. The next wants to know who to call.',
       'With an empty chat box, you have to think of the right question yourself, and most people do not. Ready questions help them start.',
       'A line that says the AI can make mistakes asks you to check the answer, but gives you no way to do it. Showing where the answer comes from is more useful.',
     ] }} />
