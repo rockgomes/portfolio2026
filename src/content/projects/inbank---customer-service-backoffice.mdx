@@ -22,13 +22,13 @@ cardToCheck: false
 demoUrl: ""
 subtitle: "Inbank · 2024 · internal tool"
 facts:
-  role: "Senior Product Designer, Inbank's first in-house designer. Owned it end to end: audit, research, UX, UI, components, reviews of the build."
+  role: "Senior Product Designer, Inbank's first in-house designer. I did the audit, research, UX and UI, built the components, and reviewed the build."
   context: "Inbank's 2024 restructuring and new Hire Purchase products. Used all day by support agents and their team leads."
   made: "A map of the old tool, interviews, a moodboard, a modular component set, the core back-office screens."
   tools: "Figma, Mixpanel"
-problem: "Screens were added one at a time, with no shared patterns. The tool was hard to learn and easy to misuse, and the new products did not fit."
-decision: "Rebuild it from a small set of parts: data cards, tables, status pills, side panels and one search. So a new product reuses the same screens with its own data."
-result: "Key screens shipped, including flows for the new product lines. Layouts are predictable and new agents learn the tool faster. No numbers I can share."
+problem: "The team added screens one at a time, and each one worked differently. The tool was hard to learn and easy to get wrong, and the new products did not fit."
+decision: "Rebuild it from a small set of parts: data cards, tables, status pills, side panels and one search. When the team needs a new area of the back-office, the parts are already there."
+result: "Key screens shipped, including flows for the new products. The layouts are predictable, and new staff learn the tool faster."
 beforeAfter:
   caption: "The customer page, before and after. The old page is blurred to hide customer data. Six coloured buttons became three menus."
   before:
@@ -56,7 +56,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="Three decisions I would defend" subtitle="what makes the tool faster to use" id="decisions">
   <CaseBlock label="decision 1 of 3" data-decision="1" title="Records open beside the customer">
-    An agent on a call often needs a contract or an application while the customer's details stay in view. So a record opens in a side panel over the customer page. When the agent closes it, they are back where they were.
+    A support person on a call often needs a contract or an application while the customer's details stay in view. So a record opens in a side panel over the customer page. When they close it, they are back where they were.
     <Proof slot="proof" caption="A credit application open in the side panel, with the customer page still behind it." media={img(panel, 'The customer page with a credit application open in a side panel on the right: product, identification and contact details.')} />
   </CaseBlock>
   <CaseBlock label="decision 2 of 3" data-decision="2" title="Every status sits next to its fix">
@@ -71,18 +71,18 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="audit" title="Map every screen before drawing one">
-    I listed every screen of the old tool and tagged each part: a table, a state, an action, a filter or a pop-up. The same few parts appeared on every screen. These parts became the component list.
+    I listed every screen of the old tool and tagged each part: a table, a state, an action, a filter or a pop-up. The same few parts appeared on every screen. I turned these parts into the component list.
     <Proof slot="proof" caption="Part of the map: each screen with its tables, states, actions and filters." media={img(screenMap, 'A map of the old back-office: Billing, Contracts, Customers, Home and Offer screens, each part tagged as a table, state, action or filter.')} />
   </CaseBlock>
   <CaseBlock label="research" title="Ask the people who use it, then check the data" pills={['support agents', 'team leads', 'product managers', 'developers']}>
     I interviewed the people who use the tool or work on it. Mixpanel showed which screens and actions they used most, so I redesigned those first.
   </CaseBlock>
   <CaseBlock label="visual direction" title="A moodboard before the screens">
-    Before any screen, I made a moodboard that followed Inbank's new visual identity. I used it to set the tone, the hierarchy and the level of consistency early.
+    Before any screen, I made a moodboard that followed Inbank's new visual identity. It set the look early, so every screen after it matched.
     <Proof slot="proof" caption="The moodboard: data-heavy tools with a calm, clear hierarchy." media={img(moodboard, 'A moodboard of about twenty dashboards, tables, search panels and profile pages.')} />
   </CaseBlock>
   <CaseBlock label="delivery" title="Work with the developers during the build">
-    I had weekly syncs with the developers and reviewed each build. When a technical limit came up, I changed the design. Several key screens shipped, including flows for the new product lines.
+    I had weekly syncs with the developers and reviewed each build. When a technical limit came up, I changed the design.
     <Proof slot="proof" caption="Shipped screens: a contract, a customer with a credit application open, the search, and the parts they share." media={img(shipped, 'Shipped back-office screens on a purple background: a contract on desktop and tablet, a customer page with a side panel, the search, and four cards.')} />
   </CaseBlock>
 </CaseSection>
@@ -108,10 +108,9 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       'Easier onboarding for new support agents',
       'A shared component set that speeds up new features',
       'Better visibility for managers and operations',
-      'No numbers I can share yet',
     ] }}
     right={{ label: 'what I learned', items: [
-      'Internal tools deserve the same design care as the product customers see.',
-      'Next: usage data to find problems, usability tests with agents, more parts for new use cases, and automation for repetitive tasks.',
+      'The support team uses this tool all day, so it needs the same design care as the product customers see.',
+      'Next, I would use usage data to find problems, test the tool with the support team, add parts for new cases, and automate the repetitive tasks.',
     ] }} />
 </CaseSection>
