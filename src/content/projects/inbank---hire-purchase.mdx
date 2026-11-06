@@ -22,13 +22,13 @@ cardToCheck: false
 demoUrl: ""
 subtitle: "Inbank · 2023 · checkout redesign"
 facts:
-  role: "Senior Product Designer, Inbank's first in-house designer. Audit and flow maps, mobile and desktop flows, accessibility, patterns for the design system."
-  context: "The checkout customers see after they pick Hire Purchase on a merchant's site, in Estonia, Latvia, Lithuania and Czechia. I was the only designer. A design manager approved the visuals, one product manager per country owned its flows, and two front-end developers worked with the other developers."
+  role: "Senior Product Designer, Inbank's first in-house designer. I mapped the flow, designed the mobile and desktop screens, fixed accessibility problems, and made patterns for the design system."
+  context: "The checkout customers see after they pick Hire Purchase on a merchant's site, in Estonia, Latvia, Lithuania and Czechia. I was the only designer. A design manager approved the visuals. Each country had its own product manager for its flows. Two front-end developers built it with the rest of the team."
   made: "A map of the full journey, mobile and desktop flows, reusable summary and offer patterns, country variants like the Estonian AIS flow, and components for the design system."
   tools: "Figma for the design. Claude for the coded prototype."
-problem: "The checkout differed by market and by device. Layouts were inconsistent, the hierarchy was unclear, and there were accessibility gaps, worst on mobile, where most customers finished the flow."
+problem: "Each country and each device had its own layout. It was hard to see what mattered, and there were accessibility problems. Mobile was the worst, and most customers finished the flow there."
 decision: "I designed one mobile-first flow with a few patterns that repeat. Country rules, ID methods and offer outcomes change what each screen says. The layout stays the same."
-result: "The new checkout is live in all four countries. It is consistent, accessible and clearer on mobile. Support tickets went down and customers finish faster."
+result: "The new checkout is live in all four countries, and it is easier to use, most of all on mobile. Support tickets went down and customers finish faster."
 links:
   - label: "Open the live mockup"
     href: "https://inbank-loan-app.vercel.app/"
@@ -76,7 +76,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       ]} />
   </CaseBlock>
   <CaseBlock label="decision 3 of 3" data-decision="3" title="Patterns that adapt to each case" pills={['new and returning customers', 'several ID methods', 'country rules']}>
-    The flow has to handle new and returning customers, different ID methods, different offers and different laws in each country. I defined patterns that adapt to each case. The summary card is one of them: the same card shows the plan, a changed value or a rental. The rules behind the card can change and the layout stays the same.
+    The flow has to handle new and returning customers, different ID methods, different offers and different laws in each country. I defined patterns that adapt to each case. The summary card is one of them: the same card shows the plan, a changed value or a rental.
     <Proof slot="proof" caption="Variants of one summary card. Changed values get a badge, and a rental shows its first payment." media={img(cardVariants, 'Variants of the summary card: some with Changed badges on the down payment and financed amount, one for a rental with the first payment today, and versions with Edit conditions.')} />
   </CaseBlock>
 </CaseSection>
@@ -97,14 +97,14 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     With product managers and analysts, I worked through the legal rules of each country, the data each step needs and its edge cases, and how new and returning customers differ. In the end, we all had the same view of the flow and a list of what to simplify first.
   </CaseBlock>
   <CaseBlock label="flows" title="Country rules inside one structure">
-    I organised the flow into the same stages for every market. Where a country needs more, like Estonia's AIS flow, it uses the same screens and patterns, on mobile and desktop. So there is less duplicated work, development is simpler, and the checkout feels the same in every market.
+    I organised the flow into the same stages for every market. Where a country needs more, like Estonia's AIS flow, it uses the same screens and patterns, on mobile and desktop. The team builds each screen once, and the checkout feels the same in every market.
     <ProofSwitch slot="proof" kind="tabs" id="flow" label="Flow" items={[
       { label: 'Main flow', caption: 'The main flow in eight stages, from the landing page to the end, with its variants.', media: img(flowMain, 'Phone screens grouped in stages: Landing pages, Identification, Additional info, Decision, Offer, Signing, Downpayment and End.') },
       { label: 'Estonia · AIS flow', caption: 'The Estonian AIS flow, on mobile and desktop, built from the same screens.', media: img(flowAis, 'The Estonian AIS flow on mobile and on desktop: More information needed, Please wait, Add another statement and Thank you screens, with arrows for each path.') },
     ]} />
   </CaseBlock>
   <CaseBlock label="delivery" title="Work with the team through development">
-    I worked with product, analytics and engineering to the end: aligning on logic and country rules, changing designs when a technical limit came up, reviewing each build, and fixing edge cases during development.
+    I stayed with product, analytics and engineering to the end. We agreed on the logic and country rules. When a technical limit came up, I changed the design. I reviewed each build and fixed edge cases.
   </CaseBlock>
 </CaseSection>
 
@@ -112,7 +112,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   <TwoCol
     left={{ label: 'outcome', items: [
       'Live in all four countries, at different times, because each country has its own flows',
-      'A consistent and accessible journey across devices and markets',
+      'The same checkout on every device and in every country',
       'Clearer and easier to use, most of all on mobile',
       'Easier for returning customers',
       'Fewer support tickets and faster completion, as seen by the customer service team and in Mixpanel',
@@ -122,6 +122,6 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     right={{ label: 'what I learned', items: [
       'A clear map of the flow, in swim lanes, showed the scope and gave us a roadmap. It made the project easier to manage with product managers and developers.',
       'I used the same idea in the design file: a clear order, and arrows from each action to the next, so others could follow it.',
-      'Next: tracking to measure drop-off, usability and accessibility tests, more shared patterns, and faster mobile performance.',
+      'Next, I would track where people drop off, run usability and accessibility tests, add more shared patterns, and make it faster on mobile.',
     ] }} />
 </CaseSection>
