@@ -22,11 +22,11 @@ cardToCheck: false
 demoUrl: ""
 subtitle: "Pipedrive · 2022 · integration"
 facts:
-  role: "Senior Product Designer. Interviews, design rounds, prototypes and tests."
+  role: "Senior Product Designer. I did the interviews, design rounds, prototypes and tests."
   context: "Pipedrive integrations. Two kinds of users: partner companies, and the people who use Pipedrive every day."
   made: "Partner and user interviews, many design rounds, four test prototypes, one winning prototype."
   tools: "Figma, Miro"
-problem: "Calling integrations are used a lot, but they had no good way to sync call data with Pipedrive."
+problem: "People use calling integrations a lot, but those apps had no good way to sync call data with Pipedrive."
 decision: "A floating window for the integration: always one click away, easy to move or minimise, and it links back into Pipedrive."
 result: "Four prototypes tested with users, and one clear winner. It shipped, and JustCall uses it for its Quick access feature."
 links:
@@ -61,10 +61,10 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="Two decisions I would defend" subtitle="where to start, and what to build" id="decisions">
   <CaseBlock label="decision 1 of 2" data-decision="1" title="Start with calling apps" pills={['used a lot', 'no good way to sync call data']}>
-    The data showed that people use calling integrations a lot, and these integrations had no good way to sync call data. We looked at a few kinds of integrations to start with. Calling apps were the best first test of the idea. Also, Pipedrive had just dropped its plan for its own calling feature, so we wanted to make the calling integrations better.
+    The data showed that people use calling integrations a lot, but those apps had no good way to sync call data. We looked at a few kinds of integrations, and calling apps were the best first test. Pipedrive had also just dropped its plan for its own calling feature, so we wanted to make the calling integrations better.
   </CaseBlock>
   <CaseBlock label="decision 2 of 2" data-decision="2" title="A floating window that users can move or minimise">
-    Users wanted quick access to the integration that is always there, and also a way to hide it. They wanted alerts. They also wanted links from the app into Pipedrive, for example to open the page of the person who is calling. So we put the app in a floating window. Users can move it anywhere on the page or minimise it.
+    Users wanted the integration always one click away, and a way to hide it. They wanted alerts, and links from the app into Pipedrive, for example to open the page of the person who is calling. So we put the app in a floating window that users can move anywhere or minimise.
     <InspectPins slot="proof" width={closeUp.width} height={closeUp.height}
       light={{ src: closeUp.src, alt: 'A Pipedrive deal page with the Aircall window open during a call with Margot Chen, and the installed integrations menu open from the top bar: Aircall with a badge, Asana and Xero.' }}
       pins={[
@@ -94,9 +94,9 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
   </CaseBlock>
 </CaseSection>
 
-<CaseSection title="What I would measure" subtitle="and what I learned" id="result" gap={48}>
-  <CaseBlock label="after launch" title="It shipped, with a part for calling apps">
-    Pipedrive's developer docs describe the floating window, with a part just for calling apps. JustCall uses it for its Quick access feature.
+<CaseSection title="After launch" subtitle="what shipped, and what I learned" id="result" gap={48}>
+  <CaseBlock label="after launch" title="It shipped, with its own version for calling apps">
+    Pipedrive's developer docs describe the floating window, with its own page for calling apps. JustCall uses it for its Quick access feature.
     <Proof slot="proof" caption="Pipedrive's developer docs for the custom floating window." media={img(docs, 'The Pipedrive developer docs page "Custom floating window". It explains what the window is and its sizes, and the page menu lists a part called "Custom floating window for calling apps".')} />
   </CaseBlock>
   <TwoCol
@@ -104,10 +104,10 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       'How many calls are logged in Pipedrive through the floating window',
       'How often users open a Pipedrive page from the window',
       'How many calling partners adopt it',
-      'Fewer switches between the calling app and Pipedrive (from interviews or session data)',
+      'How often users switch between the calling app and Pipedrive',
     ] }}
     right={{ label: 'what I learned', items: [
-      'A change to the core product needs the whole design team involved from the start.',
+      'Because the window changed the core product, I needed the whole design team with me from the start.',
       'Showing two prototypes in one session, in a different order each time, let users compare the ideas directly.',
     ] }} />
 </CaseSection>
