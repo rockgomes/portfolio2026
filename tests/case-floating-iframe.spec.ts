@@ -59,7 +59,7 @@ test('the main picture is the prototype\'s first screen; the Figma prototype loa
 
 test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
-  await expect(page.locator('main h2:not(.label)')).toHaveText(['Two decisions I would defend', 'How I got there', 'What I would measure']);
+  await expect(page.locator('main h2:not(.label)')).toHaveText(['Two decisions I would defend', 'How I got there', 'After launch']);
   await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Start with calling apps', 'A floating window that users can move or minimise']);
   await expect(page.locator('#decisions .pills li')).toHaveText(['used a lot', 'no good way to sync call data']);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Talk to partners and users', 'Work with the whole design team', 'Four prototypes, two per interview']);
@@ -175,6 +175,6 @@ test('design rounds: the real design file with the team notes', async ({ page })
 test('result: it shipped, with the developer docs', async ({ page }) => {
   await page.goto(PAGE);
   const block = page.locator('#result [data-case-block]');
-  await expect(block.locator('h3')).toHaveText('It shipped, with a part for calling apps');
+  await expect(block.locator('h3')).toHaveText('It shipped, with its own version for calling apps');
   await expect(block.locator('figcaption')).toHaveText("Pipedrive's developer docs for the custom floating window.");
 });
