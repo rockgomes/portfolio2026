@@ -8,7 +8,7 @@ const { left, right } = Astro.props;
 <div class="two" data-two-col>
   {[left, right].map((c) => (
     <div class="col">
-      <p class="k t-mono-label">{c.label}</p>
+      <p class="k t-label">{c.label}</p>
       {c.items && <ul class="t-dash-list">{c.items.map((it) => <li>{it}</li>)}</ul>}
       {c.text && <p class="txt">{c.text}</p>}
     </div>
@@ -17,7 +17,7 @@ const { left, right } = Astro.props;
 <style>
   .two { display: flex; gap: var(--space-80); align-items: flex-start; }
   .col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--space-8); }
-  .k { margin: 0; color: var(--color-text-muted); }
-  ul, .txt { margin: 0; font: var(--type-body-default); color: var(--color-text-secondary); }
+  .k { margin: 0; }
+  ul, .txt { margin: 0; font: var(--type-body-default); color: var(--color-text-primary); }
   @media (max-width: 800px) { .two { flex-direction: column; gap: var(--space-32); } }
 </style>

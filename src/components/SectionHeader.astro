@@ -14,7 +14,7 @@ const [cmdName, cmdFlags] = !command ? ['', ''] : cut < 0 ? [command, ''] : [com
     {anchor && <span class="anchor" aria-hidden="true" data-engineer>#</span>}
     <h2 class="title" id={titleId} data-title><slot name="title">{title}</slot></h2>
   </div>
-  <p class="sub t-mono-label">{subtitle}</p>
+  <p class="sub t-label">{subtitle}</p>
   {dimension && (command ? <div data-not-engineer><Dimension label={dimension} /></div> : <Dimension label={dimension} />)}
   {command && <p class="cmd t-mono-label" data-engineer><span class="prompt" aria-hidden="true">$ </span>{cmdName}{cmdFlags && <> <span class="flags">{cmdFlags}</span></>}</p>}
 </div>
@@ -25,13 +25,13 @@ const [cmdName, cmdFlags] = !command ? ['', ''] : cut < 0 ? [command, ''] : [com
   .row { position: relative; }
   .anchor { position: absolute; right: calc(100% + 14px); top: 0; font: var(--type-mono-small); line-height: 44px; color: var(--color-text-muted); white-space: nowrap; }
   .title { margin: 0; font: var(--type-display-row); letter-spacing: var(--tracking-display-row); color: var(--color-text-primary); text-wrap: balance; }
-  .sub { margin: 0; color: var(--color-annotation-measure); }
+  .sub { margin: 0; }
   .cmd { margin: 0; color: var(--color-text-primary); }
   .prompt { color: var(--color-text-muted); }
   .flags { color: var(--color-annotation-measure); }
   @media (max-width: 1199px) { .anchor { position: static; display: block; line-height: 1.4; margin-bottom: var(--space-8); } }
-  /* Recruiter view (sober): no dimension line, a smaller title (the recruiter headline size), grey subtitle */
+  /* Recruiter view (sober): no dimension line, a smaller title (the recruiter headline size), dark grey subtitle */
   :global(html[data-view='recruiter']) .sh :global(.dim) { display: none; }
   :global(html[data-view='recruiter']) .title { font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); }
-  :global(html[data-view='recruiter']) .sub { color: var(--color-text-muted); }
+  :global(html[data-view='recruiter']) .sub { color: var(--color-text-secondary); }
 </style>

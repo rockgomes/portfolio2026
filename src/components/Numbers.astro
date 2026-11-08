@@ -10,7 +10,7 @@ const stats: Stat[] = [
 ---
 <section class="numbers" aria-label="In numbers" data-recruiter-also>
   <div class="wrap inner">
-    <div class="label t-mono-label"><span class="l">in numbers</span><span class="r">as of October 2026</span></div>
+    <div class="label t-label"><span class="l">in numbers</span><span class="r">as of October 2026</span></div>
     <Stats stats={stats} />
   </div>
 </section>
@@ -18,6 +18,6 @@ const stats: Stat[] = [
   .numbers { border-bottom: 1px solid var(--color-border-subtle); }
   .inner { display: flex; flex-direction: column; gap: var(--space-32); padding-block: var(--space-64); }
   .label { display: flex; justify-content: space-between; gap: var(--space-16); }
-  .l { color: var(--color-annotation-measure); } .r { color: var(--color-text-muted); }
+  .l { color: var(--color-annotation-measure); } .r { color: var(--color-text-secondary); }
   @media (max-width: 560px) { .r { display: none; } }
 </style>

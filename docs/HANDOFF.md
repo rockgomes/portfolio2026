@@ -59,6 +59,8 @@ Where the rockgomes.com rebuild stands, and what comes next. Written for a new C
 
 30. **Merged after these notes were first written** (30 Oct to 2 Nov 2026): the phone menu links use the Figma text style UI/Nav large (#89); Floating Iframe and Karaoke got real pictures from their approved sketches (#91, #92); Formalist (#93) and the Well care homes backoffice (#95, #98) are new case study pages; the Experience roles come up on phones even when the page changes height (#94, `Motion.astro` uses IntersectionObserver for the roles).
 
+24. **Readable text** (Figma sketch section `640:10713` on Explorations). Body text is bigger: Body/Default 17, Body/Row 16, Body/Small 14, Mono/Body 14, Mono/Small 13 (Body/Lead stays 18 and Mono/Label stays 11, because the hero uses them). Paragraphs and facts use `color/text/primary`; captions and tags `color/text/secondary`; never `color/text/muted` for reading text. A label above content uses `.t-label` (Figma style Mono/Label strong: Mono Medium 14, blue, first letter always a capital). Case study facts (Role, Context, Made, Tools) sit above their text with a line between, like Problem / Decision / Result. Comment cards use their own style, UI/Comment (13px), so the hero story stays exactly as it was.
+
 ## Testing notes
 - Screenshot tests start each section on a whole pixel (`tests/visual.spec.ts`), so a change in one section does not fail the ones below it. When a section changes on purpose, delete its two screenshots in `tests/__screenshots__/visual.spec.ts/`; CI saves new ones on the PR (commit "Add approved screenshots from CI"). Mac screenshots differ from CI's Linux ones: never commit local screenshots.
 - That bot commit does not trigger CI. To get a check on it, close and reopen the PR.

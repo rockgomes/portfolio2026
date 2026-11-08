@@ -51,6 +51,9 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 /* Type helpers (Figma text styles) */
 .t-mono-label { font: var(--type-mono-label); letter-spacing: var(--tracking-mono-label); }
 .t-mono-small { font: var(--type-mono-small); }
+/* Label above content (Figma: Mono/Label strong): Role, Problem, Decision 1 of 2, section subtitles. Always starts with a capital. */
+.t-label { font: var(--type-mono-label-strong); color: var(--color-annotation-measure); }
+.t-label::first-letter { text-transform: uppercase; }
 /* A list with "- " in front of each line, as the case study sketches write lists */
 .t-dash-list { margin: 0; padding: 0; list-style: none; }
 .t-dash-list > li::before { content: '- '; }
@@ -121,6 +124,7 @@ section[id] { scroll-margin-top: calc(var(--header-h) + 24px - var(--to-title));
 .t-mono-body { font: var(--type-mono-body); }
 .t-heading-item { font: var(--type-heading-item); letter-spacing: var(--tracking-heading-item); }
 .t-body-small { font: var(--type-body-small); }
+.t-comment { font: var(--type-ui-comment); }
 
 /* Overlays (cursors, selections, comments) are decoration: hidden on small screens and for print */
 @media (max-width: 1199px) { [data-overlay] { display: none !important; } }
