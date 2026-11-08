@@ -151,6 +151,8 @@
   --space-80: 80px;
   --space-96: 96px;
   --space-120: 120px;
+  --space-128: 128px;
+  --space-160: 160px;
   --radius-tag: 2px;
   --radius-control: 7px;
   --radius-pill: 999px;
@@ -162,10 +164,10 @@
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
 
   --type-display-hero: 600 clamp(40px, 4.4vw, 62px) / 1.02 var(--font-sans);
-  --type-display-row: 600 clamp(44px, 5vw, 72px) / 0.98 var(--font-sans);
-  --type-heading-section: 600 clamp(32px, 3.2vw, 44px) / 1.05 var(--font-sans);
-  --type-heading-item: 600 24px / 1.2 var(--font-sans);
-  --type-heading-card: 600 28px / 1.05 var(--font-sans);
+  --type-display-row: 500 clamp(44px, 5vw, 72px) / 1.05 var(--font-sans);
+  --type-heading-section: 500 clamp(32px, 3.2vw, 44px) / 1.15 var(--font-sans);
+  --type-heading-item: 500 24px / 1.2 var(--font-sans);
+  --type-heading-card: 500 28px / 1.15 var(--font-sans);
   --type-stat-value: 500 30px / 1 var(--font-sans);
   --type-body-lead: 400 18px / 1.5 var(--font-sans);
   --type-body-default: 400 17px / 1.6 var(--font-sans);

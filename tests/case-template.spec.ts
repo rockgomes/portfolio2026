@@ -51,7 +51,7 @@ test('one section, in the order of the sketch', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['How it is built']);
   await expect(page.locator('#built [data-case-block] h3')).toHaveText(['A card that opens into a chapter', 'All the content is in one file', 'Next time, shared demo parts']);
-  await expect(page.locator('#built .pills li')).toHaveText(['Vite', 'GSAP', 'Lenis', 'no framework']);
+  await expect(page.locator('#built .pills')).toHaveCount(0);
 });
 
 test('the chapter switch starts on Card, and Open chapter shows the open chapter', async ({ page }) => {

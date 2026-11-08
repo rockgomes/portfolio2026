@@ -36,7 +36,7 @@ test('sections of the sketch, in order', async ({ page }) => {
   await expect(page.locator('main h2:not(.label)')).toHaveText(['What I made', 'How I got there', 'What changed']);
   await expect(page.locator('#made [data-case-block] h3')).toHaveText(['Four steps, always in view', 'Change the offer without starting over', 'Short forms, one topic per screen']);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Enough data, as fast as possible', 'One design for every country']);
-  await expect(page.locator('#process .pills li')).toHaveText(['clients', 'country managers', 'Legal', 'Accounting']);
+  await expect(page.locator('#process .pills')).toHaveCount(0);
 });
 
 test('the steps tabs start on Review offer, and every step swaps the screen', async ({ page }) => {

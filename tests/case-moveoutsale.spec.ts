@@ -53,7 +53,7 @@ test('one section, in the order of the sketch', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['How it is built']);
   await expect(page.locator('#built [data-case-block] h3')).toHaveText(['One moving sale for each seller', 'A public demo that cannot reach real data', 'Reset only when something changed', 'The database checks who can see what']);
-  await expect(page.locator('#built .pills li')).toHaveText(['Next.js', 'Supabase', 'Playwright']);
+  await expect(page.locator('#built .pills')).toHaveCount(0);
 });
 
 test('the moving sale picture has its caption', async ({ page }) => {

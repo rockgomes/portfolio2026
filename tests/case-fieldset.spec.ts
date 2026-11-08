@@ -53,7 +53,7 @@ test('one section, in the order of the sketch', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Four things it does differently']);
   await expect(page.locator('#differently [data-case-block] h3')).toHaveText(['206 selected, 173 still match', 'Edits stay when you switch views', 'A deleted field does not break a view', 'One view that cannot be changed', 'The logic is separate from the screen code']);
-  await expect(page.locator('#differently .pills li')).toHaveText(['React', 'TypeScript', 'Vitest', 'no backend']);
+  await expect(page.locator('#differently .pills')).toHaveCount(0);
 });
 
 test('the selection switch starts on Filter changed, and Selected shows the selection', async ({ page }) => {

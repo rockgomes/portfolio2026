@@ -44,9 +44,9 @@ test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Two decisions I would defend', 'How I got there', 'What changed']);
   await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Actions sit next to the data they change', 'Show the main action and put the rest in a dropdown']);
-  await expect(page.locator('#decisions [data-decision="1"] .pills li')).toHaveText(['object actions', 'field actions', 'global actions']);
+  await expect(page.locator('#decisions [data-decision="1"] .pills')).toHaveCount(0);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Find out why actions were missed', 'Patterns that work for any app', 'Animated prototypes, then design support during the build']);
-  await expect(page.locator('#process .pills li')).toHaveText(['usage data', 'expected actions', 'schema limits', 'action close to data', 'progressive disclosure', 'consistency across apps', 'scalability']);
+  await expect(page.locator('#process .pills')).toHaveCount(0);
 });
 
 test('decision 1: the prototype plays as a video with controls and a poster', async ({ page }) => {
