@@ -8,7 +8,8 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Hire Purchase checkout');
   await expect(s.locator('.sub')).toHaveText('Inbank · 2023 · checkout redesign');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
+  await expect(s.locator('[data-tools]')).toHaveCount(0);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 
@@ -122,7 +123,6 @@ test('facts: Senior Product Designer, the four countries, the team and the tools
   await expect(dd.nth(0)).toContainText('Senior Product Designer');
   await expect(dd.nth(1)).toContainText('Estonia, Latvia, Lithuania and Czechia');
   await expect(dd.nth(1)).toContainText('I was the only designer');
-  await expect(dd.nth(3)).toHaveText('Figma for the design. Claude for the coded prototype.');
   await expect(page.locator('main')).not.toContainText('NN');
   await expect(page.locator('main')).not.toContainText('No numbers I can share');
 });

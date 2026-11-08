@@ -9,7 +9,8 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Karaoke OS');
   await expect(s.locator('.sub')).toHaveText('Side project · 2026 · web app');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
+  await expect(s.locator('[data-tools]')).toBeVisible();
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
   await expect(page.locator('h1')).toHaveCount(1);
 });

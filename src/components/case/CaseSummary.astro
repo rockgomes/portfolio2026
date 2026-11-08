@@ -1,12 +1,14 @@
 ---
 // Figma: Summary (30 seconds) 375:10126 in sketch C (Flex Academy). The part a recruiter reads in 30 seconds:
 // title, lead, links to the real thing, problem / decision / result in three columns, the main picture or live page
-// (slot), then the facts (role, context, made, tools) in four columns.
+// (slot), then the facts: role, context and deliverables in three columns, and a Tools line under them
+// (only for a real tech stack, see `stack` in content.config.ts). Figma: 685:12459.
 import IconArrowUpRight from '../IconArrowUpRight.astro';
-interface Facts { role: string; context: string; made: string; tools: string }
+interface Facts { role: string; context: string; made: string; tools: string; stack: boolean }
 interface Props { title: string; subtitle: string; lead: string; facts?: Facts; problem: string; decision: string; result: string; links: { label: string; href: string }[] }
 const { title, subtitle, lead, facts, problem, decision, result, links } = Astro.props;
-const factRows = facts ? (['role', 'context', 'made', 'tools'] as const).map((k) => [k, facts[k]] as const) : [];
+const factRows = facts ? ([['role', facts.role], ['context', facts.context], ['deliverables', facts.made]] as const) : [];
+const tools = facts?.stack ? facts.tools : '';
 const pdr = [['problem', problem], ['decision', decision], ['result', result]].filter(([, v]) => v);
 ---
 <header class="summary wrap" data-case-summary>
@@ -33,6 +35,7 @@ const pdr = [['problem', problem], ['decision', decision], ['result', result]].f
       {factRows.map(([k, v]) => <div><dt class="t-label">{k}</dt><dd class="v">{v}</dd></div>)}
     </dl>
   )}
+  {tools && <p class="tools" data-tools><span class="t-label">tools</span><span class="v">{tools}</span></p>}
 </header>
 <style>
   .summary { display: flex; flex-direction: column; gap: var(--space-48); padding-top: var(--space-96); }
@@ -43,15 +46,16 @@ const pdr = [['problem', problem], ['decision', decision], ['result', result]].f
   .lead { margin: 0; font: var(--type-body-lead); color: var(--color-text-primary); }
   .links { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-8); }
   .links :global(.au) { margin-left: 6px; } /* the Button component's trailing icon gap */
-  /* Problem / decision / result above the picture, role / context / made / tools below it: equal columns,
+  /* Problem / decision / result above the picture, role / context / deliverables below it: equal columns,
      label above text, a line on top of each column. Same lines and gaps as the homepage numbers (Stats.astro)
      and the "What changed" columns (TwoCol.astro). */
   .cols { margin: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--space-40) var(--space-24); }
   .pdr { --n: 3; }
-  .facts { --n: 4; }
+  .facts { --n: 3; }
+  .tools { margin: calc(var(--space-24) - var(--space-48)) 0 0; display: flex; gap: var(--space-12); align-items: baseline; } /* 24px under the columns */
   .cols > div { display: flex; flex-direction: column; gap: 6px; padding-top: var(--space-24); border-top: 1px solid var(--color-border-strong); }
   .cols p, .cols dd { margin: 0; }
   .v { font: var(--type-body-default); color: var(--color-text-primary); }
-  @media (max-width: 1040px) { .pdr { --n: 1; } .facts { --n: 2; } }
-  @media (max-width: 720px) { .summary { padding-top: var(--space-64); gap: var(--space-32); } .facts { --n: 1; } }
+  @media (max-width: 1040px) { .pdr { --n: 1; } .facts { --n: 1; } }
+  @media (max-width: 720px) { .summary { padding-top: var(--space-64); gap: var(--space-32); } .tools { margin-top: calc(var(--space-24) - var(--space-32)); } }
 </style>

@@ -10,7 +10,8 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Portfolio presentation template');
   await expect(s.locator('.sub')).toHaveText('Template · 2026 · case study page');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
+  await expect(s.locator('[data-tools]')).toBeVisible();
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 

@@ -8,9 +8,9 @@ test('summary: title, subtitle, facts, problem, decision, result, and two link b
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('App Management');
   await expect(s.locator('.sub')).toHaveText('Pipedrive · 2021 · developer platform');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
+  await expect(s.locator('[data-tools]')).toHaveCount(0);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
-  await expect(s.locator('[data-facts] dd').last()).toHaveText('Figma, Miro');
   // The public docs for this project, then the developer site
   const links = s.locator('[data-case-links] a');
   await expect(links).toHaveText(['App extensions docs', 'Pipedrive developer site']);

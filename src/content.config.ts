@@ -24,7 +24,8 @@ const tagging = {
 // A file with `problem` gets the case study page (src/components/case/CasePage.astro).
 const caseFields = (image: SchemaContext['image']) => ({
   subtitle: z.string().default(''),
-  facts: z.object({ role: z.string(), context: z.string(), made: z.string(), tools: z.string() }).optional(),
+  // `stack: true` shows the Tools line. Only for a real tech stack; a list of design tools (Figma, Miro) stays hidden.
+  facts: z.object({ role: z.string(), context: z.string(), made: z.string(), tools: z.string(), stack: z.boolean().default(false) }).optional(),
   problem: z.string().default(''),
   decision: z.string().default(''),
   result: z.string().default(''),
