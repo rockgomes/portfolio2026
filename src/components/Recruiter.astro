@@ -82,18 +82,18 @@ const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => i
   .rec { padding-block: var(--space-64) 0; } /* the numbers section below brings its own top space */
   .grid { display: grid; grid-template-columns: minmax(0, 768px) minmax(0, 440px); justify-content: space-between; gap: var(--space-80); align-items: start; }
   .main { display: flex; flex-direction: column; min-width: 0; }
-  .eyebrow { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-muted); }
+  .eyebrow { margin: 0; font: 500 12px/16px var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-secondary); }
   .title { margin: var(--space-12) 0 0; font: 600 44px/1.08 var(--font-sans); letter-spacing: -0.025em; color: var(--color-text-primary); text-wrap: balance; }
   .pills { list-style: none; margin: 0; padding: 14px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
   .lede { margin: var(--space-24) 0 0; max-width: 640px; font: 400 16px/1.6 var(--font-sans); color: var(--color-text-secondary); }
   .facts { margin: var(--space-32) 0 0; max-width: 680px; border-top: 1px solid var(--color-border-subtle); }
   .facts div { display: grid; grid-template-columns: 150px minmax(0, 1fr); border-bottom: 1px solid var(--color-border-subtle); }
-  .facts dt { padding: 14px 0 12px; font: 400 12px/16px var(--font-mono); color: var(--color-text-muted); }
+  .facts dt { padding: 14px 0 12px; font: 400 12px/16px var(--font-mono); color: var(--color-text-secondary); }
   .facts dd { margin: 0; padding: var(--space-12) 0; font: 400 14px/18px var(--font-sans); color: var(--color-text-primary); }
   .side { display: flex; flex-direction: column; min-width: 0; }
   .side-h { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-12); }
   .side-h h2 { margin: 0; font: 600 13px/17px var(--font-sans); color: var(--color-text-primary); }
-  .count { font: 400 13px/17px var(--font-sans); color: var(--color-text-muted); }
+  .count { font: 400 13px/17px var(--font-sans); color: var(--color-text-secondary); }
   .work { list-style: none; margin: var(--space-12) 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
   /* Two columns: the list scrolls in a box that shows the 5 picks and half of the 6th row, so the cut row and the fade
      show there is more. The fade goes away at the end of the list. One column: all rows, no box. */
@@ -109,7 +109,7 @@ const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => i
   .txt { display: flex; flex-direction: column; min-width: 0; }
   .t { font: 600 14px/18px var(--font-sans); color: var(--color-text-primary); }
   .l { padding-top: 2px; font: 400 12.5px/17.5px var(--font-sans); color: var(--color-text-secondary); }
-  .m { font: 400 11px/14px var(--font-mono); color: var(--color-text-muted); }
+  .m { font: 400 11px/14px var(--font-mono); color: var(--color-text-secondary); }
   .contact { margin-top: var(--space-32); display: flex; flex-direction: column; gap: 6px; padding: var(--space-16); border: 1px solid var(--color-border-strong); border-radius: 12px; }
   .contact p { margin: 0; }
   .mail { display: flex; align-items: center; justify-content: space-between; gap: var(--space-12); flex-wrap: wrap; font: 700 15px/20px var(--font-sans); color: var(--color-text-primary); }

@@ -7,7 +7,7 @@ const { who, initial, when, color = 'client', style, class: cls, ...data } = Ast
   <span class="ui-avatar t-mono-label">{initial}</span>
   <div class="body">
     <p class="meta"><span class="who">{who}</span>{when && <span class="when t-mono-label">{when}</span>}</p>
-    <p class="txt t-body-small"><slot /></p>
+    <p class="txt t-comment"><slot /></p>
   </div>
 </div>
 <style>

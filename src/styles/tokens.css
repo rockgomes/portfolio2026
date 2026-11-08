@@ -168,9 +168,9 @@
   --type-heading-card: 600 28px / 1.05 var(--font-sans);
   --type-stat-value: 500 30px / 1 var(--font-sans);
   --type-body-lead: 400 18px / 1.5 var(--font-sans);
-  --type-body-default: 400 15px / 1.6 var(--font-sans);
-  --type-body-row: 400 14.5px / 1.5 var(--font-sans);
-  --type-body-small: 400 13px / 1.45 var(--font-sans);
+  --type-body-default: 400 17px / 1.6 var(--font-sans);
+  --type-body-row: 400 16px / 1.5 var(--font-sans);
+  --type-body-small: 400 14px / 1.45 var(--font-sans);
   --type-ui-nav: 400 14px / 1.4 var(--font-sans);
   --type-ui-nav-large: 400 17px / 1.4 var(--font-sans);
   --type-ui-brand: 600 15px / 1.4 var(--font-sans);
@@ -188,12 +188,14 @@
   --type-ui-status: 500 11.5px / 16px var(--font-sans);
   --type-ui-pill: 400 13px / 17px var(--font-sans);
   --type-ui-pill-small: 500 10.5px / 14px var(--font-sans);
+  --type-ui-comment: 400 13px / 1.45 var(--font-sans);
   --type-mono-label: 400 11px / 1.4 var(--font-mono);
-  --type-mono-small: 400 12px / 1.4 var(--font-mono);
-  --type-mono-body: 400 12.5px / 1.5 var(--font-mono);
+  --type-mono-small: 400 13px / 1.4 var(--font-mono);
+  --type-mono-body: 400 14px / 1.5 var(--font-mono);
   --type-mono-date: 400 11.5px / 16px var(--font-mono);
   --type-mono-number: 400 12.5px / 18px var(--font-mono);
   --type-mono-count: 400 11px / 15px var(--font-mono);
+  --type-mono-label-strong: 500 14px / 20px var(--font-mono);
 
   --tracking-display-hero: -0.028em;
   --tracking-display-row: -0.03em;

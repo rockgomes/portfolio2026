@@ -90,7 +90,7 @@ const rows = (p: Pin, tokens: Record<string, [string, string]>) => (p.props ?? [
   .sw i { width: 100%; height: 100%; }
   .sw.shadow { box-shadow: var(--shadow-panel); }
   code { font: var(--type-mono-body); color: var(--color-text-primary); }
-  .what { font: var(--type-body-small); color: var(--color-text-muted); overflow-wrap: anywhere; }
+  .what { font: var(--type-body-small); color: var(--color-text-secondary); overflow-wrap: anywhere; }
   @media (max-width: 560px) { .props li { grid-template-columns: 22px minmax(0, 1fr); } .what { grid-column: 2; } }
 </style>
 <script>

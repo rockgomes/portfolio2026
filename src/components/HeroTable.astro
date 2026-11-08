@@ -127,7 +127,7 @@ const cols = [
   .conds :global(.part.static:hover) { background: transparent; }
   .conds :global(.part.val) { font: var(--type-ui-control-strong); color: var(--color-text-primary); }
   .conds :global(.part.rm) { border-right: 0; color: var(--color-text-muted); padding-inline: 9px; }
-  .add-wrap { position: relative; }
+  .add-wrap { position: relative; line-height: 24px; } /* fixed, so a change to the page body text does not move the frozen hero */
   .add { border: 0; background: transparent; padding: 0; cursor: pointer; font: var(--type-ui-control-strong); color: var(--color-annotation-measure); white-space: nowrap; }
   .menu { position: absolute; top: calc(100% + 8px); left: 0; z-index: 10; min-width: 200px; display: flex; flex-direction: column; padding: 4px; background: var(--color-surface-page); border: 1px solid var(--color-border-strong); border-radius: 8px; box-shadow: var(--shadow-panel); }
   .menu :global(button) { text-align: left; border: 0; background: transparent; padding: 7px 10px; border-radius: 5px; cursor: pointer; font: var(--type-ui-control); color: var(--color-text-primary); }
