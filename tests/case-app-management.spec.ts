@@ -42,9 +42,9 @@ test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Two decisions I would defend', 'How I got there', 'One form for each extension', 'What changed']);
   await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Group the options by how they are built', 'A small drawing for each option']);
-  await expect(page.locator('#decisions .pills li')).toHaveText(['based on developer feedback']);
+  await expect(page.locator('#decisions .pills')).toHaveCount(0);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Start from research we already had', 'Flows first, with the PM and engineers']);
-  await expect(page.locator('#process .pills li')).toHaveText(['market study', 'HVC buying criteria', 'trial company research']);
+  await expect(page.locator('#process .pills')).toHaveCount(0);
   await expect(page.locator('#forms [data-case-block] h3')).toHaveText(['Short forms, with the limits under each field']);
 });
 

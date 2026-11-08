@@ -37,7 +37,7 @@ test('sections of the sketch, in order', async ({ page }) => {
   await expect(page.locator('#made [data-case-block] h3')).toHaveText(['Every list works the same way', 'Search opens beside the table', 'Long documents in clear groups', 'Many transactions on one screen']);
   await expect(page.locator('#made [data-case-block] .label')).toHaveText(['lists', 'search', 'forms', 'transactions']);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Working with the accountants every week']);
-  await expect(page.locator('#process .pills li')).toHaveText(['developers', 'analysts', 'PMs', 'accountants']);
+  await expect(page.locator('#process .pills')).toHaveCount(0);
 });
 
 test('lists: a pin outlines its part and shows its note under it', async ({ page }) => {

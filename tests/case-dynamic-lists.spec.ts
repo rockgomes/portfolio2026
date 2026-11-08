@@ -55,9 +55,9 @@ test('sections of the sketch, in order', async ({ page }) => {
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Three decisions I would defend', 'How I got there', 'What changed']);
   await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Views belong to one list', 'Save filters and columns together', 'Always show which view and filters are on']);
   await expect(page.locator('#decisions [data-case-block] .label')).toHaveText(['decision 1 of 3', 'decision 2 of 3', 'decision 3 of 3']);
-  await expect(page.locator('#decisions .pills li')).toHaveText(['dropped: a new list every time', 'dropped: views shared across lists', 'chosen: views inside their list']);
+  await expect(page.locator('#decisions .pills')).toHaveCount(0);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Five places for the controls', 'A short Filter window', 'A working copy you can try']);
-  await expect(page.locator('#process .pills li')).toHaveText(['sidebar', 'flyout', 'popup', 'side panel', 'tabbed modal', 'built with AI', 'guided tour']);
+  await expect(page.locator('#process .pills')).toHaveCount(0);
 });
 
 test('decision 2: the switch starts on Shipped, and Explored shows the tabbed modal', async ({ page }) => {

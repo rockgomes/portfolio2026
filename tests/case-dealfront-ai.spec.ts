@@ -56,9 +56,9 @@ test('sections of the sketch, in order', async ({ page }) => {
   await page.goto(PAGE);
   await expect(page.locator('main h2:not(.label)')).toHaveText(['Four decisions I would defend', 'How I got there', 'What changed']);
   await expect(page.locator('#decisions [data-decision] h3')).toHaveText(['Each AI block starts with questions', 'A filter shows the recommended contacts', 'Show where the answer comes from', 'Only pinned questions can be edited']);
-  await expect(page.locator('#decisions .pills li')).toHaveText(['internal users', 'real users, same week', 'MVP scope']);
+  await expect(page.locator('#decisions .pills')).toHaveCount(0);
   await expect(page.locator('#process [data-case-block] h3')).toHaveText(['Research and design at the same time', 'The same AI block on three tabs', 'Match the other AI features and keep the log visible', 'A pin has a title and a prompt']);
-  await expect(page.locator('#process .pills li')).toHaveText(['PMs', 'CS reps', 'clients', 'C-level']);
+  await expect(page.locator('#process .pills')).toHaveCount(0);
 });
 
 // Each switch: [id, option it starts on, a word of its caption, the other option, a word of that caption]

@@ -56,8 +56,8 @@ test('one section, in the order of the sketch', async ({ page }) => {
   const blocks = page.locator('#built [data-case-block]');
   await expect(blocks.locator('> .text > .label')).toHaveText(['the guest view', 'the interesting part', 'who sees what', 'the demo', 'why I could build it']);
   await expect(blocks.locator('h3')).toHaveText(['Search first, on a phone', 'One search page became three parts', 'Database rules control who sees what', 'Your own copy of a bar', 'I designed it, and Claude Code wrote the code']);
-  await expect(blocks.nth(1).locator('.pills li')).toHaveText(['guests', 'bar staff', 'service operator']);
-  await expect(blocks.nth(2).locator('.pills li')).toHaveText(['Next.js', 'Supabase', 'Netlify']);
+  await expect(blocks.nth(1).locator('.pills')).toHaveCount(0);
+  await expect(blocks.nth(2).locator('.pills')).toHaveCount(0);
   await expect(blocks.nth(4).locator('.pills')).toHaveCount(0);
 });
 

@@ -24,8 +24,8 @@ test('every case study and experiment page works (same URLs as Webflow)', async 
   for (const s of slugs('experiments')) { const r = await page.goto(`/experiments/${s}`); expect(r?.status(), s).toBe(200); await expect(page.locator('h1'), s).toHaveCount(1); }
 });
 
-test('every homepage section has the same top space: 120px, 80px from 720px down', async ({ page }) => {
-  for (const [w, pad] of [[740, '120px'], [700, '80px']] as const) {
+test('every homepage section has the same top space: 160px, 96px from 720px down', async ({ page }) => {
+  for (const [w, pad] of [[740, '160px'], [700, '96px']] as const) {
     await page.setViewportSize({ width: w, height: 900 });
     for (const view of ['design', 'engineer']) {
       await page.goto(`/?view=${view}`);
