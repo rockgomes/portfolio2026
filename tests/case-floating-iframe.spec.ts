@@ -9,7 +9,6 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await expect(s.locator('h1')).toHaveText('Floating Iframe');
   await expect(s.locator('.sub')).toHaveText('Pipedrive · 2022 · integration');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
-  await expect(s.locator('[data-tools]')).toHaveCount(0);
   await expect(s.locator('[data-pdr]')).toContainText('JustCall uses it for its Quick access feature');
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });

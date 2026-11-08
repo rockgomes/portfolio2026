@@ -9,8 +9,7 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Formalist');
   await expect(s.locator('.sub')).toHaveText('Side project · 2026 · Chrome extension');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
-  await expect(s.locator('[data-tools]')).toBeVisible();
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 

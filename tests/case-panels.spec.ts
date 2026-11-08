@@ -9,7 +9,6 @@ test('summary: title, subtitle, facts, problem, decision, result, and the docs b
   await expect(s.locator('h1')).toHaveText('Interactive Panels');
   await expect(s.locator('.sub')).toHaveText('Pipedrive · 2022 · integration platform');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
-  await expect(s.locator('[data-tools]')).toHaveCount(0);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
   // One button: the Pipedrive developer docs for app panels, in a new tab
   const docs = s.locator('[data-case-links] a');

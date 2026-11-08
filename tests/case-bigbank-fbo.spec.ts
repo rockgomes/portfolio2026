@@ -9,7 +9,6 @@ test('summary: title, subtitle, facts, problem, decision, result, and no buttons
   await expect(s.locator('h1')).toHaveText('Financial Back-office');
   await expect(s.locator('.sub')).toHaveText('Bigbank · 2018 · internal tool');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
-  await expect(s.locator('[data-tools]')).toHaveCount(0);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
   // An internal tool: nothing public to open
   await expect(s.locator('[data-case-links]')).toHaveCount(0);

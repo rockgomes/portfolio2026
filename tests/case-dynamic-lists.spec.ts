@@ -11,7 +11,6 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await expect(s.locator('h1')).toHaveText('Dynamic Lists');
   await expect(s.locator('.sub')).toHaveText('Dealfront · 2025 · product feature');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
-  await expect(s.locator('[data-tools]')).toHaveCount(0);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 

@@ -9,7 +9,6 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   await expect(s.locator('h1')).toHaveText('Hire Purchase checkout');
   await expect(s.locator('.sub')).toHaveText('Inbank · 2023 · checkout redesign');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
-  await expect(s.locator('[data-tools]')).toHaveCount(0);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 

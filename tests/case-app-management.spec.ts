@@ -9,7 +9,6 @@ test('summary: title, subtitle, facts, problem, decision, result, and two link b
   await expect(s.locator('h1')).toHaveText('App Management');
   await expect(s.locator('.sub')).toHaveText('Pipedrive · 2021 · developer platform');
   await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
-  await expect(s.locator('[data-tools]')).toHaveCount(0);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
   // The public docs for this project, then the developer site
   const links = s.locator('[data-case-links] a');

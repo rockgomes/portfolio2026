@@ -8,8 +8,7 @@ test('summary: title, facts, problem, decision, result', async ({ page }) => {
   await page.goto(FLEX);
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Flex Academy');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
-  await expect(s.locator('[data-tools]')).toBeVisible();
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables', 'tools']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 
