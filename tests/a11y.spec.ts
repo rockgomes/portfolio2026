@@ -29,12 +29,15 @@ const KNOWN = [
 type Known = (typeof KNOWN)[number];
 // Disabled-state samples in the design system section. WCAG does not ask disabled controls to pass contrast.
 const DISABLED_SAMPLES = '[data-v].dis';
+// Live prototypes in an iframe are separate sites with their own checks. They load lazily, so whether axe sees
+// them depends on timing, which made the result change from run to run.
+const PROTOTYPES = 'iframe';
 
 // One line per problem, so the CI log says what is wrong and where. Each problem is tagged with the KNOWN entry it
 // belongs to (or null when it is new).
 async function scan(page: Page, url: string) {
   await page.goto(url);
-  const { violations } = await new AxeBuilder({ page }).withTags(TAGS).exclude(DISABLED_SAMPLES).analyze();
+  const { violations } = await new AxeBuilder({ page }).withTags(TAGS).exclude(DISABLED_SAMPLES).exclude(PROTOTYPES).analyze();
   const found: { line: string; known: string | null }[] = [];
   for (const v of violations) {
     for (const n of v.nodes) {

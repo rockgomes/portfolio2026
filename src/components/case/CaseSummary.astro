@@ -1,6 +1,7 @@
 ---
 // Figma: Summary (30 seconds) 375:10126 in sketch C (Flex Academy). The part a recruiter reads in 30 seconds:
-// title, lead, facts, problem / decision / result, links to the real thing, then the main picture or live page (slot).
+// title, lead, links to the real thing, problem / decision / result in three columns, the main picture or live page
+// (slot), then the facts (role, context, made, tools) in four columns.
 import IconArrowUpRight from '../IconArrowUpRight.astro';
 interface Facts { role: string; context: string; made: string; tools: string }
 interface Props { title: string; subtitle: string; lead: string; facts?: Facts; problem: string; decision: string; result: string; links: { label: string; href: string }[] }
@@ -13,46 +14,43 @@ const pdr = [['problem', problem], ['decision', decision], ['result', result]].f
     <h1 class="title">{title}</h1>
     {subtitle && <p class="sub t-label">{subtitle}</p>}
   </div>
-  <div class="row">
-    <div class="what">
-      {lead && <p class="lead">{lead}</p>}
-      {factRows.length > 0 && (
-        <dl class="facts" data-facts>
-          {factRows.map(([k, v]) => <div><dt class="t-label">{k}</dt><dd>{v}</dd></div>)}
-        </dl>
-      )}
-      {links.length > 0 && (
-        <p class="links" data-case-links>
-          {links.map((l, i) => <a class:list={['btn', i === 0 && 'btn-primary']} href={l.href} target="_blank" rel="noopener"><span>{l.label}<IconArrowUpRight /></span></a>)}
-        </p>
-      )}
-    </div>
-    {pdr.length > 0 && (
-      <div class="pdr" data-pdr>
-        {pdr.map(([k, v]) => <div><p class="k t-label">{k}</p><p class="v">{v}</p></div>)}
-      </div>
+  <div class="what">
+    {lead && <p class="lead">{lead}</p>}
+    {links.length > 0 && (
+      <p class="links" data-case-links>
+        {links.map((l, i) => <a class:list={['btn', i === 0 && 'btn-primary']} href={l.href} target="_blank" rel="noopener"><span>{l.label}<IconArrowUpRight /></span></a>)}
+      </p>
     )}
   </div>
+  {pdr.length > 0 && (
+    <div class="pdr cols" data-pdr>
+      {pdr.map(([k, v]) => <div><p class="k t-label">{k}</p><p class="v">{v}</p></div>)}
+    </div>
+  )}
   <slot />
+  {factRows.length > 0 && (
+    <dl class="facts cols" data-facts>
+      {factRows.map(([k, v]) => <div><dt class="t-label">{k}</dt><dd class="v">{v}</dd></div>)}
+    </dl>
+  )}
 </header>
 <style>
   .summary { display: flex; flex-direction: column; gap: var(--space-40); padding-top: var(--space-96); }
   .head { display: flex; flex-direction: column; gap: var(--space-12); }
   .title { margin: 0; font: var(--type-heading-section); letter-spacing: var(--tracking-heading-section); color: var(--color-text-primary); text-wrap: balance; }
   .sub { margin: 0; }
-  .row { display: flex; gap: var(--space-80); align-items: flex-start; }
-  .what { flex: 0 1 680px; min-width: 0; display: flex; flex-direction: column; gap: var(--space-24); }
+  .what { max-width: 760px; display: flex; flex-direction: column; gap: var(--space-24); }
   .lead { margin: 0; font: var(--type-body-lead); color: var(--color-text-primary); }
-  /* Facts: label above text, a line between items (same pattern as problem / decision / result) */
-  .facts { margin: 0; display: flex; flex-direction: column; }
-  .facts div { display: flex; flex-direction: column; gap: 6px; padding-block: var(--space-12); border-top: 1px solid var(--color-border-subtle); }
-  .facts dd { margin: 0; font: var(--type-body-default); color: var(--color-text-primary); }
-  .links { margin: 0; padding-top: var(--space-8); display: flex; flex-wrap: wrap; gap: var(--space-8); }
+  .links { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-8); }
   .links :global(.au) { margin-left: 6px; } /* the Button component's trailing icon gap */
-  .pdr { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
-  .pdr > div { display: flex; flex-direction: column; gap: 6px; padding-block: var(--space-16); border-top: 1px solid var(--color-border-subtle); }
-  .pdr p { margin: 0; }
+  /* Problem / decision / result above the picture, role / context / made / tools below it: equal columns,
+     label above text, a line on top of each. */
+  .cols { margin: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: var(--space-40); }
+  .pdr { --n: 3; }
+  .facts { --n: 4; }
+  .cols > div { display: flex; flex-direction: column; gap: 6px; padding-top: var(--space-16); border-top: 1px solid var(--color-border-subtle); }
+  .cols p, .cols dd { margin: 0; }
   .v { font: var(--type-body-default); color: var(--color-text-primary); }
-  @media (max-width: 1040px) { .row { flex-direction: column; gap: var(--space-32); } .what { flex-basis: auto; } .pdr { width: 100%; } }
-  @media (max-width: 720px) { .summary { padding-top: var(--space-64); gap: var(--space-32); } }
+  @media (max-width: 1040px) { .pdr { --n: 1; gap: var(--space-24); } .facts { --n: 2; gap: var(--space-24) var(--space-40); } }
+  @media (max-width: 720px) { .summary { padding-top: var(--space-64); gap: var(--space-32); } .facts { --n: 1; } }
 </style>
