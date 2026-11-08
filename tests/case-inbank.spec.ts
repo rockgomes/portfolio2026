@@ -8,7 +8,7 @@ test('summary: title, subtitle, facts, problem, decision, result, and no buttons
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Customer Service Back-office');
   await expect(s.locator('.sub')).toHaveText('Inbank · 2024 · internal tool');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
   // An internal tool: nothing public to open
   await expect(s.locator('[data-case-links]')).toHaveCount(0);

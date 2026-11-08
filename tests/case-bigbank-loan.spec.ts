@@ -8,9 +8,8 @@ test('summary: title, subtitle, facts, problem, decision, result, and no buttons
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Loan flow');
   await expect(s.locator('.sub')).toHaveText('Bigbank · 2019 · loan application flow');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
-  await expect(s.locator('[data-facts] dd').last()).toHaveText('Figma, InVision, Miro');
   // No public link or prototype on the old page
   await expect(s.locator('[data-case-links]')).toHaveCount(0);
 });

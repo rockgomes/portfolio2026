@@ -10,7 +10,7 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('AI in the Company Profile');
   await expect(s.locator('.sub')).toHaveText('Dealfront · 2025 · AI feature in a live product');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
   await expect(s.locator('[data-facts]')).toContainText('Senior Product Designer on the Company Profile team.');
   await expect(s).not.toContainText('NN');

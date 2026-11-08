@@ -9,7 +9,7 @@ test('summary: title, subtitle, facts, problem, decision, result', async ({ page
   const s = page.locator('[data-case-summary]');
   await expect(s.locator('h1')).toHaveText('Care home medication cycles');
   await expect(s.locator('.sub')).toHaveText('Well · 2026 · pharmacy back-office');
-  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'made', 'tools']);
+  await expect(s.locator('[data-facts] dt')).toHaveText(['role', 'context', 'deliverables']);
   await expect(s.locator('[data-pdr] > div')).toHaveCount(3);
 });
 
