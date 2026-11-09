@@ -13,14 +13,15 @@ const facts = [
   ['tools', 'Figma, design tokens, CSS, GSAP, Next.js, AI assistants'],
   ['languages', 'English, Portuguese'],
 ];
-// Short lines from Figma; title, company, year and image come from each project's content file.
-const picks: [string, string][] = [
+// Short recruiter lines from Figma for some projects; the others use their card line.
+// Title, company, year and image come from each project's content file.
+const lines: Record<string, string> = Object.fromEntries([
   ['dealfront-ai-company-profile', 'AI answers to sales questions, inside the Company Profile. Shipped in two weeks.'],
   ['dealfront-dynamic-lists', 'Saved filter and column views on one list.'],
   ['inbank---customer-service-backoffice', 'Rebuilt the internal support tool from scratch.'],
   ['inbank---hire-purchase', 'Checkout redesign across 4 countries. Fewer support tickets.'],
   ['pipedrive---app-management', 'Pipedrive marketplace apps, managed in one place.'],
-];
+]);
 const projects = await getCollection('projects');
 const experiments = await getCollection('experiments');
 const total = projects.length + experiments.length;
@@ -29,10 +30,9 @@ const row = (e: (typeof projects)[number] | (typeof experiments)[number], line: 
   image: e.data.cardImage ?? (e.collection === 'projects' ? e.data.homeImage : undefined),
   title: e.data.cardTitle, line, meta: [e.data.cardCompany, e.data.cardYear].filter(Boolean).join(' · '),
 });
-const work = picks.flatMap(([id, line]) => projects.filter((p) => p.id === id).map((e) => row(e, line)));
-// The rest follow the picks, in homepage card order, with each card's own line.
-const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => id === e.id))
-  .sort((a, b) => a.data.cardOrder - b.data.cardOrder).map((e) => row(e, e.data.cardLine));
+// Same order as the homepage cards.
+const work = [...projects, ...experiments].sort((a, b) => a.data.cardOrder - b.data.cardOrder)
+  .map((e) => row(e, lines[e.id] ?? e.data.cardLine));
 ---
 <section class="rec" data-recruiter aria-labelledby="rec-title">
   <div class="wrap grid">
@@ -55,7 +55,7 @@ const rest = [...projects, ...experiments].filter((e) => !picks.some(([id]) => i
         <span class="count">{total} projects</span>
       </div>
       <ul class="work" id="rec-list">
-        {[...work, ...rest].map((w) => (
+        {work.map((w) => (
           <li>
             <a class="item" href={w.href}>
               <span class="thumb">{w.image && <Image src={w.image} alt="" widths={[88, 176]} sizes="88px" />}</span>

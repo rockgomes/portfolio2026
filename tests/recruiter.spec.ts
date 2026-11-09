@@ -19,6 +19,11 @@ test('all the work is in the recruiter view: a scroll box on wide screens, the f
   await expect(list.locator('li')).toHaveCount(16);
   // Experiments link to their own pages
   await expect(list.locator('a[href="/experiments/fieldset"]')).toHaveCount(1);
+  // Same order as the homepage cards
+  await page.goto('/');
+  const home = await page.locator('#work a[href^="/"]').evaluateAll((as) => [...new Set(as.map((a) => a.getAttribute('href')))]);
+  await page.goto('/?view=recruiter');
+  expect(await list.locator('a.item').evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(home);
   const box = await list.evaluate((l) => ({ h: l.clientHeight, sh: l.scrollHeight }));
   if ((page.viewportSize()?.width ?? 0) > 1040) {
     // The box cuts the list, with a fade until the end
