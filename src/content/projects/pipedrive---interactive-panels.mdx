@@ -1,6 +1,6 @@
 ---
-name: "Pipedrive - interactive Panels"
-heroTitle: "Pipedrive - interactive Panels"
+name: "Pipedrive - Interactive Panels"
+heroTitle: "Pipedrive - Interactive Panels"
 heroDescription: "App panels show data from third-party apps inside Pipedrive. Before this project, users could only read the data. To act on it, they had to leave the panel. I redesigned the panels to put actions next to the data, with patterns every Marketplace partner can use."
 homeImage: "../../assets/projects/pipedrive---interactive-panels/pipedrive-interactive-panels.avif"
 homeImageAlt: ""
@@ -22,11 +22,11 @@ cardToCheck: false
 demoUrl: ""
 subtitle: "Pipedrive · 2022 · integration platform"
 facts:
-  role: "Senior Product Designer. Interaction patterns, prototypes and design details during the build. Worked with product managers, engineers and other designers."
+  role: "Senior Product Designer. I made the interaction patterns and prototypes, and worked on design details during the build with product managers, engineers and other designers."
   context: "Pipedrive Marketplace. For end users of integrations, and for the partners who build them."
   made: "Interaction patterns for object, field and global actions, animated prototypes, design support during the build."
   tools: "Figma"
-problem: "Panels were read-only, and actions were hard to find or hidden. Only around 30 percent of users found the actions before release."
+problem: "Users could only read the data in panels. The actions were hidden in one menu, and only around 30 percent of users found them before release."
 decision: "Put actions next to the data, on three levels: actions for an object in its header, actions for a field next to it, and global actions under one main button."
 result: "Action discovery went from around 30 percent to around 50 percent in the first month. Integrations that used the new patterns saw action usage above 68 percent."
 links:
@@ -57,21 +57,21 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     <Proof slot="proof" caption="The animated Figma prototype: object, field and global actions in one panel." media={{ kind: 'video', src: '/media/projects/pipedrive---interactive-panels/app-actions.mp4', poster: '/media/projects/pipedrive---interactive-panels/app-actions.jpg', label: 'Animation of a Trello panel: an object opens, its Actions menu opens, a field gets an edit button on hover, and the main button opens a dropdown and a modal.', width: 1040, height: 950 }} />
   </CaseBlock>
   <CaseBlock label="decision 2 of 2" data-decision="2" title="Show the main action and put the rest in a dropdown" pills={['progressive disclosure']}>
-    Each panel has one main button. More actions are in its dropdown. When a panel has many objects, the extra objects are collapsed, but users still see their status and Actions menu. This keeps the panel short, and users can still reach every action.
+    Each panel has one main button, with more actions in its dropdown. When a panel has many objects, it collapses the extra ones, but users still see their status and Actions menu. The panel stays short, and users can still reach every action.
     <Proof slot="proof" caption="Collapsed objects keep their status and actions (10). One main action, more in the dropdown (11, 12)." media={img(panelBottom, 'The bottom of the new panel: two collapsed objects with status labels and Actions menus, the Add an order button with a dropdown, and the feedback bar. Numbers 10 to 13 explain the parts.')} />
   </CaseBlock>
 </CaseSection>
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="research" title="Find out why actions were missed" pills={['usage data', 'expected actions', 'schema limits']}>
-    We looked at how users used panels, which actions they expected, how easy the current actions were to find, and the limits of Marketplace apps and schemas. Only around 30 percent of users found the actions. This showed that the actions needed to be closer to the data.
+    We looked at how people used panels, which actions they expected, how easy the actions were to find, and what Marketplace apps and schemas allow. Only around 30 percent of users found the actions, so the actions had to move closer to the data.
   </CaseBlock>
   <CaseBlock label="patterns" title="Patterns that work for any app" pills={['action close to data', 'progressive disclosure', 'consistency across apps', 'scalability']}>
     Partners build many different apps. So I designed reusable patterns that work for any panel, app and type of data.
     <Proof slot="proof" caption="The brainstorming board: many panel variants, made before we chose the patterns." media={img(patterns, 'A wide Figma board titled brainstorming exercise: many panel variants side by side, some collapsed, some in a modal.')} />
   </CaseBlock>
   <CaseBlock label="prototype and build" title="Animated prototypes, then design support during the build">
-    Many changes were small, so I made animated prototypes in Figma to show how they work. With the prototypes, design, product and engineering agreed on how things work, and we found unusual cases early. During the build, I changed details so they fit the app schema and the existing Pipedrive UI.
+    Many changes were small, so I made animated prototypes in Figma to show how they work. Design, product and engineering used them to agree on how things work, and we found edge cases early. During the build, I changed details to fit the app schema and the existing Pipedrive UI.
   </CaseBlock>
 </CaseSection>
 
@@ -85,6 +85,6 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     right={{ label: 'what I learned', items: [
       'Many of the changes were small. A still screen could not show how they work, so I used animated prototypes to explain them.',
       'Partners build very different apps. Each pattern had to work for any app and any type of data, so I tried it on many panel variants first.',
-      'Next steps: patterns for more complex integrations, and clearer guidelines for partners.',
+      'Next, I would make patterns for more complex integrations, and clearer guidelines for partners.',
     ] }} />
 </CaseSection>
