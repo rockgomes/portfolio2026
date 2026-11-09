@@ -26,7 +26,7 @@ facts:
   context: "Pipedrive's developer platform. Users are app vendors and developers who build integrations."
   made: "Flows and diagrams, the app extensions page, one form for each extension type."
   tools: "Figma, Miro"
-problem: "Customers need integrations that work inside Pipedrive. Pipedrive cannot build them all. The platform did not give developers the tools to build apps that work like part of Pipedrive."
+problem: "Integrations play an important part in winning and keeping customers. Pipedrive cannot build them all. The platform did not give developers the tools to build apps that work like part of Pipedrive."
 decision: "Put schema-based and iframe-based extensions in two sections. Show each option as a block with a drawing and a short text."
 result: "Developers see all their options on one page, with a form for each extension. A check now catches badly formatted JSON files on upload. The new page shipped in 2021."
 caseImage:
@@ -81,7 +81,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="research" title="Start from research we already had" pills={['market study', 'HVC buying criteria', 'trial company research']}>
-    Our research showed that bigger customers looked at integrations before they bought, and that trial companies asked about them more than anything else. So before I drew anything, we knew the developer platform had to get better.
+    Our analysts found that integrations played an important part in winning customers and in keeping them. Changing CRM is already a big investment. If a company also has to change the tools it uses every day, like its calling or workflow apps, it may decide the move is not worth it. And when an integration could only show data, and did less than in other CRMs, it became a reason to churn. So before I drew anything, we knew the developer platform had to get better.
   </CaseBlock>
   <CaseBlock label="flows" title="Flows first, with product and engineering">
     The product manager, the engineers and I drew the first flows and diagrams. We tested the flow with developers inside and outside Pipedrive, improved it, and then picked the final version.
