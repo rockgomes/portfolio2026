@@ -24,7 +24,7 @@ cardLine: "A marketplace for selling the furniture from a whole flat when you mo
 cardToCheck: false
 subtitle: "Side project · 2026 · marketplace"
 facts:
-  role: "Solo side project. I made the product and design decisions and directed the build"
+  role: "I made the product and design decisions, and directed the build with Claude Code."
   context: "Side project, public demo"
   made: "A marketplace with moving sales, and a demo that uses its own test database"
   tools: "Next.js, Supabase, Tailwind, Playwright, Claude Code"
@@ -59,6 +59,6 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     Every night, a scheduled job deletes the demo data and loads the starting data again, but only if someone changed something. On most nights nobody did, so the job does nothing.
   </CaseBlock>
   <CaseBlock label="the stack" title="The database checks who can see what" pills={['Next.js', 'Supabase', 'Playwright']}>
-    I built it with Next.js (App Router). Supabase gives the Postgres database, sign-in and file storage. Every table has row-level security, so the database itself checks who can read or change each row. The browser makes photos smaller before it uploads them. Playwright tests cover the main flows.
+    I built it with Next.js (App Router). Supabase gives the Postgres database, sign-in, and file storage. Every table has row-level security, so the database itself checks who can read or change each row. The browser makes photos smaller before it uploads them. Playwright tests cover the main flows.
   </CaseBlock>
 </CaseSection>
