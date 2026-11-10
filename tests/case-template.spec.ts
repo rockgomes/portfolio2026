@@ -36,7 +36,7 @@ test('live demo: the live site in a frame on desktop, the still picture on phone
   await page.goto(PAGE);
   const live = page.locator('[data-live]');
   await expect(live.locator('.addr')).toHaveText('rockgomes-portfolio-template.netlify.app');
-  await expect(live.locator('figcaption')).toHaveText('The live template. Open it, scroll down and open a chapter.');
+  await expect(live.locator('figcaption')).toHaveText('The live template. Open it, scroll down, and open a chapter.');
   await expect(live.locator('video')).toHaveCount(0);
   if ((viewport?.width ?? 0) >= 1200) {
     await expect(live.locator('iframe')).toBeVisible();
