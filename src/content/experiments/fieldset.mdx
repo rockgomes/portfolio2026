@@ -24,7 +24,7 @@ cardLine: "A filter builder over 50,000 rows. It keeps your edits, and it asks y
 cardToCheck: false
 subtitle: "Fieldset · 2026 · filter builder"
 facts:
-  role: "Solo side project. I made the product and design decisions and directed the build"
+  role: "I made the product and design decisions, and directed the build with Claude Code."
   context: "Side project, live demo, no backend"
   made: "A filter builder with saved views, over 50,000 rows"
   tools: "React, TypeScript, Vite, Vitest, Netlify, Claude Code"
@@ -69,6 +69,6 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
     Nobody can rename, delete or save over the “All companies” view, so you can always go back to it. I added this lock after I saved over that view by accident.
   </CaseBlock>
   <CaseBlock label="how it is built" title="The logic is separate from the screen code" pills={['React', 'TypeScript', 'Vitest', 'no backend']}>
-    I built it with React and TypeScript, with no server. Your browser makes the 50,000 rows, the same rows every time. Only about 30 rows are on the page at once. Filtering, sorting, selection and saved views are plain functions, apart from the React code, so the hard parts have tests.
+    I built it with React and TypeScript, with no server. Your browser makes the 50,000 rows, the same rows every time. Only about 30 rows are on the page at once. I kept filtering, sorting, selection, and saved views apart from the React code, so I could write tests for the hard parts.
   </CaseBlock>
 </CaseSection>
