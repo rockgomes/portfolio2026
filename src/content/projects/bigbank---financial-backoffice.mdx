@@ -22,13 +22,13 @@ cardToCheck: false
 demoUrl: ""
 subtitle: "Bigbank · 2018 · internal tool"
 facts:
-  role: "Product Designer at Bigbank. I also designed the Baltic loan applications, their back-offices and partner systems."
+  role: "Product Designer. I studied the old system and designed the new screens with the accountants. At Bigbank I also designed the Baltic loan applications, their back-offices and partner systems."
   context: "Bigbank, a bank specialised in loans in several European countries, mainly Nordic and Baltic. The users were the bank's own accountants."
   made: "The screens of the new Financial Back-office: lookup values, transactions, incoming invoices and cost reports."
   tools: "Figma, InVision"
 problem: "The accountants used a generic third-party tool. It had many features they did not use, and that made it slow and hard to use. They needed a system made for their work."
 decision: "Build it in-house. Design it with the accountants: talk to them often and get their feedback on new ideas early."
-result: "The new system went live. It shows the accountants the data they need, the way they want it."
+result: "The new system went live and fully replaced the old tool. It is built around the accountants' tasks and shows the data each task needs."
 caseImage:
   src: "../../assets/projects/bigbank---financial-backoffice/bigbank-fbo.avif"
   alt: "Screens of the Financial Back-office at an angle on orange and yellow bands: Lookup values with and without the search panel, an invoice, a cost report and the Transactions table."
@@ -84,7 +84,7 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
 
 <CaseSection title="How I got there" subtitle="the process, short" id="process">
   <CaseBlock label="team" title="Working with the accountants every week" pills={['developers', 'analysts', 'PMs', 'accountants']}>
-    I worked closely with developers, analysts and PMs. The users were our own accountants. We met them in person every week. They tested the new system step by step and got used to it. They also told us what should or should not be there.
+    I worked closely with developers, analysts and product managers. The users were our own accountants, and we met them in person every week. They tested the new system step by step and got used to it. They also told us what should or should not be there.
   </CaseBlock>
 </CaseSection>
 
@@ -94,8 +94,8 @@ export const img = (src, alt) => ({ kind: 'image', src, alt, width: src.width, h
       'The new system fully replaced the old third-party tool.',
     ] }}
     right={{ label: 'what I learned', items: [
-      'People see their work in very different ways. A simpler, cleaner design can make a system worse for them.',
+      'Every accountant did the same task in a different way. The tasks were complex and depended on other tasks and on where the data came from, so I had to understand each way of working before I could design one screen for all of them.',
       'The accountants did not accept my first clean designs. They wanted all the data on screen. Seeing many numbers made them trust the system.',
-      'I learned to understand how users think about their work before I design for them.',
+      'Now I find out how users think about their work before I design for them.',
     ] }} />
 </CaseSection>
